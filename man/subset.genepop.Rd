@@ -12,18 +12,18 @@
 genepop format with a single row input with loci names followed by data.}
 
 \item{subs}{he loci names of interest or a vector which corresponds the the order of which
-they appear in the genepop file. 
+they appear in the genepop file.
 These can be either the order by which they occur or the exact name of the loci
-(i.e. \code{subs <- c(1,2,3,4)} would return the first 4 loci;
-      \code{subs <- c("190-56","145_21",456_12")} would return loci with defined names.}
+e.g. subs <- c(1,2,3,4) would return the first 4 loci &
+subs <- c("190-56","145_21",456_12") would return loci with defined names.}
 
-\item{keep}{logical vector which defines whether you want to remove the loci or keep them. 
-the default is to keep them \code{keep <- TRUE} assuming you are removing neutral markers 
+\item{keep}{logical vector which defines whether you want to remove the loci or keep them.
+the default is to keep them (keep <- TRUE) assuming you are removing neutral markers
 and only keeping the subs}
 
 \item{sPop}{is the populations of interest. Note these are specified in the order which they appear in the
-original Genepop file. i.e. first pop = 1 second pop = 2  or the text based origin 
-Examples: numeric - \code{sPop <- c(1,3,4,7)} 
+original Genepop file. i.e. first pop = 1 second pop = 2  or the text based origin
+Examples: numeric - \code{sPop <- c(1,3,4,7)}
           text- \code{sPop <- c("BMR", "GRR","GHR","TRS")}.}
 
 \item{dirname}{directory where the output file will be saved.}
