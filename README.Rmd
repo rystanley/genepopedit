@@ -1,0 +1,105 @@
+---
+title: "genepopedit"
+author: "Ryan Stanley"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The goal of **genepopedit** is to provide a simple and flexible tool for
+manipulating SNP datasets in R. 
+
+**Use genepopedit to:**
+
+* subset a SNP dataset by removing or keeping specific loci
+
+* remove populations 
+
+* remove individuals
+
+* rename populations 
+
+**Requirement:**
+genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically we use the _three number_ format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names should be each on their own row so that the total number of rows in the _Genepop_ file equals: 
+
+    nrows = nLOCI + nINDIVIDUALS + nPOPULATIONS - 1
+    
+  _or_
+  
+    nrows* = nLOCI + nINDIVIDUALS + nPOPULATIONS 
+    
+_* if STACKS version is not specified_
+
+Most molecular based file formats can be converted to and from *Genepop* through conversion programs such as the R package _adegenet_ <https://github.com/thibautjombart/adegenet/wiki> or the standalone program *PGDspider* <http://www.cmpg.unibe.ch/software/PGDSpider/>. 
+
+**For example:**
+
+*A three locus dataset with two populations and four individuals per population with the STACKS version specified*
+
+    STACKS Version 1.0
+    Loci_1
+    Loci_2
+    Loci_3
+    Pop
+    BON01  , 120120 110110 110110
+    BON02  , 100100 110110 110110
+    BON03  , 100100 110110 110110
+    BON04  , 100100 110110 110110
+    Pop
+    TAG01  , 120120 110110 110110
+    TAG02  , 120120 110110 110110
+    TAG03  , 120120 110110 110110
+    TAG04  , 120120 110110 110110
+
+Where each row line is a single row in the input file.
+
+## Installation
+You can install **genepopedit** as a R package using the following 2 steps:
+
+**Step 1** Install the _R_ package *devtools*
+```r
+if (!require("devtools")) install.packages("devtools") # to install
+library(devtools) # to load
+```
+
+**Step 2** Install *genepopedit*:
+```r
+#Install the package from *Github*
+install_github("rystanley/genepopedit") 
+library(genepopdit)# load the library
+```
+
+## genepopedit functions:
+
+##### subset_genepop_loci.R 
+* remove or keep a subset of loci 
+_and-or_
+* remove populations 
+
+##### subset_genepop_indiv.R
+* remove or keep a subset of individuals
+
+##### subset_genepop_aggregate.R
+* subset and-or rename populations
+
+## Contributions:
+
+This package has been develoepd to used by anyone who is looking for a better and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional      functions _and-or_ functionality, and improve the efficiency of the functions. 
+ 
+* If you don’t understand something, please let me know: 
+(ryan.stanly _at_ dfo-mpo.gc.ca). 
+* Any ideas on how to improve the functionality is very much appreciated. 
+* If you spot a typo, feel free to edit and send a pull request.
+
+What is a pull request? 
+
+The process is very easy:
+
+  * Click the edit this page on the sidebar.
+  * Make the changes using github’s in-page editor and save.
+  * Submit a pull request and include a brief description of your changes. (e.g. "_spelling errors_" or "_indexing error_").
+
+## How to use genepopedit
+
