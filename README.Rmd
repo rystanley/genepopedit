@@ -1,12 +1,4 @@
----
-title: "genepopedit"
-author: "Ryan Stanley"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+#genepopedit
 
 The goal of **genepopedit** is to provide a simple and flexible tool for
 manipulating SNP datasets in R. 
