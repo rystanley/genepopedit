@@ -85,9 +85,7 @@ This package has been develoepd to used by anyone who is looking for a better an
 * Any ideas on how to improve the functionality is very much appreciated. 
 * If you spot a typo, feel free to edit and send a pull request.
 
-What is a pull request? 
-
-The process is very easy:
+Pull request how-to: 
 
   * Click the edit this page on the sidebar.
   * Make the changes using github’s in-page editor and save.
