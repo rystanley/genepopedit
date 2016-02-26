@@ -14,7 +14,7 @@ Maintainer: Ryan Stanley <ryan.stanley@dfo-mpo.gc.ca>
 Depends:
     R (>= 3.0.1)
 Imports:
-    dplyr,
+    tidyr,
     stringr,
 Suggests:
     plyr,

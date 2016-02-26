@@ -3,5 +3,5 @@
 S3method(subset,genepop)
 export(subset.genepop)
 export(insert.vals)
-import(dplyr)
+import(tidyr)
 importFrom(stringr,str_extract)
