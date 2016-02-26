@@ -3,15 +3,15 @@
 The goal of **genepopedit** is to provide a simple and flexible tool for
 manipulating SNP datasets in R. 
 
-**Use genepopedit to:**
+**Use genepopedit to subset a SNP dataset by:**
 
-* subset a SNP dataset by removing or keeping specific loci
+* removing specified loci
 
-* remove populations 
+* removing specified populations 
 
-* remove individuals
+* removing specified individuals
 
-* rename populations 
+* renaming populations 
 
 **Requirement:**
 genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically we use the _three number_ format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names should be each on their own row so that the total number of rows in the _Genepop_ file equals: 

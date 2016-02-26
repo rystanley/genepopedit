@@ -114,12 +114,12 @@ $(document).ready(function () {
 <div id="genepopedit" class="section level1">
 <h1>genepopedit</h1>
 <p>The goal of <strong>genepopedit</strong> is to provide a simple and flexible tool for manipulating SNP datasets in R.</p>
-<p><strong>Use genepopedit to:</strong></p>
+<p><strong>Use genepopedit to subset a SNP dataset by:</strong></p>
 <ul>
-<li><p>subset a SNP dataset by removing or keeping specific loci</p></li>
-<li><p>remove populations</p></li>
-<li><p>remove individuals</p></li>
-<li><p>rename populations</p></li>
+<li><p>removing specified loci</p></li>
+<li><p>removing specified populations</p></li>
+<li><p>removing specified individuals</p></li>
+<li><p>renaming populations</p></li>
 </ul>
 <p><strong>Requirement:</strong> genepopedit functions through the manipulation of multi-locus SNP files structured in the <em>Genepop</em> file format <a href="http://genepop.curtin.edu.au/" class="uri">http://genepop.curtin.edu.au/</a>. Specifically we use the <em>three number</em> format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names should be each on their own row so that the total number of rows in the <em>Genepop</em> file equals:</p>
 <pre><code>nrows = nLOCI + nINDIVIDUALS + nPOPULATIONS - 1</code></pre>
