@@ -3,7 +3,20 @@
 #' @description Function for the manipulation of genopop format SNP datasets
 #' @param GenePop the genepop file to be manipulated. This will the standard
 #' genepop format with a the first n+1 rows corresponding the the n loci names
-#' followed by the .
+#' followed by the locus data. Populations are seperated by "Pop".
+#' Each individual ID is linked the the locus data by "  , " and is read in as
+#' as single row (character)
+#' e.g.
+#' Stacks Ver 1.0
+#' 1
+#' 2
+#' 3
+#' Pop
+#' BON01  , 120120 110110 110110
+#' BON02  , 100100 110110 110110
+#' Pop
+#' TAG01  , 120120 110110 110110
+#' ...
 #' @param subs he loci names of interest or a vector which corresponds the the order of which
 #' they appear in the genepop file.
 #' These can be either the order by which they occur or the exact name of the loci
