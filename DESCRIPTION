@@ -7,7 +7,7 @@ Description: A flexible tool to manipuate large SNP datasets. Using SNP datasets
     populations.
 Authors@R: c(
   person("Ryan", "Stanley", email = "ryan.stanley@dfo-mpo.gc.ca", role = c("aut", "cre")),
-  person("Ian", "Bradbury", role = "ctb"),
+  person("Ian", "Bradbury", role = c("ctb","sad")),
   person("Brendan", "Wringe", role = "ctb"),
   person("Nick", "Jeffery", role = "ctb"))
 Maintainer: Ryan Stanley <ryan.stanley@dfo-mpo.gc.ca>
