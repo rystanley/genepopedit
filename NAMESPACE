@@ -2,6 +2,7 @@
 
 S3method(subset,genepop)
 export(subset.genepop)
+export(subset.genepop.aggregate)
 export(insert.vals)
 import(tidyr)
 importFrom(stringr,str_extract)
