@@ -41,14 +41,14 @@
 #' CRA    CRA
 #' MAL    BON
 #' TRY    CRA
-#' 
-#' @rdname subset.genepop.aggregate
+#'
+#' @rdname subset_genepop_aggregate
 #' @importFrom tidyr separate
 #' @importFrom  stringr str_extract
 #' @export
 
-subset.genepop.aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFrame){
-  
+subset_genepop_aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFrame){
+
 ## Stacks version information
     stacks.version <- GenePop[1,] # this could be blank or any other source. First row is ignored by GenePop
 
@@ -79,13 +79,13 @@ subset.genepop.aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFr
     temp <- tidyr::separate(snpData,data,into=c("Pops","snps"),sep=",")
     temp$snps <- substring(temp$snps,3) # delete the extra spaces at the beginning
     temp2 <- as.data.frame(do.call(rbind, strsplit(temp$snps," "))) #split characters by spaces
-  
+
     #Contingency to see if R read in the top line as the "stacks version"
     if (length(temp2)!=length(ColumnData)){colnames(temp2) <- c(stacks.version,ColumnData)}
     if (length(temp2)!=length(ColumnData)){stacks.version="No stacks version specified"}
     if (length(temp2)==length(ColumnData)){colnames(temp2) <- ColumnData}
-    
-## Get the Alpha names from the 
+
+## Get the Alpha names from the
     NamePops=temp[,1] # Names of each
     NameExtract=stringr::str_extract(NamePops, "[A-Z]+" ) # extract the text from the individuals names to denote population
 
@@ -98,56 +98,56 @@ subset.genepop.aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFr
             pophold <- rep(npops[i-1],hold)
             PopIDs <- c(PopIDs,pophold)
           }
-    
+
     temp2$Pop <- PopIDs;rm(hold,pophold,tPops)
 
-## Now subset out the the data according to the specified loci and whether or not you want to keep them. 
-    
+## Now subset out the the data according to the specified loci and whether or not you want to keep them.
+
     if(is.numeric(subs))
       { #column number instead of name depending on the output from Outlier detection
-          
+
           if(!keep) # neutral
           {
             if(length(subs)>0){reqCols <- temp2[,-subs]}
             if(length(subs)==0){reqCols <- temp2}
           }
-          
-          
+
+
           if(keep) # outliers or loci under divergent selection
           {
             PopInd=which(names(temp2)=="Pop")
             if(length(subs)>0){reqCols <- temp2[,c(subs,PopInd)]}
             if(length(subs)==0){reqCols <- temp2}
           }
-      
+
     }
-    
+
     if(!is.numeric(subs))
       { #column name
-        
+
       if(!keep)# neutral
           {
             if(length(subs)>0){reqCols <- temp2[,-which(names(temp2)%in%subs)]}
             if(length(subs)==0){reqCols <- temp2}
           }
-        
+
         if(keep)# outliers or loci under divergent selection
             {
             if(length(subs)>0){reqCols <- temp2[,c(subs,"Pop")]}
             if(length(subs)==0){reqCols <- temp2}
             }
       }
-        
+
 ## Now subset the Populations
-    
+
     if(!is.data.frame(agPopFrame)) #if it isn't a dataframe then read in the path
     {
       agPopFrame <- read.csv(agPopFrame,header=T)
     }
-    
+
     sPop <- as.character(agPopFrame[,1]) # these are the populations of interest
-    
-    
+
+
     # is a population subset required
       if(sum(is.numeric(sPop))>0){ # if the subsetted populations are numeric
       ind <- which(reqCols$Pop %in% sPop) # index where the populations are
@@ -155,55 +155,55 @@ subset.genepop.aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFr
       temp <- temp[ind,]
       temp2 <- temp2[ind,]
       }
-      
+
       if(sum(is.numeric(sPop))==0){ # if the subsetted populations are character indexes
         reqCols <- reqCols[which(NameExtract %in% sPop),]
         temp <- temp[which(NameExtract %in% sPop),]
         temp2 <- temp2[which(NameExtract %in% sPop),]
       }
-    
+
     #Now recompile the GenePop format
-    
+
     NameExtract2 <- NameExtract[which(NameExtract %in% sPop)]
     #Create a new vector with the new population names
     for (i in sPop){
       NameExtract2[which(NameExtract2 == i)]=as.character(agPopFrame[which(agPopFrame[,1]==i),2])
     }
-    
+
     NameExtract3 <- NameExtract2
     for (i in 1:length(unique(NameExtract2))){
       NameExtract3[which(NameExtract3==unique(NameExtract3)[i])]=i
     }
-    
+
     #the number of individuals for all popualtions but the last (Pop tagged to the end)
     PopLengths <- table(NameExtract3)[-length(table(NameExtract3))]
-    
+
     if(length(table(NameExtract3))==2){PopPosition = PopLengths+1}
-    
+
     if(length(table(NameExtract3))>2){
       PopPosition <- c(PopLengths[1]+1,rep(NA,(length(PopLengths)-1)))
       for (i in 2:length(PopLengths)){
         PopPosition[i] <- PopLengths[i]+PopPosition[i-1]
       }
     }
-    
+
     #Now stitch the data together
     # paste together the Loci as one long integer seperated for each loci by a space
     reqCols <- reqCols[,-length(reqCols)]
     Loci <- do.call(paste,c(reqCols[,], sep=" "))
-    
+
     #Grab the Population tags that each invididual had following the format ID_,__
     PopVec <- paste(gsub(pattern = " ",replacement = "",NameExtract2)," ,  ",sep="")
-    
+
     #Paste these to the Loci
     Loci <- paste(PopVec,Loci,sep="")
-    
+
     #Insert the value of "Pop" which partitions the data among populations #only if more than one population
     if(length(table(NameExtract2))!=1){Loci <- insert.vals(Vec=Loci,breaks=PopPosition,newVal="Pop")}
-    
+
     #Add the first "Pop" label
     Loci <- c("Pop",Loci)
-    
+
     if(is.numeric(subs))
     { #Column numbers
       if(!keep)
@@ -212,7 +212,7 @@ subset.genepop.aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFr
         if(length(subs)==0){Output <- c(stacks.version,names(temp2)[-PopInd],Loci)}
         if(length(subs)>0){Output <- c(stacks.version,names(temp2)[-c(subs,PopInd)],Loci)}
       }
-      
+
       if(keep)
       {
         PopInd=which(names(temp2)=="Pop")
@@ -220,7 +220,7 @@ subset.genepop.aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFr
         if(length(subs)>0){Output <- c(stacks.version,names(reqCols),Loci)}
       }
     }
-    
+
     if(!is.numeric(subs))
     { # column names
       if(!keep)
@@ -228,14 +228,14 @@ subset.genepop.aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFr
         if(length(subs)==0){Output <- c(stacks.version,names(temp2)[-length(names(temp2))],Loci)}
         if(length(subs)>0){Output <- c(stacks.version,names(temp2)[-which(names(temp2)%in%c(subs,"Pop"))],Loci)}
       }
-      
+
       if(keep)
       {
         if(length(subs)==0){Output <- c(stacks.version,names(temp2)[-length(names(temp2))],Loci)}
         if(length(subs)>0){Output <- c(stacks.version,subs,Loci)}
       }
     }
-    
+
     # Save the file
     write.table(Output,dirname,col.names=FALSE,row.names=FALSE,quote=FALSE)
 

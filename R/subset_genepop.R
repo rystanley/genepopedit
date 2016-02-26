@@ -30,13 +30,13 @@
 #'  original Genepop file. i.e. first pop = 1 second pop = 2  or the text based origin
 #'  Examples: numeric - \code{sPop <- c(1,3,4,7)}
 #'            text- \code{sPop <- c("BMR", "GRR","GHR","TRS")}.
-#' @rdname subset.genepop
+#' @rdname subset_genepop
 #' @importFrom tidyr separate
 #' @importFrom  stringr str_extract
 #' @export
 
 ##
-subset.genepop <- function(GenePop,subs=NULL,keep=TRUE,dirname,sPop=NULL)
+subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,dirname,sPop=NULL)
   {
 
 
