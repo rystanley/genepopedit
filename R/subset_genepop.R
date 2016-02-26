@@ -31,8 +31,8 @@
 #'  Examples: numeric - \code{sPop <- c(1,3,4,7)}
 #'            text- \code{sPop <- c("BMR", "GRR","GHR","TRS")}.
 #' @rdname subset.genepop
-#' @import dplyr
-#' @import stringr
+#' @import tidyr
+#' @importFrom  stringr str_extract
 #' @export
 
 ##
