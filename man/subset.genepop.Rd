@@ -9,7 +9,8 @@
 }
 \arguments{
 \item{GenePop}{the genepop file to be manipulated. This will the standard
-genepop format with a single row input with loci names followed by data.}
+genepop format with a the first n+1 rows corresponding the the n loci names
+followed by the .}
 
 \item{subs}{he loci names of interest or a vector which corresponds the the order of which
 they appear in the genepop file.
