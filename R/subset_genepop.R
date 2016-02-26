@@ -54,7 +54,7 @@ subset.genepop <- function(GenePop,subs=NULL,keep=TRUE,dir,sPop=NULL)
 #Seperate the snpdata
 #First we pull out the population data which follows
 #"TEXT ,  "
-    temp <- separate(snpData,data,into=c("Pops","snps"),sep=",")
+    temp <- dplyr::separate(snpData,data,into=c("Pops","snps"),sep=",")
     temp$snps <- substring(temp$snps,3) # delete the extra spaces at the beginning
     temp2 <- as.data.frame(do.call(rbind, strsplit(temp$snps," "))) #split characters by spaces
 
