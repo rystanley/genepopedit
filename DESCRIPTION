@@ -16,7 +16,6 @@ Depends:
 Imports:
     dplyr,
     stringr,
-    tidyr,
 Suggests:
     plyr,
     knitr,

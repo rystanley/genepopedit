@@ -2,7 +2,8 @@
 #' @title Genepop edit
 #' @description Function for the manipulation of genopop format SNP datasets
 #' @param GenePop the genepop file to be manipulated. This will the standard
-#' genepop format with a single row input with loci names followed by data.
+#' genepop format with a the first n+1 rows corresponding the the n loci names
+#' followed by the .
 #' @param subs he loci names of interest or a vector which corresponds the the order of which
 #' they appear in the genepop file.
 #' These can be either the order by which they occur or the exact name of the loci
@@ -18,7 +19,6 @@
 #'            text- \code{sPop <- c("BMR", "GRR","GHR","TRS")}.
 #' @rdname subset.genepop
 #' @import dplyr
-#' @import tidyr
 #' @import stringr
 #' @export
 
@@ -65,7 +65,7 @@ subset.genepop <- function(GenePop,subs=NULL,keep=TRUE,dir,sPop=NULL)
 
 ## Get the Alpha names from the
     NamePops=temp[,1] # Names of each
-    NameExtract=str_extract(NamePops, "[A-Z]+" ) # extract the text from the individuals names to denote population
+    NameExtract=stringr::str_extract(NamePops, "[A-Z]+" ) # extract the text from the individuals names to denote population
 
 ## Now add the population tags using npops (number of populations and Pops for the inter differences)
     tPops <- c(Pops,NROW(GenePop))
@@ -142,10 +142,6 @@ subset.genepop <- function(GenePop,subs=NULL,keep=TRUE,dir,sPop=NULL)
 
     #the number of individuals for all popualtions but the last (Pop tagged to the end)
     PopLengths <- table(temp2$Pop)[-length(table(temp2$Pop))]
-
-
-    #Get the row numbers where population "Pop" tag will be inserted
-    #if(length(table(temp2$Pop))==1){return(print("Need more than one populations for subsetting"))}
 
     if(length(table(temp2$Pop))==2){PopPosition = PopLengths+1}
 
