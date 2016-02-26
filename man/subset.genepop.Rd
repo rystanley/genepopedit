@@ -31,7 +31,4 @@ Examples: numeric - \code{sPop <- c(1,3,4,7)}
 \description{
 Function for the manipulation of genopop format SNP datasets
 }
-\seealso{
-\link{insert_vals}
-}
 

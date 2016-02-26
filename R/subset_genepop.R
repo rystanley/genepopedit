@@ -17,12 +17,12 @@
 #'  Examples: numeric - \code{sPop <- c(1,3,4,7)}
 #'            text- \code{sPop <- c("BMR", "GRR","GHR","TRS")}.
 #' @rdname subset.genepop
-#' @export
-#' @import stringr
 #' @import dplyr
 #' @import tidyr
-#' @seealso \link{insert_vals}
+#' @import stringr
+#' @export
 
+##
 subset.genepop <- function(GenePop,subs=NULL,keep=TRUE,dir,sPop=NULL)
   {
 

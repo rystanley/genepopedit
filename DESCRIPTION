@@ -1,13 +1,28 @@
 Package: genepopedit
 Title: Functions to Manipulate Genepop SNP Datasets.
 Version: 0.0.0.1
-Authors@R: person("Ryan", "Stanley", email = "ryan.stanley@dfo-mpo.gc.ca", role = c("aut", "cre"))
 Description: A flexible tool to manipuate large SNP datasets. Using SNP datasets
     in the popular 'Genepop' format (http://genepop.curtin.edu.au/) these functions
     provide a flexible and code-based approach to remove user defined loci and-or
     populations.
+Authors@R: c(
+  person("Ryan", "Stanley", email = "ryan.stanley@dfo-mpo.gc.ca", role = c("aut", "cre")),
+  person("Ian", "Bradbury", role = "ctb"),
+  person("Brendan", "Wringe", role = "ctb"),
+  person("Nick", "Jeffery", role = "ctb"))
+Maintainer: Ryan Stanley <ryan.stanley@dfo-mpo.gc.ca>
+Description: Set of tools to look at GBS/RAD data created by STACKS software.
 Depends:
-    R (>= 3.2.3)
-License: MIT + file LICENSE
-LazyData: true
+    R (>= 3.0.1)
+Imports:
+    dplyr,
+    stringr,
+    tidyr,
+Suggests:
+    plyr,
+    knitr,
+    rmarkdown
+License: GPL (>=2)
+LazyLoad: yes
+VignetteBuilder: knitr
 RoxygenNote: 5.0.1
