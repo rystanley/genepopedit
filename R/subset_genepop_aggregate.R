@@ -176,7 +176,7 @@ subset_genepop_aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFr
     }
 
     #the number of individuals for all popualtions but the last (Pop tagged to the end)
-    PopLengths <- table(NameExtract3)[-length(table(NameExtract3))]
+    PopLengths <- table(factor(NameExtract3, levels=unique(NameExtract3)))[-length(table(NameExtract3))]
 
     if(length(table(NameExtract3))==2){PopPosition = PopLengths+1}
 
@@ -193,13 +193,16 @@ subset_genepop_aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFr
     Loci <- do.call(paste,c(reqCols[,], sep=" "))
 
     #Grab the Population tags that each invididual had following the format ID_,__
-    PopVec <- paste(gsub(pattern = " ",replacement = "",NameExtract2)," ,  ",sep="")
+    popvec1 <- unlist(strsplit(gsub(pattern="_",replacement="",temp[,1]),split = "[^0-9]+"))
+    popvec2 <- popvec1[which(popvec1 != "")]
+
+    PopVec <- paste0(NameExtract2,"_",popvec2," ,  ")
 
     #Paste these to the Loci
     Loci <- paste(PopVec,Loci,sep="")
 
     #Insert the value of "Pop" which partitions the data among populations #only if more than one population
-    if(length(table(NameExtract2))!=1){Loci <- insert.vals(Vec=Loci,breaks=PopPosition,newVal="Pop")}
+    if(length(table(NameExtract2))!=1){Loci <- insert_vals(Vec=Loci,breaks=PopPosition,newVal="Pop")}
 
     #Add the first "Pop" label
     Loci <- c("Pop",Loci)

@@ -175,7 +175,7 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,dirname,sPop=NULL)
     Loci <- paste(PopVec,Loci,sep="")
 
     #Insert the value of "Pop" which partitions the data among populations #only if more than one population
-    if(length(table(temp2$Pop))!=1){Loci <- insert.vals(Vec=Loci,breaks=PopPosition,newVal="Pop")}
+    if(length(table(temp2$Pop))!=1){Loci <- insert_vals(Vec=Loci,breaks=PopPosition,newVal="Pop")}
 
     #Add the first "Pop" label
     Loci <- c("Pop",Loci)

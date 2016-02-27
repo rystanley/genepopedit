@@ -78,7 +78,7 @@ _and-or_
 
 ## Contributions:
 
-This package has been develoepd to used by anyone who is looking for a better and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional      functions _and-or_ functionality, and improve the efficiency of the functions. 
+This package has been develoepd to used by anyone who is looking for a more efficient and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional      functions _and-or_ functionality, and improve the efficiency of the functions. 
  
 * If you don’t understand something, please let me know: 
 (ryan.stanly _at_ dfo-mpo.gc.ca). 
@@ -92,4 +92,69 @@ Pull request how-to:
   * Submit a pull request and include a brief description of your changes. (e.g. "_spelling errors_" or "_indexing error_").
 
 ## How to use genepopedit
+
+download in the genepop data - here we have a GenePop file with 10 populations, 50 individuals per population and 98 Loci
+<https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0>
+
+Read in the data using the following *read.table* code specifics
+
+```r
+GenePopData <- read.table("genepopedit_examplefile.txt", header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
+```
+Set a directory where the output files will be saved.
+
+```r
+output_dir <- "c:/Users/YourName/Documents/GenePopFiles/" 
+```
+
+Analyses have documented Loci *3 15 23 49 62 81 88 & 94* as potentially under selection. Lets create a Genepop file with just
+these loci. Here our Loci are named in the Loci # format for (1-98).
+
+```r
+#subset the Genepop file and 'keep' the specified 'subs'
+subset_genePop(GenePop=GenePopData,
+               keep=TRUE,
+               subs=c(Loci3,Loci15,Loci23,Loci49,Loci62,Loci81,Loci88,Loci94),
+               dirname=paste0(output_dir,"Loci_under_selection.txt"))
+```
+
+Now create a Genepop file which has all loci which aren't in the list of potential loci under selection. Note the only difference
+here is the use of keep=FALSE.
+
+```r
+#subset the Genepop file and do not 'keep' the specified 'subs'
+subset_genePop(GenePop=GenePopData,
+               keep=FALSE,
+               subs=c(Loci3,Loci15,Loci23,Loci49,Loci62,Loci81,Loci88,Loci94),
+               dirname=paste0(output_dir,"Loci_neutral.txt"))
+```
+
+Now lets again select loci under selection but remove populations 3 and 7. Here our populations have 3 letter repeat names
+(e.g. AAA, BBB, CCC ... JJJ)
+
+```r
+subset_genePop(GenePop=GenePopData,
+               keep=TRUE,
+               subs=c(Loci3,Loci15,Loci23,Loci49,Loci62,Loci81,Loci88,Loci94),
+               dirname=paste0(output_dir,"Loci_neutral.txt"),
+               sPop=c(AAA,BBB,DDD,EEE,FFF,HHH,III,JJJ)
+               )
+```
+Now lets change the names of some of the populations. In post-analysis will group the populations together for analysis
+(e.g. STRUCTURE). In this example we will combine populations DDD & EEE as well as FFF & HHH. 
+We will aslo remove population JJJ (*not listed in column 1 of PopRename*). 
+No loci will be removed from this dataframe (*subs=NULL*).
+
+```r
+#create a dataframe for renaming. 
+#Column 1 = the original population names and the list of populations required.
+#Column 2 = the new names. 
+PopRename <- data.frame(oPop=c(AAA,BBB,CCC,DDD,EEE,FFF,HHH,III,JJJ),
+                        newname=c(AAA,BBB,CCC,DDD,DDD,HHH,HHH,HHH))
+
+subset_genePop_aggregate(GenePop=GenePopData,
+               subs=NULL
+               dirname=paste0(output_dir,"Loci_neutral.txt"),
+               agPopFrame=PopRename)
+```
 
