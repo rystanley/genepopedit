@@ -34,15 +34,13 @@ subs <- c("190-56","145_21",456_12") would return loci with these defined names.
 the default is to keep them keep <- TRUE assuming you are removing neutral markers
 and only keeping the subs}
 
-\item{agPopFrame}{a dataframe or path to a csv. This must be specified in this function
-this dataframe contains two columns. Column 1 corresponds to the population names. These names
-should match the individual IDs (e.g. BON_01  , 110110 120120 -- would be 'BON').
-Here we consider the alpha-numeric characters before the first underscore '_' to be the Pop label
-so that IDs are "Population_sample#" (e.g. Aqua23_04 would Population 23 individual 4).
-The next column has the new names that you want to replace. If you don't want to change the name then just repeat
-from column one in that row. **Note if this is a reference to a path then there should be column headers
-though the headers do not need to match this example. If the input is a dataframe object from the
-workspace it must be a data.frame object and therefore will have headers.
+\item{agPopFrame}{a dataframe or path to a csv.
+This dataframe contains two columns: Column 1 corresponds to the population names.
+Here we consider the alpha-numeric characters before the first underscore '_' to be the population name.
+so that IDs are "Population_sample#" (e.g. Aqua23_04 = Population Aqua23, individual 4).
+These names can be obtained using the genepop_detective function.
+The next column has grouping variables. If you don't want to change the grouping just repeat original name.
+If the input is a dataframe object from the workspace it must be a data.frame object and therefore will have headers.
 e.g.
 Opop   AgPop
 AAA    Pop1
@@ -51,7 +49,8 @@ CCC    CCC
 DDD    Pop2
 EEE    EEE
 FFF    Pop2
-GGG    GGG}
+GGG    GGG
+AAA/BBB & DDD/FFF would be clustered together between population flags in genepop.}
 }
 \description{
 Function to cluster populations together and remove specific loci
