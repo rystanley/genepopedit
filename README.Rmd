@@ -222,7 +222,8 @@ Now lets change group some populations together. In this example we will combine
 #create a dataframe for renaming. 
 #column 1 = the original pop names and the list of pops required.
 #column 2 = Grouping variables. 
-  PopAggregate <-data.frame(oP=c("AAA","BBB","CCC","DDD","EEE","FFF",    "HHH","III"),agname=c("AAA","Pop1","CCC","Pop1","DDD","Pop2","HHH",    "Pop2"))
+  PopAggregate <-data.frame(oP=c("AAA","BBB","CCC","DDD","EEE","FFF","HHH","III"),
+  agname=c("AAA","Pop1","CCC","Pop1","DDD","Pop2","HHH","Pop2"))
 
 #re-cast Genepop format to group populations based on 'PopAggregate'
   subset_genepop_aggregate(GenePop=GenePopData,
@@ -235,7 +236,8 @@ Now that we have two grouped populations, we can use the population rename funct
 
 ```r
 #read in the grouped Genepop file
-  GenePopData2 <- read.table(paste0(output_dir,"Genepop_grouped.txt"),   header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
+  GenePopData2 <- read.table(paste0(output_dir,"Genepop_grouped.txt"),
+  header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
 
 #investigate the population parameters
   genepop_detective(GenePopData2,"Pops")
@@ -243,7 +245,8 @@ Now that we have two grouped populations, we can use the population rename funct
 #we can see that "BBB" & "DDD" and "FFF" & "III" are at the end but still have different names. 
 
 #create renaming frame
-  PopRename <- data.frame(oPop=c("AAA","CCC","EEE","HHH","BBB","DDD",   "FFF","III"),newname=c("AAA","CCC","EEE","HHH","Group1","Group1",     "Group2","Group2"))
+  PopRename <- data.frame(oPop=c("AAA","CCC","EEE","HHH","BBB","DDD","FFF","III"),
+  newname=c("AAA","CCC","EEE","HHH","Group1","Group1","Group2","Group2"))
 
 #Rename the grouped populations
   subset_genepop_rename2(GenePop=GenePopData2,
@@ -265,6 +268,5 @@ _This function is best run at the beginning of the analysis prior to removal of 
                  indiv=c("AAA_01","AAA_03","BBB_20","CCC_21",
                  "EEE_03","EEE_26","HHH_25",JJJ_04),
                  keep=FALSE,
-                 dirname=paste0(output_dir,"Genepop_IDsubset.txt"),
-                 )
+                 dirname=paste0(output_dir,"Genepop_IDsubset.txt"))
 ```

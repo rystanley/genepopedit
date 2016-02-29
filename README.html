@@ -304,7 +304,8 @@ library(genepopedit)# load the library</code></pre>
 #create a dataframe for renaming. 
 #column 1 = the original pop names and the list of pops required.
 #column 2 = Grouping variables. 
-  PopAggregate &lt;-data.frame(oP=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,    &quot;HHH&quot;,&quot;III&quot;),agname=c(&quot;AAA&quot;,&quot;Pop1&quot;,&quot;CCC&quot;,&quot;Pop1&quot;,&quot;DDD&quot;,&quot;Pop2&quot;,&quot;HHH&quot;,    &quot;Pop2&quot;))
+  PopAggregate &lt;-data.frame(oP=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;HHH&quot;,&quot;III&quot;),
+  agname=c(&quot;AAA&quot;,&quot;Pop1&quot;,&quot;CCC&quot;,&quot;Pop1&quot;,&quot;DDD&quot;,&quot;Pop2&quot;,&quot;HHH&quot;,&quot;Pop2&quot;))
 
 #re-cast Genepop format to group populations based on 'PopAggregate'
   subset_genepop_aggregate(GenePop=GenePopData,
@@ -313,7 +314,8 @@ library(genepopedit)# load the library</code></pre>
                  agPopFrame=PopAggregatee)</code></pre>
 <p>Now that we have two grouped populations, we can use the population rename function to give them a common name.</p>
 <pre class="r"><code>#read in the grouped Genepop file
-  GenePopData2 &lt;- read.table(paste0(output_dir,&quot;Genepop_grouped.txt&quot;),   header = FALSE, sep = &quot;\t&quot;, quote = &quot;&quot;, stringsAsFactors = FALSE)
+  GenePopData2 &lt;- read.table(paste0(output_dir,&quot;Genepop_grouped.txt&quot;),
+  header = FALSE, sep = &quot;\t&quot;, quote = &quot;&quot;, stringsAsFactors = FALSE)
 
 #investigate the population parameters
   genepop_detective(GenePopData2,&quot;Pops&quot;)
@@ -321,7 +323,8 @@ library(genepopedit)# load the library</code></pre>
 #we can see that &quot;BBB&quot; &amp; &quot;DDD&quot; and &quot;FFF&quot; &amp; &quot;III&quot; are at the end but still have different names. 
 
 #create renaming frame
-  PopRename &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;BBB&quot;,&quot;DDD&quot;,   &quot;FFF&quot;,&quot;III&quot;),newname=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;Group1&quot;,&quot;Group1&quot;,     &quot;Group2&quot;,&quot;Group2&quot;))
+  PopRename &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;BBB&quot;,&quot;DDD&quot;,&quot;FFF&quot;,&quot;III&quot;),
+  newname=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;Group1&quot;,&quot;Group1&quot;,&quot;Group2&quot;,&quot;Group2&quot;))
 
 #Rename the grouped populations
   subset_genepop_rename2(GenePop=GenePopData2,
@@ -340,8 +343,7 @@ library(genepopedit)# load the library</code></pre>
                  indiv=c(&quot;AAA_01&quot;,&quot;AAA_03&quot;,&quot;BBB_20&quot;,&quot;CCC_21&quot;,
                  &quot;EEE_03&quot;,&quot;EEE_26&quot;,&quot;HHH_25&quot;,JJJ_04),
                  keep=FALSE,
-                 dirname=paste0(output_dir,&quot;Genepop_IDsubset.txt&quot;),
-                 )</code></pre>
+                 dirname=paste0(output_dir,&quot;Genepop_IDsubset.txt&quot;))</code></pre>
 </div>
 
 
