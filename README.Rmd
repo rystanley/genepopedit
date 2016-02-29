@@ -32,7 +32,7 @@ genepopedit functions through the manipulation of multi-locus SNP files structur
     
 _* if STACKS version is not specified_
 
-Most molecular based file formats can be converted to and from *Genepop* through conversion programs such as the R package _adegenet_ <https://github.com/thibautjombart/adegenet/wiki> or the standalone program *PGDspider* <http://www.cmpg.unibe.ch/software/PGDSpider/>. 
+Most molecular based file formats can be converted to and from *Genepop* using conversion programs such as the R package _adegenet_ <https://github.com/thibautjombart/adegenet/wiki> or the program *PGDspider* <http://www.cmpg.unibe.ch/software/PGDSpider/>. 
 
 **For example:**
 
@@ -74,7 +74,7 @@ library(genepopedit)# load the library
 ## genepopedit functions:
 
 ##### genepop_detective.R 
-* extract quick summary information from Genepop file
+* extract quick meta-data from Genepop file
     * Population names
     * Population counts
     * Sample IDs
@@ -98,7 +98,7 @@ library(genepopedit)# load the library
 This package has been develoepd to used by anyone who is looking for a more efficient and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional      functions _and-or_ functionality, and improve the efficiency of the functions. 
  
 * If you don’t understand something, please let me know: 
-(ryan.stanly _at_ dfo-mpo.gc.ca). 
+(ryan.stanley _at_ dfo-mpo.gc.ca). 
 * Any ideas on how to improve the functionality is very much appreciated. 
 * If you spot a typo, feel free to edit and send a pull request.
 
@@ -124,7 +124,7 @@ Set a directory where the output files will be saved.
 output_dir <- "c:/Users/YourName/Documents/GenePopFiles/" 
 ```
 #genepop detective
-This function will describe the structure of your genepop data without having to open it in a text editor. Function returns a vector of population names, sample IDs, or Loci names.
+This function meta-data from your genepop data without having to open it in a text editor. Function returns a vector of population names, population counts, sample IDs, or Loci names.
 
 Return *population names*
 ```r
@@ -144,10 +144,14 @@ LociNames <- genepop_detective(GenePopData,variable="Loci")
 ```
 
 #subset genepop
-Analyses have documented Loci *3 15 23 49 62 81 88 & 94* as potentially under selection. Lets create a Genepop file with just these loci. Here our Loci are named in the Loci# (1:100).
+Lets create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, & 94*. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100).
 
 ```r
-#subset the Genepop file and 'keep' the specified 'subs'
+#inspect the names of the loci within the Genepop data
+locinames <- genepop_detective(GenePopData,"Loci")
+locinames
+
+#subset the Genepop file and 'keep' the specified loci names ('subs')
 subset_genepop(GenePop=GenePopData,
                keep=TRUE,
                subs=c("Loci03","Loci15","Loci23","Loci49","Loci62",
@@ -155,8 +159,7 @@ subset_genepop(GenePop=GenePopData,
                dirname=paste0(output_dir,"Genepop_Loci_selection.txt"))
 ```
 
-Now create a Genepop file which has all loci which aren't in the list of potential loci under selection (inverse of the last subset). Note the only difference
-here is the use of keep=FALSE.
+You can also choose all loci not in the vector specified using keep=FALSE.
 
 ```r
 #subset the Genepop file and do not 'keep' the specified 'subs'
@@ -167,7 +170,7 @@ subset_genepop2(GenePop=GenePopData,
                dirname=paste0(output_dir,"Genepop_Loci_neutral.txt"))
 ```
 
-Now lets again select loci under selection but remove populations 3 & 7 (CCC & GGG). To do this we create a list of all populations we want to keep
+You can also remove populations within this function. Here we again select loci under selection, but remove populations 3 & 7 (CCC/GGG). To do this we create a list of all populations we want to keep
 (e.g. AAA, BBB, CCC ... JJJ)
 
 ```r
@@ -175,60 +178,62 @@ Now lets again select loci under selection but remove populations 3 & 7 (CCC & G
 PopNames <- genepop_detective(GenePopData,"Pops")
 
 #create a list of populations you want to keep
+
 PopKeep <- c("AAA","BBB","DDD","EEE","FFF","HHH","III","JJJ")# manual
+
 #or
+
 PopKeep <- setdiff(PopNames,c("CCC","GGG"))# if you have fewer pops to remove
 
 subset_genepop(GenePop=GenePopData,
                keep=TRUE,
                subs=c("Loci03","Loci15","Loci23","Loci49","Loci62",
                "Loci81","Loci88","Loci94"),
-               dirname=paste0(output_dir,"Genepop_Loci_selection_popsubset.txt"),
-               sPop=PopKeep
+               dirname=paste0(output_dir,
+               "Genepop_Loci_selection_popsbset.txt"),sPop=PopKeep
                )
 ```
 
 #subset genepop rename
-Now lets change the names of some of the populations. In this example we will rename populations DDD & HHH to YYY & ZZZ. 
-We will aslo remove populations BBB & JJJ (*not listed in column 1 of PopRename*). 
+Now lets change the names of some of the populations. In this example we will rename populations DDD & HHH to YYY & ZZZ.
 
 ```r
-#View the population names
+#view the population names
 genepop_detective(GenePopData,"Pops")
 
 #create a dataframe for renaming. 
-#Column 1 = the original population names and the list of populations required.
-#Column 2 = the new names. 
-PopRename <- data.frame(oPop=c("AAA","CCC","DDD","EEE","FFF","GGG","HHH","III"),
-                        newname=c("AAA","CCC","YYY","EEE","FFF","GGG","ZZZ","III"))
+  #column 1 = the original pop names.
+  #column 2 = the new names. 
 
+PopRename <- data.frame(oPop=c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),newname=c("AAA","BBB","CCC","YYY","EEE","FFF","GGG","ZZZ","III","JJJ"))
+
+#rename populations
 subset_genepop_rename(GenePop=GenePopData,
                dirname=paste0(output_dir,"Genepop_renamed.txt"),
                nameframe=PopRename)
 ```
 
 #subset genepop aggregate
-Now lets change the names of some of the populations. In post-analysis will group the populations together for analysis (e.g. STRUCTURE). In this example we will combine populations DDD & EEE as well as FFF & HHH. 
-We will aslo remove populations "JJJ" & "GGG" (*not listed in column 1 of PopRename*). No loci will be removed from this dataframe (*subs=NULL*).
+Now lets change group some populations together. In this example we will combine populations DDD/EEE & FFF/HHH and remove populations JJJ/GGG (*not listed in column 1 of PopRename*). No loci will be removed from this dataframe (*subs=NULL*). This is useful when you don't want a clustering program (e.g. STRUCTURE or Bayescan) to assume differences among population groups.
 
 ```r
 #Use genepop_detective to find the meta-data for populations
 genepop_detective(GenePopData,"Pops")
 
 #create a dataframe for renaming. 
-#Column 1 = the original population names and the list of populations required.
+#Column 1 = the original pop names and the list of pops required.
 #Column 2 = Grouping variables. 
 
-PopAggregate <- data.frame(oPop=c("AAA","BBB","CCC","DDD","EEE","FFF","HHH","III"),                        agname=c("AAA","Pop1","CCC","Pop1","DDD","Pop2","HHH","Pop2"))
+PopAggregate <- data.frame(oPop=c("AAA","BBB","CCC","DDD","EEE","FFF","HHH","III"),agname=c("AAA","Pop1","CCC","Pop1","DDD","Pop2","HHH","Pop2"))
 
-#Recast Genepop format to group populations based on 'PopAggregate'
+#re-cast Genepop format to group populations based on 'PopAggregate'
 subset_genepop_aggregate(GenePop=GenePopData,
                subs=NULL,
                dirname=paste0(output_dir,"Genepop_grouped.txt"),
                agPopFrame=PopAggregatee)
 ```
 
-Now that we have two grouped populations we can use the population rename function to give them a common name
+Now that we have two grouped populations, we can use the population rename function to give them a common name.
 
 ```r
 #read in the grouped Genepop file
@@ -240,24 +245,18 @@ genepop_detective(GenePopData2,"Pops")
 #we can see that "BBB" & "DDD" and "FFF" & "III" are at the end but still have different names. 
 
 #create renaming frame
-PopRename <- data.frame(oPop=c("AAA","CCC","EEE","HHH","BBB","DDD","FFF","III"),
-                        newname=c("AAA","CCC","EEE","HHH",
-                        "Group1","Group1","Group2","Group2"))
+PopRename <- data.frame(oPop=c("AAA","CCC","EEE","HHH","BBB","DDD","FFF","III"),newname=c("AAA","CCC","EEE","HHH","Group1","Group1","Group2","Group2"))
 
 #Rename the grouped populations
 subset_genepop_rename2(GenePop=GenePopData2,
-               dirname=paste0(output_dir,"Genepop_grouped_renamed.txt"),
+               dirname=paste0(output_dir,
+               "Genepop_grouped_renamed.txt""),
                nameframe=PopRename)
 ```
 
 #subset genepop individual
-Now lets change remove some individuals samples ("IDs") from the dataframe.
-Here we consider the 'individual' ID to be the alpha-numeric code which constitutes
-starts each row of data in the genepop format. 
-These individuals will be removed using the default (keep = FALSE)
+Remove some individual samples from the dataframe. Here we consider the 'individual' ID to be an alpha-numeric code which at the start of each row of data. The keep parameter defines whether the specified list is removed or retained (default: keep = FALSE).
 _This function is best run at the beginning of the analysis prior to removal of specific loci or populations._ 
-
-Here we will remove the sample IDs flagged
 
 ```r
 #Use genepop_detective to see the naming structure.
