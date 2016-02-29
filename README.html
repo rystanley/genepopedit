@@ -199,6 +199,10 @@ library(genepopdit)# load the library</code></pre>
 <pre class="r"><code>GenePopData &lt;- read.table(&quot;genepopedit_examplefile.txt&quot;, header = FALSE, sep = &quot;\t&quot;, quote = &quot;&quot;, stringsAsFactors = FALSE)</code></pre>
 <p>Set a directory where the output files will be saved.</p>
 <pre class="r"><code>output_dir &lt;- &quot;c:/Users/YourName/Documents/GenePopFiles/&quot; </code></pre>
+</div>
+</div>
+<div id="subset-genepop" class="section level1">
+<h1>subset genepop</h1>
 <p>Analyses have documented Loci <em>3 15 23 49 62 81 88 &amp; 94</em> as potentially under selection. Lets create a Genepop file with just these loci. Here our Loci are named in the Loci # format for (1-98).</p>
 <pre class="r"><code>#subset the Genepop file and 'keep' the specified 'subs'
 subset_genePop(GenePop=GenePopData,
@@ -218,6 +222,9 @@ subset_genePop(GenePop=GenePopData,
                dirname=paste0(output_dir,&quot;Loci_neutral.txt&quot;),
                sPop=c(AAA,BBB,DDD,EEE,FFF,HHH,III,JJJ)
                )</code></pre>
+</div>
+<div id="subset-genepop-aggregate" class="section level1">
+<h1>subset genepop aggregate</h1>
 <p>Now lets change the names of some of the populations. In post-analysis will group the populations together for analysis (e.g. STRUCTURE). In this example we will combine populations DDD &amp; EEE as well as FFF &amp; HHH. We will aslo remove population JJJ (<em>not listed in column 1 of PopRename</em>). No loci will be removed from this dataframe (<em>subs=NULL</em>).</p>
 <pre class="r"><code>#create a dataframe for renaming. 
 #Column 1 = the original population names and the list of populations required.
@@ -230,6 +237,16 @@ subset_genePop_aggregate(GenePop=GenePopData,
                dirname=paste0(output_dir,&quot;Loci_neutral.txt&quot;),
                agPopFrame=PopRename)</code></pre>
 </div>
+<div id="subset-genepop-individual" class="section level1">
+<h1>subset genepop individual</h1>
+<p>Now lets change remove some individuals samples (“IDs”) from the dataframe. Here we consider the ‘individual’ ID to be the alpha numeric code which constitutes the first column of data. These individuals will be removed using the default (keep = FALSE) – Note this code does not allow the removal of populations (subset_genepop) – <em>This function is best run at the beginning of the analysis prior to removal of specific loci or populations.</em></p>
+<p>Here we will remove the individual samples with the labels [Pop(#)]:<br />
+AAA(01),AAA(03),BBB(20),CCC(21),EEE(03,46),&amp; HHH(45)</p>
+<pre class="r"><code>subset_genePop_indiv(GenePop=GenePopData,
+               indiv=c(&quot;AAA_01&quot;,&quot;AAA_03&quot;,&quot;BBB_20&quot;,&quot;CCC_21&quot;,&quot;EEE_03&quot;,&quot;EEE_46&quot;,&quot;HHH_45&quot;),
+               keep=FALSE,
+               dirname=paste0(output_dir,&quot;Loci_neutral.txt&quot;),
+               )</code></pre>
 </div>
 
 

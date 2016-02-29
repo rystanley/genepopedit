@@ -19,10 +19,10 @@ Stacks Ver 1.0
 2
 3
 Pop
-BON01  , 120120 110110 110110
-BON02  , 100100 110110 110110
+Pop01_01  , 120120 110110 110110
+Pop01_02  , 100100 110110 110110
 Pop
-TAG01  , 120120 110110 110110
+Pop02_01  , 120120 110110 110110
 ...}
 
 \item{subs}{he loci names of interest or a vector which corresponds the the order of which

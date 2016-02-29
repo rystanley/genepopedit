@@ -12,10 +12,10 @@
 #' 2
 #' 3
 #' Pop
-#' BON01  , 120120 110110 110110
-#' BON02  , 100100 110110 110110
+#' Pop01_01  , 120120 110110 110110
+#' Pop01_02  , 100100 110110 110110
 #' Pop
-#' TAG01  , 120120 110110 110110
+#' Pop02_01  , 120120 110110 110110
 #' ...
 #' @param subs he loci names of interest or a vector which corresponds the the order of which
 #' they appear in the genepop file.
@@ -82,7 +82,7 @@ subset_genepop_aggregate <- function(GenePop,subs=NULL,keep=TRUE,dirname,agPopFr
 
     #Contingency to see if R read in the top line as the "stacks version"
     if (length(temp2)!=length(ColumnData)){colnames(temp2) <- c(stacks.version,ColumnData)}
-    if (length(temp2)!=length(ColumnData)){stacks.version="No stacks version specified"}
+    if (length(temp2)!=length(ColumnData)){stacks.version="No STACKS version specified"}
     if (length(temp2)==length(ColumnData)){colnames(temp2) <- ColumnData}
 
 ## Get the Alpha names from the
