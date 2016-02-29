@@ -156,7 +156,7 @@ Lets create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 
                keep=TRUE,
                subs=c("Loci03","Loci15","Loci23","Loci49","Loci62",
                "Loci81","Loci88","Loci94"),
-               dirname=paste0(output_dir,"Genepop_Loci_selection.txt"))
+               dirname=paste0(output_dir,"Genepop_Loci_selection.txt")
 ```
 
 You can also choose all loci not in the vector specified using keep=FALSE.
@@ -189,8 +189,7 @@ You can also remove populations within this function. Here we again select loci 
                  subs=c("Loci03","Loci15","Loci23","Loci49","Loci62",
                  "Loci81","Loci88","Loci94"),
                  dirname=paste0(output_dir,
-                 "Genepop_Loci_selection_popsbset.txt"),sPop=PopKeep
-                 )
+                 "Genepop_Loci_selection_popsbset.txt"),sPop=PopKeep)
 ```
 
 #subset genepop rename
