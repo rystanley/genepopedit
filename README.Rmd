@@ -163,7 +163,7 @@ You can also choose all loci not in the vector specified using keep=FALSE.
 
 ```r
 #subset the Genepop file and do not 'keep' the specified 'subs'
-  subset_genepop2(GenePop=GenePopData,
+  subset_genepop(GenePop=GenePopData,
                keep=FALSE,
                subs=c("Loci03","Loci15","Loci23","Loci49","Loci62",
                "Loci81","Loci88","Loci94"),

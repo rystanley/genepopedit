@@ -254,7 +254,7 @@ library(genepopedit)# load the library</code></pre>
                dirname=paste0(output_dir,&quot;Genepop_Loci_selection.txt&quot;)</code></pre>
 <p>You can also choose all loci not in the vector specified using keep=FALSE.</p>
 <pre class="r"><code>#subset the Genepop file and do not 'keep' the specified 'subs'
-  subset_genepop2(GenePop=GenePopData,
+  subset_genepop(GenePop=GenePopData,
                keep=FALSE,
                subs=c(&quot;Loci03&quot;,&quot;Loci15&quot;,&quot;Loci23&quot;,&quot;Loci49&quot;,&quot;Loci62&quot;,
                &quot;Loci81&quot;,&quot;Loci88&quot;,&quot;Loci94&quot;),
