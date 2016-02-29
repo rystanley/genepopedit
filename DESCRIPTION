@@ -14,13 +14,13 @@ Maintainer: Ryan Stanley <ryan.stanley@dfo-mpo.gc.ca>
 Depends:
     R (>= 3.0.1)
 Imports:
-    tidyr,
-    stringr,
+    tidyr
 Suggests:
     plyr,
     knitr,
     rmarkdown
 License: GPL (>=2)
 LazyLoad: yes
+LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1

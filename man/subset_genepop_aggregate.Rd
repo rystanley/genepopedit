@@ -2,9 +2,9 @@
 % Please edit documentation in R/subset_genepop_aggregate.R
 \name{subset_genepop_aggregate}
 \alias{subset_genepop_aggregate}
-\title{Genepop subset and combine/rename populations}
+\title{Genepop subset, combine, and reorder populations}
 \usage{
-subset_genepop_aggregate(GenePop, subs = NULL, keep = TRUE, dirname,
+subset_genepop_aggregate(GenePop, dirname, subs = NULL, keep = TRUE,
   agPopFrame)
 }
 \arguments{
@@ -25,35 +25,35 @@ Pop
 Pop02_01  , 120120 110110 110110
 ...}
 
-\item{subs}{he loci names of interest or a vector which corresponds the the order of which
-they appear in the genepop file.
-These can be either the order by which they occur or the exact name of the loci
-e.g. subs <- c(1,2,3,4) would return the first 4 loci &
-subs <- c("190-56","145_21",456_12") would return loci with defined names.}
+\item{dirname}{directory where the output file will be saved.}
+
+\item{subs}{he loci names of interest or a vector
+subs <- c("190-56","145_21",456_12") would return loci with these defined names.}
 
 \item{keep}{logical vector which defines whether you want to remove the loci or keep them.
-the default is to keep them (keep <- TRUE) assuming you are removing neutral markers
+the default is to keep them keep <- TRUE assuming you are removing neutral markers
 and only keeping the subs}
-
-\item{dirname}{directory where the output file will be saved.}
 
 \item{agPopFrame}{a dataframe or path to a csv. This must be specified in this function
 this dataframe contains two columns. Column 1 corresponds to the population names. These names
-should match the individual IDs (e.g. BON01  , 110110 120120 -- would be 'BON'). The next column
-has the new names that you want to replace. If you don't want to change the name then just repeat
+should match the individual IDs (e.g. BON_01  , 110110 120120 -- would be 'BON').
+Here we consider the alpha-numeric characters before the first underscore '_' to be the Pop label
+so that IDs are "Population_sample#" (e.g. Aqua23_04 would Population 23 individual 4).
+The next column has the new names that you want to replace. If you don't want to change the name then just repeat
 from column one in that row. **Note if this is a reference to a path then there should be column headers
 though the headers do not need to match this example. If the input is a dataframe object from the
 workspace it must be a data.frame object and therefore will have headers.
 e.g.
 Opop   AgPop
-BON    BON
-BRA    BON
-EDN    EDN
-CRA    CRA
-MAL    BON
-TRY    CRA}
+AAA    Pop1
+BBB    Pop1
+CCC    CCC
+DDD    Pop2
+EEE    EEE
+FFF    Pop2
+GGG    GGG}
 }
 \description{
-Function for the manipulation of genopop format SNP datasets and renaming of populations
+Function to cluster populations together and remove specific loci
 }
 

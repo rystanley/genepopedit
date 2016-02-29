@@ -1,5 +1,28 @@
 # Subset Genepop
-#' @title Genepop edit
+#' @title Genepop subset loci and populations
+#' @description Function to subset loci and populations
+#' @param GenePop the genepop file to be manipulated. This will the standard
+#' genepop format with a the first n+1 rows corresponding the the n loci names
+#' followed by the locus data. Populations are seperated by "Pop".
+#' Each individual ID is linked the the locus data by "  , " and is read in as
+#' as single row (character)
+#' e.g.
+#' Stacks Ver 1.0
+#' 1
+#' 2
+#' 3
+#' Pop
+#' Pop01_01  , 120120 110110 110110
+#' Pop01_02  , 100100 110110 110110
+#' Pop
+#' Pop02_01  , 120120 110110 110110
+#' ...
+#' @param dirname directory where the output file will be saved.
+#' @param subs he loci names of interest or a vector which corresponds the the order of which
+#' they appear in the genepop file.
+#' These can be either the order by which they occur or the exact name of the loci
+#' e.g. subs <-c(1,2,3,4) would return the first 4 loci &
+#' #' @title Genepop subset loci and populations
 #' @description Function for the manipulation of genopop format SNP datasets
 #' @param GenePop the genepop file to be manipulated. This will the standard
 #' genepop format with a the first n+1 rows corresponding the the n loci names
@@ -17,26 +40,37 @@
 #' Pop
 #' Pop02_01  , 120120 110110 110110
 #' ...
+#' @param dirname directory where the output file will be saved.
 #' @param subs he loci names of interest or a vector which corresponds the the order of which
 #' they appear in the genepop file.
 #' These can be either the order by which they occur or the exact name of the loci
-#' e.g. subs <- c(1,2,3,4) would return the first 4 loci &
-#' subs <- c("190-56","145_21",456_12") would return loci with defined names.
+#' e.g. subs <-c(1,2,3,4) would return the first 4 loci
+#' & subs <- c("190-56","145_21",456_12") would return loci with defined names.
 #' @param keep logical vector which defines whether you want to remove the loci or keep them.
-#' the default is to keep them (keep <- TRUE) assuming you are removing neutral markers
+#' the default is to keep them keep <- TRUE assuming you are removing neutral markers
 #' and only keeping the subs
-#' @param dirname directory where the output file will be saved.
 #' @param sPop is the populations of interest. Note these are specified in the order which they appear in the
-#'  original Genepop file. i.e. first pop = 1 second pop = 2  or the text based origin
-#'  Examples: numeric - \code{sPop <- c(1,3,4,7)}
-#'            text- \code{sPop <- c("BMR", "GRR","GHR","TRS")}.
+#'  original Genepop file. i.e. first pop = 1 second pop = 2
+#'  Examples: numeric - sPop <- c(1,3,4,7) or
+#'  the population ID (alpha-numeric code before the underscore). Here we assume conventional
+#'  naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
+#'            text- sPop <- c("BMR", "GRR","GHR","TRS").
+#' @param keep logical vector which defines whether you want to remove the loci or keep them.
+#' the default is to keep them keep <- TRUE assuming you are removing neutral markers
+#' and only keeping the subs
+#' @param sPop is the populations of interest. Note these are specified in the order which they appear in the
+#'  original Genepop file. i.e. first pop = 1 second pop = 2
+#'  Examples: numeric - sPop <- c(1,3,4,7) or
+#'  the population ID (alpha-numeric code before the underscore). Here we assume conventional
+#'  naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
+#'            text- sPop <- c("BMR", "GRR","GHR","TRS").
 #' @rdname subset_genepop
 #' @importFrom tidyr separate
-#' @importFrom  stringr str_extract
 #' @export
 
+
 ##
-subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,dirname,sPop=NULL)
+subset_genepop <- function(GenePop,dirname,subs=NULL,keep=TRUE,sPop=NULL)
   {
 
 
@@ -76,9 +110,10 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,dirname,sPop=NULL)
     if (length(temp2)==length(ColumnData)){colnames(temp2) <- ColumnData}
     if (length(temp2)!=length(ColumnData)){stacks.version="No STACKS version specified"}
 
-## Get the Alpha names from the
-    NamePops=temp[,1] # Names of each
-    NameExtract=stringr::str_extract(NamePops, "[A-Z]+" ) # extract the text from the individuals names to denote population
+## Get the population names (prior to the _ in the Sample ID)
+    NamePops <- temp[,1] # Sample names of each
+    NamePops <- gsub(" ","",NamePops) #get rid of space
+    NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
 
 ## Now add the population tags using npops (number of populations and Pops for the inter differences)
     tPops <- c(Pops,NROW(GenePop))

@@ -1,6 +1,6 @@
-# Subset Genepop Individuals
-#' @title Genepop remove or keep specific sample IDs
-#' @description Function for the manipulation of genopop format SNP datasets
+# Subset Genepop Rename
+#' @title Genepop subset and rename populations
+#' @description Function for the manipulation of genopop format SNP datasets and renaming of populations
 #' @param GenePop the genepop file to be manipulated. This will the standard
 #' genepop format with a the first n+1 rows corresponding the the n loci names
 #' followed by the locus data. Populations are seperated by "Pop".
@@ -18,17 +18,30 @@
 #' Pop02_01  , 120120 110110 110110
 #' ...
 #' @param dirname directory where the output file will be saved.
-#' @param indiv names of individual samples
-#' These can be either the order by which they occur or the exact name of the loci
-#' indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.
-#' @param keep logical vector which defines whether you want to remove the loci or keep them.
-#' the default is to remove them (keep <- FALSE)
-#' @rdname subset_genepop_indiv
+#' @param nameframe a dataframe or path to a csv. This must be specified in this function
+#' this dataframe contains two columns. Column 1 corresponds to the population names. These names
+#' should match the individual IDs (e.g. BON01  , 110110 120120 -- would be 'BON'). The next column
+#' has the new names that you want to change or rename. If you don't want to change the name then just repeat
+#' from column one in that row. **Note if this is a reference to a path then there should be column headers
+#' though the headers do not need to match this example. If the input is a dataframe object from the
+#' workspace it must be a data.frame object and therefore will have headers.
+#' This function assumes that each population will have a unique name. Names in this case are
+#' comprised of alpha characters and not numbers.
+#' (e.g. Pop01_01 and Pop02_01 would each be considered 'Pop' for the population name)
+#' e.g.
+#' Opop   Rename
+#' BON    BON
+#' BRA    BON
+#' EDN    EDN
+#' CRA    CRA
+#' MAL    BON
+#' TRY    CRA
+#'
+#' @rdname subset_genepop_rename
 #' @importFrom tidyr separate
 #' @export
 
-##
-subset_genepop_indiv <- function(GenePop,dirname,indiv=NULL,keep=FALSE){
+subset_genepop_rename <- function(GenePop,dirname,nameframe){
 
 ## Stacks version information
     stacks.version <- GenePop[1,] # this could be blank or any other source. First row is ignored by GenePop
@@ -61,10 +74,6 @@ subset_genepop_indiv <- function(GenePop,dirname,indiv=NULL,keep=FALSE){
     temp$snps <- substring(temp$snps,3) # delete the extra spaces at the beginning
     temp2 <- as.data.frame(do.call(rbind, strsplit(temp$snps," "))) #split characters by spaces
 
-    #list of Individuals
-    Individuals <- temp$Pops
-    Individuals <- gsub(" ","",temp$Pops)
-
     #Contingency to see if R read in the top line as the "stacks version"
     if (length(temp2)!=length(ColumnData)){colnames(temp2) <- c(stacks.version,ColumnData)}
     if (length(temp2)!=length(ColumnData)){stacks.version="No STACKS version specified"}
@@ -73,25 +82,25 @@ subset_genepop_indiv <- function(GenePop,dirname,indiv=NULL,keep=FALSE){
     ## Get the population names (prior to the _ in the Sample ID)
     NamePops <- temp[,1] # Sample names of each
     NamePops <- gsub(" ","",NamePops) #get rid of space
-    NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
+    NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)# extract values from before the "_" to denote populations
 
-## now subset the individuals
+## Now change the population names
 
-    if(keep){
-        temp <- temp[which(Individuals %in% indiv),]
-        temp2 <- temp2[which(Individuals %in% indiv),]
-        NameExtract2 <- NameExtract[which(Individuals %in% indiv)]
+    if(!is.data.frame(nameframe)) #if it isn't a dataframe then read in the path
+    {
+      nameframe <- read.csv(nameframe,header=T)
     }
 
-    if(!keep){
-      temp <- temp[which(Individuals %in% setdiff(Individuals,indiv)),]
-      temp2 <- temp2[which(Individuals %in% setdiff(Individuals,indiv)),]
-      NameExtract2 <- NameExtract[which(Individuals %in% setdiff(Individuals,indiv))]
-    }
+    sPop <- as.character(nameframe[,1]) # these are the populations of interest
 
     #Now recompile the GenePop format
 
+    NameExtract2 <- NameExtract
     #Create a new vector with the new population names
+    for (i in sPop){
+      NameExtract2[which(NameExtract2 == i)]=as.character(nameframe[which(nameframe[,1]==i),2])
+    }
+
     NameExtract3 <- NameExtract2
     for (i in 1:length(unique(NameExtract2))){
       NameExtract3[which(NameExtract3==unique(NameExtract3)[i])]=i
@@ -128,7 +137,6 @@ subset_genepop_indiv <- function(GenePop,dirname,indiv=NULL,keep=FALSE){
     #Add the first "Pop" label
     Loci <- c("Pop",Loci)
 
-    #Derive the genepop output
     Output <- c(stacks.version,names(temp2),Loci)
 
     # Save the file
