@@ -243,107 +243,105 @@ library(genepopedit)# load the library</code></pre>
 <h1>subset genepop</h1>
 <p>Lets create a new Genepop file which only contains Loci <em>3, 15, 23, 49, 62, 81, 88, &amp; 94</em>. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100).</p>
 <pre class="r"><code>#inspect the names of the loci within the Genepop data
-locinames &lt;- genepop_detective(GenePopData,&quot;Loci&quot;)
-locinames
+  locinames &lt;- genepop_detective(GenePopData,&quot;Loci&quot;)
+  locinames
 
 #subset the Genepop file and 'keep' the specified loci names ('subs')
-subset_genepop(GenePop=GenePopData,
+  subset_genepop(GenePop=GenePopData,
                keep=TRUE,
                subs=c(&quot;Loci03&quot;,&quot;Loci15&quot;,&quot;Loci23&quot;,&quot;Loci49&quot;,&quot;Loci62&quot;,
                &quot;Loci81&quot;,&quot;Loci88&quot;,&quot;Loci94&quot;),
                dirname=paste0(output_dir,&quot;Genepop_Loci_selection.txt&quot;))</code></pre>
 <p>You can also choose all loci not in the vector specified using keep=FALSE.</p>
 <pre class="r"><code>#subset the Genepop file and do not 'keep' the specified 'subs'
-subset_genepop2(GenePop=GenePopData,
+  subset_genepop2(GenePop=GenePopData,
                keep=FALSE,
                subs=c(&quot;Loci03&quot;,&quot;Loci15&quot;,&quot;Loci23&quot;,&quot;Loci49&quot;,&quot;Loci62&quot;,
                &quot;Loci81&quot;,&quot;Loci88&quot;,&quot;Loci94&quot;),
                dirname=paste0(output_dir,&quot;Genepop_Loci_neutral.txt&quot;))</code></pre>
 <p>You can also remove populations within this function. Here we again select loci under selection, but remove populations 3 &amp; 7 (CCC/GGG). To do this we create a list of all populations we want to keep (e.g. AAA, BBB, CCC … JJJ)</p>
 <pre class="r"><code>#use genepop_detective to find the population names
-PopNames &lt;- genepop_detective(GenePopData,&quot;Pops&quot;)
+  PopNames &lt;- genepop_detective(GenePopData,&quot;Pops&quot;)
 
 #create a list of populations you want to keep
-
-PopKeep &lt;- c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;)# manual
-
+  #manual
+  PopKeep &lt;- c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;)
 #or
-
-PopKeep &lt;- setdiff(PopNames,c(&quot;CCC&quot;,&quot;GGG&quot;))# if you have fewer pops to remove
-
-subset_genepop(GenePop=GenePopData,
-               keep=TRUE,
-               subs=c(&quot;Loci03&quot;,&quot;Loci15&quot;,&quot;Loci23&quot;,&quot;Loci49&quot;,&quot;Loci62&quot;,
-               &quot;Loci81&quot;,&quot;Loci88&quot;,&quot;Loci94&quot;),
-               dirname=paste0(output_dir,
-               &quot;Genepop_Loci_selection_popsbset.txt&quot;),sPop=PopKeep
-               )</code></pre>
+  #if you have fewer pops to remove
+  PopKeep &lt;- setdiff(PopNames,c(&quot;CCC&quot;,&quot;GGG&quot;))
+  
+  subset_genepop(GenePop=GenePopData,
+                 keep=TRUE,
+                 subs=c(&quot;Loci03&quot;,&quot;Loci15&quot;,&quot;Loci23&quot;,&quot;Loci49&quot;,&quot;Loci62&quot;,
+                 &quot;Loci81&quot;,&quot;Loci88&quot;,&quot;Loci94&quot;),
+                 dirname=paste0(output_dir,
+                 &quot;Genepop_Loci_selection_popsbset.txt&quot;),sPop=PopKeep
+                 )</code></pre>
 </div>
 <div id="subset-genepop-rename" class="section level1">
 <h1>subset genepop rename</h1>
 <p>Now lets change the names of some of the populations. In this example we will rename populations DDD &amp; HHH to YYY &amp; ZZZ.</p>
 <pre class="r"><code>#view the population names
-genepop_detective(GenePopData,&quot;Pops&quot;)
+  genepop_detective(GenePopData,&quot;Pops&quot;)
 
 #create a dataframe for renaming. 
-  #column 1 = the original pop names.
-  #column 2 = the new names. 
-
-PopRename &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),newname=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;YYY&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;ZZZ&quot;,&quot;III&quot;,&quot;JJJ&quot;))
+#column 1 = the original pop names.
+#column 2 = the new names. 
+  PopRename &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),
+  newname=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;YYY&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;ZZZ&quot;,&quot;III&quot;,&quot;JJJ&quot;))
 
 #rename populations
-subset_genepop_rename(GenePop=GenePopData,
-               dirname=paste0(output_dir,&quot;Genepop_renamed.txt&quot;),
-               nameframe=PopRename)</code></pre>
+  subset_genepop_rename(GenePop=GenePopData,
+                 dirname=paste0(output_dir,&quot;Genepop_renamed.txt&quot;),
+                 nameframe=PopRename)</code></pre>
 </div>
 <div id="subset-genepop-aggregate" class="section level1">
 <h1>subset genepop aggregate</h1>
 <p>Now lets change group some populations together. In this example we will combine populations DDD/EEE &amp; FFF/HHH and remove populations JJJ/GGG (<em>not listed in column 1 of PopRename</em>). No loci will be removed from this dataframe (<em>subs=NULL</em>). This is useful when you don’t want a clustering program (e.g. STRUCTURE or Bayescan) to assume differences among population groups.</p>
 <pre class="r"><code>#Use genepop_detective to find the meta-data for populations
-genepop_detective(GenePopData,&quot;Pops&quot;)
+  genepop_detective(GenePopData,&quot;Pops&quot;)
 
 #create a dataframe for renaming. 
-#Column 1 = the original pop names and the list of pops required.
-#Column 2 = Grouping variables. 
-
-PopAggregate &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;HHH&quot;,&quot;III&quot;),agname=c(&quot;AAA&quot;,&quot;Pop1&quot;,&quot;CCC&quot;,&quot;Pop1&quot;,&quot;DDD&quot;,&quot;Pop2&quot;,&quot;HHH&quot;,&quot;Pop2&quot;))
+#column 1 = the original pop names and the list of pops required.
+#column 2 = Grouping variables. 
+  PopAggregate &lt;-data.frame(oP=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,    &quot;HHH&quot;,&quot;III&quot;),agname=c(&quot;AAA&quot;,&quot;Pop1&quot;,&quot;CCC&quot;,&quot;Pop1&quot;,&quot;DDD&quot;,&quot;Pop2&quot;,&quot;HHH&quot;,    &quot;Pop2&quot;))
 
 #re-cast Genepop format to group populations based on 'PopAggregate'
-subset_genepop_aggregate(GenePop=GenePopData,
-               subs=NULL,
-               dirname=paste0(output_dir,&quot;Genepop_grouped.txt&quot;),
-               agPopFrame=PopAggregatee)</code></pre>
+  subset_genepop_aggregate(GenePop=GenePopData,
+                 subs=NULL,
+                 dirname=paste0(output_dir,&quot;Genepop_grouped.txt&quot;),
+                 agPopFrame=PopAggregatee)</code></pre>
 <p>Now that we have two grouped populations, we can use the population rename function to give them a common name.</p>
 <pre class="r"><code>#read in the grouped Genepop file
-GenePopData2 &lt;- read.table(paste0(output_dir,&quot;Genepop_grouped.txt&quot;), header = FALSE, sep = &quot;\t&quot;, quote = &quot;&quot;, stringsAsFactors = FALSE)
+  GenePopData2 &lt;- read.table(paste0(output_dir,&quot;Genepop_grouped.txt&quot;),   header = FALSE, sep = &quot;\t&quot;, quote = &quot;&quot;, stringsAsFactors = FALSE)
 
 #investigate the population parameters
-genepop_detective(GenePopData2,&quot;Pops&quot;)
+  genepop_detective(GenePopData2,&quot;Pops&quot;)
 
 #we can see that &quot;BBB&quot; &amp; &quot;DDD&quot; and &quot;FFF&quot; &amp; &quot;III&quot; are at the end but still have different names. 
 
 #create renaming frame
-PopRename &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;BBB&quot;,&quot;DDD&quot;,&quot;FFF&quot;,&quot;III&quot;),newname=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;Group1&quot;,&quot;Group1&quot;,&quot;Group2&quot;,&quot;Group2&quot;))
+  PopRename &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;BBB&quot;,&quot;DDD&quot;,   &quot;FFF&quot;,&quot;III&quot;),newname=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;Group1&quot;,&quot;Group1&quot;,     &quot;Group2&quot;,&quot;Group2&quot;))
 
 #Rename the grouped populations
-subset_genepop_rename2(GenePop=GenePopData2,
-               dirname=paste0(output_dir,
-               &quot;Genepop_grouped_renamed.txt&quot;&quot;),
-               nameframe=PopRename)</code></pre>
+  subset_genepop_rename2(GenePop=GenePopData2,
+                 dirname=paste0(output_dir,
+                 &quot;Genepop_grouped_renamed.txt&quot;&quot;),
+                 nameframe=PopRename)</code></pre>
 </div>
 <div id="subset-genepop-individual" class="section level1">
 <h1>subset genepop individual</h1>
 <p>Remove some individual samples from the dataframe. Here we consider the ‘individual’ ID to be an alpha-numeric code which at the start of each row of data. The keep parameter defines whether the specified list is removed or retained (default: keep = FALSE). <em>This function is best run at the beginning of the analysis prior to removal of specific loci or populations.</em></p>
 <pre class="r"><code>#Use genepop_detective to see the naming structure.
-genepop_detective(GenePopData,&quot;Inds&quot;)
+  genepop_detective(GenePopData,&quot;Inds&quot;)
 
 #remove individuals.
-subset_genepop_indiv(GenePop=GenePopData,
-               indiv=c(&quot;AAA_01&quot;,&quot;AAA_03&quot;,&quot;BBB_20&quot;,&quot;CCC_21&quot;,
-               &quot;EEE_03&quot;,&quot;EEE_26&quot;,&quot;HHH_25&quot;,JJJ_04),
-               keep=FALSE,
-               dirname=paste0(output_dir,&quot;Genepop_IDsubset.txt&quot;),
-               )</code></pre>
+  subset_genepop_indiv(GenePop=GenePopData,
+                 indiv=c(&quot;AAA_01&quot;,&quot;AAA_03&quot;,&quot;BBB_20&quot;,&quot;CCC_21&quot;,
+                 &quot;EEE_03&quot;,&quot;EEE_26&quot;,&quot;HHH_25&quot;,JJJ_04),
+                 keep=FALSE,
+                 dirname=paste0(output_dir,&quot;Genepop_IDsubset.txt&quot;),
+                 )</code></pre>
 </div>
 
 
