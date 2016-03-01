@@ -1,7 +1,6 @@
 #genepopedit
 
-The goal of **genepopedit** is to provide a simple and flexible tool for
-manipulating SNP datasets in R. 
+The goal of **genepopedit** is to provide a simple and flexible tool for manipulating large multi-locus datasets in R. 
 
 **Use genepopedit to subset a SNP dataset by:**
 
@@ -94,9 +93,14 @@ library(genepopedit)# load the library
 * remove or keep a subset of individuals
 
 ## Contributions:
+*genepopedit* was written in collaboration with:
 
-This package has been develoepd to used by anyone who is looking for a more efficient and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional      functions _and-or_ functionality, and improve the efficiency of the functions. 
- 
+  * Dr. Ian Bradbury <http://tinyurl.com/h3qrhkv>
+  * Dr. Nick Jeffery <https://github.com/NickJeff13>
+  * Brendan Wringe <https://github.com/bwringe>
+
+This package has been developed to used by anyone who is looking for a more efficient and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package. 
+
 * If you don’t understand something, please let me know: 
 (ryan.stanley _at_ dfo-mpo.gc.ca). 
 * Any ideas on how to improve the functionality is very much appreciated. 
@@ -113,18 +117,23 @@ Pull request how-to:
 Download the example genepop data: GenePop file with 10 populations, 30 individuals per population, and 100 Loci.
 <https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0>
 
-Read in the data using the following *read.table* code specifics
+Read in the data using the following *read.table* code specifics. Note the specifics entries of read.table are important at this step (sep="\t",quote="",stringsAsFactors=FALSE)
 
 ```r
 GenePopData <- read.table("genepopedit_examplefile.txt", header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
+```
+Alternatively the example *GenePopData* can be loaded directly from the package.
+
+```r
+data("ExampleGenePop")
 ```
 Set a directory where the output files will be saved.
 
 ```r
 output_dir <- "c:/Users/YourName/Documents/GenePopFiles/" 
 ```
-#genepop detective
-This function meta-data from your genepop data without having to open it in a text editor. Function returns a vector of population names, population counts, sample IDs, or Loci names.
+#genepop\_detective
+This function queries meta-data from your genepop data without having to open it in a text editor. Function returns a vector of population names, population counts, sample IDs, or Loci names.
 
 Return *population names*
 ```r
@@ -143,7 +152,7 @@ Return *Loci names*
 LociNames <- genepop_detective(GenePopData,variable="Loci")
 ```
 
-#subset genepop
+#subset\_genepop
 Lets create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, & 94*. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100).
 
 ```r
@@ -192,7 +201,7 @@ You can also remove populations within this function. Here we again select loci 
                  "Genepop_Loci_selection_popsbset.txt"),sPop=PopKeep)
 ```
 
-#subset genepop rename
+#subset\_genepop\_rename
 Now lets change the names of some of the populations. In this example we will rename populations DDD & HHH to YYY & ZZZ.
 
 ```r
@@ -211,7 +220,7 @@ Now lets change the names of some of the populations. In this example we will re
                  nameframe=PopRename)
 ```
 
-#subset genepop aggregate
+#subset\_genepop\_aggregate
 Now lets change group some populations together. In this example we will combine populations DDD/EEE & FFF/HHH and remove populations JJJ/GGG (*not listed in column 1 of PopRename*). No loci will be removed from this dataframe (*subs=NULL*). This is useful when you don't want a clustering program (e.g. STRUCTURE or Bayescan) to assume differences among population groups.
 
 ```r
@@ -254,7 +263,7 @@ Now that we have two grouped populations, we can use the population rename funct
                  nameframe=PopRename)
 ```
 
-#subset genepop individual
+#subset\_genepop\_individual
 Remove some individual samples from the dataframe. Here we consider the 'individual' ID to be an alpha-numeric code which at the start of each row of data. The keep parameter defines whether the specified list is removed or retained (default: keep = FALSE).
 _This function is best run at the beginning of the analysis prior to removal of specific loci or populations._ 
 

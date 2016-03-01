@@ -113,7 +113,7 @@ $(document).ready(function () {
 
 <div id="genepopedit" class="section level1">
 <h1>genepopedit</h1>
-<p>The goal of <strong>genepopedit</strong> is to provide a simple and flexible tool for manipulating SNP datasets in R.</p>
+<p>The goal of <strong>genepopedit</strong> is to provide a simple and flexible tool for manipulating large multi-locus datasets in R.</p>
 <p><strong>Use genepopedit to subset a SNP dataset by:</strong></p>
 <ul>
 <li><p>removing specified loci</p></li>
@@ -205,7 +205,13 @@ library(genepopedit)# load the library</code></pre>
 </div>
 <div id="contributions" class="section level2">
 <h2>Contributions:</h2>
-<p>This package has been develoepd to used by anyone who is looking for a more efficient and <strong>repeatable</strong> method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional functions <em>and-or</em> functionality, and improve the efficiency of the functions.</p>
+<p><em>genepopedit</em> was written in collaboration with:</p>
+<ul>
+<li>Dr. Ian Bradbury <a href="http://tinyurl.com/h3qrhkv" class="uri">http://tinyurl.com/h3qrhkv</a></li>
+<li>Dr. Nick Jeffery <a href="https://github.com/NickJeff13" class="uri">https://github.com/NickJeff13</a></li>
+<li>Brendan Wringe <a href="https://github.com/bwringe" class="uri">https://github.com/bwringe</a></li>
+</ul>
+<p>This package has been developed to used by anyone who is looking for a more efficient and <strong>repeatable</strong> method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional functions <em>and-or</em> functionality, and improve the efficiency of the package.</p>
 <ul>
 <li>If you don’t understand something, please let me know: (ryan.stanley <em>at</em> dfo-mpo.gc.ca).</li>
 <li>Any ideas on how to improve the functionality is very much appreciated.</li>
@@ -221,15 +227,17 @@ library(genepopedit)# load the library</code></pre>
 <div id="how-to-use-genepopedit" class="section level2">
 <h2>How to use genepopedit</h2>
 <p>Download the example genepop data: GenePop file with 10 populations, 30 individuals per population, and 100 Loci. <a href="https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0" class="uri">https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0</a></p>
-<p>Read in the data using the following <em>read.table</em> code specifics</p>
+<p>Read in the data using the following <em>read.table</em> code specifics. Note the specifics entries of read.table are important at this step (sep=“”,quote=“”,stringsAsFactors=FALSE)</p>
 <pre class="r"><code>GenePopData &lt;- read.table(&quot;genepopedit_examplefile.txt&quot;, header = FALSE, sep = &quot;\t&quot;, quote = &quot;&quot;, stringsAsFactors = FALSE)</code></pre>
+<p>Alternatively the example <em>GenePopData</em> can be loaded directly from the package.</p>
+<pre class="r"><code>data(&quot;ExampleGenePop&quot;)</code></pre>
 <p>Set a directory where the output files will be saved.</p>
 <pre class="r"><code>output_dir &lt;- &quot;c:/Users/YourName/Documents/GenePopFiles/&quot; </code></pre>
 </div>
 </div>
-<div id="genepop-detective" class="section level1">
-<h1>genepop detective</h1>
-<p>This function meta-data from your genepop data without having to open it in a text editor. Function returns a vector of population names, population counts, sample IDs, or Loci names.</p>
+<div id="genepop_detective" class="section level1">
+<h1>genepop_detective</h1>
+<p>This function queries meta-data from your genepop data without having to open it in a text editor. Function returns a vector of population names, population counts, sample IDs, or Loci names.</p>
 <p>Return <em>population names</em></p>
 <pre class="r"><code>PopNames &lt;- genepop_detective(GenePopData,variable=&quot;Pops&quot;)</code></pre>
 <p>Return <em>population counts</em></p>
@@ -239,8 +247,8 @@ library(genepopedit)# load the library</code></pre>
 <p>Return <em>Loci names</em></p>
 <pre class="r"><code>LociNames &lt;- genepop_detective(GenePopData,variable=&quot;Loci&quot;)</code></pre>
 </div>
-<div id="subset-genepop" class="section level1">
-<h1>subset genepop</h1>
+<div id="subset_genepop" class="section level1">
+<h1>subset_genepop</h1>
 <p>Lets create a new Genepop file which only contains Loci <em>3, 15, 23, 49, 62, 81, 88, &amp; 94</em>. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100).</p>
 <pre class="r"><code>#inspect the names of the loci within the Genepop data
   locinames &lt;- genepop_detective(GenePopData,&quot;Loci&quot;)
@@ -277,8 +285,8 @@ library(genepopedit)# load the library</code></pre>
                  dirname=paste0(output_dir,
                  &quot;Genepop_Loci_selection_popsbset.txt&quot;),sPop=PopKeep)</code></pre>
 </div>
-<div id="subset-genepop-rename" class="section level1">
-<h1>subset genepop rename</h1>
+<div id="subset_genepop_rename" class="section level1">
+<h1>subset_genepop_rename</h1>
 <p>Now lets change the names of some of the populations. In this example we will rename populations DDD &amp; HHH to YYY &amp; ZZZ.</p>
 <pre class="r"><code>#view the population names
   genepop_detective(GenePopData,&quot;Pops&quot;)
@@ -294,8 +302,8 @@ library(genepopedit)# load the library</code></pre>
                  dirname=paste0(output_dir,&quot;Genepop_renamed.txt&quot;),
                  nameframe=PopRename)</code></pre>
 </div>
-<div id="subset-genepop-aggregate" class="section level1">
-<h1>subset genepop aggregate</h1>
+<div id="subset_genepop_aggregate" class="section level1">
+<h1>subset_genepop_aggregate</h1>
 <p>Now lets change group some populations together. In this example we will combine populations DDD/EEE &amp; FFF/HHH and remove populations JJJ/GGG (<em>not listed in column 1 of PopRename</em>). No loci will be removed from this dataframe (<em>subs=NULL</em>). This is useful when you don’t want a clustering program (e.g. STRUCTURE or Bayescan) to assume differences among population groups.</p>
 <pre class="r"><code>#Use genepop_detective to find the meta-data for populations
   genepop_detective(GenePopData,&quot;Pops&quot;)
@@ -331,8 +339,8 @@ library(genepopedit)# load the library</code></pre>
                  &quot;Genepop_grouped_renamed.txt&quot;&quot;),
                  nameframe=PopRename)</code></pre>
 </div>
-<div id="subset-genepop-individual" class="section level1">
-<h1>subset genepop individual</h1>
+<div id="subset_genepop_individual" class="section level1">
+<h1>subset_genepop_individual</h1>
 <p>Remove some individual samples from the dataframe. Here we consider the ‘individual’ ID to be an alpha-numeric code which at the start of each row of data. The keep parameter defines whether the specified list is removed or retained (default: keep = FALSE). <em>This function is best run at the beginning of the analysis prior to removal of specific loci or populations.</em></p>
 <pre class="r"><code>#Use genepop_detective to see the naming structure.
   genepop_detective(GenePopData,&quot;Inds&quot;)
