@@ -17,7 +17,7 @@
 #' Pop
 #' Pop02_01  , 120120 110110 110110
 #' ...
-#' @param dirname directory where the output file will be saved.
+#' @param path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")
 #' @param subs he loci names of interest or a vector
 #' subs <- c("190-56","145_21",456_12") would return loci with these defined names.
 #' @param keep logical vector which defines whether you want to remove the loci or keep them.

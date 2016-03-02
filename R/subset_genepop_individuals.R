@@ -17,7 +17,7 @@
 #' Pop
 #' Pop02_01  , 120120 110110 110110
 #' ...
-#' @param dirname directory where the output file will be saved.
+#' @param dirname path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")
 #' @param indiv names of individual samples
 #' These can be either the order by which they occur or the exact name of the loci
 #' indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.

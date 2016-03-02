@@ -17,8 +17,8 @@
 #' Pop
 #' Pop02_01  , 120120 110110 110110
 #' ...
-#' @param dirname directory where the output file will be saved.
-#' @param subs he loci names of interest or a vector which corresponds the the order of which
+#' @param path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")
+#' @param subs the loci names of interest or a vector which corresponds the the order of which
 #' they appear in the genepop file.
 #' These can be either the order by which they occur or the exact name of the loci
 #' e.g. subs <-c(1,2,3,4) would return the first 4 loci &
