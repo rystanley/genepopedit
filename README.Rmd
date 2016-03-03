@@ -100,8 +100,7 @@ library(genepopedit)# load the library
     * Population counts
     * Sample IDs
     * Loci
-    
-    
+
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file  
@@ -111,7 +110,6 @@ library(genepopedit)# load the library
 **variable="Loci"** | returns vector of loci names
 **variable="Inds"** | returns vector Sample IDs
 
-    
 ##### genepop_flatten.R 
 * Convert Genepop format to a flattend dataframe:
     * Sample IDs
@@ -129,11 +127,11 @@ library(genepopedit)# load the library
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
-**dirname** | the filepath & filename of output.
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **subs** | vector loci names of interest (default: NULL)
 **keep** | logical whether to keep loci specified by subs (default: TRUE) or to keep remaining loci.
 **sPop** | populations to be retained (default: NULL).
+**path** | the filepath & filename of output.
 
 
 ##### subset_genepop_aggregate.R
