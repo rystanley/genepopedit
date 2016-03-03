@@ -24,7 +24,7 @@ Pop
 Pop02_01  , 120120 110110 110110
 ...}
 
-\item{dirname}{directory where the output file will be saved.}
+\item{dirname}{path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")}
 
 \item{indiv}{names of individual samples
 These can be either the order by which they occur or the exact name of the loci

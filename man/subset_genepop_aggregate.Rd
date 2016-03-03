@@ -25,8 +25,6 @@ Pop
 Pop02_01  , 120120 110110 110110
 ...}
 
-\item{dirname}{directory where the output file will be saved.}
-
 \item{subs}{he loci names of interest or a vector
 subs <- c("190-56","145_21",456_12") would return loci with these defined names.}
 
@@ -51,6 +49,8 @@ EEE    EEE
 FFF    Pop2
 GGG    GGG
 AAA/BBB & DDD/FFF would be clustered together between population flags in genepop.}
+
+\item{path}{to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")}
 }
 \description{
 Function to cluster populations together and remove specific loci

@@ -24,7 +24,7 @@ Pop
 Pop02_01  , 120120 110110 110110
 ...}
 
-\item{dirname}{directory where the output file will be saved.}
+\item{dirname}{path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt").}
 
 \item{nameframe}{a dataframe or path to a csv. This must be specified in this function
 this dataframe contains two columns. Column 1 corresponds to the population names. These names

@@ -26,7 +26,7 @@ Pop02_01  , 120120 110110 110110
 
 \item{dirname}{directory where the output file will be saved.}
 
-\item{subs}{he loci names of interest or a vector which corresponds the the order of which
+\item{subs}{the loci names of interest or a vector which corresponds the the order of which
 they appear in the genepop file.
 These can be either the order by which they occur or the exact name of the loci
 e.g. subs <-c(1,2,3,4) would return the first 4 loci &
@@ -42,6 +42,8 @@ Examples: numeric - sPop <- c(1,3,4,7) or
 the population ID (alpha-numeric code before the underscore). Here we assume conventional
 naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
           text- sPop <- c("BMR", "GRR","GHR","TRS").}
+
+\item{path}{to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")}
 
 \item{GenePop}{the genepop file to be manipulated. This will the standard
 genepop format with a the first n+1 rows corresponding the the n loci names
@@ -59,8 +61,6 @@ Pop01_02  , 100100 110110 110110
 Pop
 Pop02_01  , 120120 110110 110110
 ...}
-
-\item{dirname}{directory where the output file will be saved.}
 
 \item{subs}{he loci names of interest or a vector which corresponds the the order of which
 they appear in the genepop file.
