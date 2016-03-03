@@ -25,7 +25,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 ***
 
 **Requirement:**
-genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically we use the _three number_ format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names should be each on their own row so that the total number of rows in the _Genepop_ file equals: 
+genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically we use the _three number_ format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names can listed in the first row seperated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
 
     nrows = nLOCI + nINDIVIDUALS + nPOPULATIONS - 1
     
