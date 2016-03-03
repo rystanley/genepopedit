@@ -70,7 +70,7 @@ Alternatively the loci names can be read in the first row as a single character 
     TAG_03  , 120120 110110 110110
     TAG_04  , 120120 110110 110110
     
-In both formats each row is read in as a single character vector.
+In both formats each row is read in as a single character vector. Sample IDs have the population and sample number seperated by a "_". Between sample ID and the loci is conventional Genepop separator "  , ". 
 
 ***
 
