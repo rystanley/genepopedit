@@ -10,8 +10,7 @@
 #' @param vector sample IDs of interest.
 #' These can be either the order by which they occur or the exact name of the loci
 #' indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.
-#' @param logical whether to keep sample IDs specified by indiv (default: FALSE)
-#' or to keep remaining sample IDs.
+#' @param keep logical whether to delete sample IDs specified by indiv (default: TRUE) or delete all other IDs.
 #' @param path the filepath and filename of output
 #' @rdname subset_genepop_indiv
 #' @importFrom tidyr separate

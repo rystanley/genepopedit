@@ -161,7 +161,7 @@ library(genepopedit)# load the library
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **indiv** | vector sample IDs of interest.
-**keep** | logical whether to keep sample IDs specified by indiv (default: TRUE) or to keep remaining sample IDs.
+**keep** | logical whether to delete sample IDs specified by indiv (default: TRUE) or delete all other IDs.
 **path** | the filepath & filename of output.
 
 ***
