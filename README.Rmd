@@ -246,15 +246,15 @@ Lets create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 
 
 ```r
 #inspect the names of the loci within the Genepop data
-  locinames <- genepop_detective(GenePopData,"Loci")
-  locinames
+  genepop_detective(GenePopData,"Loci")
+
 
 #subset the Genepop file and 'keep' the specified loci names ('subs')
   subset_genepop(GenePop=GenePopData,
                keep=TRUE,
                subs=c("Loci03","Loci15","Loci23","Loci49","Loci62",
                "Loci81","Loci88","Loci94"),
-               dirname=paste0(output_dir,"Genepop_Loci_selection.txt")
+               path=paste0(output_dir,"Genepop_Loci_selection.txt")
 ```
 
 You can also choose all loci not in the vector specified using keep=FALSE.
@@ -265,7 +265,7 @@ You can also choose all loci not in the vector specified using keep=FALSE.
                keep=FALSE,
                subs=c("Loci03","Loci15","Loci23","Loci49","Loci62",
                "Loci81","Loci88","Loci94"),
-               dirname=paste0(output_dir,"Genepop_Loci_neutral.txt"))
+               path=paste0(output_dir,"Genepop_Loci_neutral.txt"))
 ```
 
 You can also remove populations within this function. Here we again select loci under selection, but remove populations 3 & 7 (CCC/GGG). To do this we create a list of all populations we want to keep
@@ -283,11 +283,9 @@ You can also remove populations within this function. Here we again select loci 
   PopKeep <- setdiff(PopNames,c("CCC","GGG"))
   
   subset_genepop(GenePop=GenePopData,
-                 keep=TRUE,
-                 subs=c("Loci03","Loci15","Loci23","Loci49","Loci62",
+                 keep=TRUE,                 subs=c("Loci03","Loci15","Loci23","Loci49","Loci62",
                  "Loci81","Loci88","Loci94"),
-                 dirname=paste0(output_dir,
-                 "Genepop_Loci_selection_popsbset.txt"),sPop=PopKeep)
+                 path=paste0(output_dir,                 "Genepop_Loci_selection_popsbset.txt"),sPop=PopKeep)
 ```
 
 #subset\_genepop\_rename
@@ -304,8 +302,7 @@ Now lets change the names of some of the populations. In this example we will re
   newname=c("AAA","BBB","CCC","YYY","EEE","FFF","GGG","ZZZ","III","JJJ"))
 
 #rename populations
-  subset_genepop_rename(GenePop=GenePopData,
-                 dirname=paste0(output_dir,"Genepop_renamed.txt"),
+  subset_genepop_rename(GenePop=GenePopData,                 path=paste0(output_dir,"Genepop_renamed.txt"),
                  nameframe=PopRename)
 ```
 
@@ -325,7 +322,7 @@ Now lets change group some populations together. In this example we will combine
 #re-cast Genepop format to group populations based on 'PopAggregate'
   subset_genepop_aggregate(GenePop=GenePopData,
                  subs=NULL,
-                 dirname=paste0(output_dir,"Genepop_grouped.txt"),
+                 path=paste0(output_dir,"Genepop_grouped.txt"),
                  agPopFrame=PopAggregatee)
 ```
 
@@ -346,9 +343,10 @@ GenePopData2 <-read.table(paste0(output_dir,"Genepop_grouped.txt"),header = FALS
 
 #Rename the grouped populations
   subset_genepop_rename2(GenePop=GenePopData2,
-                 dirname=paste0(output_dir,
-                 "Genepop_grouped_renamed.txt""),
-                 nameframe=PopRename)
+                 nameframe=PopRename,
+                 path=paste0(output_dir,
+                 "Genepop_grouped_renamed.txt""))
+                 
                  
 ```
 
@@ -361,9 +359,7 @@ _This function is best run at the beginning of the analysis prior to removal of 
   genepop_detective(GenePopData,"Inds")
 
 #remove individuals.
-  subset_genepop_indiv(GenePop=GenePopData,
-                 indiv=c("AAA_01","AAA_03","BBB_20","CCC_21",
+  subset_genepop_indiv(GenePop=GenePopData,                 indiv=c("AAA_01","AAA_03","BBB_20","CCC_21",
                  "EEE_03","EEE_26","HHH_25",JJJ_04),
-                 keep=FALSE,
-                 dirname=paste0(output_dir,"Genepop_IDsubset.txt"))
+                 keep=FALSE,                 path=paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
