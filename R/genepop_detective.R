@@ -30,6 +30,19 @@
 
 genepop_detective <- function(GenePop,variable="Pops"){
 
+## check if loci names are read in as one large character vector (1 row)
+  header <- GenePop[1,]
+  if(length(gregexpr(',', header, fixed=F)[[1]])>1){
+    lociheader <- strsplit(header,",")
+    lociheader <- gsub(" ","",unlist(lociheader))
+    #remove the first column of loci names
+    GenePop <- as.vector(GenePop)
+    GenePop <- GenePop[-1,]
+    GenePop <- data.frame(GenePop)
+    GenePop <- rbind(lociheader,GenePop)
+  }
+
+
 ## Stacks version information
 stacks.version <- GenePop[1,] #this could be blank or any other source. First row is ignored by GenePop
 
