@@ -343,6 +343,8 @@ _This function is best run at the beginning of the analysis prior to removal of 
 #Use genepop_detective to see the naming structure.
   genepop_detective(GenePopData,"Inds")
 
-#remove individuals.
-  subset_genepop_indiv(GenePop=GenePopData,                 indiv=c("AAA_01","AAA_03","BBB_20","CCC_21","EEE_03","EEE_26","HHH_25","JJJ_04"),keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
+#vector of sample IDs to remove
+  subid <- c("AAA_01","AAA_03","BBB_20","CCC_21","EEE_03","EEE_26","HHH_25","JJJ_04")
+
+  subset_genepop_indiv(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
