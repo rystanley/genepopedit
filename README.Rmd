@@ -235,10 +235,10 @@ Let assume you would like to inspect your genepop file as a flattened dataframe 
 
 ```r
 #Flatten the dataframe
-GenePop_df<- genepop_flatten(GenePopData)
+  GenePop_df<- genepop_flatten(GenePopData)
 
 #inspect the output for the first 10 columns 
-head(GenePop_df[,1:10])
+  head(GenePop_df[,1:10])
 ```
 
 #subset\_genepop
