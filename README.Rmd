@@ -101,6 +101,17 @@ library(genepopedit)# load the library
     * Sample IDs
     * Loci
     
+    
+**Variable name** | **Input**  
+--------------|-----------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file  
+**variable** | variable to report
+**variable="Pops"** | returns vector of population names (default)
+**variable="PopNum"** | returns population summary table
+**variable="Loci"** | returns vector of loci names
+**variable="Inds"** | returns vector Sample IDs
+
+    
 ##### genepop_flatten.R 
 * Convert Genepop format to a flattend dataframe:
     * Sample IDs
@@ -108,18 +119,52 @@ library(genepopedit)# load the library
     * Sample number
     * Loci
 
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+
 ##### subset_genepop.R 
 * remove or keep a subset of loci 
 * remove populations 
 
+**Variable name** | **Input**  
+--------------|-----------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
+**dirname** | the filepath & filename of output.
+**subs** | vector loci names of interest (default: NULL)
+**keep** | logical whether to keep loci specified by subs (default: TRUE) or to keep remaining loci.
+**sPop** | populations to be retained (default: NULL).
+
+
 ##### subset_genepop_aggregate.R
 * group populations based on Genepop population tags
+
+**Variable name** | **Input**  
+--------------|-----------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**subs** | vector loci names of interest (default: NULL)
+**keep** | logical whether to keep loci specified by subs (default: TRUE) or to keep remaining loci.
+**agPopFrame** | a dataframe or path to a csv detailing the population names & populations to be aggregated.
+**path** | the filepath & filename of output.
 
 ##### subset_genepop_rename.R
 * subset and-or rename populations
 
+**Variable name** | **Input**  
+--------------|-----------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**nameframe** | a dataframe or path to a csv detailing the original and any edited population names.
+**path** | the filepath & filename of output.
+
 ##### subset_genepop_individuals.R
 * remove or keep a subset of individuals
+
+**Variable name** | **Input**  
+--------------|-----------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**indiv** | vector sample IDs of interest.
+**keep** | logical whether to keep sample IDs specified by indiv (default: TRUE) or to keep remaining sample IDs.
+**path** | the filepath & filename of output.
 
 ***
 

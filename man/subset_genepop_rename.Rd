@@ -4,7 +4,7 @@
 \alias{subset_genepop_rename}
 \title{Genepop subset and rename populations}
 \usage{
-subset_genepop_rename(GenePop, dirname, nameframe)
+subset_genepop_rename(GenePop, path, nameframe)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
@@ -14,7 +14,7 @@ or a single commma deliminated row of loci names followed by the locus data. Pop
 seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
 as single row (character).}
 
-\item{dirname}{path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt").}
+\item{path}{the filepath and filename of output.}
 
 \item{nameframe}{a dataframe or path to a csv. This must be specified in this function
 this dataframe contains two columns. Column 1 corresponds to the population names. These names

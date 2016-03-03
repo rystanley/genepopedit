@@ -131,12 +131,11 @@ $(document).ready(function () {
 <li><p>flatten Genepop file into a dataframe</p></li>
 </ul>
 <hr />
-<p><strong>Requirement:</strong> genepopedit functions through the manipulation of multi-locus SNP files structured in the <em>Genepop</em> file format <a href="http://genepop.curtin.edu.au/" class="uri">http://genepop.curtin.edu.au/</a>. Specifically we use the <em>three number</em> format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names should be each on their own row so that the total number of rows in the <em>Genepop</em> file equals:</p>
+<p><strong>Requirement:</strong> genepopedit functions through the manipulation of multi-locus SNP files structured in the <em>Genepop</em> file format <a href="http://genepop.curtin.edu.au/" class="uri">http://genepop.curtin.edu.au/</a>. Specifically we use the <em>three number</em> format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names can listed in the first row seperated by columns or each on their own row so that the total number of rows in the <em>Genepop</em> file equals:</p>
 <pre><code>nrows = nLOCI + nINDIVIDUALS + nPOPULATIONS - 1</code></pre>
 <p><em>or</em></p>
 <pre><code>nrows* = nLOCI + nINDIVIDUALS + nPOPULATIONS </code></pre>
 <p><em>* if STACKS version is not specified</em></p>
-<p>Most molecular based file formats can be converted to and from <em>Genepop</em> using conversion programs such as the R package <em>adegenet</em> <a href="https://github.com/thibautjombart/adegenet/wiki" class="uri">https://github.com/thibautjombart/adegenet/wiki</a> or the program <em>PGDspider</em> <a href="http://www.cmpg.unibe.ch/software/PGDSpider/" class="uri">http://www.cmpg.unibe.ch/software/PGDSpider/</a>.</p>
 <p><strong>For example:</strong></p>
 <p><em>A three locus dataset with two populations and four individuals per population with the STACKS version specified</em></p>
 <pre><code>STACKS Version 1.0
@@ -144,16 +143,29 @@ Loci_1
 Loci_2
 Loci_3
 Pop
-BON01  , 120120 110110 110110
-BON02  , 100100 110110 110110
-BON03  , 100100 110110 110110
-BON04  , 100100 110110 110110
+BON_01  , 120120 110110 110110
+BON_02  , 100100 110110 110110
+BON_03  , 100100 110110 110110
+BON_04  , 100100 110110 110110
 Pop
-TAG01  , 120120 110110 110110
-TAG02  , 120120 110110 110110
-TAG03  , 120120 110110 110110
-TAG04  , 120120 110110 110110</code></pre>
-<p>Where each row line is a single row in the input file.</p>
+TAG_01  , 120120 110110 110110
+TAG_02  , 120120 110110 110110
+TAG_03  , 120120 110110 110110
+TAG_04  , 120120 110110 110110</code></pre>
+<p>Alternatively the loci names can be read in the first row as a single character seperated by commas.</p>
+<pre><code>Loci_1,Loci_2,Loci,3
+Pop
+BON_01  , 120120 110110 110110
+BON_02  , 100100 110110 110110
+BON_03  , 100100 110110 110110
+BON_04  , 100100 110110 110110
+Pop
+TAG_01  , 120120 110110 110110
+TAG_02  , 120120 110110 110110
+TAG_03  , 120120 110110 110110
+TAG_04  , 120120 110110 110110</code></pre>
+<p>In both formats each row is read in as a single character vector. Sample IDs have the population and sample number seperated by a “_“. Between sample ID and the loci is conventional Genepop separator” , “.</p>
+<p>Most molecular based file formats can be converted to and from <em>Genepop</em> using conversion programs such as the R package <em>adegenet</em> <a href="https://github.com/thibautjombart/adegenet/wiki" class="uri">https://github.com/thibautjombart/adegenet/wiki</a> or the program <em>PGDspider</em> <a href="http://www.cmpg.unibe.ch/software/PGDSpider/" class="uri">http://www.cmpg.unibe.ch/software/PGDSpider/</a>.</p>
 <hr />
 <div id="installation" class="section level2">
 <h2>Installation</h2>
@@ -180,6 +192,44 @@ library(genepopedit)# load the library</code></pre>
 <li>Loci</li>
 </ul></li>
 </ul>
+<table style="width:71%;">
+<colgroup>
+<col width="20%"></col>
+<col width="50%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>variable</strong></td>
+<td align="left">variable to report</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>variable=“Pops”</strong></td>
+<td align="left">returns vector of population names (default)</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>variable=“PopNum”</strong></td>
+<td align="left">returns population summary table</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>variable=“Loci”</strong></td>
+<td align="left">returns vector of loci names</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>variable=“Inds”</strong></td>
+<td align="left">returns vector Sample IDs</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="genepop_flatten.r" class="section level5">
 <h5>genepop_flatten.R</h5>
@@ -192,6 +242,24 @@ library(genepopedit)# load the library</code></pre>
 <li>Loci</li>
 </ul></li>
 </ul>
+<table style="width:68%;">
+<colgroup>
+<col width="20%"></col>
+<col width="47%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="subset_genepop.r" class="section level5">
 <h5>subset_genepop.R</h5>
@@ -199,24 +267,148 @@ library(genepopedit)# load the library</code></pre>
 <li>remove or keep a subset of loci</li>
 <li>remove populations</li>
 </ul>
+<table style="width:71%;">
+<colgroup>
+<col width="20%"></col>
+<col width="50%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>dirname</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>subs</strong></td>
+<td align="left">vector loci names of interest (default: NULL)</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>keep</strong></td>
+<td align="left">logical whether to keep loci specified by subs (default: TRUE) or to keep remaining loci.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>sPop</strong></td>
+<td align="left">populations to be retained (default: NULL).</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="subset_genepop_aggregate.r" class="section level5">
 <h5>subset_genepop_aggregate.R</h5>
 <ul>
 <li>group populations based on Genepop population tags</li>
 </ul>
+<table style="width:71%;">
+<colgroup>
+<col width="20%"></col>
+<col width="50%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>subs</strong></td>
+<td align="left">vector loci names of interest (default: NULL)</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>keep</strong></td>
+<td align="left">logical whether to keep loci specified by subs (default: TRUE) or to keep remaining loci.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>agPopFrame</strong></td>
+<td align="left">a dataframe or path to a csv detailing the population names &amp; populations to be aggregated.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>path</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="subset_genepop_rename.r" class="section level5">
 <h5>subset_genepop_rename.R</h5>
 <ul>
 <li>subset and-or rename populations</li>
 </ul>
+<table style="width:71%;">
+<colgroup>
+<col width="20%"></col>
+<col width="50%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>nameframe</strong></td>
+<td align="left">a dataframe or path to a csv detailing the original and any edited population names.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>path</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="subset_genepop_individuals.r" class="section level5">
 <h5>subset_genepop_individuals.R</h5>
 <ul>
 <li>remove or keep a subset of individuals</li>
 </ul>
+<table style="width:71%;">
+<colgroup>
+<col width="20%"></col>
+<col width="50%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>indiv</strong></td>
+<td align="left">vector sample IDs of interest.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>keep</strong></td>
+<td align="left">logical whether to keep sample IDs specified by indiv (default: TRUE) or to keep remaining sample IDs.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>path</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+</tbody>
+</table>
 <hr />
 </div>
 </div>
@@ -246,6 +438,7 @@ library(genepopedit)# load the library</code></pre>
 <h2>How to use genepopedit</h2>
 <p>Download the example genepop data: GenePop file with 10 populations, 30 individuals per population, and 100 Loci. <a href="https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0" class="uri">https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0</a></p>
 <p>Read in the data using the following <em>read.table</em> code specifics. Note the specifics entries of read.table are important at this step (sep=“”,quote=“”,stringsAsFactors=FALSE)</p>
+<p>All functions can work with an object read into the workspace (see above) or can be a path to the Genepop file.</p>
 <pre class="r"><code>GenePopData &lt;- read.table(&quot;genepopedit_examplefile.txt&quot;, header = FALSE, sep = &quot;\t&quot;, quote = &quot;&quot;, stringsAsFactors = FALSE)</code></pre>
 <p>Alternatively the example <em>GenePopData</em> can be loaded directly from the package.</p>
 <pre class="r"><code>data(&quot;ExampleGenePop&quot;)</code></pre>
@@ -262,8 +455,8 @@ library(genepopedit)# load the library</code></pre>
 <pre class="r"><code>PopCounts &lt;- genepop_detective(GenePopData,variable=&quot;PopNum&quot;)</code></pre>
 <p>Return <em>sample IDs</em></p>
 <pre class="r"><code>SampleIDs &lt;- genepop_detective(GenePopData,variable=&quot;Inds&quot;)</code></pre>
-<p>Return <em>Loci names</em></p>
-<pre class="r"><code>LociNames &lt;- genepop_detective(GenePopData,variable=&quot;Loci&quot;)</code></pre>
+<p>Return <em>Loci names</em> using the file path instead of the workspace object.</p>
+<pre class="r"><code>LociNames &lt;- genepop_detective(&quot;genepopedit_examplefile.txt&quot;,variable=&quot;Loci&quot;)</code></pre>
 </div>
 <div id="genepop_flatten" class="section level1">
 <h1>genepop_flatten</h1>

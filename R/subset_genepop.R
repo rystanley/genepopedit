@@ -1,36 +1,12 @@
 # Subset Genepop
 #' @title Genepop subset loci and populations
 #' @description Function to subset loci and populations
-#' @param GenePop the genepop file to be manipulated. This will the standard
-#' genepop format with a the first n+1 rows corresponding the the n loci names
-#' followed by the locus data. Populations are seperated by "Pop".
-#' Each individual ID is linked the the locus data by "  , " and is read in as
-#' as single row (character)
-#' e.g.
-#' Stacks Ver 1.0
-#' 1
-#' 2
-#' 3
-#' Pop
-#' Pop01_01  , 120120 110110 110110
-#' Pop01_02  , 100100 110110 110110
-#' Pop
-#' Pop02_01  , 120120 110110 110110
-#' ...
-#' @param path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")
-#' @param subs the loci names of interest or a vector which corresponds the the order of which
-#' they appear in the genepop file.
-#' These can be either the order by which they occur or the exact name of the loci
-#' e.g. subs <-c(1,2,3,4) would return the first 4 loci &
-#' #' @title Genepop subset loci and populations
-#' @description Function for the manipulation of genopop format SNP datasets
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
 #' or a single commma deliminated row of loci names followed by the locus data. Populations are
 #' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
 #' as single row (character).
-#' @param dirname directory where the output file will be saved.
 #' @param subs he loci names of interest or a vector which corresponds the the order of which
 #' they appear in the genepop file.
 #' These can be either the order by which they occur or the exact name of the loci
@@ -45,22 +21,14 @@
 #'  the population ID (alpha-numeric code before the underscore). Here we assume conventional
 #'  naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
 #'            text- sPop <- c("BMR", "GRR","GHR","TRS").
-#' @param keep logical vector which defines whether you want to remove the loci or keep them.
-#' the default is to keep them keep <- TRUE assuming you are removing neutral markers
-#' and only keeping the subs
-#' @param sPop is the populations of interest. Note these are specified in the order which they appear in the
-#'  original Genepop file. i.e. first pop = 1 second pop = 2
-#'  Examples: numeric - sPop <- c(1,3,4,7) or
-#'  the population ID (alpha-numeric code before the underscore). Here we assume conventional
-#'  naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
-#'            text- sPop <- c("BMR", "GRR","GHR","TRS").
+#' @param path the filepath and filename of output.
 #' @rdname subset_genepop
 #' @importFrom tidyr separate
 #' @export
 
 
 ##
-subset_genepop <- function(GenePop,dirname,subs=NULL,keep=TRUE,sPop=NULL)
+subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
   {
 
 #Check to see if Genepop is a file path or dataframe
@@ -258,6 +226,6 @@ subset_genepop <- function(GenePop,dirname,subs=NULL,keep=TRUE,sPop=NULL)
     }
 
     # Save the file
-    write.table(Output,dirname,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 } #End function

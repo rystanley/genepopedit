@@ -4,7 +4,7 @@
 \alias{subset_genepop_indiv}
 \title{Genepop remove or keep specific sample IDs}
 \usage{
-subset_genepop_indiv(GenePop, dirname, indiv = NULL, keep = FALSE)
+subset_genepop_indiv(GenePop, indiv = NULL, keep = FALSE, path)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
@@ -14,14 +14,14 @@ or a single commma deliminated row of loci names followed by the locus data. Pop
 seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
 as single row (character).}
 
-\item{dirname}{path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")}
+\item{path}{the filepath and filename of output}
 
-\item{indiv}{names of individual samples
+\item{vector}{sample IDs of interest.
 These can be either the order by which they occur or the exact name of the loci
 indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.}
 
-\item{keep}{logical vector which defines whether you want to remove the loci or keep them.
-the default is to remove them (keep <- FALSE)}
+\item{logical}{whether to keep sample IDs specified by indiv (default: FALSE)
+or to keep remaining sample IDs.}
 }
 \description{
 Function for the manipulation of genopop format SNP datasets

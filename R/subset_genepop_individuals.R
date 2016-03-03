@@ -7,18 +7,18 @@
 #' or a single commma deliminated row of loci names followed by the locus data. Populations are
 #' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
 #' as single row (character).
-#' @param dirname path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")
-#' @param indiv names of individual samples
+#' @param vector sample IDs of interest.
 #' These can be either the order by which they occur or the exact name of the loci
 #' indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.
-#' @param keep logical vector which defines whether you want to remove the loci or keep them.
-#' the default is to remove them (keep <- FALSE)
+#' @param logical whether to keep sample IDs specified by indiv (default: FALSE)
+#' or to keep remaining sample IDs.
+#' @param path the filepath and filename of output
 #' @rdname subset_genepop_indiv
 #' @importFrom tidyr separate
 #' @export
 
 ##
-subset_genepop_indiv <- function(GenePop,dirname,indiv=NULL,keep=FALSE){
+subset_genepop_indiv <- function(GenePop,indiv=NULL,keep=FALSE,path){
 
 #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -141,6 +141,6 @@ subset_genepop_indiv <- function(GenePop,dirname,indiv=NULL,keep=FALSE){
     Output <- c(stacks.version,names(temp2),Loci)
 
     # Save the file
-    write.table(Output,dirname,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 } #End function

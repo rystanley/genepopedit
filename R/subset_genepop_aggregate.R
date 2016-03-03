@@ -7,7 +7,6 @@
 #' or a single commma deliminated row of loci names followed by the locus data. Populations are
 #' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
 #' as single row (character).
-#' @param path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")
 #' @param subs he loci names of interest or a vector
 #' subs <- c("190-56","145_21",456_12") would return loci with these defined names.
 #' @param keep logical vector which defines whether you want to remove the loci or keep them.
@@ -30,11 +29,12 @@
 #' FFF    Pop2
 #' GGG    GGG
 #' AAA/BBB & DDD/FFF would be clustered together between population flags in genepop.
+#' @param path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")
 #' @rdname subset_genepop_aggregate
 #' @importFrom tidyr separate
 #' @export
 
-subset_genepop_aggregate <- function(GenePop,dirname,subs=NULL,keep=TRUE,agPopFrame){
+subset_genepop_aggregate <- function(GenePop,subs=NULL,keep=TRUE,agPopFrame,path){
 
 #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -184,6 +184,6 @@ subset_genepop_aggregate <- function(GenePop,dirname,subs=NULL,keep=TRUE,agPopFr
       }
 
     # Save the file
-    write.table(Output,dirname,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 } #End function

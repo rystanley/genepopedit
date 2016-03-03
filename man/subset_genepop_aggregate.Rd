@@ -4,8 +4,8 @@
 \alias{subset_genepop_aggregate}
 \title{Genepop subset, combine, and reorder populations}
 \usage{
-subset_genepop_aggregate(GenePop, dirname, subs = NULL, keep = TRUE,
-  agPopFrame)
+subset_genepop_aggregate(GenePop, subs = NULL, keep = TRUE, agPopFrame,
+  path)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path

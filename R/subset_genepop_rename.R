@@ -7,7 +7,6 @@
 #' or a single commma deliminated row of loci names followed by the locus data. Populations are
 #' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
 #' as single row (character).
-#' @param dirname path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt").
 #' @param nameframe a dataframe or path to a csv. This must be specified in this function
 #' this dataframe contains two columns. Column 1 corresponds to the population names. These names
 #' should match the individual IDs (e.g. BON01  , 110110 120120 -- would be 'BON'). The next column
@@ -26,12 +25,12 @@
 #' CRA    CRA
 #' MAL    BON
 #' TRY    CRA
-#'
+#' @param path the filepath and filename of output.
 #' @rdname subset_genepop_rename
 #' @importFrom tidyr separate
 #' @export
 
-subset_genepop_rename <- function(GenePop,dirname,nameframe){
+subset_genepop_rename <- function(GenePop,path,nameframe){
 
 #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -149,6 +148,6 @@ subset_genepop_rename <- function(GenePop,dirname,nameframe){
     Output <- c(stacks.version,names(temp2),Loci)
 
     # Save the file
-    write.table(Output,dirname,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 } #End function
