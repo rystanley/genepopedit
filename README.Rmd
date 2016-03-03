@@ -319,7 +319,7 @@ Now that we have two grouped populations, we can use the population rename funct
 
 ```r
 #read in the grouped Genepop file
-GenePopData2 <-read.table(paste0(output_dir,"Genepop_grouped.txt"),header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
+  GenePopData2 <-read.table(paste0(output_dir,"Genepop_grouped.txt"),header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
 
 #investigate the population parameters
   genepop_detective(GenePopData2,"Pops")
