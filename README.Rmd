@@ -248,16 +248,17 @@ Lets create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 
 #inspect the names of the loci within the Genepop data
   genepop_detective(GenePopData,"Loci")
 
-
-#subset the Genepop file and 'keep' the specified loci names ('subs')
-  subset_genepop(GenePop=GenePopData,keep=TRUE,subs=c("Loci03","Loci15","Loci23","Loci49","Loci62","Loci81","Loci88","Loci94"),path=paste0(output_dir,"Genepop_Loci_selection.txt"))
+#subset the Genepop file and 'keep' the specified loci names.
+  subloci <-c("Loci03","Loci15","Loci23","Loci49","Loci62","Loci81","Loci88","Loci94")
+  
+  subset_genepop(GenePop=GenePopData,keep=TRUE,subs=subloci,path=paste0(output_dir,"Genepop_Loci_selection.txt"))
 ```
 
 You can also choose all loci not in the vector specified using keep=FALSE.
 
 ```r
 #subset the Genepop file and do not 'keep' the specified 'subs'
-  subset_genepop(GenePop=GenePopData,keep=FALSE,subs=c("Loci03","Loci15","Loci23","Loci49","Loci62","Loci81","Loci88","Loci94"),path=paste0(output_dir,"Genepop_Loci_neutral.txt"))
+  subset_genepop(GenePop=GenePopData,keep=FALSE,subs=subloci,path=paste0(output_dir,"Genepop_Loci_neutral.txt"))
 ```
 
 You can also remove populations within this function. Here we again select loci under selection, but remove populations 3 & 7 (CCC/GGG). To do this we create a list of all populations we want to keep
