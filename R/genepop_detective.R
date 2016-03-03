@@ -38,8 +38,8 @@ genepop_detective <- function(GenePop,variable="Pops"){
     #remove the first column of loci names
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
-    GenePop <- data.frame(GenePop)
-    GenePop <- rbind(lociheader,GenePop)
+    GenePop <- c(lociheader,GenePop)
+    GenePop <- data.frame(GenePop,stringsAsFactors = FALSE)
   }
 
 
