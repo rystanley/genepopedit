@@ -35,8 +35,6 @@ genepopedit functions through the manipulation of multi-locus SNP files structur
     
 _* if STACKS version is not specified_
 
-Most molecular based file formats can be converted to and from *Genepop* using conversion programs such as the R package _adegenet_ <https://github.com/thibautjombart/adegenet/wiki> or the program *PGDspider* <http://www.cmpg.unibe.ch/software/PGDSpider/>. 
-
 **For example:**
 
 *A three locus dataset with two populations and four individuals per population with the STACKS version specified*
@@ -71,6 +69,8 @@ Alternatively the loci names can be read in the first row as a single character 
     TAG_04  , 120120 110110 110110
     
 In both formats each row is read in as a single character vector. Sample IDs have the population and sample number seperated by a "_". Between sample ID and the loci is conventional Genepop separator "  , ". 
+
+Most molecular based file formats can be converted to and from *Genepop* using conversion programs such as the R package _adegenet_ <https://github.com/thibautjombart/adegenet/wiki> or the program *PGDspider* <http://www.cmpg.unibe.ch/software/PGDSpider/>. 
 
 ***
 
