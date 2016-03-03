@@ -128,7 +128,9 @@ $(document).ready(function () {
 <li>sample IDs</li>
 <li>loci names</li>
 </ul></li>
+<li><p>flatten Genepop file into a dataframe</p></li>
 </ul>
+<hr />
 <p><strong>Requirement:</strong> genepopedit functions through the manipulation of multi-locus SNP files structured in the <em>Genepop</em> file format <a href="http://genepop.curtin.edu.au/" class="uri">http://genepop.curtin.edu.au/</a>. Specifically we use the <em>three number</em> format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names should be each on their own row so that the total number of rows in the <em>Genepop</em> file equals:</p>
 <pre><code>nrows = nLOCI + nINDIVIDUALS + nPOPULATIONS - 1</code></pre>
 <p><em>or</em></p>
@@ -152,6 +154,7 @@ TAG02  , 120120 110110 110110
 TAG03  , 120120 110110 110110
 TAG04  , 120120 110110 110110</code></pre>
 <p>Where each row line is a single row in the input file.</p>
+<hr />
 <div id="installation" class="section level2">
 <h2>Installation</h2>
 <p>You can install <strong>genepopedit</strong> as a R package using the following 2 steps:</p>
@@ -162,6 +165,7 @@ library(devtools) # to load</code></pre>
 <pre class="r"><code>#Install the package from *Github*
 install_github(&quot;rystanley/genepopedit&quot;) 
 library(genepopedit)# load the library</code></pre>
+<hr />
 </div>
 <div id="genepopedit-functions" class="section level2">
 <h2>genepopedit functions:</h2>
@@ -173,6 +177,18 @@ library(genepopedit)# load the library</code></pre>
 <li>Population names</li>
 <li>Population counts</li>
 <li>Sample IDs</li>
+<li>Loci</li>
+</ul></li>
+</ul>
+</div>
+<div id="genepop_flatten.r" class="section level5">
+<h5>genepop_flatten.R</h5>
+<ul>
+<li>Convert Genepop format to a flattend dataframe:
+<ul>
+<li>Sample IDs</li>
+<li>Population</li>
+<li>Sample number</li>
 <li>Loci</li>
 </ul></li>
 </ul>
@@ -201,6 +217,7 @@ library(genepopedit)# load the library</code></pre>
 <ul>
 <li>remove or keep a subset of individuals</li>
 </ul>
+<hr />
 </div>
 </div>
 <div id="contributions" class="section level2">
@@ -223,6 +240,7 @@ library(genepopedit)# load the library</code></pre>
 <li>Make the changes using github’s in-page editor and save.</li>
 <li>Submit a pull request and include a brief description of your changes. (e.g. “<em>spelling errors</em>” or “<em>indexing error</em>”).</li>
 </ul>
+<hr />
 </div>
 <div id="how-to-use-genepopedit" class="section level2">
 <h2>How to use genepopedit</h2>
@@ -246,6 +264,15 @@ library(genepopedit)# load the library</code></pre>
 <pre class="r"><code>SampleIDs &lt;- genepop_detective(GenePopData,variable=&quot;Inds&quot;)</code></pre>
 <p>Return <em>Loci names</em></p>
 <pre class="r"><code>LociNames &lt;- genepop_detective(GenePopData,variable=&quot;Loci&quot;)</code></pre>
+</div>
+<div id="genepop_flatten" class="section level1">
+<h1>genepop_flatten</h1>
+<p>Let assume you would like to inspect your genepop file as a flattened dataframe for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove Loci and-or Populations this must be before hand using <em>subset_genepop</em> or its sister functions (see below for examples).</p>
+<pre class="r"><code>#Flatten the dataframe
+GenePop_df&lt;- genepop_flatten(GenePopData)
+
+#inspect the output for the first 10 columns 
+head(GenePop_df[,1:10])</code></pre>
 </div>
 <div id="subset_genepop" class="section level1">
 <h1>subset_genepop</h1>
@@ -321,8 +348,7 @@ library(genepopedit)# load the library</code></pre>
                  agPopFrame=PopAggregatee)</code></pre>
 <p>Now that we have two grouped populations, we can use the population rename function to give them a common name.</p>
 <pre class="r"><code>#read in the grouped Genepop file
-  GenePopData2 &lt;- read.table(paste0(output_dir,&quot;Genepop_grouped.txt&quot;),
-  header = FALSE, sep = &quot;\t&quot;, quote = &quot;&quot;, stringsAsFactors = FALSE)
+GenePopData2 &lt;-read.table(paste0(output_dir,&quot;Genepop_grouped.txt&quot;),header = FALSE, sep = &quot;\t&quot;, quote = &quot;&quot;, stringsAsFactors = FALSE)
 
 #investigate the population parameters
   genepop_detective(GenePopData2,&quot;Pops&quot;)
@@ -331,13 +357,14 @@ library(genepopedit)# load the library</code></pre>
 
 #create renaming frame
   PopRename &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;BBB&quot;,&quot;DDD&quot;,&quot;FFF&quot;,&quot;III&quot;),
-  newname=c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;Group1&quot;,&quot;Group1&quot;,&quot;Group2&quot;,&quot;Group2&quot;))
+  newname = c(&quot;AAA&quot;,&quot;CCC&quot;,&quot;EEE&quot;,&quot;HHH&quot;,&quot;Group1&quot;,&quot;Group1&quot;,&quot;Group2&quot;,&quot;Group2&quot;))
 
 #Rename the grouped populations
   subset_genepop_rename2(GenePop=GenePopData2,
                  dirname=paste0(output_dir,
                  &quot;Genepop_grouped_renamed.txt&quot;&quot;),
-                 nameframe=PopRename)</code></pre>
+                 nameframe=PopRename)
+                 </code></pre>
 </div>
 <div id="subset_genepop_individual" class="section level1">
 <h1>subset_genepop_individual</h1>

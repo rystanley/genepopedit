@@ -19,6 +19,10 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     * population counts
     * sample IDs
     * loci names
+    
+* flatten Genepop file into a dataframe
+
+***
 
 **Requirement:**
 genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically we use the _three number_ format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names should be each on their own row so that the total number of rows in the _Genepop_ file equals: 
@@ -54,6 +58,8 @@ Most molecular based file formats can be converted to and from *Genepop* using c
 
 Where each row line is a single row in the input file.
 
+***
+
 ## Installation
 You can install **genepopedit** as a R package using the following 2 steps:
 
@@ -70,6 +76,8 @@ install_github("rystanley/genepopedit")
 library(genepopedit)# load the library
 ```
 
+***
+
 ## genepopedit functions:
 
 ##### genepop_detective.R 
@@ -77,6 +85,13 @@ library(genepopedit)# load the library
     * Population names
     * Population counts
     * Sample IDs
+    * Loci
+    
+##### genepop_flatten.R 
+* Convert Genepop format to a flattend dataframe:
+    * Sample IDs
+    * Population
+    * Sample number
     * Loci
 
 ##### subset_genepop.R 
@@ -91,6 +106,8 @@ library(genepopedit)# load the library
 
 ##### subset_genepop_individuals.R
 * remove or keep a subset of individuals
+
+***
 
 ## Contributions:
 *genepopedit* was written in collaboration with:
@@ -111,6 +128,8 @@ Pull request how-to:
   * Click the edit this page on the sidebar.
   * Make the changes using github’s in-page editor and save.
   * Submit a pull request and include a brief description of your changes. (e.g. "_spelling errors_" or "_indexing error_").
+
+***
 
 ## How to use genepopedit
 
@@ -150,6 +169,17 @@ SampleIDs <- genepop_detective(GenePopData,variable="Inds")
 Return *Loci names*
 ```r
 LociNames <- genepop_detective(GenePopData,variable="Loci")
+```
+
+#genepop\_flatten
+Let assume you would like to inspect your genepop file as a flattened dataframe for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove Loci and-or Populations this must be before hand using *subset_genepop* or its sister functions (see below for examples).
+
+```r
+#Flatten the dataframe
+GenePop_df<- genepop_flatten(GenePopData)
+
+#inspect the output for the first 10 columns 
+head(GenePop_df[,1:10])
 ```
 
 #subset\_genepop
@@ -244,8 +274,7 @@ Now that we have two grouped populations, we can use the population rename funct
 
 ```r
 #read in the grouped Genepop file
-  GenePopData2 <- read.table(paste0(output_dir,"Genepop_grouped.txt"),
-  header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
+GenePopData2 <-read.table(paste0(output_dir,"Genepop_grouped.txt"),header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
 
 #investigate the population parameters
   genepop_detective(GenePopData2,"Pops")
@@ -254,13 +283,14 @@ Now that we have two grouped populations, we can use the population rename funct
 
 #create renaming frame
   PopRename <- data.frame(oPop=c("AAA","CCC","EEE","HHH","BBB","DDD","FFF","III"),
-  newname=c("AAA","CCC","EEE","HHH","Group1","Group1","Group2","Group2"))
+  newname = c("AAA","CCC","EEE","HHH","Group1","Group1","Group2","Group2"))
 
 #Rename the grouped populations
   subset_genepop_rename2(GenePop=GenePopData2,
                  dirname=paste0(output_dir,
                  "Genepop_grouped_renamed.txt""),
                  nameframe=PopRename)
+                 
 ```
 
 #subset\_genepop\_individual
