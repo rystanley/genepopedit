@@ -1,28 +1,25 @@
 # GenePop flatten
 #' @title Flatten Genepop to dataframe
 #' @description Convert and return Genepop as flattend dataframe.
-#' @param GenePop the genepop file to be manipulated. This will the standard
-#' genepop format with a the first n+1 rows corresponding the the n loci names
-#' followed by the locus data. Populations are seperated by "Pop".
-#' Each individual ID is linked the the locus data by "  , " and is read in as
-#' as single row (character)
-#' e.g.
-#' Stacks Ver 1.0
-#' 1
-#' 2
-#' 3
-#' Pop
-#' Pop01_01  , 120120 110110 110110
-#' Pop01_02  , 100100 110110 110110
-#' Pop
-#' Pop02_01  , 120120 110110 110110
-#' ...
+#' @param GenePop the genepop data to be manipulated. This can be either a file path
+#' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+#' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
+#' or a single commma deliminated row of loci names followed by the locus data. Populations are
+#' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
+#' as single row (character).
 #' @rdname genepop_flattend
 #' @importFrom tidyr separate
 #' @export
 #'
 
 genepop_flatten <- function(GenePop){
+
+#Check to see if Genepop is a file path or dataframe
+  if(is.character(GenePop)){
+    GenePop <- read.table(GenePop,
+                          header = FALSE, sep = "\t",
+                          quote = "", stringsAsFactors = FALSE)
+  }
 
 ## check if loci names are read in as one large character vector (1 row)
   header <- GenePop[1,]

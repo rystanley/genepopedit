@@ -56,7 +56,21 @@ Most molecular based file formats can be converted to and from *Genepop* using c
     TAG03  , 120120 110110 110110
     TAG04  , 120120 110110 110110
 
-Where each row line is a single row in the input file.
+Alternatively the loci names can be read in the first row as a single character seperated by commas. 
+
+    Loci_1,Loci_2,Loci,3
+    Pop
+    BON01  , 120120 110110 110110
+    BON02  , 100100 110110 110110
+    BON03  , 100100 110110 110110
+    BON04  , 100100 110110 110110
+    Pop
+    TAG01  , 120120 110110 110110
+    TAG02  , 120120 110110 110110
+    TAG03  , 120120 110110 110110
+    TAG04  , 120120 110110 110110
+    
+In both formats each row is read in as a single character vector.
 
 ***
 
@@ -138,6 +152,8 @@ Download the example genepop data: GenePop file with 10 populations, 30 individu
 
 Read in the data using the following *read.table* code specifics. Note the specifics entries of read.table are important at this step (sep="\t",quote="",stringsAsFactors=FALSE)
 
+All functions can work with an object read into the workspace (see above) or can be a path to the Genepop file.
+
 ```r
 GenePopData <- read.table("genepopedit_examplefile.txt", header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
 ```
@@ -166,9 +182,9 @@ Return *sample IDs*
 ```r
 SampleIDs <- genepop_detective(GenePopData,variable="Inds")
 ```
-Return *Loci names*
+Return *Loci names* using the file path instead of the workspace object.
 ```r
-LociNames <- genepop_detective(GenePopData,variable="Loci")
+LociNames <- genepop_detective("genepopedit_examplefile.txt",variable="Loci")
 ```
 
 #genepop\_flatten

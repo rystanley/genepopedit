@@ -7,22 +7,12 @@
 subset_genepop_rename(GenePop, dirname, nameframe)
 }
 \arguments{
-\item{GenePop}{the genepop file to be manipulated. This will the standard
-genepop format with a the first n+1 rows corresponding the the n loci names
-followed by the locus data. Populations are seperated by "Pop".
-Each individual ID is linked the the locus data by "  , " and is read in as
-as single row (character)
-e.g.
-Stacks Ver 1.0
-1
-2
-3
-Pop
-Pop01_01  , 120120 110110 110110
-Pop01_02  , 100100 110110 110110
-Pop
-Pop02_01  , 120120 110110 110110
-...}
+\item{GenePop}{the genepop data to be manipulated. This can be either a file path
+or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
+or a single commma deliminated row of loci names followed by the locus data. Populations are
+seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
+as single row (character).}
 
 \item{dirname}{path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt").}
 
