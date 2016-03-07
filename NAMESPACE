@@ -2,6 +2,7 @@
 
 export(genepop_detective)
 export(genepop_flatten)
+export(genepop_fstat)
 export(insert_vals)
 export(subset_genepop)
 export(subset_genepop_aggregate)

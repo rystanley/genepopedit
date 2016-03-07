@@ -22,6 +22,8 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     
 * flatten Genepop file into a dataframe
 
+* convert Genepop to fstat format.
+
 ***
 
 **Requirement:**
@@ -121,6 +123,15 @@ library(genepopedit)# load the library
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 
+##### genepop_fstat.R 
+* Convert Genepop format to fstat format.
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+**path** | the filepath & filename of output.
+**addworkspace** | logical to specify whether to save fstat conversion to path (default) or to workspace as Output_fstat object.
+
 ##### subset_genepop.R 
 * remove or keep a subset of loci 
 * remove populations 
@@ -132,7 +143,6 @@ library(genepopedit)# load the library
 **keep** | logical whether to keep loci specified by subs (default: TRUE) or to keep remaining loci.
 **sPop** | populations to be retained (default: NULL).
 **path** | the filepath & filename of output.
-
 
 ##### subset_genepop_aggregate.R
 * group populations based on Genepop population tags
@@ -348,4 +358,17 @@ _This function is best run at the beginning of the analysis prior to removal of 
   subid <- c("AAA_01","AAA_03","BBB_20","CCC_21","EEE_03","EEE_26","HHH_25","JJJ_04")
 
   subset_genepop_indiv(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
+```
+
+#genepop\_fstat
+
+If you are interested in doing calculating gene diversities and-or F-statistics with the cleaned loci datasets, you can convert from Genepop to FSTAT format 
+This data can be used by the R package 'hierfstat' <https://cran.r-project.org/web/packages/hierfstat/index.html> or the program 'FSTAT' <http://www2.unil.ch/popgen/softwares/fstat.htm>
+
+```r
+#convert Genepop format to FSTAT *note the .dat file format
+  genepop_fstat(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"Fstat_IDsubset.dat"))
+
+#convert Genepop format to FSTAT but keep the data in the workspace
+  genepop_fstat(GenePop="Genepop_IDsubset.txt",addworkspace=TRUE)
 ```
