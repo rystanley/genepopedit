@@ -443,3 +443,12 @@ This data can be used by the R package 'hierfstat' <https://cran.r-project.org/w
 #convert Genepop format to FSTAT but keep the data in the workspace
   genepop_fstat(GenePop="Genepop_IDsubset.txt",addworkspace=TRUE)
 ```
+
+#genepop\_fstat
+
+If you are interested in calculating summary information such as linkage disequilibrium it is useful to convert a genepop file into a 'genotype' format which can ue used by the R package 'genetics' <https://cran.r-project.org/web/packages/genetics/index.html> 
+
+```r
+#convert Genepop format to genotype *note this returns the genotype object to the workspace.
+  genepop_genotype(GenePop="Genepop_IDsubset.txt")
+```
