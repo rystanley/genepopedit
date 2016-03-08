@@ -110,7 +110,8 @@ library(genepopedit)# load the library
 **variable="Pops"** | returns vector of population names (default)
 **variable="PopNum"** | returns population summary table
 **variable="Loci"** | returns vector of loci names
-**variable="Inds"** | returns vector Sample IDs
+**variable="Inds"** | returns vector of Sample IDs
+**variable="Allele"** | returns vector of Alleles (*note this might include missing values)
 
 ##### genepop_flatten.R 
 * Convert Genepop format to a flattend dataframe:
@@ -251,6 +252,10 @@ Return *Loci names* using the file path instead of the workspace object.
 ```r
 LociNames <- genepop_detective("genepopedit_examplefile.txt",variable="Loci")
 ```
+
+Return *Allele values* using the file path instead of the workspace object.
+```r
+LociNames <- genepop_detective("genepopedit_examplefile.txt",variable="Allele")
 
 #genepop\_flatten
 Let assume you would like to inspect your genepop file as a flattened dataframe for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove Loci and-or Populations this must be before hand using *subset_genepop* or its sister functions (see below for examples).

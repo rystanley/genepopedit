@@ -9,10 +9,11 @@
 #' as single row (character).
 #' @param variable data to be returned
 #' Four options \code{default = "Pops"}
-#' "Pops" = vector of population names
-#' "PopNum" = dataframe of population names and counts
-#' "Inds" = vector of sample IDs
-#' "Loci" = vector of Loci
+#' "Pops" = vector of population names.
+#' "PopNum" = dataframe of population names and counts.
+#' "Inds" = vector of sample IDs.
+#' "Loci" = vector of Loci.
+#' "Allele" = vector of allele values.
 #' @rdname genepop_detective
 #' @importFrom tidyr separate
 #' @export
@@ -84,10 +85,23 @@ NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
 PopNum <- data.frame(table(NameExtract))
 colnames(PopNum)[1] <- "Population"
 
+#convert the snp data into character format to get rid of factor levels
+temp2[] <- lapply(temp2, as.character)
+
+#get the allele values summary header
+firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,3)))))
+secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,4,6)))))
+
+Allele <- unique(as.numeric(unique(unlist(firstAllele)))
+                 ,as.numeric(unique(unlist(secondAllele))))
+
+Allele <- Allele[order(Allele)] #sort the Allele values (NA or 0 will be first)
+
 #return data vector of interest
 if(variable=="Pops"){return(unique(NameExtract))}
 if(variable=="PopNum"){return(PopNum)}
 if(variable=="Inds"){return(NamePops)}
 if(variable=="Loci"){return(names(temp2))}
+if(variable=="Allele"){return(Allele)}
 
 }
