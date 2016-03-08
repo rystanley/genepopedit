@@ -450,5 +450,5 @@ If you are interested in calculating summary information such as linkage disequi
 
 ```r
 #convert Genepop format to genotype *note this returns the genotype object to the workspace.
-  genepop_genotype(GenePop="Genepop_IDsubset.txt")
+  GenotypeData <- genepop_genotype(GenePop="Genepop_IDsubset.txt")
 ```
