@@ -1,4 +1,4 @@
-# Subset Genepop Individuals
+# Subset samples from Genepop I
 #' @title Genepop remove or keep specific sample IDs
 #' @description Function for the manipulation of genopop format SNP datasets
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
@@ -12,12 +12,12 @@
 #' indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.
 #' @param keep logical whether to delete sample IDs specified by indiv (default: TRUE) or delete all other IDs.
 #' @param path the filepath and filename of output
-#' @rdname subset_genepop_indiv
+#' @rdname subset_genepop_individual
 #' @importFrom tidyr separate
 #' @export
 
 ##
-subset_genepop_indiv <- function(GenePop,indiv=NULL,keep=FALSE,path){
+subset_genepop_individual <- function(GenePop,indiv=NULL,keep=FALSE,path){
 
 #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){

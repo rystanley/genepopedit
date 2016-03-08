@@ -369,7 +369,7 @@ _This function is best run at the beginning of the analysis prior to removal of 
 #vector of sample IDs to remove
   subid <- c("AAA_01","AAA_03","BBB_20","CCC_21","EEE_03","EEE_26","HHH_25","JJJ_04")
 
-  subset_genepop_indiv(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
+  subset_genepop_individual(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
 #genepop\_sample
 Function which will allow you to create subsets of the genepop. This might be useful for creating training and leave-out datasets for assignment. 
@@ -425,10 +425,10 @@ For example if you wanted to create a training and assignment dataset  in genepo
 
 ```r
 #Create training dataset (keep=TRUE)
-  subset_genepop_indiv(GenePopData,indiv=SubSamp,keep=TRUE,path=paste0(output_dir,"Genepop_training.txt"))
+  subset_genepop_individual(GenePopData,indiv=SubSamp,keep=TRUE,path=paste0(output_dir,"Genepop_training.txt"))
 
 #Create an assignment dataset using the remaining individuals (keep=FALSE)
-  subset_genepop_indiv(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,"Genepop_assignment.txt"))
+  subset_genepop_individual(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,"Genepop_assignment.txt"))
 ```
 
 #genepop\_fstat
