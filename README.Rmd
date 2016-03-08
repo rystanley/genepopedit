@@ -428,7 +428,7 @@ For example if you wanted to create a training and assignment dataset  in genepo
   subset_genepop_indiv(GenePopData,indiv=SubSamp,keep=TRUE,path=paste0(output_dir,"Genepop_training.txt"))
 
 #Create an assignment dataset using the remaining individuals (keep=FALSE)
-  subset_genepop_indiv(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,"Genepop_training.txt"))
+  subset_genepop_indiv(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,"Genepop_assignment.txt"))
 ```
 
 #genepop\_fstat
