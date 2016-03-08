@@ -7,7 +7,7 @@
 #' or a single commma deliminated row of loci names followed by the locus data. Populations are
 #' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
 #' as single row (character).
-#' @param vector sample IDs of interest.
+#' @param indiv vector sample IDs of interest.
 #' These can be either the order by which they occur or the exact name of the loci
 #' indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.
 #' @param keep logical whether to delete sample IDs specified by indiv (default: TRUE) or delete all other IDs.

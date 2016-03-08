@@ -294,6 +294,50 @@ library(genepopedit)# load the library</code></pre>
 </tbody>
 </table>
 </div>
+<div id="genepop_sample.r" class="section level5">
+<h5>genepop_sample.R</h5>
+<ul>
+<li>Subsample individuals from a genepop file using population based random stratified sampling.</li>
+</ul>
+<table style="width:68%;">
+<colgroup>
+<col width="20%"></col>
+<col width="47%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>nsample</strong></td>
+<td align="left">object which defines sampling.</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>nsample (integer)</em></td>
+<td align="left">(e.g. nsample = 5) nsample will be sampled at random from each strata (population).</td>
+</tr>
+<tr class="even">
+<td align="left"><em>nsample (fraction)</em></td>
+<td align="left">(e.g. nsample = 0.5) a fraction will be sampled at random from each strata (population).</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>nsample (integer per population)</em></td>
+<td align="left">(e.g. number varying per population) nsample (column 2) will be sampled at random from each strata (column 1 population).</td>
+</tr>
+<tr class="even">
+<td align="left"><em>nsample (fraction per population)</em></td>
+<td align="left">(e.g. fraction varying per population) a fraction (column 2) will be sampled at random from each strata (column 1 population).</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="subset_genepop.r" class="section level5">
 <h5>subset_genepop.R</h5>
 <ul>
@@ -587,11 +631,33 @@ library(genepopedit)# load the library</code></pre>
 
   subset_genepop_indiv(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,&quot;Genepop_IDsubset.txt&quot;))</code></pre>
 </div>
+<div id="genepop_sample" class="section level1">
+<h1>genepop_sample</h1>
+<p>Function which will allow you to create subsets of the genepop. This might be useful for creating training and leave-out datasets for assignment.</p>
+<pre class="r"><code>#view how many individuals you have in each population
+genepop_detective(GenePopData,&quot;PopNum&quot;)</code></pre>
+<p>There are several ways we can sub-sample each population</p>
+<p>Use a fixed number</p>
+<pre class="r"><code>SubSamp &lt;- genepop_sample(GenePopData,nsample=5)</code></pre>
+<p>Use a fixed fraction</p>
+<pre class="r"><code>SubSamp &lt;- genepop_sample(GenePopData,nsample=0.25)</code></pre>
+<p>Use a fixed number which varies for each population</p>
+<pre class="r"><code>#vector of populations in the Genepop file
+Pops &lt;- genepop_detective(GenePopData,&quot;Pops&quot;)
+
+#create a dataframe which defines how many you want to sample from each population. Note here we create a column which has an entry for each population.
+subdf &lt;- data.frame(Pops=Pops,nsample=c(5,2,3,5,6,5,2,3,5,6))
+
+SubSamp &lt;- genepop_sample(GenePopData,nsample=0.25)</code></pre>
+</div>
 <div id="genepop_fstat" class="section level1">
 <h1>genepop_fstat</h1>
 <p>If you are interested in doing calculating gene diversities and-or F-statistics with the cleaned loci datasets, you can convert from Genepop to FSTAT format This data can be used by the R package ‘hierfstat’ <a href="https://cran.r-project.org/web/packages/hierfstat/index.html" class="uri">https://cran.r-project.org/web/packages/hierfstat/index.html</a> or the program ‘FSTAT’ <a href="http://www2.unil.ch/popgen/softwares/fstat.htm" class="uri">http://www2.unil.ch/popgen/softwares/fstat.htm</a></p>
 <pre class="r"><code>#convert Genepop format to FSTAT *note the .dat file format
-  genepop_fstat(GenePop=&quot;Genepop_IDsubset.txt&quot;,path=paste0(output_dir,&quot;Fstat_IDsubset.dat&quot;))</code></pre>
+  genepop_fstat(GenePop=&quot;Genepop_IDsubset.txt&quot;,path=paste0(output_dir,&quot;Fstat_IDsubset.dat&quot;))
+
+#convert Genepop format to FSTAT but keep the data in the workspace
+  genepop_fstat(GenePop=&quot;Genepop_IDsubset.txt&quot;,addworkspace=TRUE)</code></pre>
 </div>
 
 

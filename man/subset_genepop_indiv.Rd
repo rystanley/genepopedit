@@ -14,13 +14,13 @@ or a single commma deliminated row of loci names followed by the locus data. Pop
 seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
 as single row (character).}
 
+\item{indiv}{vector sample IDs of interest.
+These can be either the order by which they occur or the exact name of the loci
+indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.}
+
 \item{keep}{logical whether to delete sample IDs specified by indiv (default: TRUE) or delete all other IDs.}
 
 \item{path}{the filepath and filename of output}
-
-\item{vector}{sample IDs of interest.
-These can be either the order by which they occur or the exact name of the loci
-indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.}
 }
 \description{
 Function for the manipulation of genopop format SNP datasets

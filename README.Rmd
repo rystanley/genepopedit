@@ -132,6 +132,18 @@ library(genepopedit)# load the library
 **path** | the filepath & filename of output.
 **addworkspace** | logical to specify whether to save fstat conversion to path (default) or to workspace as Output_fstat object.
 
+##### genepop_sample.R 
+* Subsample individuals from a genepop file using population based random stratified sampling.
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+**nsample** | object which defines sampling.
+*nsample (integer)* | (e.g. nsample = 5) nsample will be sampled at random from each strata (population).
+*nsample (fraction)* | (e.g. nsample = 0.5) a fraction will be sampled at random from each strata (population).
+*nsample (integer per population)* | (e.g. number varying per population) nsample (column 2) will be sampled at random from each strata (column 1 population).
+*nsample (fraction per population)* | (e.g. fraction varying per population) a fraction (column 2) will be sampled at random from each strata (column 1 population).
+
 ##### subset_genepop.R 
 * remove or keep a subset of loci 
 * remove populations 
@@ -359,6 +371,57 @@ _This function is best run at the beginning of the analysis prior to removal of 
 
   subset_genepop_indiv(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
+#genepop\_sample
+Function which will allow you to create subsets of the genepop. This might be useful for creating training and leave-out datasets for assignment. 
+
+```r
+#view how many individuals you have in each population
+genepop_detective(GenePopData,"PopNum")
+```
+There are several ways we can sub-sample each population
+
+Use a fixed number (e.g. 5 from each population)
+```r
+SubSamp <- genepop_sample(GenePopData,nsample=5)
+```
+
+*or*
+
+
+Use a fixed fraction (e.g. 25% from each population)
+```r
+SubSamp <- genepop_sample(GenePopData,nsample=0.25)
+```
+
+*or*
+
+Use a fraction which varies for each population
+```r
+#vector of populations in the Genepop file
+Pops <- genepop_detective(GenePopData,"Pops")
+
+#create a dataframe which defines how many you want to sample from each population. Note here we create a column which has an entry for each population.
+subdf <- data.frame(Pops=Pops,nsample=c(5,2,3,5,6,5,2,3,5,6))
+
+SubSamp <- genepop_sample(GenePopData,nsample=subdf)
+```
+
+*or*
+
+Use a fraction which varies for each population
+```r
+#vector of populations in the Genepop file
+Pops <- genepop_detective(GenePopData,"Pops")
+
+#create a dataframe which defines how many you want to sample from each population. Note here we create a column which has an entry for each population.
+subdf <- data.frame(Pops=Pops,nsample=c(5,2,3,5,6,5,2,3,5,6)/10)
+
+SubSamp <- genepop_sample(GenePopData,nsample=subdf)
+```
+
+Once you select a method to sub-sample each population, you can use the function \subset_genepop_indiv to create the sampled genepop file.
+
+For example if you wanted to create a training dataset in genepop format using the SubSamp wh
 
 #genepop\_fstat
 
