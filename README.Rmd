@@ -444,7 +444,7 @@ This data can be used by the R package 'hierfstat' <https://cran.r-project.org/w
   genepop_fstat(GenePop="Genepop_IDsubset.txt",addworkspace=TRUE)
 ```
 
-#genepop\_fstat
+#genepop\_genotype
 
 If you are interested in calculating summary information such as linkage disequilibrium it is useful to convert a genepop file into a 'genotype' format which can ue used by the R package 'genetics' <https://cran.r-project.org/web/packages/genetics/index.html> 
 
