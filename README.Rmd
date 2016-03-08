@@ -376,13 +376,13 @@ Function which will allow you to create subsets of the genepop. This might be us
 
 ```r
 #view how many individuals you have in each population
-genepop_detective(GenePopData,"PopNum")
+  genepop_detective(GenePopData,"PopNum")
 ```
 There are several ways we can sub-sample each population
 
 Use a fixed number (e.g. 5 from each population)
 ```r
-SubSamp <- genepop_sample(GenePopData,nsample=5)
+  SubSamp <- genepop_sample(GenePopData,nsample=5)
 ```
 
 *or*
@@ -390,7 +390,7 @@ SubSamp <- genepop_sample(GenePopData,nsample=5)
 
 Use a fixed fraction (e.g. 25% from each population)
 ```r
-SubSamp <- genepop_sample(GenePopData,nsample=0.25)
+  SubSamp <- genepop_sample(GenePopData,nsample=0.25)
 ```
 
 *or*
@@ -398,12 +398,12 @@ SubSamp <- genepop_sample(GenePopData,nsample=0.25)
 Use a fraction which varies for each population
 ```r
 #vector of populations in the Genepop file
-Pops <- genepop_detective(GenePopData,"Pops")
+  Pops <- genepop_detective(GenePopData,"Pops")
 
 #create a dataframe which defines how many you want to sample from each population. Note here we create a column which has an entry for each population.
-subdf <- data.frame(Pops=Pops,nsample=c(5,2,3,5,6,5,2,3,5,6))
+  subdf <- data.frame(Pops=Pops,nsample=c(5,2,3,5,6,5,2,3,5,6))
 
-SubSamp <- genepop_sample(GenePopData,nsample=subdf)
+  SubSamp <- genepop_sample(GenePopData,nsample=subdf)
 ```
 
 *or*
@@ -411,17 +411,25 @@ SubSamp <- genepop_sample(GenePopData,nsample=subdf)
 Use a fraction which varies for each population
 ```r
 #vector of populations in the Genepop file
-Pops <- genepop_detective(GenePopData,"Pops")
+  Pops <- genepop_detective(GenePopData,"Pops")
 
 #create a dataframe which defines how many you want to sample from each population. Note here we create a column which has an entry for each population.
-subdf <- data.frame(Pops=Pops,nsample=c(5,2,3,5,6,5,2,3,5,6)/10)
+  subdf <- data.frame(Pops=Pops,nsample=c(5,2,3,5,6,5,2,3,5,6)/10)
 
-SubSamp <- genepop_sample(GenePopData,nsample=subdf)
+  SubSamp <- genepop_sample(GenePopData,nsample=subdf)
 ```
 
-Once you select a method to sub-sample each population, you can use the function \subset_genepop_indiv to create the sampled genepop file.
+Once you select a method to sub-sample each population, you can use the function subset-genepop-indiv to create the sampled genepop file.
 
-For example if you wanted to create a training dataset in genepop format using the SubSamp wh
+For example if you wanted to create a training and assignment dataset  in genepop format using the random stratified sampled we selected using subset-genepop-indiv:
+
+```r
+#Create training dataset (keep=TRUE)
+  subset_genepop_indiv(GenePopData,indiv=SubSamp,keep=TRUE,path=paste0(output_dir,"Genepop_training.txt"))
+
+#Create an assignment dataset using the remaining individuals (keep=FALSE)
+  subset_genepop_indiv(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,"Genepop_training.txt"))
+```
 
 #genepop\_fstat
 
