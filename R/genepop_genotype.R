@@ -87,7 +87,7 @@ genepop_genotype <- function(GenePop)
 #bind the alleles for a given locus and individual with a "/"
     genoframe=NULL
     for (i in 1:length(firstAllele)){
-    temp=paste(firstAllele[,1],secondAllele[,2],sep="/")
+    temp=paste(firstAllele[,i],secondAllele[,i],sep="/")
       genoframe=cbind(genoframe,temp)
     }
 
@@ -95,7 +95,7 @@ genepop_genotype <- function(GenePop)
     colnames(genoframe)=colnames(firstAllele)
 
     #convert to genotype object using the 'genetics' package.
-    genotypeObj=genetics::genotype(genoframe,sep="/",reorder="no")
+    genotypeObj=genetics::genotype(a1=firstAllele,a2=secondAllele,reorder="no")
 
     return(genotypeObj)
 
