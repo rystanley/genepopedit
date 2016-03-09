@@ -16,10 +16,11 @@ as single row (character).}
 
 \item{variable}{data to be returned
 Four options \code{default = "Pops"}
-"Pops" = vector of population names
-"PopNum" = dataframe of population names and counts
-"Inds" = vector of sample IDs
-"Loci" = vector of Loci}
+"Pops" = vector of population names.
+"PopNum" = dataframe of population names and counts.
+"Inds" = vector of sample IDs.
+"Loci" = vector of Loci.
+"Allele" = vector of allele values.}
 }
 \description{
 Funtion returns Genepop file meta-data.
