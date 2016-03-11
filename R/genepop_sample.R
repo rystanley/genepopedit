@@ -13,6 +13,7 @@
 #' if nsample is a dataframe then the number or fraction associated with each population will be sampled.
 #' where the first column is the population and the second is the number to be sampled.
 #' @rdname genepop_sample
+#' @import magrittr
 #' @importFrom tidyr separate
 #' @importFrom dplyr filter
 #' @importFrom dplyr sample_n
