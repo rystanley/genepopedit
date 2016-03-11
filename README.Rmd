@@ -193,12 +193,10 @@ library(genepopedit)# load the library
 ## Contributions:
 *genepopedit* was written in collaboration:
   
-  * Dr. Ryan Stanley^1^ <https://github.com/rystanley>
+  * Dr. Ryan Stanley <https://github.com/rystanley> - Corresponding developer.
   * Dr. Ian Bradbury <http://tinyurl.com/h3qrhkv>
   * Dr. Nick Jeffery <https://github.com/NickJeff13>
   * Brendan Wringe <https://github.com/bwringe>
-
-^1^Corresponding developer.
 
 This package has been developed to used by anyone who is looking for a more efficient and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package. 
 
