@@ -227,7 +227,11 @@ library(genepopedit)# load the library</code></pre>
 </tr>
 <tr class="even">
 <td align="left"><strong>variable=“Inds”</strong></td>
-<td align="left">returns vector Sample IDs</td>
+<td align="left">returns vector of Sample IDs</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>variable=“Allele”</strong></td>
+<td align="left">returns vector of Alleles (*note this might include missing values)</td>
 </tr>
 </tbody>
 </table>
@@ -445,6 +449,10 @@ library(genepopedit)# load the library</code></pre>
 <td align="left">a dataframe or path to a csv detailing the original and any edited population names.</td>
 </tr>
 <tr class="odd">
+<td align="left"><strong>renumber</strong></td>
+<td align="left">logical (default = FALSE) whether the sample numbers are to be replaced.</td>
+</tr>
+<tr class="even">
 <td align="left"><strong>path</strong></td>
 <td align="left">the filepath &amp; filename of output.</td>
 </tr>
@@ -534,6 +542,8 @@ library(genepopedit)# load the library</code></pre>
 <pre class="r"><code>SampleIDs &lt;- genepop_detective(GenePopData,variable=&quot;Inds&quot;)</code></pre>
 <p>Return <em>Loci names</em> using the file path instead of the workspace object.</p>
 <pre class="r"><code>LociNames &lt;- genepop_detective(&quot;genepopedit_examplefile.txt&quot;,variable=&quot;Loci&quot;)</code></pre>
+<p>Return <em>Allele values</em> using the file path instead of the workspace object.</p>
+<pre class="r"><code>Alleles &lt;- genepop_detective(&quot;genepopedit_examplefile.txt&quot;,variable=&quot;Allele&quot;)</code></pre>
 </div>
 <div id="genepop_flatten" class="section level1">
 <h1>genepop_flatten</h1>
@@ -587,6 +597,17 @@ library(genepopedit)# load the library</code></pre>
 
 #rename populations
   subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,&quot;Genepop_renamed.txt&quot;),nameframe=PopRename)</code></pre>
+<p>Populations can also be grouped by a common name. The result is similar to subset-genepop-aggregate except that population names will be replaced. Here it is useful to enable renumbering (renumber = TRUE) or there is a chance individuals with the same number will have the same ID if populations are combined.</p>
+<pre class="r"><code>#view the population names
+  genepop_detective(GenePopData,&quot;Pops&quot;)
+
+#create a dataframe for renaming. 
+#column 1 = the original pop names.
+#column 2 = the new names. 
+  PopRename_group &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),newname=c(&quot;Pop1&quot;,&quot;Pop1&quot;,&quot;Pop1&quot;,&quot;Pop1&quot;,&quot;Pop1&quot;,&quot;Pop2&quot;,&quot;Pop2&quot;,&quot;Pop2&quot;,&quot;Pop2&quot;,&quot;Pop2&quot;))
+
+#rename populations
+  subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,&quot;Genepop_renamed_renumbered.txt&quot;),nameframe=PopRename_group)</code></pre>
 </div>
 <div id="subset_genepop_aggregate" class="section level1">
 <h1>subset_genepop_aggregate</h1>
@@ -629,7 +650,7 @@ library(genepopedit)# load the library</code></pre>
 #vector of sample IDs to remove
   subid &lt;- c(&quot;AAA_01&quot;,&quot;AAA_03&quot;,&quot;BBB_20&quot;,&quot;CCC_21&quot;,&quot;EEE_03&quot;,&quot;EEE_26&quot;,&quot;HHH_25&quot;,&quot;JJJ_04&quot;)
 
-  subset_genepop_indiv(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,&quot;Genepop_IDsubset.txt&quot;))</code></pre>
+  subset_genepop_individual(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,&quot;Genepop_IDsubset.txt&quot;))</code></pre>
 </div>
 <div id="genepop_sample" class="section level1">
 <h1>genepop_sample</h1>
@@ -663,10 +684,10 @@ library(genepopedit)# load the library</code></pre>
 <p>Once you select a method to sub-sample each population, you can use the function subset-genepop-indiv to create the sampled genepop file.</p>
 <p>For example if you wanted to create a training and assignment dataset in genepop format using the random stratified sampled we selected using subset-genepop-indiv:</p>
 <pre class="r"><code>#Create training dataset (keep=TRUE)
-  subset_genepop_indiv(GenePopData,indiv=SubSamp,keep=TRUE,path=paste0(output_dir,&quot;Genepop_training.txt&quot;))
+  subset_genepop_individual(GenePopData,indiv=SubSamp,keep=TRUE,path=paste0(output_dir,&quot;Genepop_training.txt&quot;))
 
 #Create an assignment dataset using the remaining individuals (keep=FALSE)
-  subset_genepop_indiv(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,&quot;Genepop_assignment.txt&quot;))</code></pre>
+  subset_genepop_individual(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,&quot;Genepop_assignment.txt&quot;))</code></pre>
 </div>
 <div id="genepop_fstat" class="section level1">
 <h1>genepop_fstat</h1>
@@ -676,6 +697,12 @@ library(genepopedit)# load the library</code></pre>
 
 #convert Genepop format to FSTAT but keep the data in the workspace
   genepop_fstat(GenePop=&quot;Genepop_IDsubset.txt&quot;,addworkspace=TRUE)</code></pre>
+</div>
+<div id="genepop_genotype" class="section level1">
+<h1>genepop_genotype</h1>
+<p>If you are interested in calculating summary information such as linkage disequilibrium, it is useful to convert a genepop file into a ‘genotype’ format which can ue used by the R package ‘genetics’ <a href="https://cran.r-project.org/web/packages/genetics/index.html" class="uri">https://cran.r-project.org/web/packages/genetics/index.html</a></p>
+<pre class="r"><code>#convert Genepop format to genotype *note this returns the genotype object to the workspace.
+  GenotypeData &lt;- genepop_genotype(GenePop=&quot;Genepop_IDsubset.txt&quot;)</code></pre>
 </div>
 
 

@@ -175,6 +175,7 @@ library(genepopedit)# load the library
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **nameframe** | a dataframe or path to a csv detailing the original and any edited population names.
+**renumber** | logical (default: FALSE) whether the sample numbers are to be replaced. 
 **path** | the filepath & filename of output.
 
 ##### subset_genepop_individuals.R
@@ -325,6 +326,22 @@ Now lets change the names of some of the populations. In this example we will re
 #rename populations
   subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed.txt"),nameframe=PopRename)
 ```
+
+Populations can also be grouped by a common name. The result is similar to subset-genepop-aggregate except that population names will be replaced. Here it is useful to enable renumbering (renumber = TRUE) or there is a chance individuals with the same number will have the same ID if populations are combined. 
+
+```r
+#view the population names
+  genepop_detective(GenePopData,"Pops")
+
+#create a dataframe for renaming. 
+#column 1 = the original pop names.
+#column 2 = the new names. 
+  PopRename_group <- data.frame(oPop=c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),newname=c("Pop1","Pop1","Pop1","Pop1","Pop1","Pop2","Pop2","Pop2","Pop2","Pop2"))
+
+#rename populations
+  subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe=PopRename_group)
+```
+
 
 #subset\_genepop\_aggregate
 Now lets change group some populations together. In this example we will combine populations DDD/EEE & FFF/HHH and remove populations JJJ/GGG (*not listed in column 1 of PopRename*). No loci will be removed from this dataframe (*subs=NULL*). This is useful when you don't want a clustering program (e.g. STRUCTURE or Bayescan) to assume differences among population groups.
