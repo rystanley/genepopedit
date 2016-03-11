@@ -25,12 +25,15 @@
 #' CRA    CRA
 #' MAL    BON
 #' TRY    CRA
+#' @param renumber is a logical (default=FALSE) defining whether you want to change the sample unique identitiy
+#' i.e. sample number - BON_01 where 01 is the unique qauntity. If multiple populations are combined this will
+#' prevent two samples from having the same name.
 #' @param path the filepath and filename of output.
 #' @rdname subset_genepop_rename
 #' @importFrom tidyr separate
 #' @export
 
-subset_genepop_rename <- function(GenePop,path,nameframe){
+subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,path){
 
 #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -134,12 +137,23 @@ subset_genepop_rename <- function(GenePop,path,nameframe){
     popvec1 <- unlist(strsplit(gsub(pattern="_",replacement="",temp[,1]),split = "[^0-9]+"))
     popvec2 <- popvec1[which(popvec1 != "")]
 
+    #If you need to rename the population id identifiers
+    if(renumber)
+        {
+          popvec2=NULL
+          for (i in 1:length(table(NameExtract2)))
+          {
+            popvec2=c(popvec2,sub('^(.)$', '0\\1', 1:table(NameExtract2)[i]))
+          }
+        }
+
     PopVec <- paste0(NameExtract2,"_",popvec2," ,  ")
 
     #Paste these to the Loci
     Loci <- paste(PopVec,Loci,sep="")
 
     #Insert the value of "Pop" which partitions the data among populations #only if more than one population
+
     if(length(table(NameExtract2))!=1){Loci <- insert_vals(Vec=Loci,breaks=PopPosition,newVal="Pop")}
 
     #Add the first "Pop" label

@@ -4,7 +4,7 @@
 \alias{subset_genepop_rename}
 \title{Genepop subset and rename populations}
 \usage{
-subset_genepop_rename(GenePop, path, nameframe)
+subset_genepop_rename(GenePop, nameframe, renumber = FALSE, path)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
@@ -13,8 +13,6 @@ This will the standard genepop format with a the first n+1 rows corresponding th
 or a single commma deliminated row of loci names followed by the locus data. Populations are
 seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
 as single row (character).}
-
-\item{path}{the filepath and filename of output.}
 
 \item{nameframe}{a dataframe or path to a csv. This must be specified in this function
 this dataframe contains two columns. Column 1 corresponds to the population names. These names
@@ -34,6 +32,12 @@ EDN    EDN
 CRA    CRA
 MAL    BON
 TRY    CRA}
+
+\item{renumber}{is a logical (default=FALSE) defining whether you want to change the sample unique identitiy
+i.e. sample number - BON_01 where 01 is the unique qauntity. If multiple populations are combined this will
+prevent two samples from having the same name.}
+
+\item{path}{the filepath and filename of output.}
 }
 \description{
 Function for the manipulation of genopop format SNP datasets and renaming of populations
