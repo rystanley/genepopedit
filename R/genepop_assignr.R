@@ -1,4 +1,4 @@
-# Genepop -> New assignr
+# Genepop -> assignr
 #' @title Convert Genepop to assignr format.
 #' @description Function to convert Genepop to assignr
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
@@ -113,10 +113,11 @@ if(is.null(popgroup)) #if popgroup isn NULL
 
 }
 
-temp3 <- cbind(groupvec,NamePops,temp$snps)
+temp3 <- data.frame(groupvec,NamePops,temp$snps)
+Loci <- do.call(paste,c(temp3[,], sep=" "))
 headinfo <- paste("POP_ID","INDIVIDUALS",do.call(paste,c(as.list(colnames(temp2)))))
 
-Output=rbind(headinfo,temp3)
+Output=c(headinfo,Loci)
 
 write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
