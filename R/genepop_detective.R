@@ -88,9 +88,11 @@ colnames(PopNum)[1] <- "Population"
 #convert the snp data into character format to get rid of factor levels
 temp2[] <- lapply(temp2, as.character)
 
+alleleEx <- as.character(temp2[1,1])
+
 #get the allele values summary header
-firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,3)))))
-secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,4,6)))))
+firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,(nchar(alleleEx)/2))))))
+secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(nchar(alleleEx)/2)+1,nchar(alleleEx))))))
 
 Allele <- unique(as.numeric(unique(unlist(firstAllele)))
                  ,as.numeric(unique(unlist(secondAllele))))
