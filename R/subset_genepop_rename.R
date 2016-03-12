@@ -9,7 +9,7 @@
 #' as single row (character).
 #' @param nameframe a dataframe or path to a csv. This must be specified in this function
 #' this dataframe contains two columns. Column 1 corresponds to the population names. These names
-#' should match the individual IDs (e.g. BON01  , 110110 120120 -- would be 'BON'). The next column
+#' should match the individual IDs (e.g. BON_01  , 110110 120120 -- would be 'BON'). The next column
 #' has the new names that you want to change or rename. If you don't want to change the name then just repeat
 #' from column one in that row. **Note if this is a reference to a path then there should be column headers
 #' though the headers do not need to match this example. If the input is a dataframe object from the
