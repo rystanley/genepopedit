@@ -125,6 +125,7 @@ Pull request how-to:
     * Population counts
     * Sample IDs
     * Loci
+    * Alleles
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
