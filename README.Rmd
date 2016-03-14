@@ -119,7 +119,7 @@ Pull request how-to:
 ***
 #**Diagnostics**
 
-##### genepop_detective.R 
+#### genepop_detective.R 
 * extract quick meta-data from Genepop file
     * Population names
     * Population counts
@@ -141,7 +141,7 @@ Pull request how-to:
 
 #**Manipulation**
 
-##### subset_genepop.R 
+#### subset_genepop.R 
 * remove or keep a subset of loci 
 * remove populations 
 
@@ -153,7 +153,7 @@ Pull request how-to:
 **sPop** | populations to be retained (default: NULL).
 **path** | the filepath & filename of output.
 
-##### subset_genepop_aggregate.R
+#### subset_genepop_aggregate.R
 * group populations based on Genepop population tags
 
 **Variable name** | **Input**  
@@ -164,7 +164,7 @@ Pull request how-to:
 **agPopFrame** | a dataframe or path to a csv detailing the population names & populations to be aggregated.
 **path** | the filepath & filename of output.
 
-##### subset_genepop_rename.R
+#### subset_genepop_rename.R
 * subset and-or rename populations
 
 **Variable name** | **Input**  
@@ -174,7 +174,7 @@ Pull request how-to:
 **renumber** | logical (default: FALSE) whether the sample numbers are to be replaced. 
 **path** | the filepath & filename of output.
 
-##### subset_genepop_individuals.R
+#### subset_genepop_individuals.R
 * remove or keep a subset of individuals
 
 **Variable name** | **Input**  
@@ -188,7 +188,7 @@ Pull request how-to:
 
 #**Sampling**
 
-##### genepop_sample.R 
+#### genepop_sample.R 
 * Subsample individuals from a genepop file using population based random stratified sampling.
   
 **Variable name** | **Input**  
@@ -205,7 +205,7 @@ Pull request how-to:
 
 #**Conversion**
 
-##### genepop_structure.R 
+#### genepop_structure.R 
 * Convert Genepop format to NewHybrids format.
   <http://pritchardlab.stanford.edu/structure.html>
   
@@ -215,7 +215,7 @@ Pull request how-to:
 **popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then populaton levels will be assigned an individual group.
 **path** | the filepath & filename of output.
 
-##### genepop_fstat.R 
+#### genepop_fstat.R 
 * Convert Genepop format to fstat format.
 <https://cran.r-project.org/web/packages/hierfstat/index.html>
   
@@ -225,7 +225,7 @@ Pull request how-to:
 **path** | the filepath & filename of output.
 **addworkspace** | logical to specify whether to save fstat conversion to path (default) or to workspace as Output_fstat object.
 
-##### genepop_newhybrids.R 
+#### genepop_newhybrids.R 
 * Convert Genepop format to NewHybrids format.
   <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>
   
@@ -234,7 +234,7 @@ Pull request how-to:
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 **path** | the filepath & filename of output.
 
-##### genepop_assignr.R 
+#### genepop_assignr.R 
 * Convert Genepop format to assignr format.
 <https://github.com/thierrygosselin/assigner>
   
@@ -244,7 +244,7 @@ Pull request how-to:
 **popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then populaton levels will be assigned an individual group.
 **path** | the filepath & filename of output.
 
-##### genepop_bgc.R 
+#### genepop_bgc.R 
 * Convert Genepop format to Bayesian Genomic Clines (BGC) format (3 files).
 <https://sites.google.com/site/bgcsoftware/>
   
@@ -255,7 +255,7 @@ Pull request how-to:
 **fname** | collective name assigned to each output the output files (3).
 **path** | the filepath & filename of output.
 
-##### genepop_flatten.R 
+#### genepop_flatten.R 
 * Convert Genepop format to a flattend dataframe:
     * Sample IDs
     * Population
