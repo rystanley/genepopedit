@@ -14,11 +14,13 @@ Maintainer: Ryan Stanley <ryan.stanley@dfo-mpo.gc.ca>
 Depends:
     R (>= 3.0.1)
 Imports:
-    tidyr
+    tidyr,
+    dplyr,
+    magrittr
 Suggests:
-    plyr,
-    knitr,
-    rmarkdown
+    adegenet,
+    ade4,
+    hierfstat
 License: GPL (>=2)
 LazyLoad: yes
 LazyData: true
