@@ -119,8 +119,6 @@ Pull request how-to:
 ***
 #**Diagnostics**
 
-## genepopedit functions:
-
 ##### genepop_detective.R 
 * extract quick meta-data from Genepop file
     * Population names
