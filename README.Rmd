@@ -1,6 +1,6 @@
 #genepopedit
 
-The goal of **genepopedit** is to provide a simple and flexible tool for manipulating large multi-locus datasets in R. 
+The goal of **genepopedit** is to provide a simple and flexible tool for manipulating large multi-locus genotype datasets in R. 
 
 **Use genepopedit to subset a SNP dataset by:**
 
@@ -28,7 +28,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 ***
 
 **Requirement:**
-genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically we use the _three number_ format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names can listed in the first row seperated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
+genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically, we use the _three number_ format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names can listed in the first row separated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
 
     nrows = nLOCI + nINDIVIDUALS + nPOPULATIONS - 1
     
@@ -57,7 +57,7 @@ _* if STACKS version is not specified_
     TAG_03  , 120120 110110 110110
     TAG_04  , 120120 110110 110110
 
-Alternatively the loci names can be read in the first row as a single character seperated by commas. 
+Alternatively the loci names can be read in the first row as a single character separated by commas. 
 
     Loci_1,Loci_2,Loci,3
     Pop
@@ -88,7 +88,7 @@ library(devtools) # to load
 
 **Step 2** Install *genepopedit*:
 ```r
-#Install the package from *Github*
+#install the package from *Github*
 install_github("rystanley/genepopedit") 
 library(genepopedit)# load the library
 ```
@@ -103,7 +103,7 @@ library(genepopedit)# load the library
   * Dr. Nick Jeffery <https://github.com/NickJeff13>
   * Brendan Wringe <https://github.com/bwringe>
 
-This package has been developed to used by anyone who is looking for a more efficient and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package. 
+This package has been developed to used by anyone who is looking for a more efficient and **repeatable** method to manipulate large multi-locus datasets. The package is open, and I encourage you to tinker and look for improvements. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package.
 
 * If you don’t understand something, please let me know: 
 (ryan.stanley _at_ dfo-mpo.gc.ca). 
@@ -213,7 +213,7 @@ Pull request how-to:
 **Variable name** | **Input**  
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
-**popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then populaton levels will be assigned an individual group.
+**popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then population levels will be assigned an individual group.
 **path** | the filepath & filename of output.
 
 #### genepop_fstat.R 
@@ -242,7 +242,7 @@ Pull request how-to:
 **Variable name** | **Input**  
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
-**popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then populaton levels will be assigned an individual group.
+**popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then population levels will be assigned an individual group.
 **path** | the filepath & filename of output.
 
 #### genepop_bgc.R 
@@ -326,7 +326,7 @@ Alleles <- genepop_detective("genepopedit_examplefile.txt",variable="Allele")
 #**Manipulation**
 
 ##subset\_genepop
-Lets create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, & 94*. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100).
+Create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, & 94*. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100).
 
 ```r
 #inspect the names of the loci within the Genepop data
@@ -366,7 +366,7 @@ You can also remove populations within this function. Here we again select loci 
 ```
 
 ##subset\_genepop\_rename
-Now lets change the names of some of the populations. In this example we will rename populations DDD & HHH to YYY & ZZZ.
+Now change the names of some of the populations. In this example we will rename populations DDD & HHH to YYY & ZZZ.
 
 ```r
 #view the population names
@@ -382,7 +382,7 @@ Now lets change the names of some of the populations. In this example we will re
   subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed.txt"),nameframe=PopRename)
 ```
 
-Populations can also be grouped by a common name. The result is similar to subset-genepop-aggregate except that population names will be replaced. Here it is useful to enable renumbering (renumber = TRUE) or there is a chance individuals with the same number will have the same ID if populations are combined. 
+Populations can also be grouped by a common name. The result is similar to subset-genepop-aggregate except that population names will be replaced. Here it is useful to enable renumbering (renumber = TRUE) or there individuals with the same number will be assigned the same ID, if populations are combined. 
 
 ```r
 #view the population names
@@ -519,13 +519,13 @@ For example if you wanted to create a training and assignment dataset  in genepo
 #**Conversion**
 
 ##genepop\_structure
-If you are interested in investigating population structure you can convert your modified Genepop object or path to saved file direclty into a STRUCTURE formated text (.str) file <http://pritchardlab.stanford.edu/structure.html>. 
+If you are interested in investigating population structure you can convert your modified Genepop object or path to saved file directly into a STRUCTURE formatted text (.str) file <http://pritchardlab.stanford.edu/structure.html>. 
 
 ```r
 #convert Genepop format to STRUCTURE to default groupings
   genepop_structure(GenePop="Genepop_IDsubset.txt"path=paste0(output_dir,"Sturcture_IDsubset_groups.txt")
   
-# Specify population groupings(group CCC/DDD/EEE and III/JJJ)
+# Specify population groupings (group CCC/DDD/EEE and III/JJJ)
   pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),                      groups = c("1","2","3","3","3","4","5","6","7","7"))
 
 #convert Genepop format to STRUCTURE with new groupings
@@ -555,7 +555,7 @@ If you are interested in testing for hybridization you can convert from Genepop 
 ```
 
 ##genepop\_assignr
-If you are interested conducting assignment analysis you can convert to the inport format needed for the R package "assignr" <https://github.com/thierrygosselin/assigner>. 
+If you are interested conducting assignment analysis, you can convert to the format required for the R package "assignr" <https://github.com/thierrygosselin/assigner>. 
 
 ```r
 #convert Genepop format to assignr format (.txt) using the populations each as their own assessment level
@@ -569,10 +569,10 @@ If you are interested conducting assignment analysis you can convert to the inpo
 ```
 
 ##genepop\_bgc
-If you are interested evaluting genomic clines and introgression among loci you can convert to the "Bayesian estimation of Genomic Clines (BGC) format. Note here you must specify which populations you consider to be ancestral or 'parental' (P1,P2) and which you assume could be hybridized (Admixed). <https://sites.google.com/site/bgcsoftware/>. 
+If you are interested evaluating genomic clines and introgression among loci you can convert to the "Bayesian estimation of Genomic Clines (BGC) format. Note here you must specify which populations you consider to be ancestral or 'parental' (P1,P2) and which you assume could be hybridized (Admixed). <https://sites.google.com/site/bgcsoftware/>. 
 
 ```r
-#specifiy which populations are going to be included in the analysis and to which class they belong
+#specify which populations are going to be included in the analysis and to which class they belong
 BGC_groups=data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),
                       groups = c("P1","P1","P1","Admixed","Admixed","Admixed","Admixed","P2","P2","P2"))
 
@@ -582,7 +582,7 @@ genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset
 ```
 
 ##genepop\_flatten
-Flatten your geneotype data for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove Loci and-or Populations this must be before hand using *subset_genepop* or its sister functions (see below for examples).
+Flatten your geneotype data for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove loci and-or populations, this must be before hand using *subset_genepop* or its sister functions (see below for examples).
 
 ```r
 #Flatten the dataframe
