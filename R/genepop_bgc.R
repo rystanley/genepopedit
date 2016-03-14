@@ -25,7 +25,7 @@
 #' @export
 
 
-genepop_bgc <- function(genepop,popdef,fname,dir){
+genepop_bgc <- function(GenePop,popdef,fname,dir){
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -197,27 +197,27 @@ genepop_bgc <- function(genepop,popdef,fname,dir){
           for(col in names(MixedStruct)[4:length(MixedStruct)])
             {
 
-            temp1 <- MixedStruct[,c("ID","Pop",col)]
+            temp3 <- MixedStruct[,c("ID","Pop",col)]
             Locushold <- paste("locus_",col,sep="") # Start the locus data
 
               for (i in unique(MixedStruct$Pop)) # each populatoin
                 {
 
-                temp2 <- filter(temp1,Pop==i) # subset for the population
+                temp4 <- filter(temp3,Pop==i) # subset for the population
 
                 #Reformat the data for one row for each individaul (ID, Pop, Allele1, Allele2)
-                temp3 <- data.frame(ID=temp2[seq(1,nrow(temp2),2),"ID"],
-                                    Pop=temp2[seq(1,nrow(temp2),2),"Pop"],
-                                    allele1=temp2[seq(1,nrow(temp2),2),col],
-                                    allele2=temp2[seq(2,nrow(temp2),2),col],
-                                    alleleMax=max(temp2[,col],na.rm=T),
-                                    alleleMin=min(temp2[which(temp2[,col]>(-1)),col],na.rm=T))
+                temp5 <- data.frame(ID=temp4[seq(1,nrow(temp4),2),"ID"],
+                                    Pop=temp4[seq(1,nrow(temp4),2),"Pop"],
+                                    allele1=temp4[seq(1,nrow(temp4),2),col],
+                                    allele2=temp4[seq(2,nrow(temp4),2),col],
+                                    alleleMax=max(temp4[,col],na.rm=T),
+                                    alleleMin=min(temp4[which(temp4[,col]>(-1)),col],na.rm=T))
 
-                temp4 <- as.data.frame(temp3%>%group_by(ID)%>%do(col1=aCount(.)[1],col2=aCount(.)[2])%>%ungroup())
+                temp6 <- as.data.frame(temp5%>%group_by(ID)%>%do(col1=aCount(.)[1],col2=aCount(.)[2])%>%ungroup())
 
-                temp5 <- paste(temp4[,"col1"],temp4[,"col2"],sep=" ")
+                temp7 <- paste(temp6[,"col1"],temp6[,"col2"],sep=" ")
 
-                Locushold <- c(Locushold,paste("pop_",i,sep=""),temp5)
+                Locushold <- c(Locushold,paste("pop_",i,sep=""),temp7)
 
               } #end of population loop
 
