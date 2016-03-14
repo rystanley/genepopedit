@@ -116,20 +116,22 @@ $(document).ready(function () {
 <p>The goal of <strong>genepopedit</strong> is to provide a simple and flexible tool for manipulating large multi-locus datasets in R.</p>
 <p><strong>Use genepopedit to subset a SNP dataset by:</strong></p>
 <ul>
-<li><p>removing specified loci</p></li>
-<li><p>removing specified populations</p></li>
-<li><p>removing specified individuals</p></li>
-<li><p>renaming populations</p></li>
-<li><p>grouping populations</p></li>
-<li>extracting meta-data
+<li><p>removing specified loci.</p></li>
+<li><p>removing specified populations.</p></li>
+<li><p>removing specified individuals.</p></li>
+<li><p>renaming populations.</p></li>
+<li><p>grouping populations.</p></li>
+<li>extracting meta-data:
 <ul>
-<li>population names</li>
-<li>population counts</li>
-<li>sample IDs</li>
-<li>loci names</li>
+<li>population names.</li>
+<li>population counts.</li>
+<li>sample IDs.</li>
+<li>loci names.</li>
+<li>allele calls.</li>
 </ul></li>
-<li><p>flatten Genepop file into a dataframe</p></li>
-<li><p>convert Genepop to fstat format.</p></li>
+<li><p>create datasets for training, assignment, and outlier detection, according to a population stratified random sample.</p></li>
+<li><p>flatten Genepop file into a dataframe.</p></li>
+<li><p>convert Genepop to STRUCTURE, assignr, BGC, fstat, and format.</p></li>
 </ul>
 <hr />
 <p><strong>Requirement:</strong> genepopedit functions through the manipulation of multi-locus SNP files structured in the <em>Genepop</em> file format <a href="http://genepop.curtin.edu.au/" class="uri">http://genepop.curtin.edu.au/</a>. Specifically we use the <em>three number</em> format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names can listed in the first row seperated by columns or each on their own row so that the total number of rows in the <em>Genepop</em> file equals:</p>
@@ -180,6 +182,32 @@ install_github(&quot;rystanley/genepopedit&quot;)
 library(genepopedit)# load the library</code></pre>
 <hr />
 </div>
+<div id="contributions" class="section level2">
+<h2>Contributions:</h2>
+<p><em>genepopedit</em> was written in collaboration:</p>
+<ul>
+<li>Dr. Ryan Stanley <a href="https://github.com/rystanley" class="uri">https://github.com/rystanley</a> - Corresponding developer.</li>
+<li>Dr. Ian Bradbury <a href="http://tinyurl.com/h3qrhkv" class="uri">http://tinyurl.com/h3qrhkv</a></li>
+<li>Dr. Nick Jeffery <a href="https://github.com/NickJeff13" class="uri">https://github.com/NickJeff13</a></li>
+<li>Brendan Wringe <a href="https://github.com/bwringe" class="uri">https://github.com/bwringe</a></li>
+</ul>
+<p>This package has been developed to used by anyone who is looking for a more efficient and <strong>repeatable</strong> method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional functions <em>and-or</em> functionality, and improve the efficiency of the package.</p>
+<ul>
+<li>If you don’t understand something, please let me know: (ryan.stanley <em>at</em> dfo-mpo.gc.ca).</li>
+<li>Any ideas on how to improve the functionality is very much appreciated.</li>
+<li>If you spot a typo, feel free to edit and send a pull request.</li>
+</ul>
+<p>Pull request how-to:</p>
+<ul>
+<li>Click the edit this page on the sidebar.</li>
+<li>Make the changes using github’s in-page editor and save.</li>
+<li>Submit a pull request and include a brief description of your changes. (e.g. “<em>spelling errors</em>” or “<em>indexing error</em>”).</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="diagnostics" class="section level1">
+<h1><strong>Diagnostics</strong></h1>
 <div id="genepopedit-functions" class="section level2">
 <h2>genepopedit functions:</h2>
 <div id="genepop_detective.r" class="section level5">
@@ -207,141 +235,27 @@ library(genepopedit)# load the library</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left"><strong>Genepop</strong></td>
-<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file.</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>variable</strong></td>
-<td align="left">variable to report</td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>variable=“Pops”</strong></td>
-<td align="left">returns vector of population names (default)</td>
-</tr>
-<tr class="even">
-<td align="left"><strong>variable=“PopNum”</strong></td>
-<td align="left">returns population summary table</td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>variable=“Loci”</strong></td>
-<td align="left">returns vector of loci names</td>
-</tr>
-<tr class="even">
-<td align="left"><strong>variable=“Inds”</strong></td>
-<td align="left">returns vector of Sample IDs</td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>variable=“Allele”</strong></td>
-<td align="left">returns vector of Alleles (*note this might include missing values)</td>
+<td align="left">variable to report.</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="genepop_flatten.r" class="section level5">
-<h5>genepop_flatten.R</h5>
 <ul>
-<li>Convert Genepop format to a flattend dataframe:
-<ul>
-<li>Sample IDs</li>
-<li>Population</li>
-<li>Sample number</li>
-<li>Loci</li>
-</ul></li>
+<li>variable=“Pops” -&gt; returns vector of population names (default)</li>
+<li>variable=“PopNum” -&gt; returns population summary table</li>
+<li>variable=“Loci” -&gt; returns vector of loci names</li>
+<li>variable=“Inds” -&gt; returns vector of Sample IDs</li>
+<li>variable=“Allele” -&gt; returns vector of Alleles (*note this might include missing values)</li>
 </ul>
-<table style="width:68%;">
-<colgroup>
-<col width="20%"></col>
-<col width="47%"></col>
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left"><strong>Variable name</strong></th>
-<th align="left"><strong>Input</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><strong>Genepop</strong></td>
-<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
-</tr>
-</tbody>
-</table>
+<hr />
 </div>
-<div id="genepop_fstat.r" class="section level5">
-<h5>genepop_fstat.R</h5>
-<ul>
-<li>Convert Genepop format to fstat format.</li>
-</ul>
-<table style="width:68%;">
-<colgroup>
-<col width="20%"></col>
-<col width="47%"></col>
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left"><strong>Variable name</strong></th>
-<th align="left"><strong>Input</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><strong>Genepop</strong></td>
-<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
-</tr>
-<tr class="even">
-<td align="left"><strong>path</strong></td>
-<td align="left">the filepath &amp; filename of output.</td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>addworkspace</strong></td>
-<td align="left">logical to specify whether to save fstat conversion to path (default) or to workspace as Output_fstat object.</td>
-</tr>
-</tbody>
-</table>
 </div>
-<div id="genepop_sample.r" class="section level5">
-<h5>genepop_sample.R</h5>
-<ul>
-<li>Subsample individuals from a genepop file using population based random stratified sampling.</li>
-</ul>
-<table style="width:68%;">
-<colgroup>
-<col width="20%"></col>
-<col width="47%"></col>
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left"><strong>Variable name</strong></th>
-<th align="left"><strong>Input</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><strong>Genepop</strong></td>
-<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
-</tr>
-<tr class="even">
-<td align="left"><strong>nsample</strong></td>
-<td align="left">object which defines sampling.</td>
-</tr>
-<tr class="odd">
-<td align="left"><em>nsample (integer)</em></td>
-<td align="left">(e.g. nsample = 5) nsample will be sampled at random from each strata (population).</td>
-</tr>
-<tr class="even">
-<td align="left"><em>nsample (fraction)</em></td>
-<td align="left">(e.g. nsample = 0.5) a fraction will be sampled at random from each strata (population).</td>
-</tr>
-<tr class="odd">
-<td align="left"><em>nsample (integer per population)</em></td>
-<td align="left">(e.g. number varying per population) nsample (column 2) will be sampled at random from each strata (column 1 population).</td>
-</tr>
-<tr class="even">
-<td align="left"><em>nsample (fraction per population)</em></td>
-<td align="left">(e.g. fraction varying per population) a fraction (column 2) will be sampled at random from each strata (column 1 population).</td>
-</tr>
-</tbody>
-</table>
 </div>
+<div id="manipulation" class="section level1">
+<h1><strong>Manipulation</strong></h1>
 <div id="subset_genepop.r" class="section level5">
 <h5>subset_genepop.R</h5>
 <ul>
@@ -497,31 +411,243 @@ library(genepopedit)# load the library</code></pre>
 <hr />
 </div>
 </div>
-<div id="contributions" class="section level2">
-<h2>Contributions:</h2>
-<p><em>genepopedit</em> was written in collaboration:</p>
+<div id="sampling" class="section level1">
+<h1><strong>Sampling</strong></h1>
+<div id="genepop_sample.r" class="section level5">
+<h5>genepop_sample.R</h5>
 <ul>
-<li>Dr. Ryan Stanley <a href="https://github.com/rystanley" class="uri">https://github.com/rystanley</a> - Corresponding developer.</li>
-<li>Dr. Ian Bradbury <a href="http://tinyurl.com/h3qrhkv" class="uri">http://tinyurl.com/h3qrhkv</a></li>
-<li>Dr. Nick Jeffery <a href="https://github.com/NickJeff13" class="uri">https://github.com/NickJeff13</a></li>
-<li>Brendan Wringe <a href="https://github.com/bwringe" class="uri">https://github.com/bwringe</a></li>
+<li>Subsample individuals from a genepop file using population based random stratified sampling.</li>
 </ul>
-<p>This package has been developed to used by anyone who is looking for a more efficient and <strong>repeatable</strong> method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional functions <em>and-or</em> functionality, and improve the efficiency of the package.</p>
+<table style="width:68%;">
+<colgroup>
+<col width="20%"></col>
+<col width="47%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><em>Genepop</em></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
+</tr>
+<tr class="even">
+<td align="left"><em>nsample</em></td>
+<td align="left">object which defines sampling.</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>If you don’t understand something, please let me know: (ryan.stanley <em>at</em> dfo-mpo.gc.ca).</li>
-<li>Any ideas on how to improve the functionality is very much appreciated.</li>
-<li>If you spot a typo, feel free to edit and send a pull request.</li>
+<li>nsample (integer) -&gt; (e.g. nsample = 5) nsample will be sampled at random from each strata (population).</li>
+<li>nsample (fraction) -&gt; (e.g. nsample = 0.5) a fraction will be sampled at random from each strata (population).</li>
+<li>nsample (integer per population) -&gt; (e.g. number varying per population) nsample (column 2) will be sampled at random from each strata (column 1 population).</li>
+<li>nsample (fraction per population) -&gt; (e.g. fraction varying per population) a fraction (column 2) will be sampled at random from each strata (column 1 population).</li>
 </ul>
-<p>Pull request how-to:</p>
+<hr />
+</div>
+</div>
+<div id="conversion" class="section level1">
+<h1><strong>Conversion</strong></h1>
+<div id="genepop_structure.r" class="section level5">
+<h5>genepop_structure.R</h5>
 <ul>
-<li>Click the edit this page on the sidebar.</li>
-<li>Make the changes using github’s in-page editor and save.</li>
-<li>Submit a pull request and include a brief description of your changes. (e.g. “<em>spelling errors</em>” or “<em>indexing error</em>”).</li>
+<li>Convert Genepop format to NewHybrids format. <a href="http://pritchardlab.stanford.edu/structure.html" class="uri">http://pritchardlab.stanford.edu/structure.html</a></li>
 </ul>
+<table style="width:68%;">
+<colgroup>
+<col width="20%"></col>
+<col width="47%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>popgroup</strong></td>
+<td align="left">popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then populaton levels will be assigned an individual group.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>path</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="genepop_fstat.r" class="section level5">
+<h5>genepop_fstat.R</h5>
+<ul>
+<li>Convert Genepop format to fstat format. <a href="https://cran.r-project.org/web/packages/hierfstat/index.html" class="uri">https://cran.r-project.org/web/packages/hierfstat/index.html</a></li>
+</ul>
+<table style="width:68%;">
+<colgroup>
+<col width="20%"></col>
+<col width="47%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>path</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>addworkspace</strong></td>
+<td align="left">logical to specify whether to save fstat conversion to path (default) or to workspace as Output_fstat object.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="genepop_newhybrids.r" class="section level5">
+<h5>genepop_newhybrids.R</h5>
+<ul>
+<li>Convert Genepop format to NewHybrids format. <a href="http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs" class="uri">http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs</a></li>
+</ul>
+<table style="width:68%;">
+<colgroup>
+<col width="20%"></col>
+<col width="47%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>path</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="genepop_assignr.r" class="section level5">
+<h5>genepop_assignr.R</h5>
+<ul>
+<li>Convert Genepop format to assignr format. <a href="https://github.com/thierrygosselin/assigner" class="uri">https://github.com/thierrygosselin/assigner</a></li>
+</ul>
+<table style="width:68%;">
+<colgroup>
+<col width="20%"></col>
+<col width="47%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>popgroup</strong></td>
+<td align="left">popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then populaton levels will be assigned an individual group.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>path</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="genepop_bgc.r" class="section level5">
+<h5>genepop_bgc.R</h5>
+<ul>
+<li>Convert Genepop format to Bayesian Genomic Clines (BGC) format (3 files). <a href="https://sites.google.com/site/bgcsoftware/" class="uri">https://sites.google.com/site/bgcsoftware/</a></li>
+</ul>
+<table style="width:68%;">
+<colgroup>
+<col width="20%"></col>
+<col width="47%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>popdef</strong></td>
+<td align="left">popgroup is a dataframe or path to a csv. This dataframe contains two columns. Column 1 corresponds to the population names. The next column has the grouping classification corresponding to each population defining parental 1 (“P1”) parental 2 (“P2”) and admixed (“Admixed”) populations.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>fname</strong></td>
+<td align="left">collective name assigned to each output the output files (3).</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>path</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="genepop_flatten.r" class="section level5">
+<h5>genepop_flatten.R</h5>
+<ul>
+<li>Convert Genepop format to a flattend dataframe:
+<ul>
+<li>Sample IDs</li>
+<li>Population</li>
+<li>Sample number</li>
+<li>Loci</li>
+</ul></li>
+</ul>
+<table style="width:68%;">
+<colgroup>
+<col width="20%"></col>
+<col width="47%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file</td>
+</tr>
+</tbody>
+</table>
 <hr />
 </div>
 <div id="how-to-use-genepopedit" class="section level2">
 <h2>How to use genepopedit</h2>
+</div>
+</div>
+<div id="installation-1" class="section level1">
+<h1><strong>Installation</strong></h1>
 <p>Download the example genepop data: GenePop file with 10 populations, 30 individuals per population, and 100 Loci. <a href="https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0" class="uri">https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0</a></p>
 <p>Read in the data using the following <em>read.table</em> code specifics. Note the specifics entries of read.table are important at this step (sep=“”,quote=“”,stringsAsFactors=FALSE)</p>
 <p>All functions can work with an object read into the workspace (see above) or can be a path to the Genepop file.</p>
@@ -531,6 +657,8 @@ library(genepopedit)# load the library</code></pre>
 <p>Set a directory where the output files will be saved.</p>
 <pre class="r"><code>output_dir &lt;- &quot;c:/Users/YourName/Documents/GenePopFiles/&quot; </code></pre>
 </div>
+<div id="diagnostics-1" class="section level1">
+<h1><strong>Diagnostics</strong></h1>
 </div>
 <div id="genepop_detective" class="section level1">
 <h1>genepop_detective</h1>
@@ -545,15 +673,10 @@ library(genepopedit)# load the library</code></pre>
 <pre class="r"><code>LociNames &lt;- genepop_detective(&quot;genepopedit_examplefile.txt&quot;,variable=&quot;Loci&quot;)</code></pre>
 <p>Return <em>Allele values</em> using the file path instead of the workspace object.</p>
 <pre class="r"><code>Alleles &lt;- genepop_detective(&quot;genepopedit_examplefile.txt&quot;,variable=&quot;Allele&quot;)</code></pre>
+<hr />
 </div>
-<div id="genepop_flatten" class="section level1">
-<h1>genepop_flatten</h1>
-<p>Let assume you would like to inspect your genepop file as a flattened dataframe for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove Loci and-or Populations this must be before hand using <em>subset_genepop</em> or its sister functions (see below for examples).</p>
-<pre class="r"><code>#Flatten the dataframe
-  GenePop_df&lt;- genepop_flatten(GenePopData)
-
-#inspect the output for the first 10 columns 
-  head(GenePop_df[,1:10])</code></pre>
+<div id="manipulation-1" class="section level1">
+<h1><strong>Manipulation</strong></h1>
 </div>
 <div id="subset_genepop" class="section level1">
 <h1>subset_genepop</h1>
@@ -608,7 +731,7 @@ library(genepopedit)# load the library</code></pre>
   PopRename_group &lt;- data.frame(oPop=c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),newname=c(&quot;Pop1&quot;,&quot;Pop1&quot;,&quot;Pop1&quot;,&quot;Pop1&quot;,&quot;Pop1&quot;,&quot;Pop2&quot;,&quot;Pop2&quot;,&quot;Pop2&quot;,&quot;Pop2&quot;,&quot;Pop2&quot;))
 
 #rename populations
-  subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,&quot;Genepop_renamed_renumbered.txt&quot;),nameframe=PopRename_group)</code></pre>
+  subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,&quot;Genepop_renamed_renumbered.txt&quot;),nameframe=PopRename_group,renumber=TRUE)</code></pre>
 </div>
 <div id="subset_genepop_aggregate" class="section level1">
 <h1>subset_genepop_aggregate</h1>
@@ -652,6 +775,10 @@ library(genepopedit)# load the library</code></pre>
   subid &lt;- c(&quot;AAA_01&quot;,&quot;AAA_03&quot;,&quot;BBB_20&quot;,&quot;CCC_21&quot;,&quot;EEE_03&quot;,&quot;EEE_26&quot;,&quot;HHH_25&quot;,&quot;JJJ_04&quot;)
 
   subset_genepop_individual(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,&quot;Genepop_IDsubset.txt&quot;))</code></pre>
+<hr />
+</div>
+<div id="sampling-1" class="section level1">
+<h1><strong>Sampling</strong></h1>
 </div>
 <div id="genepop_sample" class="section level1">
 <h1>genepop_sample</h1>
@@ -689,21 +816,70 @@ library(genepopedit)# load the library</code></pre>
 
 #Create an assignment dataset using the remaining individuals (keep=FALSE)
   subset_genepop_individual(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,&quot;Genepop_assignment.txt&quot;))</code></pre>
+<hr />
+</div>
+<div id="conversion-1" class="section level1">
+<h1><strong>Conversion</strong></h1>
+</div>
+<div id="genepop_structure" class="section level1">
+<h1>genepop_structure</h1>
+<p>If you are interested in investigating population structure you can convert your modified Genepop object or path to saved file direclty into a STRUCTURE formated text (.str) file <a href="http://pritchardlab.stanford.edu/structure.html" class="uri">http://pritchardlab.stanford.edu/structure.html</a>.</p>
+<pre class="r"><code>#convert Genepop format to STRUCTURE to default groupings
+  genepop_structure(GenePop=&quot;Genepop_IDsubset.txt&quot;path=paste0(output_dir,&quot;Sturcture_IDsubset_groups.txt&quot;)
+  
+# Specify population groupings(group CCC/DDD/EEE and III/JJJ)
+  pGroups &lt;- data.frame(pops = c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),                      groups = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;3&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;7&quot;))
+
+#convert Genepop format to STRUCTURE with new groupings
+  genepop_structure(GenePop=&quot;Genepop_IDsubset.txt&quot;,popgroup=pGroups, path=paste0(output_dir,&quot;Sturcture_IDsubset_groups.txt&quot;))
+</code></pre>
 </div>
 <div id="genepop_fstat" class="section level1">
 <h1>genepop_fstat</h1>
 <p>If you are interested in doing calculating gene diversities and-or F-statistics with the cleaned loci datasets, you can convert from Genepop to FSTAT format This data can be used by the R package ‘hierfstat’ <a href="https://cran.r-project.org/web/packages/hierfstat/index.html" class="uri">https://cran.r-project.org/web/packages/hierfstat/index.html</a> or the program ‘FSTAT’ <a href="http://www2.unil.ch/popgen/softwares/fstat.htm" class="uri">http://www2.unil.ch/popgen/softwares/fstat.htm</a></p>
-<pre class="r"><code>#convert Genepop format to FSTAT *note the .dat file format
+<pre class="r"><code>#convert Genepop format to FSTAT (.dat)
   genepop_fstat(GenePop=&quot;Genepop_IDsubset.txt&quot;,path=paste0(output_dir,&quot;Fstat_IDsubset.dat&quot;))
 
 #convert Genepop format to FSTAT but keep the data in the workspace
   genepop_fstat(GenePop=&quot;Genepop_IDsubset.txt&quot;,addworkspace=TRUE)</code></pre>
 </div>
-<div id="genepop_genotype" class="section level1">
-<h1>genepop_genotype</h1>
-<p>If you are interested in calculating summary information such as linkage disequilibrium, it is useful to convert a genepop file into a ‘genotype’ format which can ue used by the R package ‘genetics’ <a href="https://cran.r-project.org/web/packages/genetics/index.html" class="uri">https://cran.r-project.org/web/packages/genetics/index.html</a></p>
-<pre class="r"><code>#convert Genepop format to genotype *note this returns the genotype object to the workspace.
-  GenotypeData &lt;- genepop_genotype(GenePop=&quot;Genepop_IDsubset.txt&quot;)</code></pre>
+<div id="genepop_newhybrids" class="section level1">
+<h1>genepop_newhybrids</h1>
+<p>If you are interested in testing for hybridization you can convert from Genepop to the format necessary for the program New Hybrids <a href="http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs" class="uri">http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs</a>.</p>
+<pre class="r"><code>#convert Genepop format to New Hybrids format (.txt)
+  genepop_newhybrids(GenePop=&quot;Genepop_IDsubset.txt&quot;,path=paste0(output_dir,&quot;NewHybrids_IDsubset.txt&quot;))</code></pre>
+</div>
+<div id="genepop_assignr" class="section level1">
+<h1>genepop_assignr</h1>
+<p>If you are interested conducting assignment analysis you can convert to the inport format needed for the R package “assignr” <a href="https://github.com/thierrygosselin/assigner" class="uri">https://github.com/thierrygosselin/assigner</a>.</p>
+<pre class="r"><code>#convert Genepop format to assignr format (.txt) using the populations each as their own assessment level
+  genepop_assignr(GenePop=&quot;Genepop_IDsubset.txt&quot;,path=paste0(output_dir,&quot;Assignr_IDsubset.txt&quot;))
+  
+# Set new population assignment groupings(group CCC/DDD/EEE and III/JJJ)
+  pGroups &lt;- data.frame(pops = c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),                      groups = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;3&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;7&quot;))
+   
+   genepop_assignr(GenePop=&quot;Genepop_IDsubset.txt&quot;,popgroup=pGroups,path=paste0(output_dir,&quot;Assignr_IDsubset_NewGroups.txt&quot;))
+  </code></pre>
+</div>
+<div id="genepop_bgc" class="section level1">
+<h1>genepop_bgc</h1>
+<p>If you are interested evaluting genomic clines and introgression among loci you can convert to the “Bayesian estimation of Genomic Clines (BGC) format. Note here you must specify which populations you consider to be ancestral or ‘parental’ (P1,P2) and which you assume could be hybridized (Admixed). <a href="https://sites.google.com/site/bgcsoftware/" class="uri">https://sites.google.com/site/bgcsoftware/</a>.</p>
+<pre class="r"><code>#specifiy which populations are going to be included in the analysis and to which class they belong
+BGC_groups=data.frame(pops = c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),
+                      groups = c(&quot;P1&quot;,&quot;P1&quot;,&quot;P1&quot;,&quot;Admixed&quot;,&quot;Admixed&quot;,&quot;Admixed&quot;,&quot;Admixed&quot;,&quot;P2&quot;,&quot;P2&quot;,&quot;P2&quot;))
+
+#convert Genepop to BGC input files (3)
+genepop_bgc(GenePop=&quot;Genepop_IDsubset.txt&quot;,popdef=BGC_groups,fname=&quot;BGC_IDsubset&quot;,dir=oputput_dir)
+</code></pre>
+</div>
+<div id="genepop_flatten" class="section level1">
+<h1>genepop_flatten</h1>
+<p>Flatten your geneotype data for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove Loci and-or Populations this must be before hand using <em>subset_genepop</em> or its sister functions (see below for examples).</p>
+<pre class="r"><code>#Flatten the dataframe
+  GenePop_df&lt;- genepop_flatten(GenePopData)
+
+#inspect the output for the first 10 columns 
+  head(GenePop_df[,1:10])</code></pre>
 </div>
 
 

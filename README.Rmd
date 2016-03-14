@@ -4,25 +4,28 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 
 **Use genepopedit to subset a SNP dataset by:**
 
-* removing specified loci
+* removing specified loci.
 
-* removing specified populations 
+* removing specified populations. 
 
-* removing specified individuals
+* removing specified individuals.
 
-* renaming populations 
+* renaming populations. 
 
-* grouping populations
+* grouping populations.
 
-* extracting meta-data
-    * population names
-    * population counts
-    * sample IDs
-    * loci names
+* extracting meta-data:
+    * population names.
+    * population counts.
+    * sample IDs.
+    * loci names.
+    * allele calls.
     
-* flatten Genepop file into a dataframe
+* create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
-* convert Genepop to fstat format.
+* flatten Genepop file into a dataframe.
+
+* convert Genepop to STRUCTURE, assignr, BGC, fstat, and  format.
 
 ***
 
@@ -94,6 +97,30 @@ library(genepopedit)# load the library
 
 ***
 
+## Contributions:
+*genepopedit* was written in collaboration:
+  
+  * Dr. Ryan Stanley <https://github.com/rystanley> - Corresponding developer.
+  * Dr. Ian Bradbury <http://tinyurl.com/h3qrhkv>
+  * Dr. Nick Jeffery <https://github.com/NickJeff13>
+  * Brendan Wringe <https://github.com/bwringe>
+
+This package has been developed to used by anyone who is looking for a more efficient and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package. 
+
+* If you don’t understand something, please let me know: 
+(ryan.stanley _at_ dfo-mpo.gc.ca). 
+* Any ideas on how to improve the functionality is very much appreciated. 
+* If you spot a typo, feel free to edit and send a pull request.
+
+Pull request how-to: 
+
+  * Click the edit this page on the sidebar.
+  * Make the changes using github’s in-page editor and save.
+  * Submit a pull request and include a brief description of your changes. (e.g. "_spelling errors_" or "_indexing error_").
+
+***
+#**Diagnostics**
+
 ## genepopedit functions:
 
 ##### genepop_detective.R 
@@ -105,45 +132,18 @@ library(genepopedit)# load the library
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file  
-**variable** | variable to report
-**variable="Pops"** | returns vector of population names (default)
-**variable="PopNum"** | returns population summary table
-**variable="Loci"** | returns vector of loci names
-**variable="Inds"** | returns vector of Sample IDs
-**variable="Allele"** | returns vector of Alleles (*note this might include missing values)
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
+**variable** | variable to report.
 
-##### genepop_flatten.R 
-* Convert Genepop format to a flattend dataframe:
-    * Sample IDs
-    * Population
-    * Sample number
-    * Loci
-
-**Variable name** | **Input**  
---------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
-
-##### genepop_fstat.R 
-* Convert Genepop format to fstat format.
+  * variable="Pops" -> returns vector of population names (default)
+  * variable="PopNum" -> returns population summary table
+  * variable="Loci" -> returns vector of loci names
+  * variable="Inds" -> returns vector of Sample IDs
+  * variable="Allele" -> returns vector of Alleles (*note this might include missing values)
   
-**Variable name** | **Input**  
---------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
-**path** | the filepath & filename of output.
-**addworkspace** | logical to specify whether to save fstat conversion to path (default) or to workspace as Output_fstat object.
+***
 
-##### genepop_sample.R 
-* Subsample individuals from a genepop file using population based random stratified sampling.
-  
-**Variable name** | **Input**  
---------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
-**nsample** | object which defines sampling.
-*nsample (integer)* | (e.g. nsample = 5) nsample will be sampled at random from each strata (population).
-*nsample (fraction)* | (e.g. nsample = 0.5) a fraction will be sampled at random from each strata (population).
-*nsample (integer per population)* | (e.g. number varying per population) nsample (column 2) will be sampled at random from each strata (column 1 population).
-*nsample (fraction per population)* | (e.g. fraction varying per population) a fraction (column 2) will be sampled at random from each strata (column 1 population).
+#**Manipulation**
 
 ##### subset_genepop.R 
 * remove or keep a subset of loci 
@@ -190,30 +190,91 @@ library(genepopedit)# load the library
 
 ***
 
-## Contributions:
-*genepopedit* was written in collaboration:
+#**Sampling**
+
+##### genepop_sample.R 
+* Subsample individuals from a genepop file using population based random stratified sampling.
   
-  * Dr. Ryan Stanley <https://github.com/rystanley> - Corresponding developer.
-  * Dr. Ian Bradbury <http://tinyurl.com/h3qrhkv>
-  * Dr. Nick Jeffery <https://github.com/NickJeff13>
-  * Brendan Wringe <https://github.com/bwringe>
+**Variable name** | **Input**  
+--------------|---------------------------------
+*Genepop* | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+*nsample*| object which defines sampling.
 
-This package has been developed to used by anyone who is looking for a more efficient and **repeatable** method to maniplate large multi-locus datasets. The package is open and I encourage you to tinker and look for improvments. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package. 
+  * nsample (integer) -> (e.g. nsample = 5) nsample will be sampled at random from each strata (population).
+  * nsample (fraction) -> (e.g. nsample = 0.5) a fraction will be sampled at random from each strata (population).
+  * nsample (integer per population) -> (e.g. number varying per population) nsample (column 2) will be sampled at random from each strata (column 1 population).
+  * nsample (fraction per population) -> (e.g. fraction varying per population) a fraction (column 2) will be sampled at random from each strata (column 1 population).
 
-* If you don’t understand something, please let me know: 
-(ryan.stanley _at_ dfo-mpo.gc.ca). 
-* Any ideas on how to improve the functionality is very much appreciated. 
-* If you spot a typo, feel free to edit and send a pull request.
+***
 
-Pull request how-to: 
+#**Conversion**
 
-  * Click the edit this page on the sidebar.
-  * Make the changes using github’s in-page editor and save.
-  * Submit a pull request and include a brief description of your changes. (e.g. "_spelling errors_" or "_indexing error_").
+##### genepop_structure.R 
+* Convert Genepop format to NewHybrids format.
+  <http://pritchardlab.stanford.edu/structure.html>
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then populaton levels will be assigned an individual group.
+**path** | the filepath & filename of output.
+
+##### genepop_fstat.R 
+* Convert Genepop format to fstat format.
+<https://cran.r-project.org/web/packages/hierfstat/index.html>
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+**path** | the filepath & filename of output.
+**addworkspace** | logical to specify whether to save fstat conversion to path (default) or to workspace as Output_fstat object.
+
+##### genepop_newhybrids.R 
+* Convert Genepop format to NewHybrids format.
+  <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+**path** | the filepath & filename of output.
+
+##### genepop_assignr.R 
+* Convert Genepop format to assignr format.
+<https://github.com/thierrygosselin/assigner>
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then populaton levels will be assigned an individual group.
+**path** | the filepath & filename of output.
+
+##### genepop_bgc.R 
+* Convert Genepop format to Bayesian Genomic Clines (BGC) format (3 files).
+<https://sites.google.com/site/bgcsoftware/>
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**popdef** | popgroup is a dataframe or path to a csv. This dataframe contains two columns. Column 1 corresponds to the population names. The next column has the grouping classification corresponding to each population defining parental 1 ("P1") parental 2 ("P2") and admixed ("Admixed") populations.
+**fname** | collective name assigned to each output the output files (3).
+**path** | the filepath & filename of output.
+
+##### genepop_flatten.R 
+* Convert Genepop format to a flattend dataframe:
+    * Sample IDs
+    * Population
+    * Sample number
+    * Loci
+
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 
 ***
 
 ## How to use genepopedit
+
+#**Installation**
 
 Download the example genepop data: GenePop file with 10 populations, 30 individuals per population, and 100 Loci.
 <https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0>
@@ -235,6 +296,9 @@ Set a directory where the output files will be saved.
 ```r
 output_dir <- "c:/Users/YourName/Documents/GenePopFiles/" 
 ```
+
+#**Diagnostics**
+
 #genepop\_detective
 This function queries meta-data from your genepop data without having to open it in a text editor. Function returns a vector of population names, population counts, sample IDs, or Loci names.
 
@@ -260,16 +324,9 @@ Return *Allele values* using the file path instead of the workspace object.
 Alleles <- genepop_detective("genepopedit_examplefile.txt",variable="Allele")
 ```
 
-#genepop\_flatten
-Let assume you would like to inspect your genepop file as a flattened dataframe for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove Loci and-or Populations this must be before hand using *subset_genepop* or its sister functions (see below for examples).
+*** 
 
-```r
-#Flatten the dataframe
-  GenePop_df<- genepop_flatten(GenePopData)
-
-#inspect the output for the first 10 columns 
-  head(GenePop_df[,1:10])
-```
+#**Manipulation**
 
 #subset\_genepop
 Lets create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, & 94*. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100).
@@ -395,6 +452,11 @@ _This function is best run at the beginning of the analysis prior to removal of 
 
   subset_genepop_individual(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
+
+***
+
+#**Sampling**
+
 #genepop\_sample
 Function which will allow you to create subsets of the genepop. This might be useful for creating training and leave-out datasets for assignment. 
 
@@ -455,15 +517,80 @@ For example if you wanted to create a training and assignment dataset  in genepo
   subset_genepop_individual(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,"Genepop_assignment.txt"))
 ```
 
+***
+
+#**Conversion**
+
+#genepop\_structure
+If you are interested in investigating population structure you can convert your modified Genepop object or path to saved file direclty into a STRUCTURE formated text (.str) file <http://pritchardlab.stanford.edu/structure.html>. 
+
+```r
+#convert Genepop format to STRUCTURE to default groupings
+  genepop_structure(GenePop="Genepop_IDsubset.txt"path=paste0(output_dir,"Sturcture_IDsubset_groups.txt")
+  
+# Specify population groupings(group CCC/DDD/EEE and III/JJJ)
+  pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),                      groups = c("1","2","3","3","3","4","5","6","7","7"))
+
+#convert Genepop format to STRUCTURE with new groupings
+  genepop_structure(GenePop="Genepop_IDsubset.txt",popgroup=pGroups, path=paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
+
+```
+
 #genepop\_fstat
 
 If you are interested in doing calculating gene diversities and-or F-statistics with the cleaned loci datasets, you can convert from Genepop to FSTAT format 
 This data can be used by the R package 'hierfstat' <https://cran.r-project.org/web/packages/hierfstat/index.html> or the program 'FSTAT' <http://www2.unil.ch/popgen/softwares/fstat.htm>
 
 ```r
-#convert Genepop format to FSTAT *note the .dat file format
+#convert Genepop format to FSTAT (.dat)
   genepop_fstat(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"Fstat_IDsubset.dat"))
 
 #convert Genepop format to FSTAT but keep the data in the workspace
   genepop_fstat(GenePop="Genepop_IDsubset.txt",addworkspace=TRUE)
+```
+
+#genepop\_newhybrids
+If you are interested in testing for hybridization you can convert from Genepop to the format necessary for the program New Hybrids <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>. 
+
+```r
+#convert Genepop format to New Hybrids format (.txt)
+  genepop_newhybrids(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"NewHybrids_IDsubset.txt"))
+```
+
+#genepop\_assignr
+If you are interested conducting assignment analysis you can convert to the inport format needed for the R package "assignr" <https://github.com/thierrygosselin/assigner>. 
+
+```r
+#convert Genepop format to assignr format (.txt) using the populations each as their own assessment level
+  genepop_assignr(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"Assignr_IDsubset.txt"))
+  
+# Set new population assignment groupings(group CCC/DDD/EEE and III/JJJ)
+  pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),                      groups = c("1","2","3","3","3","4","5","6","7","7"))
+   
+   genepop_assignr(GenePop="Genepop_IDsubset.txt",popgroup=pGroups,path=paste0(output_dir,"Assignr_IDsubset_NewGroups.txt"))
+  
+```
+
+#genepop\_bgc
+If you are interested evaluting genomic clines and introgression among loci you can convert to the "Bayesian estimation of Genomic Clines (BGC) format. Note here you must specify which populations you consider to be ancestral or 'parental' (P1,P2) and which you assume could be hybridized (Admixed). <https://sites.google.com/site/bgcsoftware/>. 
+
+```r
+#specifiy which populations are going to be included in the analysis and to which class they belong
+BGC_groups=data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),
+                      groups = c("P1","P1","P1","Admixed","Admixed","Admixed","Admixed","P2","P2","P2"))
+
+#convert Genepop to BGC input files (3)
+genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",dir=oputput_dir)
+
+```
+
+#genepop\_flatten
+Flatten your geneotype data for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove Loci and-or Populations this must be before hand using *subset_genepop* or its sister functions (see below for examples).
+
+```r
+#Flatten the dataframe
+  GenePop_df<- genepop_flatten(GenePopData)
+
+#inspect the output for the first 10 columns 
+  head(GenePop_df[,1:10])
 ```
