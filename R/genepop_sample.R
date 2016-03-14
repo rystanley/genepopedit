@@ -15,12 +15,7 @@
 #' @rdname genepop_sample
 #' @import magrittr
 #' @importFrom tidyr separate
-#' @importFrom dplyr filter
-#' @importFrom dplyr sample_n
-#' @importFrom dplyr sample_frac
-#' @importFrom dplyr group_by
-#' @importFrom dplyr ungroup
-#' @importFrom dplyr sample_frac
+#' @importFrom dplyr filter sample_n sample_frac group_by ungroup
 #' @export
 
 ##
