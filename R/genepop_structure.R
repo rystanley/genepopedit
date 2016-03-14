@@ -118,7 +118,7 @@ if(!is.null(popgroup)) #if popgroup isn't NULL
 
 }
 
-if(is.null(popgroup)) #if popgroup isn NULL
+if(is.null(popgroup)) #if popgroup isn't NULL
 {
   groupvec <- NameExtract
   for (i in 1:length(unique(NameExtract))) # replace with numbers
