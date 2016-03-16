@@ -10,7 +10,7 @@
 #' @param popgroup if specified (Default: NULL) popgroup is a dataframe or path to a csv.
 #' This dataframe contains two columns. Column 1 corresponds to the population names. These names
 #' should match the individual IDs (e.g. BON_01  , 110110 would be 'BON'). The next column
-#' has the group. If groupings are the same as populations then leave as NULL (Default).
+#' has the group. These values must be numeric. If groupings are the same as populations then leave as NULL (Default).
 #' @param path the filepath and filename of output.
 #' @rdname genepop_assignr
 #' @importFrom tidyr separate
