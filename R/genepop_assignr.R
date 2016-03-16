@@ -114,7 +114,7 @@ if(is.null(popgroup)) #if popgroup isn NULL
 }
 
 Output <- data.frame(groupvec,NamePops,temp2) #dataframe with individual groups, IDs,  & Loci
-colnames(Output)[1:2]=c("POP_ID","INDIVIDUALS") #add the labels
-write.table(Output,path,row.names=FALSE,quote=FALSE,sep="\t")
+colnames(Output)=c("POP_ID","INDIVIDUALS",colnames(temp2)) #add the column headers
+write.table(Output,path,row.names=FALSE,col.names = TRUE,quote=FALSE,sep="\t")
 
 }
