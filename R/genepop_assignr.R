@@ -113,11 +113,10 @@ if(is.null(popgroup)) #if popgroup isn NULL
 
 }
 
-temp3 <- data.frame(groupvec,NamePops,temp$snps)
-Loci <- do.call(paste,c(temp3[,], sep=" "))
-headinfo <- paste("POP_ID","INDIVIDUALS",do.call(paste,c(as.list(colnames(temp2)))))
+temp3 <- data.frame(groupvec,NamePops,temp2) #dataframe with individual groups, IDs,  & Loci
+colnames(temp3)[1:2]=c("POP_ID","INDIVIDUALS") #add the labels
 
-Output=c(headinfo,Loci)
+Output=c(temp3)
 
 write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
