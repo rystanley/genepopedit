@@ -113,9 +113,12 @@ if(is.null(popgroup)) #if popgroup isn NULL
 
 }
 
-Output <- data.frame(groupvec,NamePops,temp2) #dataframe with individual groups, IDs,  & Loci
+Output <- cbind(groupvec,NamePops,temp2) #dataframe with individual groups, IDs,  & Loci
+Output <- apply(Output,2,as.character)
+Output <- data.frame(Output,stringsAsFactors = FALSE)
 colnames(Output)=c("POP_ID","INDIVIDUALS",colnames(temp2)) #add the column headers
-Output <- Output[order(Output$POP_ID),]
+Output$POP_ID <- as.numeric(Output$POP_ID)
+Output <- Output[order(Output$POP_ID,decreasing = FALSE),]
 write.table(Output,path,row.names=FALSE,col.names = TRUE,quote=FALSE,sep="\t")
 
 }
