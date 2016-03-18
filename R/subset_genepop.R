@@ -5,7 +5,7 @@
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
+#' seperated by "Pop". Each individual ID is linked to the locus data by "   , " and is read in as
 #' as a single row (character).
 #' @param subs he loci names of interest or a vector which corresponds the the order of which
 #' they appear in the genepop file.
@@ -13,14 +13,14 @@
 #' e.g. subs <-c(1,2,3,4) would return the first 4 loci
 #' & subs <- c("190-56","145_21",456_12") would return loci with defined names.
 #' @param keep logical vector which defines whether you want to remove the loci or keep them.
-#' the default is to keep them keep <- TRUE assuming you are removing neutral markers
-#' and only keeping the subs
+#' The default is to keep them keep <- TRUE assuming you are removing neutral markers
+#' and only keeping the subs.
 #' @param sPop is the populations of interest. Note these are specified in the order which they appear in the
 #'  original Genepop file. i.e. first pop = 1 second pop = 2
 #'  Examples: numeric - sPop <- c(1,3,4,7) or
 #'  the population ID (alpha-numeric code before the underscore). Here we assume conventional
 #'  naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
-#'            text- sPop <- c("BMR", "GRR","GHR","TRS").
+#'            text- sPop <- c("Aqua01", "GRR","GHR","TRS").
 #' @param path the filepath and filename of output.
 #' @rdname subset_genepop
 #' @importFrom tidyr separate

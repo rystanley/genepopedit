@@ -5,7 +5,7 @@
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
 #' or a single commma deliminated row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
+#' seperated by "Pop". Each individual ID is linked to the locus data by "   , " and is read in as
 #' as a single row (character).
 #' @param popdef is a dataframe or path to a csv.
 #' This dataframe contains two columns. Column 1 corresponds to the population names. These names
@@ -15,7 +15,7 @@
 #' Note the classifications must be exactly as specified (caps sensitive). If populations are omitted from
 #' this dataframe then they will be omitted from the output files.
 #' @param fname collective name assigned to each of the output files for BGC.
-#' e.g. "Lobster_analysis" woudl result in
+#' e.g. "Lobster_analysis" would result in
 #' "Lobster_analysis_P1.txt","Lobster_analysis_P2.txt", and "Lobster_analysis_Admixed.txt"
 #' @param dir file path to directory where the BGC files (3) will be saved.
 #' @rdname genepop_bgc

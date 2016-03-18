@@ -5,12 +5,12 @@
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
+#' seperated by "Pop". Each individual ID is linked to the locus data by "   , " and is read in as
 #' as a single row (character).
-#' @param subs he loci names of interest or a vector
+#' @param subs the loci names of interest or a vector
 #' subs <- c("190-56","145_21",456_12") would return loci with these defined names.
 #' @param keep logical vector which defines whether you want to remove the loci or keep them.
-#' the default is to keep them keep <- TRUE assuming you are removing neutral markers
+#' The default is to keep them keep <- TRUE assuming you are removing neutral markers
 #' and only keeping the subs
 #' @param agPopFrame a dataframe or path to a csv.
 #' This dataframe contains two columns: Column 1 corresponds to the population names.
@@ -19,17 +19,9 @@
 #' These names can be obtained using the genepop_detective function.
 #' The next column has grouping variables. If you don't want to change the grouping just repeat original name.
 #' If the input is a dataframe object from the workspace it must be a data.frame object and therefore will have headers.
-#' e.g.
-#' Opop   AgPop
-#' AAA    Pop1
-#' BBB    Pop1
-#' CCC    CCC
-#' DDD    Pop2
-#' EEE    EEE
-#' FFF    Pop2
-#' GGG    GGG
-#' AAA/BBB & DDD/FFF would be clustered together between population flags in genepop.
-#' @param path to the output .txt file (e.g."c:/Users/Yourname/Documents/output.txt")
+#' e.g. data.frame(Opop=c("AAA","BBB","CCC","DDD","EEE","FFF","GGG"),AgPop=c("Pop1","Pop2","CCC","Pop2","EEE","Pop2","GGG"))
+#' In this case AAA/BBB & DDD/FFF would be clustered together between population flags in genepop.
+#' @param path to the output .txt file.
 #' @rdname subset_genepop_aggregate
 #' @importFrom tidyr separate
 #' @export

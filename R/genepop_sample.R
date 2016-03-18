@@ -5,12 +5,12 @@
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
+#' seperated by "Pop". Each individual ID is linked to the locus data by "   , " and is read in as
 #' as single row (character).
-#' @param nsample vector or dataframe which defines the random stratified sampling
-#' if nsample is an integer (e.g. 5) then nsample individuals will be selected from each population.
-#' if nsample is a fraction (0-0.9) then that percentage of individuals will be selected from each population.
-#' if nsample is a dataframe then the number or fraction associated with each population will be sampled.
+#' @param nsample vector or dataframe which defines the random stratified sampling.
+#' If nsample is an integer (e.g. 5) then nsample individuals will be selected from each population.
+#' If nsample is a fraction (0-0.9) then that percentage of individuals will be selected from each population.
+#' If nsample is a dataframe then the number or fraction associated with each population will be sampled.
 #' where the first column is the population and the second is the number to be sampled.
 #' @rdname genepop_sample
 #' @import magrittr

@@ -1,7 +1,7 @@
 # Function for inserting rows
 #' @title Insert values at location
 #' @description Function to insert values at specified positons within a dataframe and-or vector
-#' @param vec A data vector where values will be inserted.
+#' @param Vec A data vector where values will be inserted.
 #' @param breaks vector of positions where values will be inserted.
 #' Here the output will have length(vec)+length(breaks) rows with the values
 #' specified in 'newVal' positioned at the 'breaks' positions

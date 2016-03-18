@@ -1,11 +1,11 @@
 # GenePop detective
 #' @title Explore Genepop data structure.
-#' @description Funtion returns Genepop file meta-data.
+#' @description Function returns Genepop file meta-data.
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
+#' seperated by "Pop". Each individual ID is linked to the locus data by "   , " and is read in as
 #' as single row (character).
 #' @param variable data to be returned
 #' Four options \code{default = "Pops"}

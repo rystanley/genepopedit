@@ -5,13 +5,13 @@
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
+#' seperated by "Pop". Each individual ID is linked to the locus data by "   , " and is read in as
 #' as single row (character).
 #' @param indiv vector sample IDs of interest.
 #' These can be either the order by which they occur or the exact name of the loci
 #' indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these sample names.
 #' @param keep logical whether to delete sample IDs specified by indiv (default: TRUE) or delete all other IDs.
-#' @param path the filepath and filename of output
+#' @param path the filepath and filename of output.
 #' @rdname subset_genepop_individual
 #' @importFrom tidyr separate
 #' @export
