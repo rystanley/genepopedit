@@ -11,7 +11,7 @@ genepop_bgc(GenePop, popdef, fname, dir)
 or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
 or a single commma deliminated row of loci names followed by the locus data. Populations are
-seperated by "Pop". Each individual ID is linked to the locus data by "   , " and is read in as
+seperated by "Pop". Each individual ID is linked to the locus data by "   , " (space space,space) and is read in as
 as a single row (character).}
 
 \item{popdef}{is a dataframe or path to a csv.

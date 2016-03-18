@@ -11,7 +11,7 @@ subset_genepop(GenePop, subs = NULL, keep = TRUE, sPop = NULL, path)
 or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 or a single commma delimited row of loci names followed by the locus data. Populations are
-seperated by "Pop". Each individual ID is linked to the locus data by "   , " and is read in as
+seperated by "Pop". Each individual ID is linked to the locus data by "   , " (space space,space) and is read in as
 as a single row (character).}
 
 \item{subs}{he loci names of interest or a vector which corresponds the the order of which
