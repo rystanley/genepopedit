@@ -28,7 +28,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 ***
 
 **Requirement:**
-genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically, we use the _three number_ format (e.g. 110110) where the six digits correspond two the alleles of an given locus for an individual. Loci names can listed in the first row separated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
+genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically, we use the _three number_ format (e.g. 110110) where the six digits correspond to the alleles of a given locus for an individual. Locus names can be listed in the first row separated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
 
     nrows = nLOCI + nINDIVIDUALS + nPOPULATIONS - 1
     
@@ -103,7 +103,7 @@ library(genepopedit)# load the library
   * Dr. Nick Jeffery <https://github.com/NickJeff13>
   * Brendan Wringe <https://github.com/bwringe>
 
-This package has been developed to used by anyone who is looking for a more efficient and **repeatable** method to manipulate large multi-locus datasets. The package is open, and I encourage you to tinker and look for improvements. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package.
+This package has been developed to be used by anyone who is looking for a more efficient and **repeatable** method to manipulate large multi-locus datasets. The package is open, and I encourage you to tinker and look for improvements. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package.
 
 * If you don’t understand something, please let me know: 
 (ryan.stanley _at_ dfo-mpo.gc.ca). 
