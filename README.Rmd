@@ -23,7 +23,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     
 * create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
-* convert Genepop to STRUCTURE, fstat, New Hybrids, assignr, BGC and flattened format.
+* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC and flattened format.
 
 ***
 
@@ -235,8 +235,8 @@ Pull request how-to:
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 **path** | the filepath & filename of output.
 
-#### genepop_assignr.R 
-* Convert Genepop format to assignr format.
+#### genepop_assigner.R 
+* Convert Genepop format to assigner format.
 <https://github.com/thierrygosselin/assigner>
   
 **Variable name** | **Input**  
@@ -554,17 +554,17 @@ If you are interested in testing for hybridization you can convert from Genepop 
   genepop_newhybrids(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"NewHybrids_IDsubset.txt"))
 ```
 
-##genepop\_assignr
-If you are interested conducting assignment analysis, you can convert to the format required for the R package "assignr" <https://github.com/thierrygosselin/assigner>. 
+##genepop\_assigner
+If you are interested conducting assignment analysis, you can convert to the format required for the R package "assigner" <https://github.com/thierrygosselin/assigner>. 
 
 ```r
-#convert Genepop format to assignr format (.txt) using the populations each as their own assessment level
-  genepop_assignr(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"Assignr_IDsubset.txt"))
+#convert Genepop format to assigner format (.txt) using the populations each as their own assessment level
+  genepop_assigner(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"assigner_IDsubset.txt"))
   
 # Set new population assignment groupings(group CCC/DDD/EEE and III/JJJ)
   pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),                      groups = c("1","2","3","3","3","4","5","6","7","7"))
    
-   genepop_assignr(GenePop="Genepop_IDsubset.txt",popgroup=pGroups,path=paste0(output_dir,"Assignr_IDsubset_NewGroups.txt"))
+   genepop_assigner(GenePop="Genepop_IDsubset.txt",popgroup=pGroups,path=paste0(output_dir,"assigner_IDsubset_NewGroups.txt"))
   
 ```
 
