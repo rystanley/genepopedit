@@ -9,10 +9,10 @@ subset_genepop_rename(GenePop, nameframe, renumber = FALSE, path)
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
 or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
-This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
-or a single commma deliminated row of loci names followed by the locus data. Populations are
-seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
-as single row (character).}
+This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
+or a single commma delimited row of loci names followed by the locus data. Populations are
+seperated by "Pop". Each individual ID is linked to the locus data by "   , " and is read in as
+as a single row (character).}
 
 \item{nameframe}{a dataframe or path to a csv. This must be specified in this function
 this dataframe contains two columns. Column 1 corresponds to the population names. These names
@@ -24,16 +24,9 @@ workspace it must be a data.frame object and therefore will have headers.
 This function assumes that each population will have a unique name. Names in this case are
 comprised of alpha characters and not numbers.
 (e.g. Pop01_01 and Pop02_01 would each be considered 'Pop' for the population name)
-e.g.
-Opop   Rename
-BON    BON
-BRA    BON
-EDN    EDN
-CRA    CRA
-MAL    BON
-TRY    CRA}
+e.g. data.frame(Opop=c("BON","BRA","EDN","CRA","MAL","TRY"),Rename=c("BON","BON","EDN","CRA","BON","CRA")).}
 
-\item{renumber}{is a logical (default=FALSE) defining whether you want to change the sample unique identitiy
+\item{renumber}{is a logical (default=FALSE) defining whether you want to change the sample unique identity
 i.e. sample number - BON_01 where 01 is the unique qauntity. If multiple populations are combined this will
 prevent two samples from having the same name.}
 

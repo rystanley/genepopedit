@@ -7,13 +7,13 @@
 insert_vals(Vec, breaks, newVal)
 }
 \arguments{
+\item{Vec}{A data vector where values will be inserted.}
+
 \item{breaks}{vector of positions where values will be inserted.
 Here the output will have length(vec)+length(breaks) rows with the values
 specified in 'newVal' positioned at the 'breaks' positions}
 
 \item{newVal}{values to be inserted}
-
-\item{vec}{A data vector where values will be inserted.}
 }
 \description{
 Function to insert values at specified positons within a dataframe and-or vector
