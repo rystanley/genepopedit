@@ -1,6 +1,6 @@
-# Genepop -> assignr
-#' @title Convert Genepop to assignr format.
-#' @description Function to convert Genepop to assignr
+# Genepop -> assigner
+#' @title Convert Genepop to assigner format.
+#' @description Function to convert Genepop to assigner
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
@@ -12,12 +12,12 @@
 #' should match the individual IDs (e.g. BON_01  , 110110 would be 'BON'). The next column
 #' has the group. These values must be numeric. If groupings are the same as populations then leave as NULL (Default).
 #' @param path the filepath and filename of output.
-#' @rdname genepop_assignr
+#' @rdname genepop_assigner
 #' @importFrom tidyr separate
 #' @export
 
 
-genepop_assignr <- function(GenePop,popgroup=NULL,path=NULL){
+genepop_assigner <- function(GenePop,popgroup=NULL,path=NULL){
 
 #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
