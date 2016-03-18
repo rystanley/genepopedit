@@ -1,12 +1,12 @@
 # Genepop -> FSTAT
 #' @title Convert Genepop to FSTAT format.
 #' @description Function to convert Genepop to FSTAT
-#' @param GenePop the genepop data to be manipulated. This can be either a file path
+#' @param GenePop = the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
-#' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
+#' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single commma deliminated row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
-#' as single row (character).
+#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
+#' as a single row (character).
 #' @param path the filepath and filename of output.
 #' @param addworkspace logical statement defining whether the converted data
 #' should be saved as a file specified in the path (default) arguement or whether it should be returned to the workspace

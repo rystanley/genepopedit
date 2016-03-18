@@ -1,11 +1,11 @@
 # Subset Genepop
 #' @title Genepop subset loci and populations
 #' @description Function to subset loci and populations
-#' @param GenePop the genepop data to be manipulated. This can be either a file path
+#' @param GenePop = the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
-#' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
+#' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single commma deliminated row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
+#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
 #' as single row (character).
 #' @param subs he loci names of interest or a vector which corresponds the the order of which
 #' they appear in the genepop file.
