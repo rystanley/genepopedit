@@ -25,7 +25,7 @@
 #' CRA    CRA
 #' MAL    BON
 #' TRY    CRA
-#' @param renumber is a logical (default=FALSE) defining whether you want to change the sample unique identitiy
+#' @param renumber is a logical (default=FALSE) defining whether you want to change the sample unique identity
 #' i.e. sample number - BON_01 where 01 is the unique qauntity. If multiple populations are combined this will
 #' prevent two samples from having the same name.
 #' @param path the filepath and filename of output.
