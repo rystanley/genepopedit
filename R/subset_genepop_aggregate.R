@@ -1,12 +1,12 @@
 # Subset Genepop Aggregate
 #' @title Genepop subset, combine, and reorder populations
 #' @description Function to cluster populations together and remove specific loci
-#' @param GenePop the genepop data to be manipulated. This can be either a file path
+#' @param GenePop = the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
-#' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
-#' or a single commma deliminated row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
-#' as single row (character).
+#' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
+#' or a single commma delimited row of loci names followed by the locus data. Populations are
+#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
+#' as a single row (character).
 #' @param subs he loci names of interest or a vector
 #' subs <- c("190-56","145_21",456_12") would return loci with these defined names.
 #' @param keep logical vector which defines whether you want to remove the loci or keep them.
