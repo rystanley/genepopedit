@@ -1,11 +1,11 @@
 # Subset samples from Genepop I
 #' @title Genepop remove or keep specific sample IDs
 #' @description Function for the manipulation of genopop format SNP datasets
-#' @param GenePop the genepop data to be manipulated. This can be either a file path
+#' @param GenePop = the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
-#' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
-#' or a single commma deliminated row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked the the locus data by "  , " and is read in as
+#' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
+#' or a single commma delimited row of loci names followed by the locus data. Populations are
+#' seperated by "Pop". Each individual ID is linked to the locus data by "  , " and is read in as
 #' as single row (character).
 #' @param indiv vector sample IDs of interest.
 #' These can be either the order by which they occur or the exact name of the loci
