@@ -1,7 +1,7 @@
 # Subset Genepop Rename
 #' @title Genepop subset and rename populations
 #' @description Function for the manipulation of genopop format SNP datasets and renaming of populations
-#' @param GenePop = the genepop data to be manipulated. This can be either a file path
+#' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
@@ -25,7 +25,7 @@
 #' CRA    CRA
 #' MAL    BON
 #' TRY    CRA
-#' @param renumber is a logical (default=FALSE) defining whether you want to change the sample unique identitiy
+#' @param renumber is a logical (default=FALSE) defining whether you want to change the sample unique identity
 #' i.e. sample number - BON_01 where 01 is the unique qauntity. If multiple populations are combined this will
 #' prevent two samples from having the same name.
 #' @param path the filepath and filename of output.

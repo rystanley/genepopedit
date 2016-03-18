@@ -1,7 +1,7 @@
 # Genepop -> assigner
 #' @title Convert Genepop to assigner format.
 #' @description Function to convert Genepop to assigner
-#' @param GenePop = the genepop data to be manipulated. This can be either a file path
+#' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with a the first n+1 rows corresponding to the n loci names,
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
