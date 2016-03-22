@@ -119,13 +119,16 @@ Pull request how-to:
 ***
 #**Diagnostics**
 
-#### genepop_detective.R [see example](#genepopdetect)
+#### genepop_detective.R
+
 * extract quick meta-data from Genepop file
     * Population names
     * Population counts
     * Sample IDs
     * Loci
     * Alleles
+    
+[example use](#genepopdetect)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
@@ -146,6 +149,8 @@ Pull request how-to:
 * remove or keep a subset of loci 
 * remove populations 
 
+[example use](#subsetgenp)
+
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
@@ -154,8 +159,22 @@ Pull request how-to:
 **sPop** | populations to be retained (default: NULL).
 **path** | the filepath & filename of output.
 
+#### subset_genepop_rename.R
+* subset and-or rename populations
+
+[example use](#subsetrenm)
+
+**Variable name** | **Input**  
+--------------|-----------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**nameframe** | a dataframe or path to a csv detailing the original and any edited population names.
+**renumber** | logical (default: FALSE) whether the sample numbers are to be replaced. 
+**path** | the filepath & filename of output.
+
 #### subset_genepop_aggregate.R
 * group populations based on Genepop population tags
+
+[example use](#subsetagg)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
@@ -165,18 +184,10 @@ Pull request how-to:
 **agPopFrame** | a dataframe or path to a csv detailing the population names & populations to be aggregated.
 **path** | the filepath & filename of output.
 
-#### subset_genepop_rename.R
-* subset and-or rename populations
-
-**Variable name** | **Input**  
---------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
-**nameframe** | a dataframe or path to a csv detailing the original and any edited population names.
-**renumber** | logical (default: FALSE) whether the sample numbers are to be replaced. 
-**path** | the filepath & filename of output.
-
 #### subset_genepop_individuals.R
 * remove or keep a subset of individuals
+
+[example use](#subsetidv)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
@@ -191,6 +202,8 @@ Pull request how-to:
 
 #### genepop_sample.R 
 * Subsample individuals from a genepop file using population based random stratified sampling.
+
+[example use](#genepopsamp)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -210,6 +223,8 @@ Pull request how-to:
 * Convert Genepop format to NewHybrids format.
   <http://pritchardlab.stanford.edu/structure.html>
   
+[example use](#genepopstruc)
+  
 **Variable name** | **Input**  
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
@@ -219,6 +234,8 @@ Pull request how-to:
 #### genepop_fstat.R 
 * Convert Genepop format to fstat format.
 <https://cran.r-project.org/web/packages/hierfstat/index.html>
+
+[example use](#genepopfst)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -230,6 +247,8 @@ Pull request how-to:
 * Convert Genepop format to NewHybrids format.
   <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>
   
+[example use](#genepopnh)
+  
 **Variable name** | **Input**  
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
@@ -238,6 +257,8 @@ Pull request how-to:
 #### genepop_assigner.R 
 * Convert Genepop format to assigner format.
 <https://github.com/thierrygosselin/assigner>
+
+[example use](#genepopagn)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -248,6 +269,8 @@ Pull request how-to:
 #### genepop_bgc.R 
 * Convert Genepop format to Bayesian Genomic Clines (BGC) format (3 files).
 <https://sites.google.com/site/bgcsoftware/>
+
+[example use](#genepopbgc)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -262,6 +285,8 @@ Pull request how-to:
     * Population
     * Sample number
     * Loci
+    
+[example use](#genepopflat)
 
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -326,6 +351,7 @@ Alleles <- genepop_detective("genepopedit_examplefile.txt",variable="Allele")
 
 #**Manipulation**
 
+<a name="subsetgenp"/>
 ##subset\_genepop
 Create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, & 94*. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100).
 
@@ -365,7 +391,7 @@ You can also remove populations within this function. Here we again select loci 
   
   subset_genepop(GenePop=GenePopData,keep=TRUE,subs=subloci,path=paste0(output_dir,"Genepop_Loci_selection_subpop.txt"),sPop=PopKeep)
 ```
-
+<a name="subsetrenm"/>
 ##subset\_genepop\_rename
 Now change the names of some of the populations. In this example we will rename populations DDD & HHH to YYY & ZZZ.
 
@@ -398,7 +424,7 @@ Populations can also be grouped by a common name. The result is similar to subse
   subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe=PopRename_group,renumber=TRUE)
 ```
 
-
+<a name="subsetagg"/>
 ##subset\_genepop\_aggregate
 Now lets change group some populations together. In this example we will combine populations DDD/EEE & FFF/HHH and remove populations JJJ/GGG (*not listed in column 1 of PopRename*). No loci will be removed from this dataframe (*subs=NULL*). This is useful when you don't want a clustering program (e.g. STRUCTURE or Bayescan) to assume differences among population groups.
 
@@ -436,7 +462,7 @@ Now that we have two grouped populations, we can use the population rename funct
                  
                  
 ```
-
+<a name="subsetidv"/>
 ##subset\_genepop\_individual
 Remove some individual samples from the dataframe. Here we consider the 'individual' ID to be an alpha-numeric code which at the start of each row of data. The keep parameter defines whether the specified list is removed or retained (default: keep = FALSE).
 _This function is best run at the beginning of the analysis prior to removal of specific loci or populations._ 
@@ -455,6 +481,7 @@ _This function is best run at the beginning of the analysis prior to removal of 
 
 #**Sampling**
 
+<a name="genepopsamp"/>
 ##genepop\_sample
 Function which will allow you to create subsets of the genepop. This might be useful for creating training and leave-out datasets for assignment. 
 
@@ -519,6 +546,7 @@ For example if you wanted to create a training and assignment dataset  in genepo
 
 #**Conversion**
 
+<a name="genepopstruc"/>
 ##genepop\_structure
 If you are interested in investigating population structure you can convert your modified Genepop object or path to saved file directly into a STRUCTURE formatted text (.str) file <http://pritchardlab.stanford.edu/structure.html>. 
 
@@ -533,7 +561,7 @@ If you are interested in investigating population structure you can convert your
   genepop_structure(GenePop="Genepop_IDsubset.txt",popgroup=pGroups, path=paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
 
 ```
-
+<a name="genepopfst"/>
 ##genepop\_fstat
 
 If you are interested in doing calculating gene diversities and-or F-statistics with the cleaned loci datasets, you can convert from Genepop to FSTAT format 
@@ -546,7 +574,7 @@ This data can be used by the R package 'hierfstat' <https://cran.r-project.org/w
 #convert Genepop format to FSTAT but keep the data in the workspace
   genepop_fstat(GenePop="Genepop_IDsubset.txt",addworkspace=TRUE)
 ```
-
+<a name="genepopnh"/>
 ##genepop\_newhybrids
 If you are interested in testing for hybridization you can convert from Genepop to the format necessary for the program New Hybrids <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>. 
 
@@ -554,7 +582,7 @@ If you are interested in testing for hybridization you can convert from Genepop 
 #convert Genepop format to New Hybrids format (.txt)
   genepop_newhybrids(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"NewHybrids_IDsubset.txt"))
 ```
-
+<a name="genepopagn"/>
 ##genepop\_assigner
 If you are interested conducting assignment analysis, you can convert to the format required for the R package "assigner" <https://github.com/thierrygosselin/assigner>. 
 
@@ -568,7 +596,7 @@ If you are interested conducting assignment analysis, you can convert to the for
    genepop_assigner(GenePop="Genepop_IDsubset.txt",popgroup=pGroups,path=paste0(output_dir,"assigner_IDsubset_NewGroups.txt"))
   
 ```
-
+<a name="genepopbgc"/>
 ##genepop\_bgc
 If you are interested evaluating genomic clines and introgression among loci you can convert to the "Bayesian estimation of Genomic Clines (BGC) format. Note here you must specify which populations you consider to be ancestral or 'parental' (P1,P2) and which you assume could be hybridized (Admixed). <https://sites.google.com/site/bgcsoftware/>. 
 
@@ -581,7 +609,7 @@ BGC_groups=data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","
 genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",dir=oputput_dir)
 
 ```
-
+<a name="genepopflat"/>
 ##genepop\_flatten
 Flatten your geneotype data for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove loci and-or populations, this must be before hand using *subset_genepop* or its sister functions (see below for examples).
 
