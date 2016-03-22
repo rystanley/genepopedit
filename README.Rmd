@@ -71,7 +71,7 @@ Alternatively the loci names can be read in the first row as a single character 
     TAG_03  , 120120 110110 110110
     TAG_04  , 120120 110110 110110
     
-In both formats each row is read in as a single character vector. Sample IDs have the population and sample number seperated by a "_". Between sample ID and the loci is conventional Genepop separator "   , " *(space,space space)*. Note if your population label is note seperated from the sample number in the Sample IDs refer to the help section for subset\_genpop\_rename. [ test ](#abcde)
+In both formats each row is read in as a single character vector. Sample IDs have the population and sample number seperated by a "_". Between sample ID and the loci is conventional Genepop separator "   , " *(space,space space)*. Note if your population label is note seperated from the sample number in the Sample IDs refer to the help section for . [ subset\_genpop\_rename ](#subsetrenm)
 
 Most molecular based file formats can be converted to and from *Genepop* using conversion programs such as the R package _adegenet_ <https://github.com/thibautjombart/adegenet/wiki> or the program *PGDspider* <http://www.cmpg.unibe.ch/software/PGDSpider/>. 
 
