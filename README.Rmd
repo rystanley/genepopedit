@@ -119,8 +119,7 @@ Pull request how-to:
 ***
 #**Diagnostics**
 
-<a name="abcde"/>
-#### genepop_detective.R 
+#### genepop_detective.R [see example](#genepopdetect)
 * extract quick meta-data from Genepop file
     * Population names
     * Population counts
@@ -297,6 +296,7 @@ output_dir <- "c:/Users/YourName/Documents/GenePopFiles/"
 
 #**Diagnostics**
 
+<a name="genepopdetect"/>
 #genepop\_detective
 This function queries meta-data from your genepop data without having to open it in a text editor. Function returns a vector of population names, population counts, sample IDs, or Loci names.
 
