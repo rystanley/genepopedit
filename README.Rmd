@@ -73,6 +73,8 @@ Alternatively the loci names can be read in the first row as a single character 
     
 In both formats each row is read in as a single character vector. Sample IDs have the population and sample number seperated by a "_". Between sample ID and the loci is conventional Genepop separator "   , " *(space,space space)*. Note if your population label is note seperated from the sample number in the Sample IDs refer to the help section for . [ subset\_genpop\_rename ](#subsetrenm)
 
+Note that input and output "**path**" variables all require the **FULL** file path. Relative paths will not work with _genepopedit_ functions.  
+
 Most molecular based file formats can be converted to and from *Genepop* using conversion programs such as the R package _adegenet_ <https://github.com/thibautjombart/adegenet/wiki> or the program *PGDspider* <http://www.cmpg.unibe.ch/software/PGDSpider/>. 
 
 ***
@@ -149,7 +151,7 @@ Pull request how-to:
 * remove or keep a subset of loci 
 * remove populations 
 
-[example use](#subsetgenp)
+[_example use_](#subsetgenp)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
@@ -162,7 +164,7 @@ Pull request how-to:
 #### subset_genepop_rename.R
 * subset and-or rename populations
 
-[example use](#subsetrenm)
+[_example use_](#subsetrenm)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
@@ -174,7 +176,7 @@ Pull request how-to:
 #### subset_genepop_aggregate.R
 * group populations based on Genepop population tags
 
-[example use](#subsetagg)
+[_example use_](#subsetagg)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
@@ -187,13 +189,23 @@ Pull request how-to:
 #### subset_genepop_individuals.R
 * remove or keep a subset of individuals
 
-[example use](#subsetidv)
+[_example use_](#subsetidv)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **indiv** | vector sample IDs of interest.
 **keep** | logical whether to delete sample IDs specified by indiv (default: TRUE) or delete all other IDs.
+**path** | the filepath & filename of output.
+
+#### genepop_ID.R
+* function to add '_' between the population and sample number of a sample ID. This format (e.g. BON_01) is required for the remaining genepopedit functions. If your data already fits this format then this function need not be used. 
+
+[_example use_](#genepopIDfix)
+
+**Variable name** | **Input**  
+--------------|-----------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **path** | the filepath & filename of output.
 
 ***
@@ -203,7 +215,7 @@ Pull request how-to:
 #### genepop_sample.R 
 * Subsample individuals from a genepop file using population based random stratified sampling.
 
-[example use](#genepopsamp)
+[_example use_](#genepopsamp)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -223,7 +235,7 @@ Pull request how-to:
 * Convert Genepop format to NewHybrids format.
   <http://pritchardlab.stanford.edu/structure.html>
   
-[example use](#genepopstruc)
+[_example use_](#genepopstruc)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -235,7 +247,7 @@ Pull request how-to:
 * Convert Genepop format to fstat format.
 <https://cran.r-project.org/web/packages/hierfstat/index.html>
 
-[example use](#genepopfst)
+[_example use_](#genepopfst)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -247,7 +259,7 @@ Pull request how-to:
 * Convert Genepop format to NewHybrids format.
   <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>
   
-[example use](#genepopnh)
+[_example use_](#genepopnh)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -258,7 +270,7 @@ Pull request how-to:
 * Convert Genepop format to assigner format.
 <https://github.com/thierrygosselin/assigner>
 
-[example use](#genepopagn)
+[_example use_](#genepopagn)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -270,7 +282,7 @@ Pull request how-to:
 * Convert Genepop format to Bayesian Genomic Clines (BGC) format (3 files).
 <https://sites.google.com/site/bgcsoftware/>
 
-[example use](#genepopbgc)
+[_example use_](#genepopbgc)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -286,7 +298,7 @@ Pull request how-to:
     * Sample number
     * Loci
     
-[example use](#genepopflat)
+[_example use_](#genepopflat)
 
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -318,6 +330,18 @@ Set a directory where the output files will be saved.
 ```r
 output_dir <- "c:/Users/YourName/Documents/GenePopFiles/" 
 ```
+
+<a name="genepopIDfix"/>
+the package **genepopedit** requires that the population and sample number be separated by an _ in the sampleID (e.g. BON_01). This can be accomplished using the function genepop_ID. This function will read in a genepop file and look for a common character string within the sample ID vectors grouped by the genepop "Pop" labels. This function assumes that there is a common string which unifies IDs between each of the Pop labels. If this isn't the case some pre-filtering of the data using a text editor will be required. 
+
+```r
+#Use genepop_ID to fix the sample IDs prior to the use of genepopedit functions.
+filepath="~myfile.txt" #path to 'myfile' which has sample IDs without the required _ seperation. Note this can also be an object in the workspace.
+
+genepop_ID(GenePop=filepath,path=paste0(output_dir,"Genepop_SampleID_fixed.txt"))
+```
+
+***
 
 #**Diagnostics**
 
@@ -422,6 +446,20 @@ Populations can also be grouped by a common name. The result is similar to subse
 
 #rename populations
   subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe=PopRename_group,renumber=TRUE)
+```
+
+If your sample IDs are not split between the population and the sample number using an _ then you can rename the populations before using any subsetting functions. Note that in this example because there is already a _ seperating populations the 
+
+```r
+#view the sample IDs
+PopNames <- genepop_detective(GenePopData,"Inds")
+PopNames_fixed <- paste0(PopNames,"_") #add the underscore seperator
+
+#create a dataframe for renaming. 
+  PopRename_fixed <- data.frame(oPop=PopNames,newname=PopNames_fixed)
+
+#rename populations * note here you will keep the original sample #s (renumber = F)
+  subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe=PopRename_fixed,renumber=FALSE)
 ```
 
 <a name="subsetagg"/>
