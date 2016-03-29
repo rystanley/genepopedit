@@ -5,11 +5,11 @@
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
 #' or a single commma deliminated row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by "   , " (space space,space) and is read in as
+#' seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
 #' @param popdef is a dataframe or path to a csv.
 #' This dataframe contains two columns. Column 1 corresponds to the population names. These names
-#' should match the individual IDs (e.g. BON_01  , 110110 would be 'BON'). The next column
+#' should match the individual IDs (e.g. BON_01 ,  110110 would be 'BON'). The next column
 #' has the grouping classification corresponding to each population
 #' defining parental 1 ("P1") parental 2 ("P2") and admixed ("Admixed") populations.
 #' Note the classifications must be exactly as specified (caps sensitive). If populations are omitted from
