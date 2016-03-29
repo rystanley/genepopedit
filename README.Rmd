@@ -332,6 +332,7 @@ output_dir <- "c:/Users/YourName/Documents/GenePopFiles/"
 ```
 
 <a name="genepopIDfix"/>
+#genepop\_ID
 
 Functions available in **genepopedit** require that the population and sample number be separated by an _ in the sample ID (e.g. BON_01 not BON01). This can be accomplished manually using a text editor or using the function **genepop_ID**. genepop_ID will read in a Genepop file and look for a common character string within the sample ID vectors grouped by the Genepop "Pop" labels. This function assumes that there _is_ a common string which unifies IDs between each of the Pop labels. If this isn't the case, some pre-filtering of the data using a text editor will be required. 
 
