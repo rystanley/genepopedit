@@ -1,7 +1,7 @@
 # BGC Allele conversion
 #' @title Function used when converting allele formats for Bayesian Genomic Clines admixed file.
 #' @description BGC admixed allele conversion
-#' @param x flattend allele dataframe
+#' @param x flattened allele dataframe
 #' @rdname aCount
 #' @export
 

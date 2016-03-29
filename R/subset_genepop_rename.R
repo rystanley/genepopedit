@@ -5,11 +5,11 @@
 #' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by "   , " (space space,space) and is read in as
+#' seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
 #' @param nameframe a dataframe or path to a csv. This must be specified in this function
 #' this dataframe contains two columns. Column 1 corresponds to the population names. These names
-#' should match the individual IDs (e.g. BON_01  , 110110 120120 -- would be 'BON'). The next column
+#' should match the individual IDs (e.g. BON_01 ,  110110 120120 -- would be 'BON'). The next column
 #' has the new names that you want to change or rename. If you don't want to change the name then just repeat
 #' from column one in that row. **Note if this is a reference to a path then there should be column headers
 #' though the headers do not need to match this example. If the input is a dataframe object from the
