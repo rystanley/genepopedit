@@ -93,12 +93,14 @@ genepop_ID <- function(GenePop,path){
     SampleID[which(popvector==i)] <- gsub(commonname,paste0(commonname,"_"),SampleID[which(popvector==i)])
   }
 
+  NameExtract <- substr(SampleID,1,regexpr("_",SampleID)-1)
+
     #the number of individuals for all popualtions but the last (Pop tagged to the end)
     PopLengths <- table(factor(NamePops, levels=unique(NamePops)))[-length(table(NamePops))]
 
-    if(length(table(NameExtract3))==2){PopPosition = PopLengths+1}
+    if(length(table(NameExtract))==2){PopPosition = PopLengths+1}
 
-    if(length(table(NameExtract3))>2){
+    if(length(table(NameExtract))>2){
       PopPosition <- c(PopLengths[1]+1,rep(NA,(length(PopLengths)-1)))
       for (i in 2:length(PopLengths)){
         PopPosition[i] <- PopLengths[i]+PopPosition[i-1]
