@@ -156,7 +156,6 @@ genepop_bgc <- function(GenePop,popdef,fname,dir){
           # grab vector of alleles and delete replace missing values (-9) with NA
           P1_alleles <- P1_raw[,i];P1_alleles[which(P1_alleles==-9)]=NA
           P2_alleles <- P2_raw[,i];P2_alleles[which(P2_alleles==-9)]=NA
-          P3_alleles <- P3_raw[,i];P3_alleles[which(P3_alleles==-9)]=NA
 
           #If the population only has one allele for a given locus then a zero and the allele have be be added
           if(length(table(P1_alleles))==1){
@@ -203,17 +202,35 @@ genepop_bgc <- function(GenePop,popdef,fname,dir){
               for (i in unique(MixedStruct$Pop)) # each populatoin
                 {
 
-                temp4 <- filter(temp3,Pop==i) # subset for the population
+                temp4 <- dplyr::filter(temp3,Pop==i) # subset for the population
+
+                #define major and minor alleles(remove missing data (-9))
+
+                # all missing data
+                if(length(table(temp4[,3]))==1){if(unique(temp4[,3])==-9){
+                  writeLines(paste0("Warning no data available for loci(",col,
+                                    ") and population ",i,
+                                    " coded as -9 -9 for all individuals"))}}
+                if(length(table(temp4[,3]))==1){if(unique(temp4[,3])==-9){
+                  temp4[,3]=999}}
+
+                temp4a <- temp4
+                temp4a[which(temp4[,3]==-9),3] <- NA
+
+                AlleleMajor <- as.numeric(names(which(table(temp4a[,3])==max(table(temp4a[,3])))))
+                AlleleMinor <- as.numeric(names(which(table(temp4a[,3])==min(table(temp4a[,3])))))
 
                 #Reformat the data for one row for each individaul (ID, Pop, Allele1, Allele2)
                 temp5 <- data.frame(ID=temp4[seq(1,nrow(temp4),2),"ID"],
                                     Pop=temp4[seq(1,nrow(temp4),2),"Pop"],
                                     allele1=temp4[seq(1,nrow(temp4),2),col],
                                     allele2=temp4[seq(2,nrow(temp4),2),col],
-                                    alleleMax=max(temp4[,col],na.rm=T),
-                                    alleleMin=min(temp4[which(temp4[,col]>(-1)),col],na.rm=T))
+                                    alleleMajor=AlleleMajor,
+                                    alleleMinor=AlleleMinor)
 
+                #code for homozygous minor homozygous major and missing data.
                 temp6 <- as.data.frame(temp5%>%group_by(ID)%>%do(col1=aCount(.)[1],col2=aCount(.)[2])%>%ungroup())
+                temp6 <- temp6[ordered(temp5$ID),] #back to the original order
 
                 temp7 <- paste(temp6[,"col1"],temp6[,"col2"],sep=" ")
 
