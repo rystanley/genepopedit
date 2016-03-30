@@ -641,12 +641,12 @@ If you are interested conducting assignment analysis, you can convert to the for
 If you are interested evaluating genomic clines and introgression among loci you can convert to the "Bayesian estimation of Genomic Clines (BGC) format. Note here you must specify which populations you consider to be ancestral or 'parental' (P1,P2) and which you assume could be hybridized (Admixed). <https://sites.google.com/site/bgcsoftware/>. 
 
 ```r
-#specify which populations are going to be included in the analysis and to which class they belong
+#specify which populations are going to be included in the analysis and to which class they belong. Note Pops identified in P1 and-or P2 can also be specified as "Admixed" to test BGC output. 
 BGC_groups=data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),
                       groups = c("P1","P1","P1","Admixed","Admixed","Admixed","Admixed","P2","P2","P2"))
 
-#convert Genepop to BGC input files (3)
-genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",dir=oputput_dir)
+#convert Genepop to BGC input files (3). Note in this case the variable path is a path to the directory where the input files will be saved.
+genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",path=output_dir)
 
 ```
 <a name="genepopflat"/>
