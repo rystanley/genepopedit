@@ -54,11 +54,11 @@ genepop_ID <- function(GenePop,path){
 
 ## Seperate the data into the column headers and the rest
     ColumnData <- GenePop[1:(Pops[1]-1),"data"]
+    ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
     snpData <- GenePop[Pops[1]:NROW(GenePop),]
 
 #Get a datafile with just the snp data no pops
     tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
-
 
   #Use the 'Pop' original seperators to separate the unique population names
   PopLengths=NULL

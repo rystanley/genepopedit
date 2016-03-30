@@ -56,6 +56,7 @@ genepop_fstat <- function(GenePop,path=NULL,addworkspace=FALSE)
 
 ## Seperate the data into the column headers and the rest
     ColumnData <- GenePop[1:(Pops[1]-1),"data"]
+    ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
     snpData <- GenePop[Pops[1]:NROW(GenePop),]
 
 #Get a datafile with just the snp data no pops
