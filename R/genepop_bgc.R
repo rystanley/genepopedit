@@ -17,7 +17,7 @@
 #' @param fname collective name assigned to each of the output files for BGC.
 #' e.g. "Lobster_analysis" would result in
 #' "Lobster_analysis_P1.txt","Lobster_analysis_P2.txt", and "Lobster_analysis_Admixed.txt"
-#' @param dir file path to directory where the BGC files (3) will be saved.
+#' @param path file path to directory where the BGC files (3) will be saved.
 #' @rdname genepop_bgc
 #' @import magrittr
 #' @importFrom tidyr separate
@@ -25,7 +25,7 @@
 #' @export
 
 
-genepop_bgc <- function(GenePop,popdef,fname,dir){
+genepop_bgc <- function(GenePop,popdef,fname,path){
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -243,15 +243,15 @@ genepop_bgc <- function(GenePop,popdef,fname,dir){
 
 
 ##Save output for BGC formated for the parental and mixed populations ------------
-      if(substring(dir,nchar(dir))!="/"){dir=paste0(dir,"/")}
+      if(substring(path,nchar(path))!="/"){path=paste0(path,"/")}
 
-      write.table(x = P1_BGC,file=paste0(dir,fname,"_Parental1_BGC.txt",sep=""),
+      write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
                   sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
-      write.table(x = P2_BGC,file=paste0(dir,fname,"_Parental2_BGC.txt",sep=""),
+      write.table(x = P2_BGC,file=paste0(path,fname,"_Parental2_BGC.txt",sep=""),
                   sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
-      write.table(x = MixedData,file=paste(dir,fname,"_Admixed_BGC.txt",sep=""),
+      write.table(x = MixedData,file=paste(path,fname,"_Admixed_BGC.txt",sep=""),
                   sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
 } #end of function
