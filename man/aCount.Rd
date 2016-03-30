@@ -7,7 +7,7 @@
 aCount(x)
 }
 \arguments{
-\item{x}{flattend allele dataframe}
+\item{x}{flattened allele dataframe}
 }
 \description{
 BGC admixed allele conversion
