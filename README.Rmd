@@ -289,7 +289,7 @@ Pull request how-to:
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **popdef** | popgroup is a dataframe or path to a csv. This dataframe contains two columns. Column 1 corresponds to the population names. The next column has the grouping classification corresponding to each population defining parental 1 ("P1") parental 2 ("P2") and admixed ("Admixed") populations.
 **fname** | collective name assigned to each output the output files (3).
-**path** | the filepath & filename of output.
+**path** | the path to directory where the BGC files will be saved.
 
 #### genepop_flatten.R 
 * Convert Genepop format to a flattend dataframe:
