@@ -24,7 +24,6 @@
 #' @importFrom dplyr filter do group_by ungroup
 #' @export
 
-
 genepop_bgc <- function(GenePop,popdef,fname,path){
 
   #Check to see if Genepop is a file path or dataframe
@@ -200,7 +199,15 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
             temp3 <- MixedStruct[,c("ID","Pop",col)]
             Locushold <- paste("locus_",col,sep="") # Start the locus data
 
-              for (i in unique(MixedStruct$Pop)) # each populatoin
+            # Identify major and minor alleles for a given locus among populations
+            temp3a <- temp3
+            temp3a[which(temp3[,3]==-9),3] <- NA
+            AlleleMajor <- as.numeric(names(which(table(temp3a[,3])==max(table(temp3a[,3])))))
+            AlleleMinor <- as.numeric(names(which(table(temp3a[,3])==min(table(temp3a[,3])))))
+            #if there is no difference in allele frequence among admixed populations
+            if(length(AlleleMajor)>1){AlleleMajor <- AlleleMajor[1];AlleleMinor=AlleleMinor[2]}
+
+             for (i in unique(MixedStruct$Pop)) # each populatoin
                 {
 
                 temp4 <- dplyr::filter(temp3,Pop==i) # subset for the population
@@ -214,12 +221,6 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
                                     " coded as -9 -9 for all individuals"))}}
                 if(length(table(temp4[,3]))==1){if(unique(temp4[,3])==-9){
                   temp4[,3]=999}}
-
-                temp4a <- temp4
-                temp4a[which(temp4[,3]==-9),3] <- NA
-
-                AlleleMajor <- as.numeric(names(which(table(temp4a[,3])==max(table(temp4a[,3])))))
-                AlleleMinor <- as.numeric(names(which(table(temp4a[,3])==min(table(temp4a[,3])))))
 
                 #Reformat the data for one row for each individaul (ID, Pop, Allele1, Allele2)
                 temp5 <- data.frame(ID=temp4[seq(1,nrow(temp4),2),"ID"],
