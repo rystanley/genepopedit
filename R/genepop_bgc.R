@@ -26,9 +26,6 @@
 
 genepop_bgc <- function(GenePop,popdef,fname,path){
 
-  #Write speed warning.
-  writeLines("Note that genepop_bgc is in development. Currently the speed of conversion to admixed format will depend on the number of loci. For datasets containing more than 1000 loci, this conversion can take some time. Please check back periodically for updates and speed improvements")
-
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
     GenePop <- read.table(GenePop,
@@ -106,12 +103,11 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
 
   holdframe[holdframe==0]= -9 # replace missing values with -9
 
-
-    groupvec <- NameExtract
-    for (i in 1:length(unique(NameExtract))) # replace with numbers
-    {
-      groupvec[which(groupvec==unique(NameExtract)[i])] = i
-    }
+  groupvec <- NameExtract
+  for (i in 1:length(unique(NameExtract))) # replace with numbers
+  {
+    groupvec[which(groupvec==unique(NameExtract)[i])] = i
+  }
 
   holdframe=cbind(rep(NamePops,each=2),rep(groupvec,each=2),rep(NameExtract,each=2),holdframe)
   colnames(holdframe)[1:3]=c("ID","PopID","Pop")
@@ -129,134 +125,120 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   P2_raw <- holdframe[which(holdframe$Pop %in% popdef[which(popdef[,2]=="P2"),1]),]#Parental 2
   P3_raw <- holdframe[which(holdframe$Pop %in% popdef[which(popdef[,2]=="Admixed"),1]),]#Admixed
 
-        # names of the snps
-        snpnames <- colnames(temp2)
+  # names of the snps
+  snpnames <- colnames(temp2)
 
-        #map to be used for missing alleles (if any present across loci)
-        Allele_Map <- data.frame(SNP=snpnames,
-                                 Allele1=rep(999,length(snpnames)),
-                                 Allele2=rep(999,length(snpnames))) # 999 is a dummy placeholder
+  #map to be used for missing alleles (if any present across loci)
+  Allele_Map <- data.frame(SNP=snpnames,
+                           Allele1=rep(999,length(snpnames)),
+                           Allele2=rep(999,length(snpnames))) # 999 is a dummy placeholder
 
-        for(i in 1:length(snpnames)){
-            #unique alleles for a given snp (locus)
-            alleleVals <- as.data.frame(table(as.character(c(P1_raw[,snpnames[i]],P2_raw[,snpnames[i]],P3_raw[,snpnames[i]]))))
+  for(i in 1:length(snpnames)){
+    #unique alleles for a given snp (locus)
+    alleleVals <- as.data.frame(table(as.character(c(P1_raw[,snpnames[i]],P2_raw[,snpnames[i]],P3_raw[,snpnames[i]]))))
 
-            # if there is missing data (-9) delete it as a possibe allele
-            if(length(which(alleleVals[,1]==(-9)))>0){
-              alleleVals <- alleleVals[-which(alleleVals[,1]==(-9)),]
-              }
+    # if there is missing data (-9) delete it as a possibe allele
+    if(length(which(alleleVals[,1]==(-9)))>0){
+      alleleVals <- alleleVals[-which(alleleVals[,1]==(-9)),]
+    }
 
-            Allele_Map[i,"Allele1"]=as.character(alleleVals[1,1])
-            Allele_Map[i,"Allele2"]=as.character(alleleVals[2,1])
-        }
+    Allele_Map[i,"Allele1"]=as.character(alleleVals[1,1])
+    Allele_Map[i,"Allele2"]=as.character(alleleVals[2,1])
+  }
 
-        #NULL vectors
-        P1_BGC <- NULL
-        P2_BGC <- NULL
-        Admixed_BGC <- NULL
+  #NULL vectors
+  P1_BGC <- NULL
+  P2_BGC <- NULL
 
-        for(i in snpnames){
-          # grab vector of alleles and delete replace missing values (-9) with NA
-          P1_alleles <- P1_raw[,i];P1_alleles[which(P1_alleles==-9)]=NA
-          P2_alleles <- P2_raw[,i];P2_alleles[which(P2_alleles==-9)]=NA
+  for(i in snpnames){
+    # grab vector of alleles and delete replace missing values (-9) with NA
+    P1_alleles <- P1_raw[,i];P1_alleles[which(P1_alleles==-9)]=NA
+    P2_alleles <- P2_raw[,i];P2_alleles[which(P2_alleles==-9)]=NA
 
-          #If the population only has one allele for a given locus then a zero and the allele have be be added
-          if(length(table(P1_alleles))==1){
-            hold <- as.data.frame(table(P1_alleles))
-            hold[,1] <- as.character(hold[,1])
-            hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
-            hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
-            P1_alleles <- hold[,2]
-            rm(hold)
-          } else {P1_alleles <- as.character(as.data.frame(table(P1_alleles))[,2])}
+    #If the population only has one allele for a given locus then a zero and the allele have be be added
+    if(length(table(P1_alleles))==1){
+      hold <- as.data.frame(table(P1_alleles))
+      hold[,1] <- as.character(hold[,1])
+      hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
+      hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
+      P1_alleles <- hold[,2]
+      rm(hold)
+    } else {P1_alleles <- as.character(as.data.frame(table(P1_alleles))[,2])}
 
-          if(length(table(P2_alleles))==1){
-            hold <- as.data.frame(table(P2_alleles))
-            hold[,1] <- as.character(hold[,1])
-            hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
-            hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
-            P2_alleles <- hold[,2]
-            rm(hold)
-          } else {P2_alleles <- as.character(as.data.frame(table(P2_alleles))[,2])}
-
-
-          #for a given locus get the format for BGC
-          P1_temp <- c(paste("locus_",i,sep=""),paste(P1_alleles[1],P1_alleles[2],sep=" "))
-          P2_temp <- c(paste("locus_",i,sep=""),paste(P2_alleles[1],P2_alleles[2],sep=" "))
-
-          #Combine output sequentially for each locus
-          P1_BGC <- c(P1_BGC,P1_temp)
-          P2_BGC <- c(P2_BGC,P2_temp)
-        }
+    if(length(table(P2_alleles))==1){
+      hold <- as.data.frame(table(P2_alleles))
+      hold[,1] <- as.character(hold[,1])
+      hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
+      hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
+      P2_alleles <- hold[,2]
+      rm(hold)
+    } else {P2_alleles <- as.character(as.data.frame(table(P2_alleles))[,2])}
 
 
-#Convert the admixed data to BGC format --------------
+    #for a given locus get the format for BGC
+    P1_temp <- c(paste("locus_",i,sep=""),paste(P1_alleles[1],P1_alleles[2],sep=" "))
+    P2_temp <- c(paste("locus_",i,sep=""),paste(P2_alleles[1],P2_alleles[2],sep=" "))
 
-        MixedStruct=P3_raw
+    #Combine output sequentially for each locus
+    P1_BGC <- c(P1_BGC,P1_temp)
+    P2_BGC <- c(P2_BGC,P2_temp)
+  }
 
-       #Data wrangle and construct the format for admixture populatons as per the instructions and table 2 in the BGC manual
-          MixedData <- NULL
-          for(col in names(MixedStruct)[4:length(MixedStruct)])
-            {
+  #Convert the admixed data to BGC format --------------
 
-            temp3 <- MixedStruct[,c("ID","Pop",col)]
-            Locushold <- paste("locus_",col,sep="") # Start the locus data
+  #subset data for admixed populations
+  MixedStruct <- temp2[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1]),]
+  MixedPops <- NameExtract[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1])]
 
-            # Identify major and minor alleles for a given locus among populations
-            temp3a <- temp3
-            temp3a[which(temp3[,3]==-9),3] <- NA
-            AlleleMajor <- as.numeric(names(which(table(temp3a[,3])==max(table(temp3a[,3])))))
-            AlleleMinor <- as.numeric(names(which(table(temp3a[,3])==min(table(temp3a[,3])))))
-            #if there is no difference in allele frequence among admixed populations
-            if(length(AlleleMajor)>1){AlleleMajor <- AlleleMajor[1];AlleleMinor=AlleleMinor[2]}
+  missingfix<- function(x){ #create functions for apply loop
+    hold=x
+    hold[grep("000",hold)]=NA
+    return(hold)}
 
-             for (i in unique(MixedStruct$Pop)) # each populatoin
-                {
+  #Remove Alleles with missing data and replace with NA
+  temp3 <- apply(MixedStruct,2,missingfix)
 
-                temp4 <- dplyr::filter(temp3,Pop==i) # subset for the population
+  #convert to zygosity format (2 0 - homozygous major, 0 2 - homozygous minor, 1 1 - heterozygous, -9 -9 - missing data )
+  temp4 <- apply(temp3,2,majorminor)
 
-                #define major and minor alleles(remove missing data (-9))
+  #the number of individuals for all popualtions but the last (Pop tagged to the end)
+  PopLengths <- table(MixedPops)[-length(table(MixedPops))]
 
-                # all missing data
-                if(length(table(temp4[,3]))==1){if(unique(temp4[,3])==-9){
-                  writeLines(paste0("Warning no data available for loci(",col,
-                                    ") and population ",i,
-                                    " coded as -9 -9 for all individuals"))}}
-                if(length(table(temp4[,3]))==1){if(unique(temp4[,3])==-9){
-                  temp4[,3]=999}}
+  if(length(table(MixedPops))==2){PopPosition = PopLengths+1}
 
-                #Reformat the data for one row for each individaul (ID, Pop, Allele1, Allele2)
-                temp5 <- data.frame(ID=temp4[seq(1,nrow(temp4),2),"ID"],
-                                    Pop=temp4[seq(1,nrow(temp4),2),"Pop"],
-                                    allele1=temp4[seq(1,nrow(temp4),2),col],
-                                    allele2=temp4[seq(2,nrow(temp4),2),col],
-                                    alleleMajor=AlleleMajor,
-                                    alleleMinor=AlleleMinor)
+  if(length(table(MixedPops))>2){
+    PopPosition <- c(PopLengths[1]+1,rep(NA,(length(PopLengths)-1)))
+    for (i in 2:length(PopLengths)){
+      PopPosition[i] <- PopLengths[i]+PopPosition[i-1]
+    }
+  }
 
-                #code for homozygous minor homozygous major and missing data.
-                temp6 <- as.data.frame(temp5%>%group_by(ID)%>%do(col1=aCount(.)[1],col2=aCount(.)[2])%>%ungroup())
-                temp6 <- temp6[ordered(temp5$ID),] #back to the original order
+  #Insert the population labels
+  if(length(table(MixedPops))!=1){
+  temp5 <- apply(temp4,2,function(x){insert_vals(x,breaks=PopPosition,
+    newVal=paste0("pop_",unique(MixedPops)[2:length(unique(MixedPops))]))})} else {
+    temp5 <- temp4}
 
-                temp7 <- paste(temp6[,"col1"],temp6[,"col2"],sep=" ")
+  temp5=as.data.frame(temp5,stringsAsFactors = FALSE)
 
-                Locushold <- c(Locushold,paste("pop_",i,sep=""),temp7)
+  #Add the "locus_" and first "pop_" labels
+  temp6=as.matrix(rbind(paste0("locus_",colnames(temp5)),
+              rep(paste0("pop_",unique(MixedPops)[1]),length(temp5)),
+              temp5))
 
-              } #end of population loop
+  #Redimension as a single vector
+  MixedData=as.vector(temp6)
 
-              MixedData <- c(MixedData,Locushold) # add each successive locus
-            } #end of locus loop
+  ##Save output for BGC formated for the parental and mixed populations ------------
+  if(substring(path,nchar(path))!="/"){path=paste0(path,"/")}
 
+  write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
+              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
-##Save output for BGC formated for the parental and mixed populations ------------
-      if(substring(path,nchar(path))!="/"){path=paste0(path,"/")}
+  write.table(x = P2_BGC,file=paste0(path,fname,"_Parental2_BGC.txt",sep=""),
+              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
-      write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
-                  sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
-
-      write.table(x = P2_BGC,file=paste0(path,fname,"_Parental2_BGC.txt",sep=""),
-                  sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
-
-      write.table(x = MixedData,file=paste(path,fname,"_Admixed_BGC.txt",sep=""),
-                  sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
+  write.table(x = MixedData,file=paste(path,fname,"_Admixed_BGC.txt",sep=""),
+              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
 } #end of function
