@@ -8,11 +8,11 @@
 
 majorminor<- function(Vec,allele_length=6){
   Vec <- as.character(Vec)
-  firstAllele <-  as.data.frame(sapply(Vec,function(x)as.numeric(as.character(substring(x,1,(allele_length/2))))),stringsAsFactors = F)
-  secondAllele <-  as.data.frame(sapply(Vec,function(x)as.numeric(as.character(substring(x,(allele_length/2)+1,allele_length)))),stringsAsFactors = F)
+  firstAllele <-  as.data.frame(sapply(Vec,function(x)as.character(substring(x,1,(allele_length/2)))),stringsAsFactors = F)
+  secondAllele <-  as.data.frame(sapply(Vec,function(x)as.character(substring(x,(allele_length/2)+1,allele_length))),stringsAsFactors = F)
   x=c(firstAllele[,1],secondAllele[,1])
-  AlleleMajor <- as.numeric(names(which(table(x)==max(table(x)))))
-  AlleleMinor <- as.numeric(names(which(table(x)==min(table(x)))))
+  AlleleMajor <- as.character(names(which(table(x)==max(table(x)))))
+  AlleleMinor <- as.character(names(which(table(x)==min(table(x)))))
   if(length(AlleleMajor)>1){AlleleMajor <- AlleleMajor[1];AlleleMinor=AlleleMinor[2]}
 
   Vec[is.na(Vec)]="-9 -9" #missing data
