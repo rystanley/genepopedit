@@ -26,6 +26,9 @@
 
 genepop_bgc <- function(GenePop,popdef,fname,path){
 
+  #Write speed warning.
+  writeLines("Note that genepop_bgc is in development. Currently the speed of conversion to admixed format will depend on the number of loci. For datasets containing more than 1000 loci, this conversion can take some time. Please check back periodically for updates and speed improvements")
+
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
     GenePop <- read.table(GenePop,
