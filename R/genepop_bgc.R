@@ -184,6 +184,15 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
     P2_BGC <- c(P2_BGC,P2_temp)
   }
 
+  ##Save output for BGC formated for the parental populations ------------
+  if(substring(path,nchar(path))!="/"){path=paste0(path,"/")}
+  
+  write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
+              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
+  
+  write.table(x = P2_BGC,file=paste0(path,fname,"_Parental2_BGC.txt",sep=""),
+              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
+  
   #Convert the admixed data to BGC format --------------
 
   #subset data for admixed populations
@@ -230,14 +239,6 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   MixedData=as.vector(temp6)
 
   ##Save output for BGC formated for the parental and mixed populations ------------
-  if(substring(path,nchar(path))!="/"){path=paste0(path,"/")}
-
-  write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
-              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
-
-  write.table(x = P2_BGC,file=paste0(path,fname,"_Parental2_BGC.txt",sep=""),
-              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
-
   write.table(x = MixedData,file=paste(path,fname,"_Admixed_BGC.txt",sep=""),
               sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
