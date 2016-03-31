@@ -23,7 +23,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     
 * create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
-* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC and flattened format.
+* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, and flattened format.
 
 ***
 
@@ -638,7 +638,7 @@ If you are interested conducting assignment analysis, you can convert to the for
 ```
 <a name="genepopbgc"/>
 ##genepop\_bgc
-If you are interested evaluating genomic clines and introgression among loci you can convert to the "Bayesian estimation of Genomic Clines (BGC) format. Note here you must specify which populations you consider to be ancestral or 'parental' (P1,P2) and which you assume could be hybridized (Admixed). <https://sites.google.com/site/bgcsoftware/>. 
+*genepopedit* is one of the few tools available to convert data to the format required for input into to the "Bayesian estimation of Genomic Clines" (BGC) format. BGC can evalute genomic clinal patterns and introgression among loci. To convert to BGC format you must specify which populations you consider to be _ancestral_ or _'parental'_ (P1,P2) and which you assume could be hybridized (Admixed). <https://sites.google.com/site/bgcsoftware/>. 
 
 ```r
 #specify which populations are going to be included in the analysis and to which class they belong. Note Pops identified in P1 and-or P2 can also be specified as "Admixed" to test BGC output. 
