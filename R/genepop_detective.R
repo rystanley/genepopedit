@@ -102,10 +102,10 @@ genepop_detective <- function(GenePop,variable="Pops"){
     Allele <- Allele[order(Allele)]} #sort the Allele values (NA or 0 will be first)
 
     #return data vector of interest
-    if(variable=="Pops"){return(unique(NameExtract))}
+    if(variable=="Pops"){return(as.character(unique(NameExtract)))}
     if(variable=="PopNum"){return(PopNum)}
-    if(variable=="Inds"){return(NamePops)}
-    if(variable=="Loci"){return(names(temp2))}
+    if(variable=="Inds"){return(as.character(NamePops))}
+    if(variable=="Loci"){return(as.character(names(temp2)))}
     if(variable=="Allele"){return(Allele)}
 
 }
