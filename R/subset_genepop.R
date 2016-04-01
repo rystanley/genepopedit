@@ -94,55 +94,55 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
 ## Get the population names (prior to the _ in the Sample ID)
     NamePops <- temp[,1] # Sample names of each
     NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
-
-## Now add the population tags using npops (number of populations and Pops for the inter differences)
+    
+  ## Now add the population tags using npops (number of populations and Pops for the inter differences)
     tPops <- c(Pops,NROW(GenePop))
-      PopIDs <- NULL
-          for (i in 2:length(tPops)){
-            hold <- tPops[i]-tPops[i-1]-1
-            if(i==length(tPops)){hold=hold+1}
-            pophold <- rep(npops[i-1],hold)
-            PopIDs <- c(PopIDs,pophold)
-          }
-
+    PopIDs <- NULL
+    for (i in 2:length(tPops)){
+      hold <- tPops[i]-tPops[i-1]-1
+      if(i==length(tPops)){hold=hold+1}
+      pophold <- rep(npops[i-1],hold)
+      PopIDs <- c(PopIDs,pophold)
+    }
+    
     temp2$Pop <- PopIDs;rm(hold,pophold,tPops,PopIDs)
-
+    
 ## Now subset out the the data according to the specified loci and whether or not you want to keep them.
 
     if(is.numeric(subs))
-      { #column number instead of name depending on the output from Outlier detection
-
-          if(!keep) # neutral
-          {
-            if(length(subs)>0){reqCols <- temp2[,-subs]}
-            if(length(subs)==0){reqCols <- temp2}
-          }
-
-
-          if(keep) # outliers or loci under divergent selection
-          {
-            PopInd=which(names(temp2)=="Pop")
-            if(length(subs)>0){reqCols <- temp2[,c(subs,PopInd)]}
-            if(length(subs)==0){reqCols <- temp2}
-          }
-
-    }
-
-    if(!is.numeric(subs))
-      { #column name
-
-      if(!keep)# neutral
-          {
-            if(length(subs)>0){reqCols <- temp2[,-which(names(temp2)%in%subs)]}
-            if(length(subs)==0){reqCols <- temp2}
-          }
-
-        if(keep)# outliers or loci under divergent selection
-            {
-            if(length(subs)>0){reqCols <- temp2[,c(subs,"Pop")]}
-            if(length(subs)==0){reqCols <- temp2}
-            }
+    { #column number instead of name depending on the output from Outlier detection
+      
+      if(!keep) # neutral
+      {
+        if(length(subs)>0){reqCols <- temp2[,-subs]}
+        if(length(subs)==0){reqCols <- temp2}
       }
+      
+      
+      if(keep) # outliers or loci under divergent selection
+      {
+        PopInd=which(names(temp2)=="Pop")
+        if(length(subs)>0){reqCols <- temp2[,c(subs,PopInd)]}
+        if(length(subs)==0){reqCols <- temp2}
+      }
+      
+    }
+    
+    if(!is.numeric(subs))
+    { #column name
+      
+      if(!keep)# neutral
+      {
+        if(length(subs)>0){reqCols <- temp2[,-which(names(temp2)%in%subs)]}
+        if(length(subs)==0){reqCols <- temp2}
+      }
+      
+      if(keep)# outliers or loci under divergent selection
+      {
+        if(length(subs)>0){reqCols <- temp2[,c(subs,"Pop")]}
+        if(length(subs)==0){reqCols <- temp2}
+      }
+    }
 
 ## Now subset the rows
     # is a population subset required
@@ -163,6 +163,8 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
 
 
     } # end of subset population if statement
+    
+    reqCols <- reqCols[,-length(reqCols)] # delete the "Pop" data * last column
 
 #Now recompile the GenePop format
 
