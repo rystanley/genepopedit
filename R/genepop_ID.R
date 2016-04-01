@@ -9,22 +9,23 @@
 #' as a single row (character).
 #' @param path the filepath and filename of output.
 #' @rdname genepop_ID
-#' @importFrom tidyr separate
-#' @importFrom stringr str_split
-#' @importFrom data.table fread
+#' @importFrom data.table fread as.data.table
 #' @export
 
 
 genepop_ID <- function(GenePop,path){
 
-#Check to see if Genepop is a file path or dataframe
+  #Check to see if GenePop is a data.frame from the workspace and convert to data.table
+  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+
+  #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
     GenePop <- data.table::fread(GenePop,
-                          header = FALSE, sep = "\t",
-                           stringsAsFactors = FALSE)
+                                 header = FALSE, sep = "\t",
+                                 stringsAsFactors = FALSE)
   }
 
-## check if loci names are read in as one large character vector (1 row)
+  ## check if loci names are read in as one large character vector (1 row)
   header <- GenePop[1,]
   if(length(gregexpr(',', header, fixed=F)[[1]])>1){
     lociheader <- strsplit(header,",")
@@ -33,32 +34,27 @@ genepop_ID <- function(GenePop,path){
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.frame(GenePop,stringsAsFactors = FALSE)
+    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
-## Stacks version information
-    stacks.version <- GenePop[1,] # this could be blank or any other source. First row is ignored by GenePop
+  ## Stacks version information
+  stacks.version <- GenePop[1,] #this could be blank or any other source. First row is ignored by GenePop
 
-#Remove first label of the stacks version
-    GenePop <- as.vector(GenePop)
-    GenePop <- GenePop[-1,]
+  #Remove first label of the stacks version
+  GenePop <- GenePop[-1,]
+  colnames(GenePop) <- "data"
 
-#Add an index column to Genepop and format as a dataframe
-    GenePop <- data.frame(data=GenePop,ind=1:length(GenePop))
-    colnames(GenePop)=c("data","ind")
-    GenePop$data <- as.character(GenePop$data)
+  #ID the rows which flag the Populations
+  Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
+  npops  <-  1:length(Pops)
 
-#ID the rows which flag the Populations
-    Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
-    npops  <-  1:length(Pops)
+  ## Seperate the data into the column headers and the rest
+  ColumnData <- GenePop$data[1:(Pops[1]-1)]
+  ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
+  snpData <- GenePop[Pops[1]:NROW(GenePop),]
 
-## Seperate the data into the column headers and the rest
-    ColumnData <- GenePop[1:(Pops[1]-1),"data"]
-    ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
-    snpData <- GenePop[Pops[1]:NROW(GenePop),]
-
-#Get a datafile with just the snp data no pops
-    tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
+  #Get a datafile with just the snp data no pops
+  tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
 
   #Use the 'Pop' original seperators to separate the unique population names
   PopLengths=NULL
@@ -71,29 +67,31 @@ genepop_ID <- function(GenePop,path){
 
   snpData <- snpData[-tempPops,] #remove the pop labels.
 
-  temp <- tidyr::separate(snpData,data,into=c("Pops","snps"),sep=",")
-  temp$snps <- substring(temp$snps,3) # delete the extra spaces at the beginning
-  temp2 <- as.data.frame(do.call(rbind, stringr::str_split(temp$snps," "))) #split characters by spaces
+  #Seperate the snpdata
+  temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
+  temp2 <- temp[,4:length(temp)] #split characters by spaces
 
   #Contingency to see if R read in the top line as the "stacks version"
   if (length(temp2)!=length(ColumnData)){colnames(temp2) <- c(stacks.version,ColumnData)}
-  if (length(temp2)!=length(ColumnData)){stacks.version="No STACKS version specified"}
   if (length(temp2)==length(ColumnData)){colnames(temp2) <- ColumnData}
+  if (length(temp2)!=length(ColumnData)){stacks.version="No STACKS version specified"}
+
+  #stacks version character
+  stacks.version <- as.character(stacks.version)
 
   ## Get the population names (prior to the _ in the Sample ID)
-  NamePops <- temp[,1] # Sample names of each
-  NamePops <- gsub(" ","",NamePops) #get rid of space
-  SampleID <- NamePops #used for the new index of sample
+  SampleID <- as.character(temp[,1]) # Sample names of each
+  NamePops <- as.character(temp[,1]) # Sample names of each
 
   #add the "_" to differentiate the populations from the sample number in each sample ID.
   #This asssumes there is a common string among the sample IDs between each "Pop" label in the Genepopfile.
   for(i in unique(popvector)){
-    commonname <- common_string(NamePops[which(popvector==i)])
+    commonname <- common_string(SampleID[which(popvector==i)])
     NamePops[which(popvector==i)] <- paste0(commonname,"_")
     SampleID[which(popvector==i)] <- gsub(commonname,paste0(commonname,"_"),SampleID[which(popvector==i)])
   }
 
-  NameExtract <- substr(SampleID,1,regexpr("_",SampleID)-1)
+  NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
 
     #the number of individuals for all popualtions but the last (Pop tagged to the end)
     PopLengths <- table(factor(NamePops, levels=unique(NamePops)))[-length(table(NamePops))]
