@@ -512,7 +512,7 @@ _This function is best run at the beginning of the analysis prior to removal of 
   genepop_detective(GenePopData,"Inds")
 
 #vector of sample IDs to remove
-  subid <- c("AAA_01","AAA_03","BBB_20","CCC_21","EEE_03","EEE_26","HHH_25","JJJ_04")
+  subid <- c("AAA_1","AAA_3","BBB_20","CCC_21","EEE_3","EEE_26","HHH_25","JJJ_4")
 
   subset_genepop_individual(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
@@ -595,7 +595,7 @@ If you are interested in investigating population structure you can convert your
   genepop_structure(GenePop="Genepop_IDsubset.txt"path=paste0(output_dir,"Sturcture_IDsubset_groups.txt")
   
 # Specify population groupings (group CCC/DDD/EEE and III/JJJ)
-  pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),                      groups = c("1","2","3","3","3","4","5","6","7","7"))
+  pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("1","2","3","3","3","4","5","6","7","7"))
 
 #convert Genepop format to STRUCTURE with new groupings
   genepop_structure(GenePop="Genepop_IDsubset.txt",popgroup=pGroups, path=paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
