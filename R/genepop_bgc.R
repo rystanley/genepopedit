@@ -186,29 +186,29 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
 
   ##Save output for BGC formated for the parental populations ------------
   if(substring(path,nchar(path))!="/"){path=paste0(path,"/")}
-  
+
   write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
               sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
-  
+
   write.table(x = P2_BGC,file=paste0(path,fname,"_Parental2_BGC.txt",sep=""),
               sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
-  
+
   #Convert the admixed data to BGC format --------------
 
   #subset data for admixed populations
-  MixedStruct <- temp2[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1]),]
-  MixedPops <- NameExtract[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1])]
-
   missingfix<- function(x){ #create functions for apply loop
     hold=x
     hold[grep("000",hold)]=NA
     return(hold)}
 
   #Remove Alleles with missing data and replace with NA
-  temp3 <- apply(MixedStruct,2,missingfix)
+  temp3 <- apply(temp2,2,missingfix)
 
   #convert to zygosity format (2 0 - homozygous major, 0 2 - homozygous minor, 1 1 - heterozygous, -9 -9 - missing data )
   temp4 <- apply(temp3,2,majorminor)
+
+  MixedStruct <- temp4[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1]),]
+  MixedPops <- NameExtract[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1])]
 
   #the number of individuals for all popualtions but the last (Pop tagged to the end)
   PopLengths <- table(MixedPops)[-length(table(MixedPops))]
@@ -224,9 +224,9 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
 
   #Insert the population labels
   if(length(table(MixedPops))!=1){
-  temp5 <- apply(temp4,2,function(x){insert_vals(x,breaks=PopPosition,
+  temp5 <- apply(MixedStruct,2,function(x){insert_vals(x,breaks=PopPosition,
     newVal=paste0("pop_",unique(MixedPops)[2:length(unique(MixedPops))]))})} else {
-    temp5 <- temp4}
+    temp5 <- MixedStruct}
 
   temp5=as.data.frame(temp5,stringsAsFactors = FALSE)
 
