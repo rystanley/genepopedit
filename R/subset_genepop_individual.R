@@ -63,6 +63,11 @@ subset_genepop_individual <- function(GenePop,indiv=NULL,keep=FALSE,path){
 
   #Seperate the snpdata
   temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
+
+  #data format check
+  if(unique(temp[,2])!="," | !length(which(temp[,3]==""))>1){
+    stop("Genepop sampleID delimiter not in proper format. Ensure sampleIDs are separated from loci by ' ,  ' (space comma space space). Function stopped.",call. = FALSE)
+  }
   temp2 <- temp[,4:length(temp)] #split characters by spaces
 
     #Contingency to see if R read in the top line as the "stacks version"
