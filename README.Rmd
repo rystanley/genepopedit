@@ -304,6 +304,16 @@ Pull request how-to:
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 
+#### genepop_unflatten.R 
+* Convert flattend dataframe to genepop format:
+
+[_example use_](#genepopflat)
+
+**Variable name** | **Input**  
+--------------|---------------------------------
+**df** | data.frame object in workspace. First column is the sampleID (e.g. "BON_01") the remaining columns are Loci. 
+**path** | the filepath & filename of output.
+
 ***
 
 ## How to use genepopedit
@@ -659,4 +669,14 @@ Flatten your geneotype data for other calculations. This function will convert a
 
 #inspect the output for the first 10 columns 
   head(GenePop_df[,1:10])
+```
+
+If you are working with a flattend dataframe in your workspace you can convert it back to Genepop format. *Note that the first column of this data.frame shoudl correspond to the sampleID (e.g. "BON_01") and the remaining columns should be Loci. 
+
+```r
+## remove the "Population" "SampleNum" exported by genepop_flatten
+flat.df <- GenePop_df[,-c(2,3)]
+
+# create a Genepop format which can be used by other genepopedit functions
+genepop_unflatten(flat.df,path=paste0(output_dir,"GenePop_UNFLATTENED.txt"))
 ```
