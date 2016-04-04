@@ -5,7 +5,6 @@
 #' df must be an object in the workspace.
 #' @param path the filepath and filename of output.
 #' @rdname genepop_unflatten
-#' @importFrom data.table fread as.data.table
 #' @export
 #'
 genepop_unflatten <- function(df,path){
