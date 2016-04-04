@@ -307,7 +307,7 @@ Pull request how-to:
 #### genepop_unflatten.R 
 * Convert flattend dataframe to genepop format:
 
-[_example use_](#genepopflat)
+[_example use_](#genepopunflat)
 
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -670,7 +670,8 @@ Flatten your geneotype data for other calculations. This function will convert a
 #inspect the output for the first 10 columns 
   head(GenePop_df[,1:10])
 ```
-
+<a name="genepopunflat"/>
+##genepop\_unflatten
 If you are working with a flattend dataframe in your workspace you can convert it back to Genepop format. *Note that the first column of this data.frame shoudl correspond to the sampleID (e.g. "BON_01") and the remaining columns should be Loci. 
 
 ```r
