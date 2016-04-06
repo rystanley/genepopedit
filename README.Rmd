@@ -425,7 +425,7 @@ You can also remove populations within this function. Here we again select loci 
   #vector of loci to keep
   subloci <- c("Loci03","Loci15","Loci23","Loci49","Loci62","Loci81","Loci88","Loci94")
   
-  subset_genepop(GenePop=GenePopData,keep=TRUE,subs=subloci,path=paste0(output_dir,"Genepop_Loci_selection_subpop.txt"),sPop=PopKeep)
+  subset_genepop(GenePop=GenePopData,keep=TRUE,subs=subloci,sPop=PopKeep,path=paste0(output_dir,"Genepop_Loci_selection_subpop.txt"))
 ```
 <a name="subsetrenm"/>
 ##subset\_genepop\_rename
