@@ -130,7 +130,7 @@ $(document).ready(function () {
 <li>allele calls.</li>
 </ul></li>
 <li><p>create datasets for training, assignment, and outlier detection, according to a population stratified random sample.</p></li>
-<li><p>convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC and flattened format.</p></li>
+<li><p>convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, and flattened format.</p></li>
 </ul>
 <hr />
 <p><strong>Requirement:</strong> genepopedit functions through the manipulation of multi-locus SNP files structured in the <em>Genepop</em> file format <a href="http://genepop.curtin.edu.au/" class="uri">http://genepop.curtin.edu.au/</a>. Specifically, we use the <em>three number</em> format (e.g. 110110) where the six digits correspond to the alleles of a given locus for an individual. Locus names can be listed in the first row separated by columns or each on their own row so that the total number of rows in the <em>Genepop</em> file equals:</p>
@@ -411,6 +411,35 @@ library(genepopedit)# load the library</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="genepop_id.r" class="section level4">
+<h4>genepop_ID.R</h4>
+<ul>
+<li>function to add ’_’ between the population and sample number of a sample ID. This format (e.g. BON_01) is required for the remaining genepopedit functions. If your data already fits this format then this function need not be used.</li>
+</ul>
+<p><a href="#genepopidfix"><em>example use</em></a></p>
+<table style="width:71%;">
+<colgroup>
+<col width="20%"></col>
+<col width="50%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"><strong>Variable name</strong></th>
+<th align="left"><strong>Input</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Genepop</strong></td>
+<td align="left">a path to a Genepop file <em>or</em> a dataframe read into the workspace of a Genepop file.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>path</strong></td>
+<td align="left">the filepath &amp; filename of output.</td>
+</tr>
+</tbody>
+</table>
 <hr />
 </div>
 </div>
@@ -615,7 +644,7 @@ library(genepopedit)# load the library</code></pre>
 </tr>
 <tr class="even">
 <td align="left"><strong>path</strong></td>
-<td align="left">the filepath &amp; filename of output.</td>
+<td align="left">the path to directory where the BGC files will be saved.</td>
 </tr>
 </tbody>
 </table>
@@ -666,6 +695,12 @@ library(genepopedit)# load the library</code></pre>
 <pre class="r"><code>data(&quot;ExampleGenePop&quot;)</code></pre>
 <p>Set a directory where the output files will be saved.</p>
 <pre class="r"><code>output_dir &lt;- &quot;c:/Users/YourName/Documents/GenePopFiles/&quot; </code></pre>
+<p><a name="genepopidfix"></a> #genepop_ID</p>
+<p>Functions available in <strong>genepopedit</strong> require that the population and sample number be separated by an _ in the sample ID (e.g. BON_01 not BON01). This can be accomplished manually using a text editor or using the function <strong>genepop_ID</strong>. genepop_ID will read in a Genepop file and look for a common character string within the sample ID vectors grouped by the Genepop “Pop” labels. This function assumes that there <em>is</em> a common string which unifies IDs between each of the Pop labels. If this isn’t the case, some pre-filtering of the data using a text editor will be required.</p>
+<pre class="r"><code>#Use genepop_ID to fix the sample IDs prior to the use of genepopedit functions.
+filepath=&quot;~myfile.txt&quot; #path to 'myfile' which has sample IDs without the required _ seperation. Note this can also be an object in the workspace.
+
+genepop_ID(GenePop=filepath,path=paste0(output_dir,&quot;Genepop_SampleID_fixed.txt&quot;))</code></pre>
 <hr />
 </div>
 <div id="diagnostics-1" class="section level1">
@@ -778,7 +813,7 @@ PopNames_fixed &lt;- paste0(PopNames,&quot;_&quot;) #add the underscore seperato
   genepop_detective(GenePopData,&quot;Inds&quot;)
 
 #vector of sample IDs to remove
-  subid &lt;- c(&quot;AAA_01&quot;,&quot;AAA_03&quot;,&quot;BBB_20&quot;,&quot;CCC_21&quot;,&quot;EEE_03&quot;,&quot;EEE_26&quot;,&quot;HHH_25&quot;,&quot;JJJ_04&quot;)
+  subid &lt;- c(&quot;AAA_1&quot;,&quot;AAA_3&quot;,&quot;BBB_20&quot;,&quot;CCC_21&quot;,&quot;EEE_3&quot;,&quot;EEE_26&quot;,&quot;HHH_25&quot;,&quot;JJJ_4&quot;)
 
   subset_genepop_individual(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,&quot;Genepop_IDsubset.txt&quot;))</code></pre>
 <hr />
@@ -828,7 +863,7 @@ PopNames_fixed &lt;- paste0(PopNames,&quot;_&quot;) #add the underscore seperato
   genepop_structure(GenePop=&quot;Genepop_IDsubset.txt&quot;path=paste0(output_dir,&quot;Sturcture_IDsubset_groups.txt&quot;)
   
 # Specify population groupings (group CCC/DDD/EEE and III/JJJ)
-  pGroups &lt;- data.frame(pops = c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),                      groups = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;3&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;7&quot;))
+  pGroups &lt;- data.frame(pops = c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),groups = c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;3&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;7&quot;))
 
 #convert Genepop format to STRUCTURE with new groupings
   genepop_structure(GenePop=&quot;Genepop_IDsubset.txt&quot;,popgroup=pGroups, path=paste0(output_dir,&quot;Sturcture_IDsubset_groups.txt&quot;))
@@ -852,13 +887,13 @@ PopNames_fixed &lt;- paste0(PopNames,&quot;_&quot;) #add the underscore seperato
    
    genepop_assigner(GenePop=&quot;Genepop_IDsubset.txt&quot;,popgroup=pGroups,path=paste0(output_dir,&quot;assigner_IDsubset_NewGroups.txt&quot;))
   </code></pre>
-<p><a name="genepopbgc"></a> ##genepop_bgc If you are interested evaluating genomic clines and introgression among loci you can convert to the “Bayesian estimation of Genomic Clines (BGC) format. Note here you must specify which populations you consider to be ancestral or ‘parental’ (P1,P2) and which you assume could be hybridized (Admixed). <a href="https://sites.google.com/site/bgcsoftware/" class="uri">https://sites.google.com/site/bgcsoftware/</a>.</p>
-<pre class="r"><code>#specify which populations are going to be included in the analysis and to which class they belong
+<p><a name="genepopbgc"></a> ##genepop_bgc <strong>genepopedit</strong> is one of the few tools available to convert data to the format required for input into to the “Bayesian estimation of Genomic Clines” (BGC) format. BGC can evalute genomic clinal patterns and introgression among loci. To convert to BGC format you must specify which populations you consider to be ancestral or <strong>parental</strong> (P1,P2) and which you assume could be hybridized (<strong>admixed</strong>). <a href="https://sites.google.com/site/bgcsoftware/" class="uri">https://sites.google.com/site/bgcsoftware/</a>.</p>
+<pre class="r"><code>#specify which populations are going to be included in the analysis and to which class they belong. Note Pops identified in P1 and-or P2 can also be specified as &quot;Admixed&quot; to test BGC output. 
 BGC_groups=data.frame(pops = c(&quot;AAA&quot;,&quot;BBB&quot;,&quot;CCC&quot;,&quot;DDD&quot;,&quot;EEE&quot;,&quot;FFF&quot;,&quot;GGG&quot;,&quot;HHH&quot;,&quot;III&quot;,&quot;JJJ&quot;),
                       groups = c(&quot;P1&quot;,&quot;P1&quot;,&quot;P1&quot;,&quot;Admixed&quot;,&quot;Admixed&quot;,&quot;Admixed&quot;,&quot;Admixed&quot;,&quot;P2&quot;,&quot;P2&quot;,&quot;P2&quot;))
 
-#convert Genepop to BGC input files (3)
-genepop_bgc(GenePop=&quot;Genepop_IDsubset.txt&quot;,popdef=BGC_groups,fname=&quot;BGC_IDsubset&quot;,dir=oputput_dir)
+#convert Genepop to BGC input files (3). Note in this case the variable path is a path to the directory where the input files will be saved.
+genepop_bgc(GenePop=&quot;Genepop_IDsubset.txt&quot;,popdef=BGC_groups,fname=&quot;BGC_IDsubset&quot;,path=output_dir)
 </code></pre>
 <p><a name="genepopflat"></a> ##genepop_flatten Flatten your geneotype data for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove loci and-or populations, this must be before hand using <em>subset_genepop</em> or its sister functions (see below for examples).</p>
 <pre class="r"><code>#Flatten the dataframe
