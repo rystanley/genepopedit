@@ -11,7 +11,7 @@
 #' @importFrom stringr str_split
 #' @export
 
-pgdSpideR <- function(input,input_format,output,spid,output_format,where.PGDspider){
+pgdSpideR <- function(input,input_format,output,output_format,spid,where.PGDspider){
 
 where.PGDspider.PGD <- gsub(x = where.PGDspider, pattern = " ", replacement = "\\ ", fixed = TRUE)
 
