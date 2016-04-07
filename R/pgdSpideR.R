@@ -2,9 +2,9 @@
 #' @title Execute PGDspider data format conversions in R
 #' @description Function to between file types in R.
 #' @param input the full path to the input file.
-#' @param input_type what are you converting from (e.g. GENEPOP or PED) these must match the dropdown menus in pgdSpider.
+#' @param input_format what are you converting from (e.g. GENEPOP or PED) these must match the dropdown menus in pgdSpider.
 #' @param output the full file path to the desired output. (e.g. GENEPOP or PED) these must match the dropdown menus in pgdSpider.
-#' @param output_type what are you converting to (e.g. GENEPOP or PED). This must match the dropdown menus in pgdSpider.
+#' @param output_format what are you converting to (e.g. GENEPOP or PED). This must match the dropdown menus in pgdSpider.
 #' @param spid the fill file path to the spid file generated in PGDspider.
 #' @param where.PGDspider A file path to the PGDspider installation folder.
 #' @rdname PGDspideR
