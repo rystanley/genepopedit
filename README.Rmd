@@ -690,7 +690,7 @@ Flatten your geneotype data for other calculations. This function will convert a
 ```
 <a name="genepopunflat"/>
 ##genepop\_unflatten
-If you are working with a flattend dataframe in your workspace you can convert it back to Genepop format. *Note that the first column of this data.frame shoudl correspond to the sampleID (e.g. "BON_01") and the remaining columns should be Loci. 
+If you are working with a flattend dataframe in your workspace you can convert it back to Genepop format. **Note that the first column of this data.frame shoudl correspond to the sampleID (e.g. "BON_01") and the remaining columns should be Loci. 
 
 ```r
 ## remove the "Population" "SampleNum" exported by genepop_flatten
