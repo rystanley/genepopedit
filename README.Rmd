@@ -704,7 +704,7 @@ genepop_unflatten(flat.df,path=paste0(output_dir,"GenePop_UNFLATTENED.txt"))
 
 <a name="pgdspiderConvert"/>
 ##PGDspideR
-There is a broad range of data formats which can be converted to and from using PGDspider. If you have multiple files which you are going to be converting using the same conversion parameters, _PGDspideR.R_ can be useful, providing a code based interface to exploit the conversion functions of PGDspider. 
+There are a broad range of data formats which can be converted to and from using PGDspider. If you have multiple files which you are going to be converting using the same conversion parameters, _PGDspideR.R_ can be useful, providing a code based interface to exploit the conversion functions of PGDspider. 
 ```r
 #convert between GENEPOP and FSTAT format using PGDspider
   pgdSpideR(input=paste0(output_dir,"Genepop_IDsubset.txt"),
