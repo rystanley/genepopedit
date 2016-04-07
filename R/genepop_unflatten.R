@@ -32,7 +32,7 @@ genepop_unflatten <- function(df,path){
 
   #Combine loci together add sampleIDs and 'Pop' labels.
   Loci <- do.call(paste,c(temp2[,], sep=" "))
-  Loci <- paste0(SampleIDs," ,  ",Loci)
+  Loci <- paste0(NamePops," ,  ",Loci)
   if(length(table(NameExtract))!=1){Loci <- insert_vals(Vec=Loci,breaks=PopPosition,newVal="Pop")}
   Loci <- c("Pop",Loci)
 
