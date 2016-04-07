@@ -700,7 +700,7 @@ flat.df <- GenePop_df[,-c(2,3)]
 genepop_unflatten(flat.df,path=paste0(output_dir,"GenePop_UNFLATTENED.txt"))
 ```
 
-#**Conversion using pgdSpider**
+#**Conversion using PGDspider**
 
 <a name="pgdspiderConvert"/>
 ##PGDspideR
