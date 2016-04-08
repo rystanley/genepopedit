@@ -17,21 +17,23 @@
 #' @param fname collective name assigned to each of the output files for BGC.
 #' e.g. "Lobster_analysis" would result in
 #' "Lobster_analysis_P1.txt","Lobster_analysis_P2.txt", and "Lobster_analysis_Admixed.txt"
-#' @param dir file path to directory where the BGC files (3) will be saved.
+#' @param path file path to directory where the BGC files (3) will be saved.
 #' @rdname genepop_bgc
 #' @import magrittr
-#' @importFrom tidyr separate
 #' @importFrom dplyr filter do group_by ungroup
+#' @importFrom data.table fread as.data.table
 #' @export
 
+genepop_bgc <- function(GenePop,popdef,fname,path){
 
-genepop_bgc <- function(GenePop,popdef,fname,dir){
+  #Check to see if GenePop is a data.frame from the workspace and convert to data.table
+  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
-    GenePop <- read.table(GenePop,
-                          header = FALSE, sep = "\t",
-                          quote = "", stringsAsFactors = FALSE)
+    GenePop <- data.table::fread(GenePop,
+                                 header = FALSE, sep = "\t",
+                                 stringsAsFactors = FALSE)
   }
 
   ## check if loci names are read in as one large character vector (1 row)
@@ -43,49 +45,49 @@ genepop_bgc <- function(GenePop,popdef,fname,dir){
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.frame(GenePop,stringsAsFactors = FALSE)
+    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
   ## Stacks version information
-  stacks.version <- GenePop[1,] # this could be blank or any other source. First row is ignored by GenePop
+  stacks.version <- GenePop[1,] #this could be blank or any other source. First row is ignored by GenePop
 
   #Remove first label of the stacks version
-  GenePop <- as.vector(GenePop)
   GenePop <- GenePop[-1,]
-
-  #Add an index column to Genepop and format as a dataframe
-  GenePop <- data.frame(data=GenePop,ind=1:length(GenePop))
-  GenePop$data <- as.character(GenePop$data)
+  colnames(GenePop) <- "data"
 
   #ID the rows which flag the Populations
   Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
   npops  <-  1:length(Pops)
 
   ## Seperate the data into the column headers and the rest
-  ColumnData <- GenePop[1:(Pops[1]-1),"data"]
+  ColumnData <- GenePop$data[1:(Pops[1]-1)]
+  ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
   snpData <- GenePop[Pops[1]:NROW(GenePop),]
 
   #Get a datafile with just the snp data no pops
   tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
-  ## alternate spelling on line 48, so had to change this so it would identify properly and not make an empty DF
   snpData <- snpData[-tempPops,]
 
   #Seperate the snpdata
-  #First we pull out the population data which follows
-  #"TEXT ,  "
-  temp <- tidyr::separate(snpData,data,into=c("Pops","snps"),sep=",")
-  temp$snps <- substring(temp$snps,3) # delete the extra spaces at the beginning
-  temp2 <- as.data.frame(do.call(rbind, strsplit(temp$snps," "))) #split characters by spaces
+  temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
+
+  #data format check
+  if(unique(temp[,2])!="," | !length(which(temp[,3]==""))>1){
+    stop("Genepop sampleID delimiter not in proper format. Ensure sampleIDs are separated from loci by ' ,  ' (space comma space space). Function stopped.",call. = FALSE)
+  }
+  temp2 <- temp[,4:length(temp)] #split characters by spaces
 
   #Contingency to see if R read in the top line as the "stacks version"
   if (length(temp2)!=length(ColumnData)){colnames(temp2) <- c(stacks.version,ColumnData)}
   if (length(temp2)==length(ColumnData)){colnames(temp2) <- ColumnData}
   if (length(temp2)!=length(ColumnData)){stacks.version="No STACKS version specified"}
 
+  #stacks version character
+  stacks.version <- as.character(stacks.version)
+
   ## Get the population names (prior to the _ in the Sample ID)
   NamePops <- temp[,1] # Sample names of each
-  NamePops <- gsub(" ","",NamePops) #get rid of space
-  NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)# extract values from before the "_" to denote populations
+  NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
 
   #convert the snp data into character format to get rid of factor levels
   temp2[] <- lapply(temp2, as.character)
@@ -103,12 +105,11 @@ genepop_bgc <- function(GenePop,popdef,fname,dir){
 
   holdframe[holdframe==0]= -9 # replace missing values with -9
 
-
-    groupvec <- NameExtract
-    for (i in 1:length(unique(NameExtract))) # replace with numbers
-    {
-      groupvec[which(groupvec==unique(NameExtract)[i])] = i
-    }
+  groupvec <- NameExtract
+  for (i in 1:length(unique(NameExtract))) # replace with numbers
+  {
+    groupvec[which(groupvec==unique(NameExtract)[i])] = i
+  }
 
   holdframe=cbind(rep(NamePops,each=2),rep(groupvec,each=2),rep(NameExtract,each=2),holdframe)
   colnames(holdframe)[1:3]=c("ID","PopID","Pop")
@@ -126,115 +127,121 @@ genepop_bgc <- function(GenePop,popdef,fname,dir){
   P2_raw <- holdframe[which(holdframe$Pop %in% popdef[which(popdef[,2]=="P2"),1]),]#Parental 2
   P3_raw <- holdframe[which(holdframe$Pop %in% popdef[which(popdef[,2]=="Admixed"),1]),]#Admixed
 
-        # names of the snps
-        snpnames <- colnames(temp2)
+  # names of the snps
+  snpnames <- colnames(temp2)
 
-        #map to be used for missing alleles (if any present across loci)
-        Allele_Map <- data.frame(SNP=snpnames,
-                                 Allele1=rep(999,length(snpnames)),
-                                 Allele2=rep(999,length(snpnames))) # 999 is a dummy placeholder
+  #map to be used for missing alleles (if any present across loci)
+  Allele_Map <- data.frame(SNP=snpnames,
+                           Allele1=rep(999,length(snpnames)),
+                           Allele2=rep(999,length(snpnames))) # 999 is a dummy placeholder
 
-        for(i in 1:length(snpnames)){
-            #unique alleles for a given snp (locus)
-            alleleVals <- as.data.frame(table(as.character(c(P1_raw[,snpnames[i]],P2_raw[,snpnames[i]],P3_raw[,snpnames[i]]))))
+  for(i in 1:length(snpnames)){
+    #unique alleles for a given snp (locus)
+    alleleVals <- as.data.frame(table(as.character(c(P1_raw[,snpnames[i]],P2_raw[,snpnames[i]],P3_raw[,snpnames[i]]))))
 
-            # if there is missing data (-9) delete it as a possibe allele
-            if(length(which(alleleVals[,1]==(-9)))>0){
-              alleleVals <- alleleVals[-which(alleleVals[,1]==(-9)),]
-              }
+    # if there is missing data (-9) delete it as a possibe allele
+    if(length(which(alleleVals[,1]==(-9)))>0){
+      alleleVals <- alleleVals[-which(alleleVals[,1]==(-9)),]
+    }
 
-            Allele_Map[i,"Allele1"]=as.character(alleleVals[1,1])
-            Allele_Map[i,"Allele2"]=as.character(alleleVals[2,1])
-        }
+    Allele_Map[i,"Allele1"]=as.character(alleleVals[1,1])
+    Allele_Map[i,"Allele2"]=as.character(alleleVals[2,1])
+  }
 
-        #NULL vectors
-        P1_BGC <- NULL
-        P2_BGC <- NULL
-        Admixed_BGC <- NULL
+  #NULL vectors
+  P1_BGC <- NULL
+  P2_BGC <- NULL
 
-        for(i in snpnames){
-          # grab vector of alleles and delete replace missing values (-9) with NA
-          P1_alleles <- P1_raw[,i];P1_alleles[which(P1_alleles==-9)]=NA
-          P2_alleles <- P2_raw[,i];P2_alleles[which(P2_alleles==-9)]=NA
-          P3_alleles <- P3_raw[,i];P3_alleles[which(P3_alleles==-9)]=NA
+  for(i in snpnames){
+    # grab vector of alleles and delete replace missing values (-9) with NA
+    P1_alleles <- P1_raw[,i];P1_alleles[which(P1_alleles==-9)]=NA
+    P2_alleles <- P2_raw[,i];P2_alleles[which(P2_alleles==-9)]=NA
 
-          #If the population only has one allele for a given locus then a zero and the allele have be be added
-          if(length(table(P1_alleles))==1){
-            hold <- as.data.frame(table(P1_alleles))
-            hold[,1] <- as.character(hold[,1])
-            hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
-            hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
-            P1_alleles <- hold[,2]
-            rm(hold)
-          } else {P1_alleles <- as.character(as.data.frame(table(P1_alleles))[,2])}
+    #If the population only has one allele for a given locus then a zero and the allele have be be added
+    if(length(table(P1_alleles))==1){
+      hold <- as.data.frame(table(P1_alleles))
+      hold[,1] <- as.character(hold[,1])
+      hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
+      hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
+      P1_alleles <- hold[,2]
+      rm(hold)
+    } else {P1_alleles <- as.character(as.data.frame(table(P1_alleles))[,2])}
 
-          if(length(table(P2_alleles))==1){
-            hold <- as.data.frame(table(P2_alleles))
-            hold[,1] <- as.character(hold[,1])
-            hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
-            hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
-            P2_alleles <- hold[,2]
-            rm(hold)
-          } else {P2_alleles <- as.character(as.data.frame(table(P2_alleles))[,2])}
+    if(length(table(P2_alleles))==1){
+      hold <- as.data.frame(table(P2_alleles))
+      hold[,1] <- as.character(hold[,1])
+      hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
+      hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
+      P2_alleles <- hold[,2]
+      rm(hold)
+    } else {P2_alleles <- as.character(as.data.frame(table(P2_alleles))[,2])}
 
 
-          #for a given locus get the format for BGC
-          P1_temp <- c(paste("locus_",i,sep=""),paste(P1_alleles[1],P1_alleles[2],sep=" "))
-          P2_temp <- c(paste("locus_",i,sep=""),paste(P2_alleles[1],P2_alleles[2],sep=" "))
+    #for a given locus get the format for BGC
+    P1_temp <- c(paste("locus_",i,sep=""),paste(P1_alleles[1],P1_alleles[2],sep=" "))
+    P2_temp <- c(paste("locus_",i,sep=""),paste(P2_alleles[1],P2_alleles[2],sep=" "))
 
-          #Combine output sequentially for each locus
-          P1_BGC <- c(P1_BGC,P1_temp)
-          P2_BGC <- c(P2_BGC,P2_temp)
-        }
+    #Combine output sequentially for each locus
+    P1_BGC <- c(P1_BGC,P1_temp)
+    P2_BGC <- c(P2_BGC,P2_temp)
+  }
 
+  ##Save output for BGC formated for the parental populations ------------
+  if(substring(path,nchar(path))!="/"){path=paste0(path,"/")}
 
-#Convert the admixed data to BGC format --------------
+  write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
+              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
-        MixedStruct=P3_raw
+  write.table(x = P2_BGC,file=paste0(path,fname,"_Parental2_BGC.txt",sep=""),
+              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
-       #Data wrangle and construct the format for admixture populatons as per the instructions and table 2 in the BGC manual
-          MixedData <- NULL
-          for(col in names(MixedStruct)[4:length(MixedStruct)])
-            {
+  #Convert the admixed data to BGC format --------------
 
-            temp3 <- MixedStruct[,c("ID","Pop",col)]
-            Locushold <- paste("locus_",col,sep="") # Start the locus data
+  #subset data for admixed populations
+  missingfix<- function(x){ #create functions for apply loop
+    hold=x
+    hold[grep("000",hold)]=NA
+    return(hold)}
 
-              for (i in unique(MixedStruct$Pop)) # each populatoin
-                {
+  #Remove Alleles with missing data and replace with NA
+  temp3 <- apply(temp2,2,missingfix)
 
-                temp4 <- filter(temp3,Pop==i) # subset for the population
+  #convert to zygosity format (2 0 - homozygous major, 0 2 - homozygous minor, 1 1 - heterozygous, -9 -9 - missing data )
+  temp4 <- apply(temp3,2,majorminor)
 
-                #Reformat the data for one row for each individaul (ID, Pop, Allele1, Allele2)
-                temp5 <- data.frame(ID=temp4[seq(1,nrow(temp4),2),"ID"],
-                                    Pop=temp4[seq(1,nrow(temp4),2),"Pop"],
-                                    allele1=temp4[seq(1,nrow(temp4),2),col],
-                                    allele2=temp4[seq(2,nrow(temp4),2),col],
-                                    alleleMax=max(temp4[,col],na.rm=T),
-                                    alleleMin=min(temp4[which(temp4[,col]>(-1)),col],na.rm=T))
+  MixedStruct <- temp4[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1]),]
+  MixedPops <- NameExtract[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1])]
 
-                temp6 <- as.data.frame(temp5%>%group_by(ID)%>%do(col1=aCount(.)[1],col2=aCount(.)[2])%>%ungroup())
+  #the number of individuals for all popualtions but the last (Pop tagged to the end)
+  PopLengths <- table(MixedPops)[-length(table(MixedPops))]
 
-                temp7 <- paste(temp6[,"col1"],temp6[,"col2"],sep=" ")
+  if(length(table(MixedPops))==2){PopPosition = PopLengths+1}
 
-                Locushold <- c(Locushold,paste("pop_",i,sep=""),temp7)
+  if(length(table(MixedPops))>2){
+    PopPosition <- c(PopLengths[1]+1,rep(NA,(length(PopLengths)-1)))
+    for (i in 2:length(PopLengths)){
+      PopPosition[i] <- PopLengths[i]+PopPosition[i-1]
+    }
+  }
 
-              } #end of population loop
+  #Insert the population labels
+  if(length(table(MixedPops))!=1){
+  temp5 <- apply(MixedStruct,2,function(x){insert_vals(x,breaks=PopPosition,
+    newVal=paste0("pop_",unique(MixedPops)[2:length(unique(MixedPops))]))})} else {
+    temp5 <- MixedStruct}
 
-              MixedData <- c(MixedData,Locushold) # add each successive locus
-            } #end of locus loop
+  temp5=as.data.frame(temp5,stringsAsFactors = FALSE)
 
+  #Add the "locus_" and first "pop_" labels
+  temp6=as.matrix(rbind(paste0("locus_",colnames(temp5)),
+              rep(paste0("pop_",unique(MixedPops)[1]),length(temp5)),
+              temp5))
 
-##Save output for BGC formated for the parental and mixed populations ------------
-      if(substring(dir,nchar(dir))!="/"){dir=paste0(dir,"/")}
+  #Redimension as a single vector
+  MixedData=as.vector(temp6)
 
-      write.table(x = P1_BGC,file=paste0(dir,fname,"_Parental1_BGC.txt",sep=""),
-                  sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
-
-      write.table(x = P2_BGC,file=paste0(dir,fname,"_Parental2_BGC.txt",sep=""),
-                  sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
-
-      write.table(x = MixedData,file=paste(dir,fname,"_Admixed_BGC.txt",sep=""),
-                  sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
+  ##Save output for BGC formated for the parental and mixed populations ------------
+  write.table(x = MixedData,file=paste(path,fname,"_Admixed_BGC.txt",sep=""),
+              sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
 } #end of function

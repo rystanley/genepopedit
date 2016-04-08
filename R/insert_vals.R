@@ -14,7 +14,8 @@ insert_vals <- function(Vec,breaks,newVal){
   break.space <- 1:(length(breaks))
   breaks <- breaks+break.space-1 #To space out the insertion points.
   newvec <- rep(NA,length(Vec)+length(breaks)) #Pre-allocate memory by creating final dataframe.
-  for(i in 1:length(breaks)){newvec[breaks[i]]=newVal} #Insert added rows into new dataframe>
+  if(length(newVal)==1){for(i in 1:length(breaks)){newvec[breaks[i]]=newVal}} #Insert added rows into new dataframe>
+  if(length(newVal)>1){for(i in 1:length(breaks)){newvec[breaks[i]]=newVal[i]}}#Insert added rows into new dataframe>
   x <- 1:length(newvec)
   x <- x[-(breaks)] #Finding the rows of the new dataframe that will receive old rows
   for(i in 1:length(Vec)){newvec[x[i]]=Vec[i]}

@@ -15,20 +15,23 @@
 #' "Loci" = vector of Loci.
 #' "Allele" = vector of allele values.
 #' @rdname genepop_detective
-#' @importFrom tidyr separate
+#' @importFrom data.table fread as.data.table
 #' @export
 #'
 
 genepop_detective <- function(GenePop,variable="Pops"){
 
-#Check to see if Genepop is a file path or dataframe
+  #Check to see if GenePop is a data.frame from the workspace
+  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+
+  #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
-    GenePop <- read.table(GenePop,
-                          header = FALSE, sep = "\t",
-                          quote = "", stringsAsFactors = FALSE)
+    GenePop <- data.table::fread(GenePop,
+                                 header = FALSE, sep = "\t",
+                                 stringsAsFactors = FALSE)
   }
 
-## check if loci names are read in as one large character vector (1 row)
+  ## check if loci names are read in as one large character vector (1 row)
   header <- GenePop[1,]
   if(length(gregexpr(',', header, fixed=F)[[1]])>1){
     lociheader <- strsplit(header,",")
@@ -40,70 +43,69 @@ genepop_detective <- function(GenePop,variable="Pops"){
     GenePop <- data.frame(GenePop,stringsAsFactors = FALSE)
   }
 
+  ## Stacks version information
+  stacks.version <- GenePop[1,] #this could be blank or any other source. First row is ignored by GenePop
 
-## Stacks version information
-stacks.version <- GenePop[1,] #this could be blank or any other source. First row is ignored by GenePop
+  #Remove first label of the stacks version
+  GenePop <- GenePop[-1,]
+  colnames(GenePop) <- "data"
 
-#Remove first label of the stacks version
-GenePop <- as.vector(GenePop)
-GenePop <- GenePop[-1,]
+  #ID the rows which flag the Populations
+  Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
+  npops  <-  1:length(Pops)
 
-#Add an index column to Genepop and format as a dataframe
-GenePop <- data.frame(data=GenePop,ind=1:length(GenePop))
-GenePop$data <- as.character(GenePop$data)
+  ## Seperate the data into the column headers and the rest
+  ColumnData <- GenePop$data[1:(Pops[1]-1)]
+  ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
+  snpData <- GenePop[Pops[1]:NROW(GenePop),]
 
-#ID the rows which flag the Populations
-Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
-npops  <-  1:length(Pops)
+  #Get a datafile with just the snp data no pops
+  tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
+  snpData <- snpData[-tempPops,]
 
-## Seperate the data into the column headers and the rest
-ColumnData <- GenePop[1:(Pops[1]-1),"data"]
-snpData <- GenePop[Pops[1]:NROW(GenePop),]
+  #Seperate the snpdata
+  temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
 
-#Get a datafile with just the snp data no pops
-tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
-## alternate spelling on line 48, so had to change this so it would identify properly and not make an empty DF
-snpData <- snpData[-tempPops,]
+  #data format check
+  if(unique(temp[,2])!="," | !length(which(temp[,3]==""))>1){
+    stop("Genepop sampleID delimiter not in proper format. Ensure sampleIDs are separated from loci by ' ,  ' (space comma space space). Function stopped.",call. = FALSE)
+  }
 
-#Seperate the snpdata
-#First we pull out the population data which follows
-#"TEXT ,  "
-temp <- tidyr::separate(snpData,data,into=c("Pops","snps"),sep=",")
-temp$snps <- substring(temp$snps,3) # delete the extra spaces at the beginning
-temp2 <- as.data.frame(do.call(rbind, strsplit(temp$snps," "))) #split characters by spaces
+  temp2 <- temp[,4:length(temp)] #split characters by spaces
 
-#Contingency to see if R read in the top line as the "stacks version"
-if (length(temp2)!=length(ColumnData)){colnames(temp2) <- c(stacks.version,ColumnData)}
-if (length(temp2)==length(ColumnData)){colnames(temp2) <- ColumnData}
-if (length(temp2)!=length(ColumnData)){stacks.version="No STACKS version specified"}
+  #Contingency to see if R read in the top line as the "stacks version"
+  if (length(temp2)!=length(ColumnData)){colnames(temp2) <- c(stacks.version,ColumnData)}
+  if (length(temp2)==length(ColumnData)){colnames(temp2) <- ColumnData}
+  if (length(temp2)!=length(ColumnData)){stacks.version="No STACKS version specified"}
 
-## Get the population names (prior to the _ in the Sample ID)
-NamePops <- temp[,1] # Sample names of each
-NamePops <- gsub(" ","",NamePops) #get rid of space
-NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
+  ## Get the population names (prior to the _ in the Sample ID)
+  NamePops <- temp[,1] # Sample names of each
+  NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
 
-PopNum <- data.frame(table(NameExtract))
-colnames(PopNum)[1] <- "Population"
+    PopNum <- data.frame(table(NameExtract))
+    colnames(PopNum)[1] <- "Population"
 
-#convert the snp data into character format to get rid of factor levels
-temp2[] <- lapply(temp2, as.character)
+    #convert the snp data into character format to get rid of factor levels
+    #temp2[] <- lapply(temp2, as.character)
 
-alleleEx <- as.character(temp2[1,1])
+    if(variable=="Allele"){
 
-#get the allele values summary header
-firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,(nchar(alleleEx)/2))))))
-secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(nchar(alleleEx)/2)+1,nchar(alleleEx))))))
+    alleleEx <- as.character(temp2[1,1])
 
-Allele <- unique(as.numeric(unique(unlist(firstAllele)))
-                 ,as.numeric(unique(unlist(secondAllele))))
+    #get the allele values summary header
+    firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,(nchar(alleleEx)/2))))))
+    secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(nchar(alleleEx)/2)+1,nchar(alleleEx))))))
 
-Allele <- Allele[order(Allele)] #sort the Allele values (NA or 0 will be first)
+    Allele <- unique(as.numeric(unique(unlist(firstAllele)))
+                     ,as.numeric(unique(unlist(secondAllele))))
 
-#return data vector of interest
-if(variable=="Pops"){return(unique(NameExtract))}
-if(variable=="PopNum"){return(PopNum)}
-if(variable=="Inds"){return(NamePops)}
-if(variable=="Loci"){return(names(temp2))}
-if(variable=="Allele"){return(Allele)}
+    Allele <- Allele[order(Allele)]} #sort the Allele values (NA or 0 will be first)
+
+    #return data vector of interest
+    if(variable=="Pops"){return(as.character(unique(NameExtract)))}
+    if(variable=="PopNum"){return(PopNum)}
+    if(variable=="Inds"){return(as.character(NamePops))}
+    if(variable=="Loci"){return(as.character(names(temp2)))}
+    if(variable=="Allele"){return(Allele)}
 
 }

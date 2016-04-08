@@ -23,7 +23,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     
 * create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
-* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC and flattened format.
+* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, and flattened format.
 
 ***
 
@@ -72,6 +72,8 @@ Alternatively the loci names can be read in the first row as a single character 
     TAG_04  , 120120 110110 110110
     
 In both formats each row is read in as a single character vector. Sample IDs have the population and sample number seperated by a "_". Between sample ID and the loci is conventional Genepop separator "   , " *(space,space space)*. Note if your population label is note seperated from the sample number in the Sample IDs refer to the help section for . [ subset\_genpop\_rename ](#subsetrenm)
+
+<span style="color:red"><STRONG> Note </span></STRONG> that input and output "**path**" variables all require the **FULL** file path. Relative paths will not work with _genepopedit_ functions.  
 
 Most molecular based file formats can be converted to and from *Genepop* using conversion programs such as the R package _adegenet_ <https://github.com/thibautjombart/adegenet/wiki> or the program *PGDspider* <http://www.cmpg.unibe.ch/software/PGDSpider/>. 
 
@@ -149,7 +151,7 @@ Pull request how-to:
 * remove or keep a subset of loci 
 * remove populations 
 
-[example use](#subsetgenp)
+[_example use_](#subsetgenp)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
@@ -162,7 +164,7 @@ Pull request how-to:
 #### subset_genepop_rename.R
 * subset and-or rename populations
 
-[example use](#subsetrenm)
+[_example use_](#subsetrenm)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
@@ -174,7 +176,7 @@ Pull request how-to:
 #### subset_genepop_aggregate.R
 * group populations based on Genepop population tags
 
-[example use](#subsetagg)
+[_example use_](#subsetagg)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
@@ -187,13 +189,23 @@ Pull request how-to:
 #### subset_genepop_individuals.R
 * remove or keep a subset of individuals
 
-[example use](#subsetidv)
+[_example use_](#subsetidv)
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **indiv** | vector sample IDs of interest.
 **keep** | logical whether to delete sample IDs specified by indiv (default: TRUE) or delete all other IDs.
+**path** | the filepath & filename of output.
+
+#### genepop_ID.R
+* function to add '_' between the population and sample number of a sample ID. This format (e.g. BON_01) is required for the remaining genepopedit functions. If your data already fits this format then this function need not be used. 
+
+[_example use_](#genepopidfix)
+
+**Variable name** | **Input**  
+--------------|-----------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **path** | the filepath & filename of output.
 
 ***
@@ -203,7 +215,7 @@ Pull request how-to:
 #### genepop_sample.R 
 * Subsample individuals from a genepop file using population based random stratified sampling.
 
-[example use](#genepopsamp)
+[_example use_](#genepopsamp)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -223,7 +235,7 @@ Pull request how-to:
 * Convert Genepop format to NewHybrids format.
   <http://pritchardlab.stanford.edu/structure.html>
   
-[example use](#genepopstruc)
+[_example use_](#genepopstruc)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -235,7 +247,7 @@ Pull request how-to:
 * Convert Genepop format to fstat format.
 <https://cran.r-project.org/web/packages/hierfstat/index.html>
 
-[example use](#genepopfst)
+[_example use_](#genepopfst)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -247,7 +259,7 @@ Pull request how-to:
 * Convert Genepop format to NewHybrids format.
   <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>
   
-[example use](#genepopnh)
+[_example use_](#genepopnh)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -258,7 +270,7 @@ Pull request how-to:
 * Convert Genepop format to assigner format.
 <https://github.com/thierrygosselin/assigner>
 
-[example use](#genepopagn)
+[_example use_](#genepopagn)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
@@ -270,14 +282,14 @@ Pull request how-to:
 * Convert Genepop format to Bayesian Genomic Clines (BGC) format (3 files).
 <https://sites.google.com/site/bgcsoftware/>
 
-[example use](#genepopbgc)
+[_example use_](#genepopbgc)
   
 **Variable name** | **Input**  
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **popdef** | popgroup is a dataframe or path to a csv. This dataframe contains two columns. Column 1 corresponds to the population names. The next column has the grouping classification corresponding to each population defining parental 1 ("P1") parental 2 ("P2") and admixed ("Admixed") populations.
 **fname** | collective name assigned to each output the output files (3).
-**path** | the filepath & filename of output.
+**path** | the path to directory where the BGC files will be saved.
 
 #### genepop_flatten.R 
 * Convert Genepop format to a flattend dataframe:
@@ -286,13 +298,41 @@ Pull request how-to:
     * Sample number
     * Loci
     
-[example use](#genepopflat)
+[_example use_](#genepopflat)
 
 **Variable name** | **Input**  
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 
+#### genepop_unflatten.R 
+* Convert flattend dataframe to genepop format:
+
+[_example use_](#genepopunflat)
+
+**Variable name** | **Input**  
+--------------|---------------------------------
+**df** | data.frame object in workspace. First column is the sampleID (e.g. "BON_01") the remaining columns are Loci. 
+**path** | the filepath & filename of output.
+
 ***
+
+#**Conversion using PGDspider**
+
+We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/software/PGDSpider/>. This function will enable R to interact with PGDspider to convert among file formats not included in **genpopedit** conversion functions. Currently this is best accomplished using the .spid files generated by PGDspider to define the conversion process. Once a .spid file is created, **genepopedit** can continue to convert files provided the conversion parameters in the .spid file match those required for the conversion. This function is  in _beta_ developement and is intended as a starting tool for this interface. 
+
+#### PGDspideR.R
+* call conversion tools of pgdSpider through R
+
+[_example use_](#pgdspiderConvert)
+
+**Variable name** | **Input**  
+--------------|---------------------------------
+**input** | complete file path to the input file to be converted. 
+**input_format** | format of the input file. This format should match the dropdown menus of pgdSpider in terms of spelling and capitalization (e.g. GENEPOP & FSTAT).
+**output** | complete file path to the defining where the converted file will be stored.
+**output_format** | format of the of the converted file. This format should match the dropdown menus of pgdSpider in terms of spelling and capitalization (e.g. GENEPOP & FSTAT).
+**spid** | complete file path to the .spid file created by pgdSpider defining the conversion between input_format and output_format. Note that parameters of this .spid file must match the conversion and input file as specified by pgdSpider.
+**where.PGDspider** | the filepath to the folder where pgdSpider installation files are stored. 
 
 ## How to use genepopedit
 
@@ -318,6 +358,20 @@ Set a directory where the output files will be saved.
 ```r
 output_dir <- "c:/Users/YourName/Documents/GenePopFiles/" 
 ```
+
+<a name="genepopidfix"/>
+#genepop\_ID
+
+Functions available in **genepopedit** require that the population and sample number be separated by an _ in the sample ID (e.g. BON_01 not BON01). This can be accomplished manually using a text editor or using the function **genepop_ID**. genepop_ID will read in a Genepop file and look for a common character string within the sample ID vectors grouped by the Genepop "Pop" labels. This function assumes that there _is_ a common string which unifies IDs between each of the Pop labels. If this isn't the case, some pre-filtering of the data using a text editor will be required. 
+
+```r
+#Use genepop_ID to fix the sample IDs prior to the use of genepopedit functions.
+filepath="~myfile.txt" #path to 'myfile' which has sample IDs without the required _ seperation. Note this can also be an object in the workspace.
+
+genepop_ID(GenePop=filepath,path=paste0(output_dir,"Genepop_SampleID_fixed.txt"))
+```
+
+***
 
 #**Diagnostics**
 
@@ -389,7 +443,7 @@ You can also remove populations within this function. Here we again select loci 
   #vector of loci to keep
   subloci <- c("Loci03","Loci15","Loci23","Loci49","Loci62","Loci81","Loci88","Loci94")
   
-  subset_genepop(GenePop=GenePopData,keep=TRUE,subs=subloci,path=paste0(output_dir,"Genepop_Loci_selection_subpop.txt"),sPop=PopKeep)
+  subset_genepop(GenePop=GenePopData,keep=TRUE,subs=subloci,sPop=PopKeep,path=paste0(output_dir,"Genepop_Loci_selection_subpop.txt"))
 ```
 <a name="subsetrenm"/>
 ##subset\_genepop\_rename
@@ -422,6 +476,20 @@ Populations can also be grouped by a common name. The result is similar to subse
 
 #rename populations
   subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe=PopRename_group,renumber=TRUE)
+```
+
+If your sample IDs are not split between the population and the sample number using an _ then you can rename the populations before using any subsetting functions. Note that in this example because there is already a _ seperating populations the 
+
+```r
+#view the sample IDs
+PopNames <- genepop_detective(GenePopData,"Inds")
+PopNames_fixed <- paste0(PopNames,"_") #add the underscore seperator
+
+#create a dataframe for renaming. 
+  PopRename_fixed <- data.frame(oPop=PopNames,newname=PopNames_fixed)
+
+#rename populations * note here you will keep the original sample #s (renumber = F)
+  subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe=PopRename_fixed,renumber=FALSE)
 ```
 
 <a name="subsetagg"/>
@@ -472,7 +540,7 @@ _This function is best run at the beginning of the analysis prior to removal of 
   genepop_detective(GenePopData,"Inds")
 
 #vector of sample IDs to remove
-  subid <- c("AAA_01","AAA_03","BBB_20","CCC_21","EEE_03","EEE_26","HHH_25","JJJ_04")
+  subid <- c("AAA_1","AAA_3","BBB_20","CCC_21","EEE_3","EEE_26","HHH_25","JJJ_4")
 
   subset_genepop_individual(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
@@ -555,7 +623,7 @@ If you are interested in investigating population structure you can convert your
   genepop_structure(GenePop="Genepop_IDsubset.txt"path=paste0(output_dir,"Sturcture_IDsubset_groups.txt")
   
 # Specify population groupings (group CCC/DDD/EEE and III/JJJ)
-  pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),                      groups = c("1","2","3","3","3","4","5","6","7","7"))
+  pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("1","2","3","3","3","4","5","6","7","7"))
 
 #convert Genepop format to STRUCTURE with new groupings
   genepop_structure(GenePop="Genepop_IDsubset.txt",popgroup=pGroups, path=paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
@@ -598,15 +666,15 @@ If you are interested conducting assignment analysis, you can convert to the for
 ```
 <a name="genepopbgc"/>
 ##genepop\_bgc
-If you are interested evaluating genomic clines and introgression among loci you can convert to the "Bayesian estimation of Genomic Clines (BGC) format. Note here you must specify which populations you consider to be ancestral or 'parental' (P1,P2) and which you assume could be hybridized (Admixed). <https://sites.google.com/site/bgcsoftware/>. 
+**genepopedit** is one of the few tools available to convert data to the format required for input into to the "Bayesian estimation of Genomic Clines" (BGC) format. BGC can evalute genomic clinal patterns and introgression among loci. To convert to BGC format you must specify which populations you consider to be ancestral or **parental** (P1,P2) and which you assume could be hybridized (**admixed**). <https://sites.google.com/site/bgcsoftware/>. 
 
 ```r
-#specify which populations are going to be included in the analysis and to which class they belong
+#specify which populations are going to be included in the analysis and to which class they belong. Note Pops identified in P1 and-or P2 can also be specified as "Admixed" to test BGC output. 
 BGC_groups=data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),
                       groups = c("P1","P1","P1","Admixed","Admixed","Admixed","Admixed","P2","P2","P2"))
 
-#convert Genepop to BGC input files (3)
-genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",dir=oputput_dir)
+#convert Genepop to BGC input files (3). Note in this case the variable path is a path to the directory where the input files will be saved.
+genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",path=output_dir)
 
 ```
 <a name="genepopflat"/>
@@ -619,4 +687,31 @@ Flatten your geneotype data for other calculations. This function will convert a
 
 #inspect the output for the first 10 columns 
   head(GenePop_df[,1:10])
+```
+<a name="genepopunflat"/>
+##genepop\_unflatten
+If you are working with a flattend dataframe in your workspace you can convert it back to Genepop format. **Note that the first column of this data.frame shoudl correspond to the sampleID (e.g. "BON_01") and the remaining columns should be Loci. 
+
+```r
+## remove the "Population" "SampleNum" exported by genepop_flatten
+flat.df <- GenePop_df[,-c(2,3)]
+
+# create a Genepop format which can be used by other genepopedit functions
+genepop_unflatten(flat.df,path=paste0(output_dir,"GenePop_UNFLATTENED.txt"))
+```
+
+#**Conversion using PGDspider**
+
+<a name="pgdspiderConvert"/>
+##PGDspideR
+There are a broad range of data formats which can be converted to and from using PGDspider. If you have multiple files which you are going to be converting using the same conversion parameters, _PGDspideR.R_ can be useful, providing a code based interface to exploit the conversion functions of PGDspider. 
+```r
+#convert between GENEPOP and FSTAT format using PGDspider
+  pgdSpideR(input=paste0(output_dir,"Genepop_IDsubset.txt"),
+  input_format="GENEPOP",
+  output=paste0(output_dir,"Genepop_IDsubset_FSTAT.dat",
+  output_format="FSTAT",
+  spid="c:/Users/YOURNAME/Documents/spids/GENEPOP_FSTAT.spid",
+  where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/")
+
 ```
