@@ -220,12 +220,14 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
     { # column names
       if(!keep)
       {
+        PopInd=which(names(temp2)=="Pop")
         if(length(subs)==0){Output <- c(stacks.version,names(temp2)[-PopInd],Loci)}
         if(length(subs)>0){Output <- c(stacks.version,names(temp2)[-which(names(temp2)%in%c(subs,"Pop"))],Loci)}
       }
 
       if(keep)
       {
+        PopInd=which(names(temp2)=="Pop")
         if(length(subs)==0){Output <- c(stacks.version,names(temp2)[-PopInd],Loci)}
         if(length(subs)>0){Output <- c(stacks.version,subs,Loci)}
       }
