@@ -1,14 +1,12 @@
 # Function to calculate allele frequencies
-#' @title Calculate allele frequencies
+#' @title Calculate the major allele
 #' @description sub-function used by genepop_allelefreq
 #' @param x Vector of characters representing alleles
-#' @param Freq vector defining which allele frequency is returned (Major, Minor or Missing)
 #' @rdname AlleleFreq
 #' @export
 
-AlleleFreq <- function(x,Freq="Major")
+AlleleFreq <- function(x)
 {
-  # Freq vector of 2 ("Major" or "Minor" or "missing") allele frequencie or percent missing
 
   xtest <- x[1:10]
   AlleleLength <- max(nchar(as.character(xtest)),na.rm=T)
@@ -48,8 +46,5 @@ AlleleFreq <- function(x,Freq="Major")
   # if it is 50 - 50 return the first allele
   if(x5[1,2]==0.5){x5[1,2]=x5[1,2]+0.01} # add 0.01% to break the tie
 
-  if(Freq=="Major"){return(x5[which(x5$Freq==max(x5$Freq)),])}
-  if(Freq=="Minor"){return(x5[which(x5$Freq==min(x5$Freq)),])}
-  if(Freq=="Missing"){return(x6[which(x6[,1]==0),])}
-
+  return(as.character(x5[which(x5$Freq==max(x5$Freq)),"allele"]))
 }

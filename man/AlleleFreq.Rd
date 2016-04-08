@@ -2,14 +2,12 @@
 % Please edit documentation in R/AlleleFreq.R
 \name{AlleleFreq}
 \alias{AlleleFreq}
-\title{Calculate allele frequencies}
+\title{Calculate the major allele}
 \usage{
-AlleleFreq(x, Freq = "Major")
+AlleleFreq(x)
 }
 \arguments{
 \item{x}{Vector of characters representing alleles}
-
-\item{Freq}{vector defining which allele frequency is returned (Major, Minor or Missing)}
 }
 \description{
 sub-function used by genepop_allelefreq

@@ -8,17 +8,17 @@ subset_genepop(GenePop, subs = NULL, keep = TRUE, sPop = NULL, path)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
-or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
-This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
+or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+This will be the standard Genepop format with the first n+1 rows corresponding to the n loci names,
 or a single commma delimited row of loci names followed by the locus data. Populations are
-seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space space,space) and is read in as
+separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 as a single row (character).}
 
-\item{subs}{he loci names of interest or a vector which corresponds the the order of which
+\item{subs}{the loci names of interest or a vector which corresponds to the order of which
 they appear in the genepop file.
 These can be either the order by which they occur or the exact name of the loci
 e.g. subs <-c(1,2,3,4) would return the first 4 loci
-& subs <- c("190-56","145_21",456_12") would return loci with defined names.}
+& subs <- c("190_56","145_21",456_12") would return loci with defined names.}
 
 \item{keep}{logical vector which defines whether you want to remove the loci or keep them.
 The default is to keep them keep <- TRUE assuming you are removing neutral markers
