@@ -2,10 +2,10 @@
 #' @title Convert Genepop to assigner format.
 #' @description Function to convert Genepop to assigner
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
-#' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+#' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with a the first n+1 rows corresponding to the n loci names,
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
+#' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
 #' @param popgroup if specified (Default: NULL) popgroup is a dataframe or path to a csv.
 #' This dataframe contains two columns. Column 1 corresponds to the population names. These names
