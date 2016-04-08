@@ -11,7 +11,7 @@
 #' they appear in the genepop file.
 #' These can be either the order by which they occur or the exact name of the loci
 #' e.g. subs <-c(1,2,3,4) would return the first 4 loci
-#' & subs <- c("190-56","145_21",456_12") would return loci with defined names.
+#' & subs <- c("190_56","145_21",456_12") would return loci with defined names.
 #' @param keep logical vector which defines whether you want to remove the loci or keep them.
 #' The default is to keep them keep <- TRUE assuming you are removing neutral markers
 #' and only keeping the subs.
