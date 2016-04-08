@@ -171,7 +171,7 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
 #Now recompile the GenePop format
 
     #the number of individuals for all popualtions but the last (Pop tagged to the end)
-    PopLengths <- table(temp2$Pop)[-length(table(temp2$Pop))]
+    if(length(table(temp2$Pop))>1){PopLengths <- table(temp2$Pop)[-length(table(temp2$Pop))]} else {PopLengths=1}
 
     if(length(table(temp2$Pop))==2){PopPosition = PopLengths+1}
 
@@ -220,13 +220,13 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
     { # column names
       if(!keep)
       {
-        if(length(subs)==0){Output <- c(stacks.version,names(temp2),Loci)}
+        if(length(subs)==0){Output <- c(stacks.version,names(temp2)[-PopInd],Loci)}
         if(length(subs)>0){Output <- c(stacks.version,names(temp2)[-which(names(temp2)%in%c(subs,"Pop"))],Loci)}
       }
 
       if(keep)
       {
-        if(length(subs)==0){Output <- c(stacks.version,names(temp2),Loci)}
+        if(length(subs)==0){Output <- c(stacks.version,names(temp2)[-PopInd],Loci)}
         if(length(subs)>0){Output <- c(stacks.version,subs,Loci)}
       }
     }
