@@ -13,7 +13,10 @@
 #' has the group. If groupings are the same as populations then leave as NULL (Default). Populations will be defined in this function using the population grouping format in the GENEPOP file.
 #' Each population can only be assigned to one group.
 #' @rdname genepop_allelefreq
+#' @import magrittr
 #' @importFrom data.table fread as.data.table
+#' @importFrom reshape2 melt
+#' @importFrom dplyr filter summarise group_by ungroup summarise_each
 #' @export
 #'
 
