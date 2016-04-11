@@ -169,7 +169,8 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
                               summarise(prec=AlleleFreqLoci(value,unique(major)))%>%
                               ungroup())
 
-      colnames(Output)[1]="Population" #fix output
+
+      colnames(Output)=c("Population","Loci","MAF")
       }
 return(Output)# return the allele frequency list
 }
