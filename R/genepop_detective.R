@@ -82,13 +82,13 @@ genepop_detective <- function(GenePop,variable="Pops"){
   NamePops <- temp[,1] # Sample names of each
   NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
 
-    PopNum <- data.frame(table(NameExtract))
-    colnames(PopNum)[1] <- "Population"
+  PopNum <- data.frame(table(NameExtract))
+  colnames(PopNum)[1] <- "Population"
 
-    #convert the snp data into character format to get rid of factor levels
-    #temp2[] <- lapply(temp2, as.character)
+  #convert the snp data into character format to get rid of factor levels
+  #temp2[] <- lapply(temp2, as.character)
 
-    if(variable=="Allele"){
+  if(variable=="Allele"){
 
     alleleEx <- as.character(temp2[1,1])
 
@@ -101,11 +101,27 @@ genepop_detective <- function(GenePop,variable="Pops"){
 
     Allele <- Allele[order(Allele)]} #sort the Allele values (NA or 0 will be first)
 
-    #return data vector of interest
-    if(variable=="Pops"){return(as.character(unique(NameExtract)))}
-    if(variable=="PopNum"){return(PopNum)}
-    if(variable=="Inds"){return(as.character(NamePops))}
-    if(variable=="Loci"){return(as.character(names(temp2)))}
-    if(variable=="Allele"){return(Allele)}
+  if(variable=="All"){
+    #create an 's4' container for the data
+    setClass("Out",representation=representation(
+      Pops = "character",
+      Loci="character",
+      Inds="character",
+      PopNum="data.frame"
+    ))
+
+    Output <- new("Out",Pops=as.character(unique(NameExtract)),
+                  Loci=as.character(names(temp2)),
+                  Inds=as.character(NamePops),
+                  PopNum=PopNum)
+  }
+
+  #return data vector of interest
+  if(variable=="Pops"){return(as.character(unique(NameExtract)))}
+  if(variable=="PopNum"){return(PopNum)}
+  if(variable=="Inds"){return(as.character(NamePops))}
+  if(variable=="Loci"){return(as.character(names(temp2)))}
+  if(variable=="All"){return(Output)}
+  if(variable=="Allele"){return(Allele)}
 
 }
