@@ -25,11 +25,10 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 
 * convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, and flattened format.
 
-***
-
 ![workflow-structure](vignette/vignette.png)  
 __Fig 1.__ *Workflow genepopedit including data preparation, diagnostics, manipulation and transformation. Files, functions, and function operations are denoted by black, grey and blue text, respectively. Function inputs and outputs are denoted by dashed and solid lines, respectively.*
 
+***
 **Requirement:**
 genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically, we use the _three number_ format (e.g. 110110) where the six digits correspond to the alleles of a given locus for an individual. Locus names can be listed in the first row separated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
 
