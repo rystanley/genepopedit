@@ -426,11 +426,12 @@ This function will calculate allele frequencies based on the major allele among 
 
 ```r
 #calculate major allele frequencies according to the default population groupings.
-AlleleFreq_default <- genepop_allelefreq("genepopedit_examplefile.txt")
+  AlleleFreq_default <- genepop_allelefreq("genepopedit_examplefile.txt")
 
 #calculate major allele frequencies according to the specifed population groupings.
-popgrouping <- data.frame(Name=c("AAA","BBB","CCC","DDD","EEE","FFF"),groups=c("gr1","gr1","gr2","gr2","gr3","gr3"))
-AlleleFreq_specified <- genepop_allelefreq(GenePopData,popgroup=popgrouping)
+  popgrouping <- data.frame(Name=c("AAA","BBB","CCC","DDD","EEE","FFF"),groups=c("gr1","gr1","gr2","gr2","gr3","gr3"))
+
+  AlleleFreq_specified <- genepop_allelefreq(GenePopData,popgroup=popgrouping)
 ```
 
 *** 
