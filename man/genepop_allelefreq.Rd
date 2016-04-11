@@ -14,11 +14,7 @@ or a single commma delimited row of loci names followed by the locus data. Popul
 seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space space,space) and is read in as
 as a single row (character).}
 
-\item{popgroup}{if specified (Default: NULL) popgroup is a dataframe or path to a csv.
-This dataframe contains two columns. Column 1 corresponds to the population names. These names
-should match the individual IDs (e.g. BON_01 ,  110110 would be 'BON'). The next column
-has the group. If groupings are the same as populations then leave as NULL (Default). Populations will be defined in this function using the population grouping format in the GENEPOP file.
-Each population can only be assigned to one group.}
+\item{popgroup}{population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.}
 }
 \description{
 Function returns population derived allele frequencies.

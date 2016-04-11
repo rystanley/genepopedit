@@ -7,11 +7,7 @@
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
 #' seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space space,space) and is read in as
 #' as a single row (character).
-#' @param popgroup if specified (Default: NULL) popgroup is a dataframe or path to a csv.
-#' This dataframe contains two columns. Column 1 corresponds to the population names. These names
-#' should match the individual IDs (e.g. BON_01 ,  110110 would be 'BON'). The next column
-#' has the group. If groupings are the same as populations then leave as NULL (Default). Populations will be defined in this function using the population grouping format in the GENEPOP file.
-#' Each population can only be assigned to one group.
+#' @param popgroup population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
 #' @rdname genepop_allelefreq
 #' @import magrittr
 #' @importFrom data.table fread as.data.table
@@ -113,8 +109,6 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
     PopGroupVec <- rep(1:length(lPops),times=lPops)
     PopGroupVec <- PopGroupVec[order(PopGroupVec)]
 
-
-
     if(length(popgroup)==0){
         temp2$Pops <- PopGroupVec
         temp2[] <- lapply(temp2, as.character)
@@ -176,11 +170,6 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
                               ungroup())
 
       colnames(Output)[1]="Population" #fix output
-
-
       }
-
 return(Output)# return the allele frequency list
-
-
 }
