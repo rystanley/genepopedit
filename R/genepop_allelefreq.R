@@ -12,7 +12,7 @@
 #' @import magrittr
 #' @importFrom data.table fread as.data.table
 #' @importFrom reshape2 melt
-#' @importFrom dplyr filter summarise group_by ungroup summarise_each funs
+#' @importFrom dplyr filter summarise group_by ungroup summarise_each funs funs_q funs_
 #' @export
 #'
 
