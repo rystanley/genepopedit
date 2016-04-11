@@ -141,6 +141,7 @@ Pull request how-to:
   * variable="PopNum" -> returns population summary table
   * variable="Loci" -> returns vector of loci names
   * variable="Inds" -> returns vector of Sample IDs
+  * variable="All" -> returns an s4 container with "Pops","Loci","Inds" & "PopNum"
   * variable="Allele" -> returns vector of Alleles (*note this might include missing values)
   
 ***
@@ -394,6 +395,14 @@ SampleIDs <- genepop_detective(GenePopData,variable="Inds")
 Return *Loci names* using the file path instead of the workspace object.
 ```r
 LociNames <- genepop_detective("genepopedit_examplefile.txt",variable="Loci")
+```
+Return *All* using the file path instead of the workspace object.
+```r
+metadata <- genepop_detective("genepopedit_examplefile.txt",variable="All")
+metadata@Pops #Populations
+metadata@Loci #Loci names
+metadata@Inds #Individual IDs
+metadata@PopNum #Population counts
 ```
 
 Return *Allele values* using the file path instead of the workspace object.
