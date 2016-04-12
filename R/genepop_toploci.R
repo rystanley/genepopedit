@@ -1,23 +1,23 @@
 # Get top loci
 #' @title Creates a panel of the top n unlinked loci, and exports the list of loci
 #' @description Extract the genotypes of individuals at the top n (by Fst) unlinked loci.
-#' @param GPD A file path to the GENEPOP format file you wish to create your panel from
+#' @param GenePop A file path to the GENEPOP format file you wish to create your panel from
 #' @param LDpop A string which denotes which of the two populations you wish to calculate linkage disequilibrium from. The options are "Pop1" or "Pop2", or "Both" (default) if the LD is to be calculated based on both populations. The order of population is based on the order by which they appear in the genepopfile. refer to genepop_detetive() to check which population is considered 'Pop1' and 'Pop2'.
-#' @param panel.size An integer number of loci to include in the panel. If not specified all loci will be returned
+#' @param panel.size An integer number of loci to include in the panel. If not specified all loci will be returned,
 #' @param where.PLINK A file path to the PLINK installation folder.
 #' @param where.PGDspider A file path to the PGDspider installation folder.
 #' @rdname genepop_toploci
 #' @export
 #' @importFrom hierfstat read.fstat wc
 #' @importFrom stringr str_split str_extract
-#' @import plyr
+#' @importFrom plyr rbind.fill
 
 
-genepop_toploci <- function(GPD.Top, LDpop = "Both", panel.size=NULL, where.PLINK, where.PGDspider){
+genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLINK, where.PGDspider){
 
 
   #Parameter limits
-      nLOCI <- length(genepop_detective(GPD.Top,"Loci"))
+      nLOCI <- length(genepop_detective(GenePop,"Loci"))
   #Variable checks
       if(length(which(LDpop %in% c("Pop1","Pop2","Both")))==0){
         stop("Parameter 'LDpop' must be a string of value Pop1, Pop2 or Both. Function stopped.",call. = FALSE)
@@ -29,13 +29,13 @@ genepop_toploci <- function(GPD.Top, LDpop = "Both", panel.size=NULL, where.PLIN
         }
 
       if(panel.size>nLOCI){
-        writeLines(paste0("Panel size selected is larger than available loci in file: ",GPD.Top,". panel.size set to the maximum number of loci: ",nLOCI))
+        writeLines(paste0("Panel size selected is larger than available loci in file: ",GenePop,". panel.size set to the maximum number of loci: ",nLOCI))
         panel.size <- nLOCI
       }
 
       path.start <- getwd()  ### where to write the files created by genepopedit to
 
-      pops.exist <- genepop_detective(GPD.Top) ## see what populations are in the file
+      pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
 
   ## Function must have exactly two populations to work - fail if not
       if(length(pops.exist) != 2){
@@ -53,7 +53,7 @@ genepop_toploci <- function(GPD.Top, LDpop = "Both", panel.size=NULL, where.PLIN
         subPOP <- as.character(subPOP)
 
         ## subset out the population in which LD is to be calculated - this will make a file, which will be deleted after
-        subset_genepop(GenePop = GPD.Top, sPop = subPOP, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
+        subset_genepop(GenePop = GenePop, sPop = subPOP, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
         ## remember path to the file created by subset_genepop
         sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
       }
@@ -62,7 +62,7 @@ genepop_toploci <- function(GPD.Top, LDpop = "Both", panel.size=NULL, where.PLIN
 
           popLDsubsetDF <- data.frame(op=pops.exist, rename=c("Pop1", "Pop1")) ## make a both the same
 
-          subset_genepop_aggregate(GenePop = GPD.Top, agPopFrame = popLDsubsetDF, path = paste0(path.start, "/", "subset_for_LD.txt"))
+          subset_genepop_aggregate(GenePop = GenePop, agPopFrame = popLDsubsetDF, path = paste0(path.start, "/", "subset_for_LD.txt"))
           sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
           ## now rename
 
@@ -110,7 +110,7 @@ genepop_toploci <- function(GPD.Top, LDpop = "Both", panel.size=NULL, where.PLIN
         file.copy(from = paste0(path.start, "/GP_FSTAT.spid"), to = where.PGDspider, overwrite = TRUE)
         remember.spidpath <- paste0(path.start, "/", "GP_FSTAT.spid")
     ## move the input file as well to the same location as PGDspider - this makes this step so much easier
-        file.copy(from <- GPD.Top, to = where.PGDspider, overwrite = TRUE)
+        file.copy(from <- GenePop, to = where.PGDspider, overwrite = TRUE)
 
 
   #### OS X and LINUX CALL
@@ -398,7 +398,7 @@ genepop_toploci <- function(GPD.Top, LDpop = "Both", panel.size=NULL, where.PLIN
       file.remove(plink_ped_path)
       file.remove(paste0(path.start, "/plink.txt"))
       file.remove(paste0(path.start, "/LDsReform.txt"))
-      file.remove(GPD.Top)
+      file.remove(GenePop)
 
   #wrap up indicator
       writeLines("Process Completed.")
