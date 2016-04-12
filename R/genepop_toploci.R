@@ -354,7 +354,7 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
     for(j in 1:length(SNP.out)){
 
       to.double.check <- SNP.out[[j]] ## gets names of the jth SNPs and what other SNP they are linked to
-      dbl.chk <- to.double.check[which(str_detect(string = noquote(to.double.check), pattern = as.character(FST.order.vec[loci.in.LD.vec[j]]))==FALSE)]
+      dbl.chk <- to.double.check[which(stringr::str_detect(string = noquote(to.double.check), pattern = as.character(FST.order.vec[loci.in.LD.vec[j]]))==FALSE)]
       ### the jth SNPs are saved as a string in to.double.check, this removes the jth SNP in loci.fst from this, so only have non-duplicated
 
       where.best.link.fst <- loci.in.LD.vec[j] ## the loci with the greatest Fst among the linked ones, will be the jth in the ranked vector
