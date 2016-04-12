@@ -29,7 +29,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 
 ![workflow-diagram](vignette/vignette.png)
 
-__Fig 1.__ *Workflow genepopedit including data preparation, diagnostics, manipulation and transformation. Files, functions, and function operations are denoted by black, grey and blue text, respectively. Function inputs and outputs are denoted by dashed and solid lines, respectively.*
+__Fig 1.__ **genepopedit** *workflow including data preparation, diagnostics, manipulation and transformation. Files, functions, and function operations are denoted by black, grey and blue text, respectively. Function inputs and outputs are denoted by dashed and solid lines, respectively.*
 
 ***
 **Requirement:**
@@ -186,8 +186,9 @@ Calculate allele frequencies (major) for a given set of loci aggregated by popul
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
-**nameframe** | a dataframe or path to a csv detailing the original and any edited population names.
+**nameframe** | a dataframe or path to a csv detailing the original and any edited population names or sampleIDs.
 **renumber** | logical (default: FALSE) whether the sample numbers are to be replaced. 
+**meta** | character definign which meta information is being edited. Options are "Pop" (default) or "Ind" for populations or sampleIDs repectively. This parameter must be specified.
 **path** | the filepath & filename of output.
 
 #### subset_genepop_aggregate.R
@@ -513,7 +514,16 @@ Populations can also be grouped by a common name. The result is similar to subse
   PopRename_group <- data.frame(oPop=c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),newname=c("Pop1","Pop1","Pop1","Pop1","Pop1","Pop2","Pop2","Pop2","Pop2","Pop2"))
 
 #rename populations
-  subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe=PopRename_group,renumber=TRUE)
+  subset_genepop_rename(GenePop=GenePopData,nameframe=PopRename_group,renumber=TRUE,meta="Pop",path=paste0(output_dir,"Genepop_renamed_renumbered.txt"))
+```
+
+Alternatively the sampleIDs can be renamed directly. 
+```r
+#create a renaming vector (column 1 = old column 2 = new)
+  IndRename_group <- data.frame(new=c("AAA_10","BBB_10","CCC_10","DDD_10"),old=c("AAA_99","BBB_99","CCC_99","DDD_99"))
+
+#rename sampleIDs
+  subset_genepop_rename(GenePop=GenePopData,nameframe=IndRename_group,meta="Ind",path=paste0(output_dir,"Genepop_ID_renamed.txt"))
 ```
 
 If your sample IDs are not split between the population and the sample number using an _ then you can rename the populations before using any subsetting functions. Note that in this example because there is already a _ seperating populations the 
