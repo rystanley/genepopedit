@@ -7,26 +7,28 @@
 #' or a single commma delimited row of loci names followed by the locus data. Populations are
 #' seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
-#' @param nameframe a dataframe or path to a csv. This must be specified in this function
-#' this dataframe contains two columns. Column 1 corresponds to the population names. These names
-#' should match the individual IDs (e.g. BON_01 ,  110110 120120 -- would be 'BON'). The next column
+#' @param nameframe a dataframe or path to a csv and is required for this function. The first column of the dataframe defines the original value
+#' and the second corresponds to the change. If populations (default: meta="populations") are the metadata to be changed
+#' the names should match the individual IDs (e.g. BON_01 ,  110110 120120 = 'BON'). The next column
 #' has the new names that you want to change or rename. If you don't want to change the name then just repeat
-#' from column one in that row. **Note if this is a reference to a path then there should be column headers
-#' though the headers do not need to match this example. If the input is a dataframe object from the
-#' workspace it must be a data.frame object and therefore will have headers.
-#' This function assumes that each population will have a unique name. Names in this case are
+#' from column one in that row. This function assumes that each population will have a unique name. Names in this case are
 #' comprised of alpha characters and not numbers.
 #' (e.g. Pop01_01 and Pop02_01 would each be considered 'Pop' for the population name)
 #' e.g. data.frame(Opop=c("BON","BRA","EDN","CRA","MAL","TRY"),Rename=c("BON","BON","EDN","CRA","BON","CRA")).
 #' @param renumber is a logical (default=FALSE) defining whether you want to change the sample unique identity
 #' i.e. sample number - BON_01 where 01 is the unique qauntity. If multiple populations are combined this will
 #' prevent two samples from having the same name.
+#' @param meta which metadata will be renamed with nameframe. Default is "Pop" for populations, alternative is "Ind" for individuals.
 #' @param path the filepath and filename of output.
 #' @rdname subset_genepop_rename
 #' @importFrom data.table fread as.data.table
 #' @export
 
-subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,path){
+subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",path){
+
+  if(length(which(meta %in% c("Pop","Ind")))==0){
+    stop("parameter 'meta' must be defined as Pop or Ind for renaming either the population or individual ID. Function stopped.",call. = FALSE)
+  }
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
   if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
@@ -93,6 +95,8 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,path){
 
 ## Now change the population names
 
+  if(meta == "Pop"){
+
     if(!is.data.frame(nameframe)) #if it isn't a dataframe then read in the path
     {
       nameframe <- read.csv(nameframe,header=T)
@@ -133,15 +137,14 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,path){
     popvec1 <- unlist(strsplit(gsub(pattern="_",replacement="",temp[,1]),split = "[^0-9]+"))
     popvec2 <- popvec1[which(popvec1 != "")]
 
-    #If you need to rename the population id identifiers
     if(renumber)
-        {
-          popvec2=NULL
-          for (i in 1:length(table(NameExtract2)))
-          {
-            popvec2=c(popvec2,sub('^(.)$', '0\\1', 1:table(NameExtract2)[i]))
-          }
-        }
+    {
+      popvec2=NULL
+      for (i in 1:length(table(NameExtract2)))
+      {
+        popvec2=c(popvec2,sub('^(.)$', '0\\1', 1:table(NameExtract2)[i]))
+      }
+    }
 
     PopVec <- paste0(NameExtract2,"_",popvec2," ,  ")
 
@@ -149,10 +152,50 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,path){
     Loci <- paste(PopVec,Loci,sep="")
 
     #Insert the value of "Pop" which partitions the data among populations #only if more than one population
-
     if(length(table(NameExtract2))!=1){Loci <- insert_vals(Vec=Loci,breaks=PopPosition,newVal="Pop")}
 
-    #Add the first "Pop" label
+  }# end if (meta=="Pop")
+
+  if(meta=="Ind")
+    {
+    if(!is.data.frame(nameframe)) #if it isn't a dataframe then read in the path
+    {
+      nameframe <- read.csv(nameframe,header=T)
+    }
+
+    nameframe[]=lapply(nameframe,as.character)
+    NamePops=as.character(NamePops)
+
+    #get the row indicies in the right order.
+    nameframe$ind=sapply(nameframe[,1],FUN=function(x){which(NamePops == x)})
+
+    NamePops[nameframe$ind] <- nameframe[,2] #replace values
+
+    #Now stitch the data together
+    # paste together the Loci as one long integer seperated for each loci by a space
+    Loci <- do.call(paste,c(temp2[,], sep=" "))
+
+    #Paste these to the Loci
+    Loci <- paste(NamePops,Loci,sep=" ,  ")
+
+    PopLengths <- table(factor(NameExtract, levels=unique(NameExtract)))[-length(table(NameExtract))]
+
+    if(length(table(NameExtract))==2){PopPosition = PopLengths+1}
+
+    if(length(table(NameExtract))>2){
+      PopPosition <- c(PopLengths[1]+1,rep(NA,(length(PopLengths)-1)))
+      for (i in 2:length(PopLengths)){
+        PopPosition[i] <- PopLengths[i]+PopPosition[i-1]
+      }
+    }
+
+    #Insert the value of "Pop" which partitions the data among populations #only if more than one population
+    if(length(table(NameExtract))!=1){Loci <- insert_vals(Vec=Loci,breaks=PopPosition,newVal="Pop")}
+
+  } # end of if (meta == "Ind")
+
+
+   #Add the first "Pop" label
     Loci <- c("Pop",Loci)
 
     Output <- c(stacks.version,names(temp2),Loci)
