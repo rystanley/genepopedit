@@ -27,7 +27,7 @@
 subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",path){
 
   if(length(which(meta %in% c("Pop","Ind")))==0){
-    stop("parameter 'meta' must be defined as Pop or Ind for renaming either the population or individual ID. Function stopped.",call. = FALSE)
+    stop("Parameter 'meta' must be defined as Pop or Ind for renaming either the population or individual ID. Function stopped.",call. = FALSE)
   }
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
