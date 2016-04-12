@@ -21,6 +21,11 @@
 
 genepop_detective <- function(GenePop,variable="Pops"){
 
+  #check the variable parameter
+  if(length(which(variable %in% c("Pops","PopNum","Inds","Loci","All","Allele")))==0){
+    stop("Parameter 'variable' defining metadata to be returned must be defined as one of Pop, Ind, Loci, PopNum, Allele, or All. Function stopped.",call. = FALSE)
+  }
+
   #Check to see if GenePop is a data.frame from the workspace
   if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
 
