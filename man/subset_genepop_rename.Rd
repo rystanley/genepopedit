@@ -4,7 +4,8 @@
 \alias{subset_genepop_rename}
 \title{Genepop subset and rename populations}
 \usage{
-subset_genepop_rename(GenePop, nameframe, renumber = FALSE, path)
+subset_genepop_rename(GenePop, nameframe, renumber = FALSE, meta = "Pop",
+  path)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
@@ -14,14 +15,11 @@ or a single commma delimited row of loci names followed by the locus data. Popul
 seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 as a single row (character).}
 
-\item{nameframe}{a dataframe or path to a csv. This must be specified in this function
-this dataframe contains two columns. Column 1 corresponds to the population names. These names
-should match the individual IDs (e.g. BON_01 ,  110110 120120 -- would be 'BON'). The next column
+\item{nameframe}{a dataframe or path to a csv and is required for this function. The first column of the dataframe defines the original value
+and the second corresponds to the change. If populations (default: meta="populations") are the metadata to be changed
+the names should match the individual IDs (e.g. BON_01 ,  110110 120120 = 'BON'). The next column
 has the new names that you want to change or rename. If you don't want to change the name then just repeat
-from column one in that row. **Note if this is a reference to a path then there should be column headers
-though the headers do not need to match this example. If the input is a dataframe object from the
-workspace it must be a data.frame object and therefore will have headers.
-This function assumes that each population will have a unique name. Names in this case are
+from column one in that row. This function assumes that each population will have a unique name. Names in this case are
 comprised of alpha characters and not numbers.
 (e.g. Pop01_01 and Pop02_01 would each be considered 'Pop' for the population name)
 e.g. data.frame(Opop=c("BON","BRA","EDN","CRA","MAL","TRY"),Rename=c("BON","BON","EDN","CRA","BON","CRA")).}
@@ -29,6 +27,8 @@ e.g. data.frame(Opop=c("BON","BRA","EDN","CRA","MAL","TRY"),Rename=c("BON","BON"
 \item{renumber}{is a logical (default=FALSE) defining whether you want to change the sample unique identity
 i.e. sample number - BON_01 where 01 is the unique qauntity. If multiple populations are combined this will
 prevent two samples from having the same name.}
+
+\item{meta}{which metadata will be renamed with nameframe. Default is "Pop" for populations, alternative is "Ind" for individuals.}
 
 \item{path}{the filepath and filename of output.}
 }
