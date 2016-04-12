@@ -381,26 +381,26 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
       }
     }
 
+    #clean up temporary files used in the analysis.
+    file.remove(remember.spidpath)
+    file.remove(sub_data_path)
+    file.remove(ped.path)
+    file.remove(map.path)
+    file.remove(paste0(where.PGDspider, "/hyb.spid"))
+    file.remove(paste0(where.PGDspider, "/GP_FSTAT.spid"))
+    file.remove(fst_data_path)
+    file.remove(plink_map_path)
+    file.remove(plink_ped_path)
+    file.remove(paste0(path.start, "/plink.txt"))
+    file.remove(paste0(path.start, "/LDsReform.txt"))
+    #file.remove(GenePop)
+
+    #wrap up indicator
+    writeLines("Process Completed.")
+
   ## return loci ordered by fst
       your.panel <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size],stringsAsFactors = F)
       your.panel <- merge(your.panel,FST.df,by="loci")
       return(your.panel[order(your.panel$FSTs,decreasing = TRUE),])
-
-  #clean up temporary files used in the analysis.
-      file.remove(remember.spidpath)
-      file.remove(sub_data_path)
-      file.remove(ped.path)
-      file.remove(map.path)
-      file.remove(paste0(where.PGDspider, "/hyb.spid"))
-      file.remove(paste0(where.PGDspider, "/GP_FSTAT.spid"))
-      file.remove(fst_data_path)
-      file.remove(plink_map_path)
-      file.remove(plink_ped_path)
-      file.remove(paste0(path.start, "/plink.txt"))
-      file.remove(paste0(path.start, "/LDsReform.txt"))
-      file.remove(GenePop)
-
-  #wrap up indicator
-      writeLines("Process Completed.")
 
 }
