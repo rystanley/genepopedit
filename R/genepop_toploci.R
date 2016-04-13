@@ -400,7 +400,7 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
     file.remove(remember.TOPLOC.path)
     file.remove(paste0(where.PGDspider,"/subset_for_LD.txt"))
     file.remove(paste0(where.PGDspider,"/for_FST.txt"))
-    file.remove(paste0(where.PGDspider,"/GENEPOP_to_FSTAT.spid"))
+    file.remove(paste0(path.start,"/GP_FSTAT.spid"))
     #file.remove(GenePop)
 
     #wrap up indicator
