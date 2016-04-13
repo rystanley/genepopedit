@@ -9,7 +9,7 @@
 #' @rdname genepop_toploci
 #' @export
 #' @importFrom hierfstat read.fstat wc
-#' @importFrom stringr str_split str_extract
+#' @importFrom stringr str_split str_detect
 #' @importFrom plyr rbind.fill
 
 
