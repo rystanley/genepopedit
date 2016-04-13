@@ -399,8 +399,11 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
     writeLines("Process Completed.")
 
   ## return loci ordered by fst
-      your.panel <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size],stringsAsFactors = F)
-      your.panel <- merge(your.panel,FST.df,by="loci")
-      return(your.panel[order(your.panel$FSTs,decreasing = TRUE),])
+      #your.panel <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size],stringsAsFactors = F)
+      #your.panel <- merge(your.panel,FST.df,by="loci")
+      #return(your.panel[order(your.panel$FSTs,decreasing = TRUE),])
 
+      your.panel <- FST.df
+      your.panel <- your.panel[your.panel$loci %in% FST.order.vec[-to.cut.out][1:panel.size]]
+      return(your.panel)
 }
