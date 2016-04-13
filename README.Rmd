@@ -100,7 +100,7 @@ install_github("rystanley/genepopedit")
 library(genepopedit)# load the library
 ```
 
-** Step 3** Install *PGDspider* and *plink*. Note these programs are required for the use of **genepop_toploc()** and **PGDspidR()** only!
+**Step 3** Install *PGDspider* and *plink*. Note these programs are required for the use of **genepop_toploc()** and **PGDspidR()** only!
 
 PGDspider: <http://www.cmpg.unibe.ch/software/PGDSpider/>
 plink: <http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml>
@@ -165,7 +165,7 @@ Calculate allele frequencies (major) for a given set of loci aggregated by popul
 **popgroup** | population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups.Each population can only be assigned to one group.
 
 #### genepop_toploci.R
-Calculate the fst for unlinked loci and order by fst. This function will order loci by fst and will maximize the sum of FSTs for unlinked loci. 
+Calculate the fst for unlinked loci and order by fst. This function will order loci by fst and will maximize the sum of FSTs for unlinked loci. Note this function requires both PGDspider and plink.
 
 [_example use_](#genepoptoploc)
 
