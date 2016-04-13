@@ -102,8 +102,8 @@ library(genepopedit)# load the library
 
 **Step 3** Install *PGDspider* and *plink*. Note these programs are required for the use of **genepop_toploc()** and **PGDspidR()** only!
 
-PGDspider: <http://www.cmpg.unibe.ch/software/PGDSpider/>
-plink: <http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml>
+  * PGDspider: <http://www.cmpg.unibe.ch/software/PGDSpider/>
+  * plink: <http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml>
 
 ***
 
