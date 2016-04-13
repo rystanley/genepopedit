@@ -66,7 +66,7 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
           sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
           ## now rename
 
-          subset_genepop_rename(GenePop = sub_data_path, path = sub_data_path, nameframe = popLDsubsetDF)
+          subset_genepop_rename(GenePop = sub_data_path, path = sub_data_path, nameframe = popLDsubsetDF,renumber=TRUE)
 
         }
 
@@ -111,6 +111,11 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
         remember.spidpath <- paste0(path.start, "/", "GP_FSTAT.spid")
     ## move the input file as well to the same location as PGDspider - this makes this step so much easier
         file.copy(from <- GenePop, to = where.PGDspider, overwrite = TRUE)
+        GenePop.name <- stringr::str_split(string = GenePop, pattern = "/")
+        GenePop.name <- unlist(GenePop.name)
+        GenePop.name <- GenePop.name[grep(x = GenePop.name, pattern = ".txt")]
+        file.rename(from = paste0(where.PGDspider, GenePop.name), to = paste0(where.PGDspider, "GPD_for_GET_TOP_LOC.txt"))
+        remember.TOPLOC.path <- paste0(where.PGDspider, "GPD_for_GET_TOP_LOC.txt")
 
 
   #### OS X and LINUX CALL
@@ -175,7 +180,6 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
       names(FST.df)[1] <- "loci"
   ## reorder the dataframe from highest to lowest Fst
       FST.df <- FST.df[base::order(FST.df$FSTs, decreasing = TRUE),]
-  # head(FST.df)
 
   writeLines("Calculating Linkage")
   ### convert file to .ped and .map using PGD spider
@@ -393,17 +397,15 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
     file.remove(plink_ped_path)
     file.remove(paste0(path.start, "/plink.txt"))
     file.remove(paste0(path.start, "/LDsReform.txt"))
+    file.remove(remember.TOPLOC.path)
     #file.remove(GenePop)
 
     #wrap up indicator
     writeLines("Process Completed.")
 
   ## return loci ordered by fst
-      #your.panel <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size],stringsAsFactors = F)
-      #your.panel <- merge(your.panel,FST.df,by="loci")
-      #return(your.panel[order(your.panel$FSTs,decreasing = TRUE),])
+      your.panel <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size],stringsAsFactors = F)
+      your.panel <- merge(your.panel,FST.df,by="loci")
+      return(your.panel[order(your.panel$FSTs,decreasing = TRUE),])
 
-      your.panel <- FST.df
-      your.panel <- your.panel[your.panel$loci %in% FST.order.vec[-to.cut.out][1:panel.size]]
-      return(your.panel)
 }
