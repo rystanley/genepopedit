@@ -99,7 +99,9 @@ library(devtools) # to load
 install_github("rystanley/genepopedit") 
 library(genepopedit)# load the library
 ```
+
 <a name="extrainstall"/>
+
 **Step 3** Install *PGDspider* and *plink*. Note these programs are required for the use of **genepop_toploc()** and **PGDspidR()** only!
 
   * PGDspider: <http://www.cmpg.unibe.ch/software/PGDSpider/>
