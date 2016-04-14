@@ -132,7 +132,7 @@ Pull request how-to:
   * Make the changes using github’s in-page editor and save.
   * Submit a pull request and include a brief description of your changes. (e.g. "_spelling errors_" or "_indexing error_").
   
-To cite **genepopedit** refer to our zenodo DOI
+To cite the current version of **genepopedit**, please refer to our zenodo DOI:
 [![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
 
 ***
