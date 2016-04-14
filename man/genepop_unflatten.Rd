@@ -7,7 +7,7 @@
 genepop_unflatten(df, path)
 }
 \arguments{
-\item{df}{dataframe with the first column holding sampleIDs (e.g. BON_01) and the remaning columns holding loci. Column names of loci will be used as loci names in the genepop output.
+\item{df}{dataframe with the first column holding sampleIDs (e.g. BON_01) and the remaining columns holding loci. Column names of loci will be used as loci names in the genepop output.
 df must be an object in the workspace.}
 
 \item{path}{the filepath and filename of output.}

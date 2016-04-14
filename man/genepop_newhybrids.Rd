@@ -8,10 +8,10 @@ genepop_newhybrids(GenePop, path = NULL)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
-or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
-or a single commma delimitedd row of loci names followed by the locus data. Populations are
-seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
+or a single comma delimited row of loci names followed by the locus data. Populations are
+separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 as a single row (character).}
 
 \item{path}{the filepath and filename of output.}

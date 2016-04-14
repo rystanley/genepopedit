@@ -10,7 +10,7 @@ subset_genepop(GenePop, subs = NULL, keep = TRUE, sPop = NULL, path)
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
 or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 This will be the standard Genepop format with the first n+1 rows corresponding to the n loci names,
-or a single commma delimited row of loci names followed by the locus data. Populations are
+or a single comma delimited row of loci names followed by the locus data. Populations are
 separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 as a single row (character).}
 
