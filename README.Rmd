@@ -453,7 +453,7 @@ Return *Allele values* using the file path instead of the workspace object.
 Alleles <- genepop_detective("genepopedit_examplefile.txt",variable="Allele")
 ```
 <a name="genepopafreq"/>
-#genepop\_allelefreq
+##genepop\_allelefreq
 This function will calculate allele frequencies based on the major allele among populations for each population group. 
 
 ```r
