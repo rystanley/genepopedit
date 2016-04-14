@@ -380,14 +380,28 @@ We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/softw
 
 #**How to use genepopedit**
 
-#**Installation**
+##Example data
 
-Download the example genepop data: GenePop file with 10 populations, 30 individuals per population, and 100 Loci.
-<https://www.dropbox.com/s/afhbvqmpzwru4ij/genepopedit_examplefile.txt?dl=0>
+Example data for the use in the following documentation is included within genepopedit. 
+The example genepop data is a GenePop data format with 10 populations, 30 individuals per population, and 100 Loci.
 
-Read in the data using the following *read.table* code specifics. Note the specifics entries of read.table are important at this step (sep="\t",quote="",stringsAsFactors=FALSE)
+```r
+#Load example data in your workspace. 'GenePopData' will now be available for use.
+  data("ExampleGenePop")
+```
+If reading in data to your workspace use the following *read.table* code specifics and associated parameters (sep="\t",quote="",stringsAsFactors=FALSE)
 
-All functions can work with an object read into the workspace (see above) or can be a path to the Genepop file.
+```r
+#Example file path to your data
+  file.link <- "c:/Users/YOUR NAME/Documents/Data/genepopdata.txt"
+
+#If your dataset has fewer than ~15,000 loci *read.table* should suffice
+  GenePop <- read.table(file.link,sep="\t",quote="",stringsAsFactors=FALSE)
+
+#If your dataset has a large amount of loci (>15,000) then we suggest using the data.table package to load in the data more efficiently.
+  GenePop <- data.table::fread(file.link,header=FALSE, sep="\t",stringsAsFactors=FALSE)
+```
+However, reading in your GENEPOP data into the workspace is not required as all functions can work with workspace objects **and** can be a **file paths**.
 
 ```r
 GenePopData <- read.table("genepopedit_examplefile.txt", header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
