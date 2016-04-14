@@ -1,6 +1,6 @@
 # Get top loci
 #' @title Creates a panel of the top n unlinked loci, and exports the list of loci
-#' @description Extract the genotypes of individuals at the top n (by Fst) unlinked loci.
+#' @description Extract the genotypes of individuals at the top n (by Fst) unlinked loci. The default threshold of r2>0.2 is employed for assigning 'linked' loci (default for plink).
 #' @param GenePop A file path to the GENEPOP format file you wish to create your panel from
 #' @param LDpop A string which denotes which of the two populations you wish to calculate linkage disequilibrium from. The options are "Pop1" or "Pop2", or "Both" (default) if the LD is to be calculated based on both populations. The order of population is based on the order by which they appear in the genepopfile. refer to genepop_detetive() to check which population is considered 'Pop1' and 'Pop2'.
 #' @param panel.size An integer number of loci to include in the panel. If not specified all loci will be returned,
