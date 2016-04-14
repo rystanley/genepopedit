@@ -19,6 +19,6 @@ genepop_toploci(GenePop, LDpop = "Both", panel.size = NULL, where.PLINK,
 \item{where.PGDspider}{A file path to the PGDspider installation folder.}
 }
 \description{
-Extract the genotypes of individuals at the top n (by Fst) unlinked loci.
+Extract the genotypes of individuals at the top n (by Fst) unlinked loci. The default threshold of r2>0.2 is employed for assigning 'linked' loci (default for plink).
 }
 
