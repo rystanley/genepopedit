@@ -380,8 +380,6 @@ We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/softw
 
 #**How to use genepopedit**
 
-##Example data
-
 Example data for the use in the following documentation is included within genepopedit. 
 The example genepop data is a GenePop data format with 10 populations, 30 individuals per population, and 100 Loci.
 
@@ -402,15 +400,10 @@ If reading in data to your workspace use the following *read.table* code specifi
   GenePop <- data.table::fread(file.link,header=FALSE, sep="\t",stringsAsFactors=FALSE)
 ```
 However, reading in your GENEPOP data into the workspace is not required as all functions can work with workspace objects **and** can be a **file paths**.
+stringsAsFactors = FALSE)
 
-```r
-GenePopData <- read.table("genepopedit_examplefile.txt", header = FALSE, sep = "\t", quote = "", stringsAsFactors = FALSE)
 ```
-Alternatively the example *GenePopData* can be loaded directly from the package.
 
-```r
-data("ExampleGenePop")
-```
 Set a directory where the output files will be saved.
 
 ```r
