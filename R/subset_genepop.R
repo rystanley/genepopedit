@@ -4,7 +4,7 @@
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard Genepop format with the first n+1 rows corresponding to the n loci names,
-#' or a single commma delimited row of loci names followed by the locus data. Populations are
+#' or a single comma delimited row of loci names followed by the locus data. Populations are
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
 #' @param subs the loci names of interest or a vector which corresponds to the order of which
@@ -64,7 +64,7 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
     Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
     npops  <-  1:length(Pops)
 
-## Seperate the data into the column headers and the rest
+## separate the data into the column headers and the rest
     ColumnData <- GenePop$data[1:(Pops[1]-1)]
     ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
     snpData <- GenePop[Pops[1]:NROW(GenePop),]
@@ -73,7 +73,7 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
     tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
     snpData <- snpData[-tempPops,]
 
-    #Seperate the snpdata
+    #separate the snpdata
     temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
 
     #data format check
@@ -170,7 +170,7 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
 
 #Now recompile the GenePop format
 
-    #the number of individuals for all popualtions but the last (Pop tagged to the end)
+    #the number of individuals for all populations but the last (Pop tagged to the end)
     if(length(table(temp2$Pop))>1){PopLengths <- table(temp2$Pop)[-length(table(temp2$Pop))]} else {PopLengths=1}
 
     if(length(table(temp2$Pop))==2){PopPosition = PopLengths+1}
@@ -182,7 +182,7 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
           }
     }
 
-    # paste together the Loci as one long integer seperated for each loci by a space
+    # paste together the Loci as one long integer separated for each loci by a space
     Loci <- do.call(paste,c(reqCols[,], sep=" "))
 
     #Grab the Population tags that each invididual had following the format ID_,__

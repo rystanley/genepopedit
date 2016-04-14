@@ -2,10 +2,10 @@
 #' @title Convert Genepop to Bayesian Genomic Clines (BGC) format.
 #' @description Function to convert Genepop to BGC format.
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
-#' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+#' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
-#' or a single commma deliminated row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
+#' or a single comma deliminated row of loci names followed by the locus data. Populations are
+#' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
 #' @param popdef is a dataframe or path to a csv.
 #' This dataframe contains two columns. Column 1 corresponds to the population names. These names
@@ -59,7 +59,7 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
   npops  <-  1:length(Pops)
 
-  ## Seperate the data into the column headers and the rest
+  ## separate the data into the column headers and the rest
   ColumnData <- GenePop$data[1:(Pops[1]-1)]
   ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
   snpData <- GenePop[Pops[1]:NROW(GenePop),]
@@ -68,7 +68,7 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
   snpData <- snpData[-tempPops,]
 
-  #Seperate the snpdata
+  #separate the snpdata
   temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
 
   #data format check
@@ -186,7 +186,7 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
     P2_BGC <- c(P2_BGC,P2_temp)
   }
 
-  ##Save output for BGC formated for the parental populations ------------
+  ##Save output for BGC formatted for the parental populations ------------
   if(substring(path,nchar(path))!="/"){path=paste0(path,"/")}
 
   write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
@@ -212,7 +212,7 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   MixedStruct <- temp4[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1]),]
   MixedPops <- NameExtract[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1])]
 
-  #the number of individuals for all popualtions but the last (Pop tagged to the end)
+  #the number of individuals for all populations but the last (Pop tagged to the end)
   PopLengths <- table(MixedPops)[-length(table(MixedPops))]
 
   if(length(table(MixedPops))==2){PopPosition = PopLengths+1}
@@ -237,10 +237,10 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
               rep(paste0("pop_",unique(MixedPops)[1]),length(temp5)),
               temp5))
 
-  #Redimension as a single vector
+  #redim as a single vector
   MixedData=as.vector(temp6)
 
-  ##Save output for BGC formated for the parental and mixed populations ------------
+  ##Save output for BGC formatted for the parental and mixed populations ------------
   write.table(x = MixedData,file=paste(path,fname,"_Admixed_BGC.txt",sep=""),
               sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 

@@ -1,7 +1,7 @@
 # GenePop unflatten
 #' @title Convert to Genepop format from a flattened dataframe.
 #' @description Function returns Genepop file meta-data.
-#' @param df dataframe with the first column holding sampleIDs (e.g. BON_01) and the remaning columns holding loci. Column names of loci will be used as loci names in the genepop output.
+#' @param df dataframe with the first column holding sampleIDs (e.g. BON_01) and the remaining columns holding loci. Column names of loci will be used as loci names in the genepop output.
 #' df must be an object in the workspace.
 #' @param path the filepath and filename of output.
 #' @rdname genepop_unflatten

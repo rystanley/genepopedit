@@ -1,11 +1,11 @@
 # Update the sample IDs of a genepop file
-#' @title Add seperation ("_") between population name and sample number
-#' @description Function to add seperation ("_") between population name and sample number
+#' @title Add separation ("_") between population name and sample number
+#' @description Function to add separation ("_") between population name and sample number
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
-#' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+#' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
-#' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by "   , " (space,space space) and is read in as
+#' or a single comma delimited row of loci names followed by the locus data. Populations are
+#' separated by "Pop". Each individual ID is linked to the locus data by "   , " (space,space space) and is read in as
 #' as a single row (character).
 #' @param path the filepath and filename of output.
 #' @rdname genepop_ID
@@ -48,7 +48,7 @@ genepop_ID <- function(GenePop,path){
   Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
   npops  <-  1:length(Pops)
 
-  ## Seperate the data into the column headers and the rest
+  ## separate the data into the column headers and the rest
   ColumnData <- GenePop$data[1:(Pops[1]-1)]
   ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
   snpData <- GenePop[Pops[1]:NROW(GenePop),]
@@ -56,7 +56,7 @@ genepop_ID <- function(GenePop,path){
   #Get a datafile with just the snp data no pops
   tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
 
-  #Use the 'Pop' original seperators to separate the unique population names
+  #Use the 'Pop' original separators to separate the unique population names
   PopLengths=NULL
   for (i in 1:(length(tempPops)-1)){
     pl=length((tempPops[i]+1):(tempPops[i+1]-1))
@@ -67,7 +67,7 @@ genepop_ID <- function(GenePop,path){
 
   snpData <- snpData[-tempPops,] #remove the pop labels.
 
-  #Seperate the snpdata
+  #separate the snpdata
   temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
 
   #data format check
@@ -112,7 +112,7 @@ genepop_ID <- function(GenePop,path){
     }
 
     #Now stitch the data together
-    # paste together the Loci as one long integer seperated for each loci by a space
+    # paste together the Loci as one long integer separated for each loci by a space
     Loci <- do.call(paste,c(temp2[,], sep=" "))
 
     #Paste these to the Loci

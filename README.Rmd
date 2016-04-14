@@ -63,7 +63,7 @@ _* if STACKS version is not specified_
     TAG_03  , 120120 110110 110110
     TAG_04  , 120120 110110 110110
 
-Alternatively the loci names can be read in the first row as a single character separated by commas. 
+Alternatively, the loci names can be read in the first row as a single character separated by commas. 
 
     Loci_1,Loci_2,Loci,3
     Pop
@@ -77,7 +77,7 @@ Alternatively the loci names can be read in the first row as a single character 
     TAG_03  , 120120 110110 110110
     TAG_04  , 120120 110110 110110
     
-In both formats each row is read in as a single character vector. Sample IDs have the population and sample number seperated by a "_". Between sample ID and the loci is conventional Genepop separator "   , " *(space,space space)*. Note if your population label is note seperated from the sample number in the Sample IDs refer to the help section for . [ subset\_genpop\_rename ](#subsetrenm)
+In both formats each row is read in as a single character vector. Sample IDs have the population and sample number separated by a "_". Between sample ID and the loci is conventional Genepop separator "   , " *(space,space space)*. Note if your population label is note separated from the sample number in the Sample IDs refer to the help section for . [ subset\_genpop\_rename ](#subsetrenm)
 
 <span style="color:red"><STRONG> Note </span></STRONG> that input and output "**path**" variables all require the **FULL** file path. Relative paths will not work with _genepopedit_ functions.  
 
@@ -169,7 +169,7 @@ Calculate allele frequencies (major) for a given set of loci aggregated by popul
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
-**popgroup** | population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups.Each population can only be assigned to one group.
+**popgroup** | population grouping using the "Pop" delimiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
 
 #### genepop_toploci.R
 Calculate the fst for unlinked loci and order by fst. This function will order loci by fst and will maximize the sum of FSTs for unlinked loci. Note this function requires both PGDspider and plink. [_See installation instructions here_](#extrainstall)
@@ -212,7 +212,7 @@ Calculate the fst for unlinked loci and order by fst. This function will order l
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **nameframe** | a dataframe or path to a csv detailing the original and any edited population names or sampleIDs.
 **renumber** | logical (default: FALSE) whether the sample numbers are to be replaced. 
-**meta** | character definign which meta information is being edited. Options are "Pop" (default) or "Ind" for populations or sampleIDs repectively. This parameter must be specified.
+**meta** | character defining which meta information is being edited. Options are "Pop" (default) or "Ind" for populations or sampleIDs respectively. This parameter must be specified.
 **path** | the filepath & filename of output.
 
 #### subset_genepop_aggregate.R
@@ -334,7 +334,7 @@ Calculate the fst for unlinked loci and order by fst. This function will order l
 **path** | the path to directory where the BGC files will be saved.
 
 #### genepop_flatten.R 
-* Convert Genepop format to a flattend dataframe:
+* Convert Genepop format to a flattened dataframe:
     * Sample IDs
     * Population
     * Sample number
@@ -347,7 +347,7 @@ Calculate the fst for unlinked loci and order by fst. This function will order l
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 
 #### genepop_unflatten.R 
-* Convert flattend dataframe to genepop format:
+* Convert flattened dataframe to genepop format:
 
 [_example use_](#genepopunflat)
 
@@ -417,7 +417,7 @@ Functions available in **genepopedit** require that the population and sample nu
 
 ```r
 #Use genepop_ID to fix the sample IDs prior to the use of genepopedit functions.
-filepath="~myfile.txt" #path to 'myfile' which has sample IDs without the required _ seperation. Note this can also be an object in the workspace.
+filepath="~myfile.txt" #path to 'myfile' which has sample IDs without the required _ separation. Note this can also be an object in the workspace.
 
 genepop_ID(GenePop=filepath,path=paste0(output_dir,"Genepop_SampleID_fixed.txt"))
 ```
@@ -467,7 +467,7 @@ This function will calculate allele frequencies based on the major allele among 
 #calculate major allele frequencies according to the default population groupings.
   AlleleFreq_default <- genepop_allelefreq(GenePopData)
 
-#calculate major allele frequencies according to the specifed population groupings.
+#calculate major allele frequencies according to the specified population groupings.
   popgrouping <- data.frame(Name=c("AAA","BBB","CCC","DDD","EEE","FFF"),groups=c("gr1","gr1","gr2","gr2","gr3","gr3"))
 
   AlleleFreq_specified <- genepop_allelefreq(GenePopData,popgroup=popgrouping)
@@ -475,12 +475,12 @@ This function will calculate allele frequencies based on the major allele among 
 
 <a name="genepoptoploc"/>
 ##genepop\_toploc
-This function will return Loci and associated pairwise FST values among two population groupings as well as a dataframe of linked loci. The function seeks a loci panel which maximizes the summed pair-wise FST among unlinked loci. The returned object is a list contiaining Linked loci ($Linked), pairwise FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by plink.
+This function will return Loci and associated pairwise FST values among two population groupings as well as a dataframe of linked loci. The function seeks a loci panel which maximizes the summed pair-wise FST among unlinked loci. The returned object is a list containing Linked loci ($Linked), pairwise FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by plink.
 
 **Note warning messages and file run information are returned from both plink and PGDspider. These are known and not an issue. Fst values are successfully created for 100+ loci using hierfstat. ** 
 
 ```r
-#evalute which loci have highest fst and are unlinked among two populations.
+#evaluate which loci have highest fst and are unlinked among two populations.
 
 #Create a genepop file which contains two populations of interest. Here we will group populations to two large groups. Note this can also be achieved using subset_genepop
    PopRename <- data.frame(oPop=c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),newname=c("POP1","POP1","POP1","POP1","POP1","POP2","POP2","POP2","POP2","POP2"))
@@ -588,7 +588,7 @@ Alternatively the sampleIDs can be renamed directly.
   subset_genepop_rename(GenePop=GenePopData,nameframe=IndRename_group,meta="Ind",path=paste0(output_dir,"Genepop_ID_renamed.txt"))
 ```
 
-If your sample IDs are not split between the population and the sample number using an _ then you can rename the populations before using any subsetting functions. Note that in this example because there is already a _ seperating populations the 
+If your sample IDs are not split between the population and the sample number using an _ then you can rename the populations before using any subsetting functions. Note that in this example because there is already a _ separating populations the 
 
 ```r
 #view the sample IDs
@@ -768,7 +768,7 @@ If you are interested conducting assignment analysis, you can convert to the for
 #convert Genepop format to assigner format (.txt) using the populations each as their own assessment level
   genepop_assigner(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"assigner_IDsubset.txt"))
   
-# Set new population assignment groupings(group CCC/DDD/EEE and III/JJJ)
+# Set new population assignment groupings (group CCC/DDD/EEE and III/JJJ)
   pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),                      groups = c("1","2","3","3","3","4","5","6","7","7"))
    
    genepop_assigner(GenePop="Genepop_IDsubset.txt",popgroup=pGroups,path=paste0(output_dir,"assigner_IDsubset_NewGroups.txt"))
@@ -800,7 +800,7 @@ Flatten your geneotype data for other calculations. This function will convert a
 ```
 <a name="genepopunflat"/>
 ##genepop\_unflatten
-If you are working with a flattend dataframe in your workspace you can convert it back to Genepop format. **Note that the first column of this data.frame shoudl correspond to the sampleID (e.g. "BON_01") and the remaining columns should be Loci. 
+If you are working with a flattened dataframe in your workspace you can convert it back to Genepop format. **Note that the first column of this data.frame should correspond to the sampleID (e.g. "BON_01") and the remaining columns should be Loci. 
 
 ```r
 ## remove the "Population" "SampleNum" exported by genepop_flatten

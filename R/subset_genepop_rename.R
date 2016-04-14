@@ -2,10 +2,10 @@
 #' @title Genepop subset and rename populations
 #' @description Function for the manipulation of genopop format SNP datasets and renaming of populations
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
-#' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+#' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
-#' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
+#' or a single comma delimited row of loci names followed by the locus data. Populations are
+#' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
 #' @param nameframe a dataframe or path to a csv and is required for this function. The first column of the dataframe defines the original value
 #' and the second corresponds to the change. If populations (default: meta="populations") are the metadata to be changed
@@ -63,7 +63,7 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",pa
   Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
   npops  <-  1:length(Pops)
 
-  ## Seperate the data into the column headers and the rest
+  ## separate the data into the column headers and the rest
   ColumnData <- GenePop$data[1:(Pops[1]-1)]
   ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
   snpData <- GenePop[Pops[1]:NROW(GenePop),]
@@ -72,7 +72,7 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",pa
   tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
   snpData <- snpData[-tempPops,]
 
-  #Seperate the snpdata
+  #separate the snpdata
   temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
 
   #data format check
@@ -117,7 +117,7 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",pa
       NameExtract3[which(NameExtract3==unique(NameExtract3)[i])]=i
     }
 
-    #the number of individuals for all popualtions but the last (Pop tagged to the end)
+    #the number of individuals for all populations but the last (Pop tagged to the end)
     PopLengths <- table(factor(NameExtract3, levels=unique(NameExtract3)))[-length(table(NameExtract3))]
 
     if(length(table(NameExtract3))==2){PopPosition = PopLengths+1}
@@ -130,10 +130,10 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",pa
     }
 
     #Now stitch the data together
-    # paste together the Loci as one long integer seperated for each loci by a space
+    # paste together the Loci as one long integer separated for each loci by a space
     Loci <- do.call(paste,c(temp2[,], sep=" "))
 
-    #Grab the Population tags that each invididual had following the format ID_,__
+    #Grab the Population tags that each individual had following the format ID_,__
     popvec1 <- unlist(strsplit(gsub(pattern="_",replacement="",temp[,1]),split = "[^0-9]+"))
     popvec2 <- popvec1[which(popvec1 != "")]
 
@@ -172,7 +172,7 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",pa
     NamePops[nameframe$ind] <- nameframe[,2] #replace values
 
     #Now stitch the data together
-    # paste together the Loci as one long integer seperated for each loci by a space
+    # paste together the Loci as one long integer separated for each loci by a space
     Loci <- do.call(paste,c(temp2[,], sep=" "))
 
     #Paste these to the Loci

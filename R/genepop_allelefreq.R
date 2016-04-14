@@ -2,10 +2,10 @@
 #' @title Explore population specific allele frequencies.
 #' @description Function returns population derived allele frequencies.
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
-#' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+#' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
-#' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space space,space) and is read in as
+#' or a single comma delimited row of loci names followed by the locus data. Populations are
+#' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space, space space) and is read in as
 #' as a single row (character).
 #' @param popgroup population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
 #' @rdname genepop_allelefreq
@@ -52,7 +52,7 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
   Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
   npops  <-  1:length(Pops)
 
-  ## Seperate the data into the column headers and the rest
+  ## separate the data into the column headers and the rest
   ColumnData <- GenePop$data[1:(Pops[1]-1)]
   ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
   snpData <- GenePop[Pops[1]:NROW(GenePop),]
@@ -61,7 +61,7 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
   tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
   snpData <- snpData[-tempPops,]
 
-  #Seperate the snpdata
+  #separate the snpdata
   temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
 
   #data format check

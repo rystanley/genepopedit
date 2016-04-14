@@ -2,10 +2,10 @@
 #' @title Randomly sample individuals from Genepop.
 #' @description Stratified random sample of individuals from a Genepop file.
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
-#' or a dataframe read in with tab seperation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+#' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
-#' or a single commma delimited row of loci names followed by the locus data. Populations are
-#' seperated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
+#' or a single comma delimited row of loci names followed by the locus data. Populations are
+#' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
 #' @param nsample vector or dataframe which defines the random stratified sampling.
 #' If nsample is an integer (e.g. 5) then nsample individuals will be selected from each population.
@@ -54,7 +54,7 @@ genepop_sample <- function(GenePop,nsample){
   Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
   npops  <-  1:length(Pops)
 
-  ## Seperate the data into the column headers and the rest
+  ## separate the data into the column headers and the rest
   ColumnData <- GenePop$data[1:(Pops[1]-1)]
   ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
   snpData <- GenePop[Pops[1]:NROW(GenePop),]
@@ -63,7 +63,7 @@ genepop_sample <- function(GenePop,nsample){
   tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
   snpData <- snpData[-tempPops,]
 
-  #Seperate the snpdata
+  #separate the snpdata
   temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
 
   #data format check
@@ -107,7 +107,7 @@ genepop_sample <- function(GenePop,nsample){
       if(nsample>0.9)
         {
           nsample <- 0.9#maximum sample of 0.9
-          warning("Maximum proportion permited is 90% nsample changed to 0.9")
+          warning("Maximum proportion permitted is 90% nsample changed to 0.9")
         }
       sampledf  <- as.data.frame(dplyr::filter(Popdf)%>%group_by(Pops)%>%sample_frac(nsample)%>%ungroup())
       sub_individuals <- sampledf$Indiv

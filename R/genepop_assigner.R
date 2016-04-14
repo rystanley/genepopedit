@@ -4,7 +4,7 @@
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with a the first n+1 rows corresponding to the n loci names,
-#' or a single commma delimited row of loci names followed by the locus data. Populations are
+#' or a single comma delimited row of loci names followed by the locus data. Populations are
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
 #' @param popgroup if specified (Default: NULL) popgroup is a dataframe or path to a csv.
@@ -52,7 +52,7 @@ genepop_assigner <- function(GenePop,popgroup=NULL,path=NULL){
   Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
   npops  <-  1:length(Pops)
 
-  ## Seperate the data into the column headers and the rest
+  ## separate the data into the column headers and the rest
   ColumnData <- GenePop$data[1:(Pops[1]-1)]
   ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
   snpData <- GenePop[Pops[1]:NROW(GenePop),]
@@ -61,7 +61,7 @@ genepop_assigner <- function(GenePop,popgroup=NULL,path=NULL){
   tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
   snpData <- snpData[-tempPops,]
 
-  #Seperate the snpdata
+  #separate the snpdata
   temp <- as.data.frame(do.call(rbind, strsplit(snpData$data," ")))
 
   #data format check
