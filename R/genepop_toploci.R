@@ -15,7 +15,6 @@
 
 genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLINK, where.PGDspider){
 
-
   #Parameter limits
       nLOCI <- length(genepop_detective(GenePop,"Loci"))
   #Variable checks
