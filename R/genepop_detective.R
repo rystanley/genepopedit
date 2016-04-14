@@ -107,18 +107,12 @@ genepop_detective <- function(GenePop,variable="Pops"){
     Allele <- Allele[order(Allele)]} #sort the Allele values (NA or 0 will be first)
 
   if(variable=="All"){
-    #create an 's4' container for the data
-    setClass("Out",representation=representation(
-      Pops = "character",
-      Loci="character",
-      Inds="character",
-      PopNum="data.frame"
-    ))
-
-    Output <- new("Out",Pops=as.character(unique(NameExtract)),
-                  Loci=as.character(names(temp2)),
-                  Inds=as.character(NamePops),
-                  PopNum=PopNum)
+    #create an list container for the data
+    Output <- list()
+    Output$Pops <- as.character(unique(NameExtract))
+    Output$Loci=as.character(names(temp2))
+    Output$Inds=as.character(NamePops)
+    Output$ PopNum=PopNum
   }
 
   #return data vector of interest

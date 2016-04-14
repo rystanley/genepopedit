@@ -410,19 +410,12 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
       your.panel <- merge(your.panel,FST.df,by="loci")
       your.panel_unlinked <- your.panel[order(your.panel$FSTs,decreasing = TRUE),]
 
-    #create an 's4' container for the data
-    setClass("Out",representation=representation(
-      Linkages = "data.frame",
-      Fst="data.frame",
-      Fst_Unlinked="data.frame"
-    ))
+   #Create output list object
+      Output <- list()
+      Output$Linkages=Linked
+      Output$Fst=your.panel
+      Output$Fst_Unlinked=your.panel_unlinked
 
-    Output <- new("Out",Linkages=Linked,
-                  Fst=your.panel,
-                  Fst_Unlinked=your.panel_unlinked
-      )
-
-
-      return(Output)
+    return(Output)
 
 }
