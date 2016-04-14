@@ -1,4 +1,5 @@
 #genepopedit
+[![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
 
 The goal of **genepopedit** is to provide a simple and flexible tool for manipulating large multi-locus genotype datasets in R. 
 
@@ -130,6 +131,9 @@ Pull request how-to:
   * Click the edit this page on the sidebar.
   * Make the changes using github’s in-page editor and save.
   * Submit a pull request and include a brief description of your changes. (e.g. "_spelling errors_" or "_indexing error_").
+  
+To cite **genepopedit** refer to our zenodo DOI
+[![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
 
 ***
 #**Diagnostics**
