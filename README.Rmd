@@ -475,7 +475,9 @@ This function will calculate allele frequencies based on the major allele among 
 
 <a name="genepoptoploc"/>
 ##genepop\_toploc
-This function will return Loci and associated pairwise FST values among two population groupings. The function seeks a loci panel which maximizes the summed pair-wise FST among unlinked loci. **Note warning messages and file run information are returned from both plink and PGDspider. These are known and not an issue. Fst values are successfully created for 100+ loci using hierfstat. 
+This function will return Loci and associated pairwise FST values among two population groupings as well as a dataframe of linked loci. The function seeks a loci panel which maximizes the summed pair-wise FST among unlinked loci. The returned object is a list contiaining Linked loci ($Linked), pairwise FST ($FST) and the top unlinked loci by FST ($FST_Unlinked)
+
+**Note warning messages and file run information are returned from both plink and PGDspider. These are known and not an issue. Fst values are successfully created for 100+ loci using hierfstat. ** 
 
 ```r
 #evalute which loci have highest fst and are unlinked among two populations.
@@ -489,6 +491,16 @@ This function will return Loci and associated pairwise FST values among two popu
   TopLoci <- genepop_toploci(GenePop="TwoPop_GenePop.txt",LDpop="Both",panel.size=20,
   where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",
   where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/" )
+  
+#Linked loci
+  TopLoci$Linked
+  
+#Loci FST among populations
+  TopLoci$FST
+  
+#Maximized FST by unlinked loci
+  TopLoci$FST_Unlinked
+  
 ```
 *** 
 
