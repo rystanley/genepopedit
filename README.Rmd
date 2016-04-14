@@ -449,10 +449,10 @@ LociNames <- genepop_detective("genepopedit_examplefile.txt",variable="Loci")
 Return *All* using the file path instead of the workspace object.
 ```r
 metadata <- genepop_detective("genepopedit_examplefile.txt",variable="All")
-metadata@Pops #Populations
-metadata@Loci #Loci names
-metadata@Inds #Individual IDs
-metadata@PopNum #Population counts
+metadata$Pops #Populations
+metadata$Loci #Loci names
+metadata$Inds #Individual IDs
+metadata$PopNum #Population counts
 ```
 
 Return *Allele values* using the file path instead of the workspace object.
