@@ -120,11 +120,7 @@ subset_genepop_individual <- function(GenePop,indiv=NULL,keep=FALSE,path){
     # paste together the Loci as one long integer separated for each loci by a space
     Loci <- do.call(paste,c(temp2[,], sep=" "))
 
-    #Grab the Population tags that each invididual had following the format ID_,__
-    popvec1 <- unlist(strsplit(gsub(pattern="_",replacement="",temp[,1]),split = "[^0-9]+"))
-    popvec2 <- popvec1[which(popvec1 != "")]
-
-    PopVec <- paste0(NameExtract2,"_",popvec2," ,  ")
+    PopVec <- paste0(as.character(temp[,1])," ,  ")
 
     #Paste these to the Loci
     Loci <- paste(PopVec,Loci,sep="")
