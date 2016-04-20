@@ -311,6 +311,8 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
   ## get those loci that appear in both lists
   # which(FST.order.vec %in% ld.unique)
 
+      if(length(ld.unique >= 1)){
+
       loci.in.LD <- which(FST.order.vec %in% ld.unique) ### which Loci identified as being in LD
 
   ## turn the linked loci into a dataframe, then make sure the SNP names are characters so can be searched against the LD and Fst vectors
@@ -413,22 +415,28 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
         }
 
 
+
+
       your.panel <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size],stringsAsFactors = F)
       your.panel <- merge(your.panel,FST.df,by="loci")
       your.panel_unlinked <- your.panel[order(your.panel$FSTs,decreasing = TRUE),]
 
+  } ### END IF There are loci in LD
 
-    Output <- list(Linkages=Linked,
+      if(length(ld.unique) < 1){
+        your.panel <- data.frame(loci=FST.order.vec[1:panel.size],stringsAsFactors = F)
+        your.panel <- merge(your.panel,FST.df,by="loci")
+        your.panel_unlinked <- your.panel[order(your.panel$FSTs,decreasing = TRUE),]
+        Linked.df <- NA
+          }
+
+    Output <- list(Linkages=Linked.df,
                   Fst=your.panel,
                   Fst_Unlinked=your.panel_unlinked
       )
 
 
-   #Create output list object
-      Output <- list()
-      Output$Linkages=Linked
-      Output$Fst=your.panel
-      Output$Fst_Unlinked=your.panel_unlinked
+
 
     return(Output)
 
