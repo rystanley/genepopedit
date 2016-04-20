@@ -27,11 +27,6 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
         panel.size <- nLOCI
         }
 
-      if(panel.size>nLOCI){
-        writeLines(paste0("Panel size selected is larger than available loci in file: ",GenePop,". panel.size set to the maximum number of loci: ",nLOCI))
-        panel.size <- nLOCI
-      }
-
       path.start <- getwd()  ### where to write the files created by genepopedit to
 
       pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
@@ -357,7 +352,7 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
     for(j in 1:length(SNP.out)){
 
       to.double.check <- SNP.out[[j]] ## gets names of the jth SNPs and what other SNP they are linked to
-      dbl.chk <- to.double.check[which(stringr::str_detect(string = noquote(to.double.check), pattern = as.character(FST.order.vec[loci.in.LD.vec[j]]))==FALSE)]
+      dbl.chk <-to.double.check[-which(as.character(FST.order.vec[loci.in.LD.vec[j]]) == noquote(to.double.check))]
       ### the jth SNPs are saved as a string in to.double.check, this removes the jth SNP in loci.fst from this, so only have non-duplicated
 
       where.best.link.fst <- loci.in.LD.vec[j] ## the loci with the greatest Fst among the linked ones, will be the jth in the ranked vector
@@ -371,18 +366,23 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
     linked.ranks.df <- plyr::rbind.fill(lapply(linked.ranks,function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))
 
   ### now this is where it get a list of numbers to be removed from the ranked vector of loci names by Fst
-    h.rows <- which(linked.ranks.df$V1<panel.size) ##
-    to.cut.out <- NULL
+  # h.rows <- which(linked.ranks.df$V1<panel.size) ##
+  h.rows <- linked.ranks.df$V1
+  to.cut.out <- NULL
+  for(i in 1:length(h.rows)){
 
-    for(i in 1:length(h.rows)){
-      a <- h.rows[i]
+    a = i
 
-      ## this ensures that where we get more than one of the linked loci in the top n loci, we keep the one with the highest Fst (lowest number in the rank)
-      if((linked.ranks.df$V1[a] < linked.ranks.df$V2[a])==TRUE){
-        to.cut <- linked.ranks.df$V2[a]
-        to.cut.out <- c(to.cut.out, to.cut)
+  ## this ensures that where we get more than one of the linked loci in the top n loci, we keep the one with the highest Fst (lowest number in the rank)
+    if((linked.ranks.df$V1[a] < linked.ranks.df$V2[a])==TRUE){
+      to.cut <- linked.ranks.df$V2[a]
+      to.cut.out <- c(to.cut.out, to.cut)
+          }
       }
-    }
+
+  to.cut.out <- to.cut.out[which(duplicated(to.cut.out)==FALSE)]
+
+  writeLines("Writing output")
 
     #clean up temporary files used in the analysis.
     file.remove(remember.spidpath)
@@ -406,9 +406,23 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
     writeLines("Process Completed.")
 
   ## return loci ordered by fst
+     if(length(FST.order.vec[-to.cut.out]) <  length(FST.order.vec[-to.cut.out][1:panel.size])){
+
+      writeLines(paste0("Desired panel size ", panel.size,  " is larger than total number of unlinked loci ", length(FST.order.vec[-to.cut.out]), ". ", "Returning ALL unlinked loci."))
+      panel.size = length(FST.order.vec[-to.cut.out])
+        }
+
+
       your.panel <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size],stringsAsFactors = F)
       your.panel <- merge(your.panel,FST.df,by="loci")
       your.panel_unlinked <- your.panel[order(your.panel$FSTs,decreasing = TRUE),]
+
+
+    Output <- list(Linkages=Linked,
+                  Fst=your.panel,
+                  Fst_Unlinked=your.panel_unlinked
+      )
+
 
    #Create output list object
       Output <- list()
