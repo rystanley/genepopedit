@@ -99,14 +99,7 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
     pPops <- c(1,pPops)
 
     #count populatons
-    lPops <- NULL
-    for(i in 1:(length(pPops)-1)){
-      if(i==1){lPops=pPops[i+1]-1}
-      if(i < (length(pPops))){lPops <- c(lPops,pPops[i+1]-pPops[i])}else{
-        lPops=c(lPops,nrow(temp2)-(pPops[i]-1))
-      }
-    }
-
+    lPops=as.vector(table(NameExtract)[unique(NameExtract)])
     PopGroupVec <- rep(1:length(lPops),times=lPops)
     PopGroupVec <- PopGroupVec[order(PopGroupVec)]
 
