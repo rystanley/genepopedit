@@ -84,10 +84,11 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
     colnames(PopNum)[1] <- "Population"
 
     #convert the snp data into character format to get rid of factor levels
+    alleleEx <- max(unique(nchar(as.character(temp2[nrow(temp2),2]))),na.rm=T)
 
     #get the allele values summary header
-    firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,(nchar(alleleEx)/2))))))
-    secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(nchar(alleleEx)/2)+1,nchar(alleleEx))))))
+    firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,alleleEx/2)))))
+    secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(alleleEx/2)+1,alleleEx)))))
 
     ## population grouping variables
     pPops <- NULL
