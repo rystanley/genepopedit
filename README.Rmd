@@ -179,10 +179,11 @@ Calculate the fst for unlinked loci and order by fst. This function will order l
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | A path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
-**LDpop** | A string which denotes which of the two populations you wish to calculate linkage disequilibrium from. The options are "Pop1" or "Pop2", or "Both" (default) if the LD is to be calculated based on both populations. The order of population is based on the order by which they appear in the genepopfile. refer to genepop_detetive() to check which population is considered 'Pop1' and 'Pop2'.
+**LDpop** | A string which denotes which of the populations you wish to calculate linkage disequilibrium from. The default is to calculate LD among all populations.
 **panel.size**| An integer number of loci to include in the panel. If not specified all loci will be returned.
 **where.PLINK** | A file path to the PLINK installation folder.
 **where.PGDspider** | A file path to the PGDspider installation folder.
+**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default is 1 GB which should be sufficient for most calculations. 
 
 ***
 
@@ -475,20 +476,15 @@ This function will calculate allele frequencies based on the major allele among 
 
 <a name="genepoptoploc"/>
 ##genepop\_toploc
-This function will return Loci and associated pairwise FST values among two population groupings as well as a dataframe of linked loci. The function seeks a loci panel which maximizes the summed pair-wise FST among unlinked loci. The returned object is a list containing Linked loci ($Linked), pairwise FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by plink.
+This function will calculate linkage disequilibrium and global Weir and Cockerham's FST for loci (# specified by panel.size) among populations. The function seeks a loci panel which maximizes the summed global FST among unlinked loci. The returned object is a list containing Linked loci ($Linked), global FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by plink.
 
 **Note warning messages and file run information are returned from both plink and PGDspider. These are known and not an issue. Fst values are successfully created for 100+ loci using hierfstat. ** 
 
 ```r
-#evaluate which loci have highest fst and are unlinked among two populations.
 
-#Create a genepop file which contains two populations of interest. Here we will group populations to two large groups. Note this can also be achieved using subset_genepop
-   PopRename <- data.frame(oPop=c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),newname=c("POP1","POP1","POP1","POP1","POP1","POP2","POP2","POP2","POP2","POP2"))
+#calculate fst and linkage and return output for 20 loci. To calculate LD we use PLINK which requires a file conversion using PGDspider. We will provide the function with access to 2 GB of ram (default: 1) to speed up this conversion
 
-  subset_genepop_rename(GenePopData,nameframe=PopRename,meta="Pop",renumber=TRUE,path="TwoPop_GenePop.txt")
-
-## evalute the FST for the top 20 unlinked loci (based on maximized pair-wise FST among two populations)
-  TopLoci <- genepop_toploci(GenePop="TwoPop_GenePop.txt",LDpop="Both",panel.size=20,
+  TopLoci <- genepop_toploci(GenePop="genepopedit_examplefile.txt",panel.size=20,   allocate.PGD.RAM =2,
   where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",
   where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/" )
   
