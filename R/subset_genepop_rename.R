@@ -142,7 +142,7 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",pa
       popvec2=NULL
       for (i in 1:length(table(NameExtract2)))
       {
-        popvec2=c(popvec2,sub('^(.)$', '0\\1', 1:table(NameExtract2)[i]))
+        popvec2=c(popvec2,sub('^(.)$', '0\\1', 1:table(NameExtract2)[which(names(table(NameExtract2))==unique(NameExtract2)[i])]))
       }
     }
 
