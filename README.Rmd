@@ -183,7 +183,7 @@ Calculate the fst for unlinked loci and order by fst. This function will order l
 **panel.size**| An integer number of loci to include in the panel. If not specified all loci will be returned.
 **where.PLINK** | A file path to the PLINK installation folder.
 **where.PGDspider** | A file path to the PGDspider installation folder.
-**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default is 1 GB which should be sufficient for most calculations. 
+**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. 
 
 ***
 
