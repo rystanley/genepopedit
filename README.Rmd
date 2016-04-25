@@ -179,7 +179,7 @@ Calculate the fst for unlinked loci and order by fst. This function will order l
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | A path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
-**LDpop** | A string which denotes which of the populations you wish to calculate linkage disequilibrium from. The default is to calculate LD among all populations.
+**LDpop** | A string which denotes which of the populations you wish to calculate linkage disequilibrium from. The default is to calculate LD among all ("All") populations. Population names must match those returned by [*genepop_detective*](#genepopdetect).
 **panel.size**| An integer number of loci to include in the panel. If not specified all loci will be returned.
 **where.PLINK** | A file path to the PLINK installation folder.
 **where.PGDspider** | A file path to the PGDspider installation folder.
