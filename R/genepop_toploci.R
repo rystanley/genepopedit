@@ -49,7 +49,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK
 
         if(LDpop == "All"){
 
-          popLDsubsetDF <- data.frame(op=pops.exist, paste0("Pop", rep(1:length))) ## make a both the same
+          popLDsubsetDF <- data.frame(op=pops.exist, paste0("PopA", rep(1:length(pops.exist)))) ## make a both the same
 
           subset_genepop_aggregate(GenePop = GenePop, agPopFrame = popLDsubsetDF, path = paste0(path.start, "/", "subset_for_LD.txt"))
           sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
