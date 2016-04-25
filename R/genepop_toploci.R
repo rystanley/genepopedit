@@ -6,6 +6,7 @@
 #' @param panel.size An integer number of loci to include in the panel. If not specified all loci will be returned,
 #' @param where.PLINK A file path to the PLINK installation folder.
 #' @param where.PGDspider A file path to the PGDspider installation folder.
+#' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
 #' @rdname genepop_toploci
 #' @export
 #' @importFrom hierfstat read.fstat wc

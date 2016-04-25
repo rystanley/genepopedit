@@ -4,8 +4,8 @@
 \alias{genepop_toploci}
 \title{Creates a panel of the top n unlinked loci, and exports the list of loci}
 \usage{
-genepop_toploci(GenePop, LDpop = "Both", panel.size = NULL, where.PLINK,
-  where.PGDspider)
+genepop_toploci(GenePop, LDpop = "All", panel.size = NULL, where.PLINK,
+  where.PGDspider, allocate.PGD.RAM = 1)
 }
 \arguments{
 \item{GenePop}{A file path to the GENEPOP format file you wish to create your panel from}
@@ -17,6 +17,8 @@ genepop_toploci(GenePop, LDpop = "Both", panel.size = NULL, where.PLINK,
 \item{where.PLINK}{A file path to the PLINK installation folder.}
 
 \item{where.PGDspider}{A file path to the PGDspider installation folder.}
+
+\item{allocate.PGD.RAM}{An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.}
 }
 \description{
 Extract the genotypes of individuals at the top n (by Fst) unlinked loci. The default threshold of r2>0.2 is employed for assigning 'linked' loci (default for plink).
