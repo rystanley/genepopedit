@@ -13,14 +13,17 @@
 #' @importFrom plyr rbind.fill
 
 
-genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK, where.PGDspider){
+genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
 
   path.start <- getwd()  ### where to write the files created by genepopedit to
 
   ## find the populations in the file
   pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
 
-
+  if(allocate.PGD.RAM%%1 != 0){
+    stop("Please specify an integer GB value to allocate to PGDspider.")
+  }
+  allocate.PGD.RAM <- allocate.PGD.RAM*1024
   #Parameter limits
       nLOCI <- length(genepop_detective(GenePop,"Loci"))
   #Variable checks
@@ -113,7 +116,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK
 
         ### create a string to call PGDspider
         input.file.call <- "-inputfile GPD_for_GET_TOP_LOC.txt"
-        execute.SPIDER <- "java -Xmx16384m -Xms512m -jar PGDSpider2-cli.jar"
+        execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
         spid.call <- "-spid GP_FSTAT.spid"
         input.format <- "-inputformat GENEPOP"
         output.format <- "-outputformat FSTAT"
@@ -135,7 +138,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK
 
         ### create a string to call PGDspider
         input.file.call <- "-inputfile GPD_for_GET_TOP_LOC.txt"
-        execute.SPIDER <- "java -Xmx16384m -Xms512m -jar PGDSpider2-cli.jar"
+        execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
         spid.call <- "-spid GP_FSTAT.spid"
         input.format <- "-inputformat GENEPOP"
         output.format <- "-outputformat FSTAT"
@@ -218,7 +221,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK
       if(Sys.info()["sysname"] != "Windows"){
         ### create a string to call PGDspider
         input.file.call <- paste0("-inputfile subset_for_LD.txt")
-        execute.SPIDER <- "java -Xmx16384m -Xms512m -jar PGDSpider2-cli.jar"
+        execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
         spid.call <- "-spid hyb.spid"
         input.format <- "-inputformat GENEPOP"
         output.format <- "-outputformat PED"
@@ -236,7 +239,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK
     if(Sys.info()["sysname"] == "Windows"){
       ### create a string to call PGDspider
       input.file.call <- paste0("-inputfile subset_for_LD.txt")
-      execute.SPIDER <- "java -Xmx16384m -Xms512m -jar PGDSpider2-cli.jar"
+      execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
       spid.call <- "-spid hyb.spid"
       input.format <- "-inputformat GENEPOP"
       output.format <- "-outputformat PED"
