@@ -115,7 +115,7 @@ library(genepopedit)# load the library
 *genepopedit* was written in collaboration:
   
   * Dr. Ryan Stanley <https://github.com/rystanley> - Corresponding developer.
-  * Dr. Ian Bradbury <http://tinyurl.com/h3qrhkv>
+  * Dr. Ian Bradbury <https://bradburygeneticslab.com/>
   * Dr. Nick Jeffery <https://github.com/NickJeff13>
   * Brendan Wringe <https://github.com/bwringe>
 
