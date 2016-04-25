@@ -13,13 +13,20 @@
 #' @importFrom plyr rbind.fill
 
 
-genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLINK, where.PGDspider){
+genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK, where.PGDspider){
+
+  path.start <- getwd()  ### where to write the files created by genepopedit to
+
+  ## find the populations in the file
+  pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
+
 
   #Parameter limits
       nLOCI <- length(genepop_detective(GenePop,"Loci"))
   #Variable checks
-      if(length(which(LDpop %in% c("Pop1","Pop2","Both")))==0){
-        stop("Parameter 'LDpop' must be a string of value Pop1, Pop2 or Both. Function stopped.",call. = FALSE)
+
+      if(length(which(LDpop %in% c("All",pops.exist)))==0){
+        stop(paste0("Parameter 'LDpop' must be a string of population names in the dataset, or ", "'All'. ", "Function stopped."),call. = FALSE)
       }
 
       if(is.null(panel.size)){
@@ -27,24 +34,12 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
         panel.size <- nLOCI
         }
 
-      path.start <- getwd()  ### where to write the files created by genepopedit to
 
-      pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
 
-  ## Function must have exactly two populations to work - fail if not
-      if(length(pops.exist) != 2){
-        stop("File must contain two populations. See subset_genepop() and-or subset_genepop_rename() for data manipulation options")
-      }
+  ### Will LD be calculated for All or specified populations.
+      if(LDpop != "All"){
 
-  ### Will LD be calculated for both populations or a specific population.
-      if(LDpop != "Both"){
-
-        ## makes a dataframe to match whatever name is given to the populations to Pop1 and Pop2
-        popLDsubsetDF <- data.frame(op=pops.exist, rename=c("Pop1", "Pop2")) ## make a DF to pick the right pop from the file
-
-        subPOP <- popLDsubsetDF[which(popLDsubsetDF[,2] == LDpop),1] ### get the name of the pop to be subsetted
-
-        subPOP <- as.character(subPOP)
+        subPOP <- as.character(LDpop)
 
         ## subset out the population in which LD is to be calculated - this will make a file, which will be deleted after
         subset_genepop(GenePop = GenePop, sPop = subPOP, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
@@ -52,9 +47,9 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
         sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
       }
 
-        if(LDpop == "Both"){
+        if(LDpop == "All"){
 
-          popLDsubsetDF <- data.frame(op=pops.exist, rename=c("Pop1", "Pop1")) ## make a both the same
+          popLDsubsetDF <- data.frame(op=pops.exist, paste0("Pop", rep(1:length))) ## make a both the same
 
           subset_genepop_aggregate(GenePop = GenePop, agPopFrame = popLDsubsetDF, path = paste0(path.start, "/", "subset_for_LD.txt"))
           sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
