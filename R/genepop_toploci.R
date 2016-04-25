@@ -405,27 +405,30 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK
 
     #wrap up indicator
     writeLines("Process Completed.")
-
+        panel.size_un <- panel.size
   ## return loci ordered by fst
      if(length(FST.order.vec[-to.cut.out]) <  length(FST.order.vec[-to.cut.out][1:panel.size])){
 
       writeLines(paste0("Desired panel size ", panel.size,  " is larger than total number of unlinked loci ", length(FST.order.vec[-to.cut.out]), ". ", "Returning ALL unlinked loci."))
-      panel.size = length(FST.order.vec[-to.cut.out])
+      panel.size_un = length(FST.order.vec[-to.cut.out])
         }
 
-
-
-
-      your.panel <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size],stringsAsFactors = F)
+      your.panel <- data.frame(loci=FST.order.vec[1:panel.size],stringsAsFactors = F)
+      your.panel_un <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size_un],stringsAsFactors = F)
       your.panel <- merge(your.panel,FST.df,by="loci")
-      your.panel_unlinked <- your.panel[order(your.panel$FSTs,decreasing = TRUE),]
+      your.panel_un <- merge(your.panel_un,FST.df,by="loci")
+      your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
+      your.panel_unlinked <- your.panel_un[order(your.panel_un$FSTs,decreasing = TRUE),]
 
   } ### END IF There are loci in LD
 
       if(length(ld.unique) < 1){
         your.panel <- data.frame(loci=FST.order.vec[1:panel.size],stringsAsFactors = F)
+        your.panel_un <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size_un],stringsAsFactors = F)
         your.panel <- merge(your.panel,FST.df,by="loci")
-        your.panel_unlinked <- your.panel[order(your.panel$FSTs,decreasing = TRUE),]
+        your.panel_un <- merge(your.panel_un,FST.df,by="loci")
+        your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
+        your.panel_unlinked <- your.panel_un[order(your.panel_un$FSTs,decreasing = TRUE),]
         Linked.df <- NA
           }
 
