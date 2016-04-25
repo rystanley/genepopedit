@@ -311,7 +311,7 @@ genepop_toploci <- function(GenePop, LDpop = "Both", panel.size=NULL, where.PLIN
   ## get those loci that appear in both lists
   # which(FST.order.vec %in% ld.unique)
 
-      if(length(ld.unique >= 1)){
+      if(length(ld.unique > 1)){
 
       loci.in.LD <- which(FST.order.vec %in% ld.unique) ### which Loci identified as being in LD
 
