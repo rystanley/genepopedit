@@ -4,15 +4,17 @@
 \alias{genepop_toploci}
 \title{Creates a panel of the top n unlinked loci, and exports the list of loci}
 \usage{
-genepop_toploci(GenePop, LDpop = "All", panel.size = NULL, where.PLINK,
-  where.PGDspider, allocate.PGD.RAM = 1)
+genepop_toploci(GenePop, LDpop = "All", panel.size = NULL,
+  r2.threshold = 0.2, where.PLINK, where.PGDspider, allocate.PGD.RAM = 1)
 }
 \arguments{
 \item{GenePop}{A file path to the GENEPOP format file you wish to create your panel from}
 
-\item{LDpop}{A string which denotes which of the two populations you wish to calculate linkage disequilibrium from. The options are "Pop1" or "Pop2", or "Both" (default) if the LD is to be calculated based on both populations. The order of population is based on the order by which they appear in the genepopfile. refer to genepop_detetive() to check which population is considered 'Pop1' and 'Pop2'.}
+\item{LDpop}{A string which populations (default: "All") will be used to calculate linkage disequilibrium. Names must match names returned by genepop_detective().}
 
 \item{panel.size}{An integer number of loci to include in the panel. If not specified all loci will be returned,}
+
+\item{r2.threshold}{The minimum r^2 threshold to consider a pair of loci to be in LD}
 
 \item{where.PLINK}{A file path to the PLINK installation folder.}
 

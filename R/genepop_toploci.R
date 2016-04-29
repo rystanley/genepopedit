@@ -7,6 +7,7 @@
 #' @param where.PLINK A file path to the PLINK installation folder.
 #' @param where.PGDspider A file path to the PGDspider installation folder.
 #' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
+#' @param r2.threshold The minimum r^2 threshold to consider a pair of loci to be in LD
 #' @rdname genepop_toploci
 #' @export
 #' @importFrom hierfstat read.fstat wc
@@ -14,7 +15,7 @@
 #' @importFrom plyr rbind.fill
 
 
-genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
+genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshold = 0.2, where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
 
   path.start <- getwd()  ### where to write the files created by genepopedit to
 
@@ -28,6 +29,10 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK
   #Parameter limits
       nLOCI <- length(genepop_detective(GenePop,"Loci"))
   #Variable checks
+
+      if(r2.threshold < 0 | r2.threshold > 1){
+        stop("r^2 threshold must be a value between 0 and 1")
+      }
 
       if(length(which(LDpop %in% c("All",pops.exist)))==0){
         stop(paste0("Parameter 'LDpop' must be a string of population names in the dataset, or ", "'All'. ", "Function stopped."),call. = FALSE)
@@ -271,14 +276,14 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, where.PLINK
 
   ### OSX LINUX PLINK call
       if(Sys.info()["sysname"] != "Windows"){
-        execute.PLINK <- paste0(go.to.PLINK, "; ", "./plink --file PGDtest --r2 --noweb")
+        execute.PLINK <- paste0(go.to.PLINK, "; ", "./plink --file PGDtest --r2 --ld-window-r2 ", r2.threshold, " --noweb")
         ### run PLINK through system
         system(execute.PLINK)
       }
 
   ### Windows PLINK CALL
       if(Sys.info()["sysname"] == "Windows"){
-        execute.PLINK <- paste0(go.to.PLINK, " && ", "plink --file PGDtest --r2 --noweb")
+        execute.PLINK <- paste0(go.to.PLINK, " && ", "plink --file PGDtest --r2 --ld-window-r2 ", r2.threshold, " --noweb")
         ### run PLINK through system
         shell(execute.PLINK)
       }
