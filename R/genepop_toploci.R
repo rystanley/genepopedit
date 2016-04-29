@@ -35,11 +35,13 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshol
         stop("r^2 threshold must be a value between 0 and 1")
       }
 
-      if(ld.window < 0){
-        stop("LD window must be non-negative")
-      }
+
       if(length(ld.window)==0){
         ld.window = 99999 ### sets the LD window to essentially check every SNP pairwise
+      }
+
+       if(ld.window < 0){
+        stop("LD window must be non-negative")
       }
 
       if(length(which(LDpop %in% c("All",pops.exist)))==0){
