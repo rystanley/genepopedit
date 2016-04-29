@@ -286,14 +286,14 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshol
 
   ### OSX LINUX PLINK call
       if(Sys.info()["sysname"] != "Windows"){
-        execute.PLINK <- paste0(go.to.PLINK, "; ", "./plink --file PGDtest --r2 --ld-window-r2 ", r2.threshold, " --noweb")
+        execute.PLINK <- paste0(go.to.PLINK, "; ", "./plink --file PGDtest --r2 --ld-window-r2 ", r2.threshold, " --ld-window ", ld.window, " --noweb")
         ### run PLINK through system
         system(execute.PLINK)
       }
 
   ### Windows PLINK CALL
       if(Sys.info()["sysname"] == "Windows"){
-        execute.PLINK <- paste0(go.to.PLINK, " && ", "plink --file PGDtest --r2 --ld-window-r2 ", r2.threshold, " --noweb")
+        execute.PLINK <- paste0(go.to.PLINK, " && ", "plink --file PGDtest --r2 --ld-window-r2 ", r2.threshold, " --ld-window ", ld.window, " --noweb")
         ### run PLINK through system
         shell(execute.PLINK)
       }
