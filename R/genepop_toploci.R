@@ -169,8 +169,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshol
 
       } # End WINDOWS IF
 
-
-
   ### move the FSTAT format file back to the working directory
       file.copy(from = paste0(where.PGDspider, "/for_FST.txt"), to = path.start, overwrite = TRUE)
   ## remember the path of the file created by genepop_fstat
@@ -320,85 +318,47 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshol
       ld.unique <- as.character(ld.unique[which(duplicated(ld.unique)==FALSE)])
   # head(FST.df)
 
-  ## get a vector which is the names of the loci in order of highest to lowest Fst
-      FST.order.vec <- c(as.character(FST.df$loci))
-  ## get those loci that appear in both lists
-  # which(FST.order.vec %in% ld.unique)
+      Optimfunc <- function(x)
+      {
+        subdat <- x
+        winners.circle <- NULL
+        while(nrow(subdat)>0)
+        {
+          winner <- subdat[1,which.min(subdat[1,])]
+          otherdat <- subdat[1,-which.min(subdat[1,])]
+          for(i in otherdat){subdat[subdat==i] <- NA}
+          subdat <- subdat[apply(subdat,1,function(x){!winner%in%x}),]
+          winners.circle <- c(winners.circle,winner)
+          #print(nrow(subdat))
+        }
+        return(winners.circle)
+      }
 
       if(length(ld.unique > 1)){
 
-      loci.in.LD <- which(FST.order.vec %in% ld.unique) ### which Loci identified as being in LD
+        FST.df2 <- FST.df[which(FST.df$loci %in% ld.unique),]
+        FST.ld.ordered <- as.character(FST.df2[order(FST.df2$FSTs,decreasing=T),"loci"])
 
-  ## turn the linked loci into a dataframe, then make sure the SNP names are characters so can be searched against the LD and Fst vectors
-      Linked.df <- Linked
-      Linked.df$SNP_A <- as.character(Linked.df$SNP_A)
-      Linked.df$SNP_B <- as.character(Linked.df$SNP_B)
+        holdlist <- list()
+        for(i in FST.ld.ordered){
+          hold <- c(i,as.character(Linked[which(Linked[,1]%in%i),2]),
+                    as.character(Linked[which(Linked[,2]%in%i),1]))
 
-  ### keep only linked loci < the size of the panel you wish to create
-      loci.in.LD.vec <- loci.in.LD[which(loci.in.LD < panel.size)] ## which loci in LD < the size of the panel
-
-  # what rows of the ld data frame contain the the linked loci in the top n of Fst values?
-      what.positions.get <- list()
-      for(k in 1:length(loci.in.LD.vec)){
-
-        in.ld.min <- loci.in.LD.vec[k]
-
-        get.rows <- which(Linked.df$SNP_A == FST.order.vec[in.ld.min] | Linked.df$SNP_B == FST.order.vec[in.ld.min])
-        # print(get.rows)
-        #what.rows.get <- list(what.rows.get, get.rows)
-        what.positions.get[[k]] <- get.rows
-      }
-
-  ## Get the names of the SNPs in LD from the PLINK LD file
-      SNP.out <- list()
-      for(i in 1:length(what.positions.get)){
-        to.get <- what.positions.get[[i]]
-        SNP_loop <- NULL
-        for(k in 1:length(what.positions.get[[i]])){
-          SNP.hold.loop <- c(Linked.df[what.positions.get[[i]][k], "SNP_A"], Linked.df[what.positions.get[[i]][k], "SNP_B"]) ## get the values from teh row defined for SNP_A and B
-          SNP_loop <- rbind(SNP_loop, SNP.hold.loop) ## there may be more than one row defined, rbind them together
+          hold2 <- NULL
+          for(k in 1:length(hold)){hold2 <- c(hold2,which(FST.ld.ordered == hold[k]))}
+          holdlist[[i]] <- hold2
         }
-        SNP.out[[i]] <- SNP_loop ## add to new list
-      }
 
-  ## compare the SNPs in the LD file to the ranked order by Fst - save the ranks of the SNPs that are linked - but only unique values, i.e. if
-  ## one SNP is linked to two other SNPs, only record 3 names, not 4. Ranks = positions in vector of ranked loci
+        linked.ranks.df2 <- plyr::rbind.fill(lapply(holdlist,function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))
 
-    linked.ranks <- list()
-    for(j in 1:length(SNP.out)){
+        keepers <- FST.ld.ordered[Optimfunc(linked.ranks.df2)]
+        droppers <- setdiff(as.character(FST.df2$loci),keepers)
 
-      to.double.check <- SNP.out[[j]] ## gets names of the jth SNPs and what other SNP they are linked to
-      dbl.chk <-to.double.check[-which(as.character(FST.order.vec[loci.in.LD.vec[j]]) == noquote(to.double.check))]
-      ### the jth SNPs are saved as a string in to.double.check, this removes the jth SNP in loci.fst from this, so only have non-duplicated
+        FST.df2$loci <- as.character(FST.df2$loci)
 
-      where.best.link.fst <- loci.in.LD.vec[j] ## the loci with the greatest Fst among the linked ones, will be the jth in the ranked vector
-      where.its.linked <- which(FST.order.vec %in% dbl.chk) ## get the loctions on hte ranked vector of the loci it is linked to
-      hold.linked.ranks <- c(where.best.link.fst, where.its.linked) ## cbind them together
-      linked.ranks[[j]] <- hold.linked.ranks ## output in a list
+        keepers <- FST.df[-which(droppers %in% FST.df$loci),]
 
-    }
-
-  ## turn the list into a dataframe by adding NA where there are too few 'columns' in a string
-    linked.ranks.df <- plyr::rbind.fill(lapply(linked.ranks,function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))
-
-  ### now this is where it get a list of numbers to be removed from the ranked vector of loci names by Fst
-  # h.rows <- which(linked.ranks.df$V1<panel.size) ##
-  h.rows <- linked.ranks.df$V1
-  to.cut.out <- NULL
-  for(i in 1:length(h.rows)){
-
-    a = i
-
-  ## this ensures that where we get more than one of the linked loci in the top n loci, we keep the one with the highest Fst (lowest number in the rank)
-    if((linked.ranks.df$V1[a] < linked.ranks.df$V2[a])==TRUE){
-      to.cut <- linked.ranks.df$V2[a]
-      to.cut.out <- c(to.cut.out, to.cut)
-          }
-      }
-
-  to.cut.out <- to.cut.out[which(duplicated(to.cut.out)==FALSE)]
-
-  writeLines("Writing output")
+    writeLines("Writing output")
 
     #clean up temporary files used in the analysis.
     file.remove(remember.spidpath)
