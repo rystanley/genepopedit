@@ -8,6 +8,7 @@
 #' @param where.PGDspider A file path to the PGDspider installation folder.
 #' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
 #' @param r2.threshold The minimum r^2 threshold to consider a pair of loci to be in LD
+#' @param ld.window Number of adjacent SNPs to compare each SNP against for LD - default is NULL, which translates to a window size of 99999, which essentially asks to compare each SNP against all others
 #' @rdname genepop_toploci
 #' @export
 #' @importFrom hierfstat read.fstat wc
@@ -15,7 +16,7 @@
 #' @importFrom plyr rbind.fill
 
 
-genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshold = 0.2, where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
+genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshold = 0.2, ld.window = NULL,  where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
 
   path.start <- getwd()  ### where to write the files created by genepopedit to
 
@@ -32,6 +33,13 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshol
 
       if(r2.threshold < 0 | r2.threshold > 1){
         stop("r^2 threshold must be a value between 0 and 1")
+      }
+
+      if(ld.window < 0){
+        stop("LD window must be non-negative")
+      }
+      if(length(ld.window)==0){
+        ld.window = 99999 ### sets the LD window to essentially check every SNP pairwise
       }
 
       if(length(which(LDpop %in% c("All",pops.exist)))==0){

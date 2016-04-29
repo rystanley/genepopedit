@@ -5,7 +5,8 @@
 \title{Creates a panel of the top n unlinked loci, and exports the list of loci}
 \usage{
 genepop_toploci(GenePop, LDpop = "All", panel.size = NULL,
-  r2.threshold = 0.2, where.PLINK, where.PGDspider, allocate.PGD.RAM = 1)
+  r2.threshold = 0.2, ld.window = NULL, where.PLINK, where.PGDspider,
+  allocate.PGD.RAM = 1)
 }
 \arguments{
 \item{GenePop}{A file path to the GENEPOP format file you wish to create your panel from}
@@ -15,6 +16,8 @@ genepop_toploci(GenePop, LDpop = "All", panel.size = NULL,
 \item{panel.size}{An integer number of loci to include in the panel. If not specified all loci will be returned,}
 
 \item{r2.threshold}{The minimum r^2 threshold to consider a pair of loci to be in LD}
+
+\item{ld.window}{Number of adjacent SNPs to compare each SNP against for LD - default is NULL, which translates to a window size of 99999, which essentially asks to compare each SNP against all others}
 
 \item{where.PLINK}{A file path to the PLINK installation folder.}
 
