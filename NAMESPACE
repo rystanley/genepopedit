@@ -2,6 +2,7 @@
 
 export(AlleleFreq)
 export(AlleleFreqLoci)
+export(Optimfunc)
 export(PGDspideR)
 export(common_string)
 export(genepop_ID)

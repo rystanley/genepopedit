@@ -3,7 +3,6 @@
 #' @description Extract the genotypes of individuals at the top n (by Fst) unlinked loci. The default threshold of r2>0.2 is employed for assigning 'linked' loci (default for plink).
 #' @param GenePop A file path to the GENEPOP format file you wish to create your panel from
 #' @param LDpop A string which populations (default: "All") will be used to calculate linkage disequilibrium. Names must match names returned by genepop_detective().
-#' @param panel.size An integer number of loci to include in the panel. If not specified all loci will be returned,
 #' @param where.PLINK A file path to the PLINK installation folder.
 #' @param where.PGDspider A file path to the PGDspider installation folder.
 #' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
@@ -16,7 +15,7 @@
 #' @importFrom plyr rbind.fill
 
 
-genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshold = 0.2, ld.window = NULL,  where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
+genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.window = NULL,  where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
 
   path.start <- getwd()  ### where to write the files created by genepopedit to
 
@@ -47,13 +46,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshol
       if(length(which(LDpop %in% c("All",pops.exist)))==0){
         stop(paste0("Parameter 'LDpop' must be a string of population names in the dataset, or ", "'All'. ", "Function stopped."),call. = FALSE)
       }
-
-      if(is.null(panel.size)){
-        writeLines("Panel size not specified, Fst calculations for all un-linked loci will be returned")
-        panel.size <- nLOCI
-        }
-
-
 
   ### Will LD be calculated for All or specified populations.
       if(LDpop != "All"){
@@ -316,25 +308,8 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshol
   ### turn both columns into a single vector of unduplicated loci names
       ld.unique <- c(as.character(Linked$SNP_A), as.character(Linked$SNP_B))
       ld.unique <- as.character(ld.unique[which(duplicated(ld.unique)==FALSE)])
-  # head(FST.df)
 
-      Optimfunc <- function(x)
-      {
-        subdat <- x
-        winners.circle <- NULL
-        while(nrow(subdat)>0)
-        {
-          winner <- subdat[1,which.min(subdat[1,])]
-          otherdat <- subdat[1,-which.min(subdat[1,])]
-          for(i in otherdat){subdat[subdat==i] <- NA}
-          subdat <- subdat[apply(subdat,1,function(x){!winner%in%x}),]
-          winners.circle <- c(winners.circle,winner)
-          #print(nrow(subdat))
-        }
-        return(winners.circle)
-      }
-
-      if(length(ld.unique > 1)){
+   if(length(ld.unique > 1)){
 
         FST.df2 <- FST.df[which(FST.df$loci %in% ld.unique),]
         FST.ld.ordered <- as.character(FST.df2[order(FST.df2$FSTs,decreasing=T),"loci"])
@@ -351,12 +326,13 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshol
 
         linked.ranks.df2 <- plyr::rbind.fill(lapply(holdlist,function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))
 
-        keepers <- FST.ld.ordered[Optimfunc(linked.ranks.df2)]
-        droppers <- setdiff(as.character(FST.df2$loci),keepers)
+        to.keep <- FST.ld.ordered[Optimfunc(linked.ranks.df2)]
+        to.drop <- setdiff(as.character(FST.df2$loci),to.keep)
 
         FST.df2$loci <- as.character(FST.df2$loci)
+        FST.df$loci <- as.character(FST.df$loci)
 
-        keepers <- FST.df[-which(droppers %in% FST.df$loci),]
+        to.keep <- FST.df[-which(FST.df$loci %in% to.drop),]
 
     writeLines("Writing output")
 
@@ -380,40 +356,29 @@ genepop_toploci <- function(GenePop, LDpop = "All", panel.size=NULL, r2.threshol
 
     #wrap up indicator
     writeLines("Process Completed.")
-        panel.size_un <- panel.size
-  ## return loci ordered by fst
-     if(length(FST.order.vec[-to.cut.out]) <  length(FST.order.vec[-to.cut.out][1:panel.size])){
 
-      writeLines(paste0("Desired panel size ", panel.size,  " is larger than total number of unlinked loci ", length(FST.order.vec[-to.cut.out]), ". ", "Returning ALL unlinked loci."))
-      panel.size_un = length(FST.order.vec[-to.cut.out])
-        }
+      Unlinked.panel <- FST.df[which(FST.df$loci %in% to.keep),]
 
-      your.panel <- data.frame(loci=FST.order.vec[1:panel.size],stringsAsFactors = F)
-      your.panel_un <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size_un],stringsAsFactors = F)
-      your.panel <- merge(your.panel,FST.df,by="loci")
-      your.panel_un <- merge(your.panel_un,FST.df,by="loci")
+      your.panel <- FST.df
+      your.panel_un <- Unlinked.panel
       your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
       your.panel_unlinked <- your.panel_un[order(your.panel_un$FSTs,decreasing = TRUE),]
-
+      Linked.df <- Linked
   } ### END IF There are loci in LD
 
-      if(length(ld.unique) < 1){
-        your.panel <- data.frame(loci=FST.order.vec[1:panel.size],stringsAsFactors = F)
-        your.panel_un <- data.frame(loci=FST.order.vec[-to.cut.out][1:panel.size_un],stringsAsFactors = F)
-        your.panel <- merge(your.panel,FST.df,by="loci")
-        your.panel_un <- merge(your.panel_un,FST.df,by="loci")
+      if(length(ld.unique) < 1){ # if not linked loci
+        writeLines("No linked loci detected, all loci returned.")
+        your.panel <- FST.df
         your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
-        your.panel_unlinked <- your.panel_un[order(your.panel_un$FSTs,decreasing = TRUE),]
+        your.panel_unlinked <- your.panel
         Linked.df <- NA
           }
 
+## return output
     Output <- list(Linkages=Linked.df,
                   Fst=your.panel,
                   Fst_Unlinked=your.panel_unlinked
       )
-
-
-
 
     return(Output)
 

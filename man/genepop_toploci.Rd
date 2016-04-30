@@ -4,16 +4,13 @@
 \alias{genepop_toploci}
 \title{Creates a panel of the top n unlinked loci, and exports the list of loci}
 \usage{
-genepop_toploci(GenePop, LDpop = "All", panel.size = NULL,
-  r2.threshold = 0.2, ld.window = NULL, where.PLINK, where.PGDspider,
-  allocate.PGD.RAM = 1)
+genepop_toploci(GenePop, LDpop = "All", r2.threshold = 0.2,
+  ld.window = NULL, where.PLINK, where.PGDspider, allocate.PGD.RAM = 1)
 }
 \arguments{
 \item{GenePop}{A file path to the GENEPOP format file you wish to create your panel from}
 
 \item{LDpop}{A string which populations (default: "All") will be used to calculate linkage disequilibrium. Names must match names returned by genepop_detective().}
-
-\item{panel.size}{An integer number of loci to include in the panel. If not specified all loci will be returned,}
 
 \item{r2.threshold}{The minimum r^2 threshold to consider a pair of loci to be in LD}
 
