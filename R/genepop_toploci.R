@@ -357,7 +357,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
     #wrap up indicator
     writeLines("Process Completed.")
 
-      Unlinked.panel <- FST.df[which(FST.df$loci %in% to.keep),]
+      Unlinked.panel <- FST.df[which(FST.df$loci %in% to.keep$loci),]
 
       your.panel <- FST.df
       your.panel_un <- Unlinked.panel
