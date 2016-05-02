@@ -483,9 +483,9 @@ This function will calculate linkage disequilibrium and global Weir and Cockerha
 
 ```r
 
-#calculate fst and linkage and return output for 20 loci. To calculate LD we use PLINK which requires a file conversion using PGDspider. We will provide the function with access to 2 GB of ram (default: 1) to speed up this conversion
+#Evaluate Fst and linkage among all loci and return an unlinked panel optimized by global Fst. To calculate LD we use PLINK which requires a file conversion using PGDspider. We will provide the function with access to 2 GB of ram (default: 1) to speed up this conversion.
 
-  TopLoci <- genepop_toploci(GenePop="genepopedit_examplefile.txt",panel.size=20,   allocate.PGD.RAM =2,
+  TopLoci <- genepop_toploci(GenePop="genepopedit_examplefile.txt",allocate.PGD.RAM =2,
   where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",
   where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/" )
   
