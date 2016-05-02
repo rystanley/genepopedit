@@ -479,11 +479,13 @@ This function will calculate allele frequencies based on the major allele among 
 ##genepop\_toploci
 This function will calculate linkage disequilibrium and global Weir and Cockerham's Fst for loci among populations. The function seeks a loci panel which maximizes global Fst for unlinked loci. The returned object is a list containing Linked loci ($Linked), global FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by PLINK. This threshold (0-1) can be adjusted. 
 
-**Note conversion between format types using PGDspider and diagnostics from PLINK will be retured as warning messages.** 
+**Note that warning messages & daignostics will be returned to the console by PGDspider & PLINK. These warnings are expected.** 
 
 ```r
 
-#Evaluate Fst and linkage among all loci and return an unlinked panel optimized by global Fst. To calculate LD we use PLINK which requires a file conversion using PGDspider. We will provide the function with access to 2 GB of ram (default: 1) to speed up this conversion.
+#Evaluate Fst and linkage among all loci and return an unlinked panel optimized by global Fst. 
+#To calculate LD we use PLINK which requires a file conversion using PGDspider. 
+#We will provide the function with access to 2 GB of ram (default: 1) to speed up this conversion.
 
   TopLoci <- genepop_toploci(GenePop="genepopedit_examplefile.txt",allocate.PGD.RAM =2,
   where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",
