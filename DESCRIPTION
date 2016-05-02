@@ -16,11 +16,15 @@ Depends:
 Imports:
     tidyr,
     dplyr,
-    magrittr
+    magrittr,
+    hierfstat,
+    data.table,
+    reshape2,
+    stringr,
+    plyr
 Suggests:
     adegenet,
-    ade4,
-    hierfstat
+    ade4
 License: GPL (>=2)
 LazyLoad: yes
 LazyData: true
