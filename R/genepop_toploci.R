@@ -34,6 +34,10 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
         stop("r^2 threshold must be a value between 0 and 1")
       }
 
+      if(r2.threshold<0.2){
+        writeLines("Linkage detection threshold is low (<0.2). Linkage will be classified at a higher frequency than default PLINK selection parameters.")
+      }
+
 
       if(length(ld.window)==0){
         ld.window = 99999 ### sets the LD window to essentially check every SNP pairwise
@@ -170,7 +174,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
   ### read in the FSTAT formatted file
      for.fst <- hierfstat::read.fstat("for_FST.txt")
   ## calculate Fst
-     FST.dat <- hierfstat::wc(for.fst)
+     FST.dat <- suppressWarnings(suprhierfstat::wc(for.fst))
   ### get the Fst values
       FSTs <- FST.dat$per.loc$FST
   ### create a dataframe that is the names of the Loci, and their corresponding Fst
