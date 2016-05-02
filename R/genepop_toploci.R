@@ -174,7 +174,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
   ### read in the FSTAT formatted file
      for.fst <- hierfstat::read.fstat("for_FST.txt")
   ## calculate Fst
-     FST.dat <- suppressWarnings(suprhierfstat::wc(for.fst))
+     FST.dat <- suppressWarnings(hierfstat::wc(for.fst))
   ### get the Fst values
       FSTs <- FST.dat$per.loc$FST
   ### create a dataframe that is the names of the Loci, and their corresponding Fst
