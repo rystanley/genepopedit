@@ -1,5 +1,5 @@
 Package: genepopedit
-Title: Functions to Manipulate Genepop SNP Datasets.
+Title: Simple and flexible manipulation of genomic data.
 Version: 1.0.0.2
 Description: A simple and flexible tool for manipulating large multi-locus datasets in R.
     Using data structured according to 'Genepop' format (http://genepop.curtin.edu.au/),
