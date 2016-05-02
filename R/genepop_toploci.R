@@ -28,7 +28,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
   allocate.PGD.RAM <- allocate.PGD.RAM*1024
 
   #Variable checks
-
       if(r2.threshold < 0 | r2.threshold > 1){
         stop("r^2 threshold must be a value between 0 and 1")
       }
@@ -38,12 +37,12 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       }
 
 
-      if(length(ld.window)==0){
-        ld.window = 99999 ### sets the LD window to essentially check every SNP pairwise
+      if(is.null(ld.window)){
+        ld.window = 999999 ### sets the LD window to essentially check every SNP pairwise
       }
 
        if(ld.window < 0){
-        stop("LD window must be non-negative")
+        stop("LD window must be positive")
       }
 
       if(length(which(LDpop %in% c("All",pops.exist)))==0){
@@ -370,11 +369,28 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
   } ### END IF There are loci in LD
 
       if(length(ld.unique) < 1){ # if not linked loci
+        writeLines("Writing output")
         writeLines("No linked loci detected, all loci returned.")
         your.panel <- FST.df
         your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
         your.panel_unlinked <- your.panel
         Linked.df <- NA
+        #clean up temporary files used in the analysis.
+        file.remove(remember.spidpath)
+        file.remove(sub_data_path)
+        file.remove(ped.path)
+        file.remove(map.path)
+        file.remove(paste0(where.PGDspider, "/hyb.spid"))
+        file.remove(paste0(where.PGDspider, "/GP_FSTAT.spid"))
+        file.remove(fst_data_path)
+        file.remove(plink_map_path)
+        file.remove(plink_ped_path)
+        file.remove(paste0(path.start, "/plink.txt"))
+        file.remove(paste0(path.start, "/LDsReform.txt"))
+        file.remove(remember.TOPLOC.path)
+        file.remove(paste0(where.PGDspider,"/subset_for_LD.txt"))
+        file.remove(paste0(where.PGDspider,"/for_FST.txt"))
+        file.remove(paste0(path.start,"/GP_FSTAT.spid"))
           }
 
 ## return output
