@@ -7,7 +7,7 @@
 
 Optimfunc <- function(x)
 {
-  subdat <- x
+  subdat <- as.matrix(x)
   returned <- NULL
   while(nrow(subdat)>0)
   {
@@ -16,7 +16,6 @@ Optimfunc <- function(x)
     for(i in otherdat){subdat[subdat==i] <- NA}
     subdat <- subdat[apply(subdat,1,function(x){!highest%in%x}),]
     returned <- c(returned,highest)
-    #print(nrow(subdat))
   }
   return(returned)
 }
