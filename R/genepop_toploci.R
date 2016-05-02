@@ -336,37 +336,16 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         to.keep <- FST.df[-which(FST.df$loci %in% to.drop),]
 
-    writeLines("Writing output")
+        writeLines("Writing output")
 
-    #clean up temporary files used in the analysis.
-    file.remove(remember.spidpath)
-    file.remove(sub_data_path)
-    file.remove(ped.path)
-    file.remove(map.path)
-    file.remove(paste0(where.PGDspider, "/hyb.spid"))
-    file.remove(paste0(where.PGDspider, "/GP_FSTAT.spid"))
-    file.remove(fst_data_path)
-    file.remove(plink_map_path)
-    file.remove(plink_ped_path)
-    file.remove(paste0(path.start, "/plink.txt"))
-    file.remove(paste0(path.start, "/LDsReform.txt"))
-    file.remove(remember.TOPLOC.path)
-    file.remove(paste0(where.PGDspider,"/subset_for_LD.txt"))
-    file.remove(paste0(where.PGDspider,"/for_FST.txt"))
-    file.remove(paste0(path.start,"/GP_FSTAT.spid"))
-    #file.remove(GenePop)
+        Unlinked.panel <- FST.df[which(FST.df$loci %in% to.keep$loci),]
 
-    #wrap up indicator
-    writeLines("Process Completed.")
-
-      Unlinked.panel <- FST.df[which(FST.df$loci %in% to.keep$loci),]
-
-      your.panel <- FST.df
-      your.panel_un <- Unlinked.panel
-      your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
-      your.panel_unlinked <- your.panel_un[order(your.panel_un$FSTs,decreasing = TRUE),]
-      Linked.df <- Linked
-  } ### END IF There are loci in LD
+        your.panel <- FST.df
+        your.panel_un <- Unlinked.panel
+        your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
+        your.panel_unlinked <- your.panel_un[order(your.panel_un$FSTs,decreasing = TRUE),]
+        Linked.df <- Linked
+    } ### END IF There are loci in LD
 
       if(length(ld.unique) < 1){ # if not linked loci
         writeLines("Writing output")
@@ -375,23 +354,27 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
         your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
         your.panel_unlinked <- your.panel
         Linked.df <- NA
-        #clean up temporary files used in the analysis.
-        file.remove(remember.spidpath)
-        file.remove(sub_data_path)
-        file.remove(ped.path)
-        file.remove(map.path)
-        file.remove(paste0(where.PGDspider, "/hyb.spid"))
-        file.remove(paste0(where.PGDspider, "/GP_FSTAT.spid"))
-        file.remove(fst_data_path)
-        file.remove(plink_map_path)
-        file.remove(plink_ped_path)
-        file.remove(paste0(path.start, "/plink.txt"))
-        file.remove(paste0(path.start, "/LDsReform.txt"))
-        file.remove(remember.TOPLOC.path)
-        file.remove(paste0(where.PGDspider,"/subset_for_LD.txt"))
-        file.remove(paste0(where.PGDspider,"/for_FST.txt"))
-        file.remove(paste0(path.start,"/GP_FSTAT.spid"))
-          }
+      }
+
+      #clean up temporary files used in the analysis.
+      file.remove(remember.spidpath)
+      file.remove(sub_data_path)
+      file.remove(ped.path)
+      file.remove(map.path)
+      file.remove(paste0(where.PGDspider, "/hyb.spid"))
+      file.remove(paste0(where.PGDspider, "/GP_FSTAT.spid"))
+      file.remove(fst_data_path)
+      file.remove(plink_map_path)
+      file.remove(plink_ped_path)
+      file.remove(paste0(path.start, "/plink.txt"))
+      file.remove(paste0(path.start, "/LDsReform.txt"))
+      file.remove(remember.TOPLOC.path)
+      file.remove(paste0(where.PGDspider,"/subset_for_LD.txt"))
+      file.remove(paste0(where.PGDspider,"/for_FST.txt"))
+      file.remove(paste0(path.start,"/GP_FSTAT.spid"))
+
+      #wrap up indicator
+      writeLines("Process Completed.")
 
 ## return output
     Output <- list(Linkages=Linked.df,
@@ -400,5 +383,4 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       )
 
     return(Output)
-
 }
