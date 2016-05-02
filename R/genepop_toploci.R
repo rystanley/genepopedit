@@ -15,7 +15,7 @@
 #' @importFrom plyr rbind.fill
 
 
-genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.window = NULL,  where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
+genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.window = NULL,  where.PLINK, where.PGDspider, allocate.PGD.RAM = 2){
 
   path.start <- getwd()  ### where to write the files created by genepopedit to
 
@@ -328,7 +328,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         linked.ranks.df2 <- plyr::rbind.fill(lapply(holdlist,function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))
 
-        to.keep <- FST.ld.ordered[Optimfunc(linked.ranks.df2)]
+        to.keep <- FST.ld.ordered[Optimfunc2(linked.ranks.df2)]
         to.drop <- setdiff(as.character(FST.df2$loci),to.keep)
 
         FST.df2$loci <- as.character(FST.df2$loci)
