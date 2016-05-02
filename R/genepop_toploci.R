@@ -242,7 +242,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
         system(run.PGDspider)
       } # END OSX LINUX if
 
-
   #### Windows call
     if(Sys.info()["sysname"] == "Windows"){
       ### create a string to call PGDspider
