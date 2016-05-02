@@ -26,8 +26,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
     stop("Please specify an integer GB value to allocate to PGDspider.")
   }
   allocate.PGD.RAM <- allocate.PGD.RAM*1024
-  #Parameter limits
-      nLOCI <- length(genepop_detective(GenePop,"Loci"))
+
   #Variable checks
 
       if(r2.threshold < 0 | r2.threshold > 1){
