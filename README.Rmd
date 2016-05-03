@@ -184,7 +184,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **r2.theshold** | Linkage threshold based on correlation between loci. Value must be between 0 & 1. Default threshold (0.2) matched to PLINK defaults. 
 **ld.window** | The number of sequential loci to be considered for linkage. This sliding window is based on the input order of loci in the input data. Default (NULL) will calcualte linkage among **all loci**. This variable should not be changed unless the order and proximity of loci on the genome is known and integrated into the order within the input data.  
 **where.PGDspider** | A file path to the PGDspider installation folder.
-**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. 
+**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.PGD.RAM_ will be set to 1 GB.
 
 ***
 
@@ -477,17 +477,16 @@ This function will calculate allele frequencies based on the major allele among 
 
 <a name="genepoptoploc"/>
 ##genepop\_toploci
-This function will calculate linkage disequilibrium and global Weir and Cockerham's Fst for loci among populations. The function seeks a loci panel which maximizes global Fst for unlinked loci. The returned object is a list containing Linked loci ($Linked), global FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by PLINK. This threshold (0-1) can be adjusted. 
+This function will calculate linkage disequilibrium and global Weir and Cockerham's Fst for loci among populations. The function seeks a loci panel which maximizes global Fst for unlinked loci. The returned object is a list containing Linked loci ($Linked), global FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by PLINK. This threshold (0-1) can be adjusted, though values <0.2 may be limited by computational resources. Note that the available RAM for conversions using PGDspider is limited to 1 GB on Windows based operating systems. 
 
-**Note that warning messages & daignostics will be returned to the console by PGDspider & PLINK. These warnings are expected.** 
+**Warning messages & daignostics will be returned to the console by PGDspider & PLINK. These warnings are expected.** 
 
 ```r
 
 #Evaluate Fst and linkage among all loci and return an unlinked panel optimized by global Fst. 
 #To calculate LD we use PLINK which requires a file conversion using PGDspider. 
-#We will provide the function with access to 2 GB of ram (default: 1) to speed up this conversion.
 
-  TopLoci <- genepop_toploci(GenePop="genepopedit_examplefile.txt",allocate.PGD.RAM =2,
+  TopLoci <- genepop_toploci(GenePop="genepopedit_examplefile.txt",
   where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",
   where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/" )
   
