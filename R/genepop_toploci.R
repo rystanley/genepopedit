@@ -72,7 +72,16 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         }
 
-      writeLines("Calculating Fst")
+
+  writeLines("File conversion beginning ...")
+  writeLines("
+
+
+    ")
+  writeLines("Warning messages are expected as part of conversion process using PGDspider. Please ignore.
+
+
+    ")
 
   ### convert to FST format using PGDspider
 
@@ -169,6 +178,11 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       fst_data_path <- paste0(path.start, "/", "for_FST.txt")
 
 
+      writeLines("
+
+
+        Calculating Fst")
+
   ### read in the FSTAT formatted file
      for.fst <- hierfstat::read.fstat("for_FST.txt")
   ## calculate Fst
@@ -181,7 +195,18 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
   ## reorder the dataframe from highest to lowest Fst
       FST.df <- FST.df[base::order(FST.df$FSTs, decreasing = TRUE),]
 
-  writeLines("Calculating Linkage")
+
+      writeLines("File conversion beginning ...")
+  writeLines("
+
+
+    ")
+  writeLines("Warning messages are expected as part of conversion process using PGDspider. Please ignore.
+
+
+    ")
+
+
   ### convert file to .ped and .map using PGD spider
 
 
@@ -269,6 +294,12 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       plink_ped_path <- paste0(where.PLINK, "/", "PGDtest.ped")
       plink_map_path <- paste0(where.PLINK, "/", "PGDtest.map")
 
+  writeLines("
+
+    Calculating Linkage
+
+    ")
+
 
   ### prepare a string to call PLINK
   ### modify PLINK path so it plays nice with system
@@ -288,6 +319,13 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
         ### run PLINK through system
         shell(execute.PLINK)
       }
+
+      writeLines("
+
+        Creating optimized panel!!!!!
+
+        ")
+
 
   ## copy the LD file created by PLINK to the working directory
       file.copy(from = paste0(where.PLINK, "plink.ld"), to = path.start)
@@ -350,7 +388,11 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         to.keep <- FST.df[-which(FST.df$loci %in% to.drop),]
 
-        writeLines("Writing output")
+        writeLines("
+
+          Writing output
+
+          ")
 
         Unlinked.panel <- FST.df[which(FST.df$loci %in% to.keep$loci),]
 
@@ -388,7 +430,11 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       file.remove(paste0(path.start,"/GP_FSTAT.spid"))
 
       #wrap up indicator
-      writeLines("Process Completed.")
+      writeLines("
+
+        Process Completed
+
+        ")
 
 ## return output
     Output <- list(Linkages=Linked.df,
