@@ -331,8 +331,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
   ## copy the LD file created by PLINK to the working directory
       file.copy(from = paste0(where.PLINK, "plink.ld"), to = path.start)
 
-  ## the format of the LD file is a bit messed up - it is not a regular matrix - have to modify the file a bit to get it to read in properly
-
   ## rename the file and change it to a txt
       file.rename(from = paste0(path.start, "/", "plink.ld"), to = paste0(path.start, "/", "plink.txt"))
 
@@ -349,7 +347,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       ld.unique <- c(as.character(Linked$SNP_A), as.character(Linked$SNP_B))
       ld.unique <- as.character(ld.unique[which(duplicated(ld.unique)==FALSE)])
 
-   if(length(ld.unique > 1)){
+   if(length(ld.unique) > 1){
 
         FST.df2 <- FST.df[which(FST.df$loci %in% ld.unique),]
         FST.ld.ordered <- as.character(FST.df2[order(FST.df2$FSTs,decreasing=T),"loci"])
