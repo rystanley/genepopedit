@@ -17,56 +17,55 @@
 
 genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.window = NULL,  where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
 
-      path.start <- getwd()  ### where to write the files created by genepopedit to
+        path.start <- getwd()  ### where to write the files created by genepopedit to
 
       ## find the populations in the file
-      pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
+        pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
 
-      if(allocate.PGD.RAM%%1 != 0){
-        stop("Please specify an integer GB value to allocate to PGDspider.")
-      }
+        if(allocate.PGD.RAM%%1 != 0){
+          stop("Please specify an integer GB value to allocate to PGDspider.")
+        }
 
       #Set up ram allocation. Note that only 1024 gb of ram will work with Windows
-      allocate.PGD.RAM <- allocate.PGD.RAM*1024
+        allocate.PGD.RAM <- allocate.PGD.RAM*1024
 
-      if(Sys.info()["sysname"] == "Windows" & allocate.PGD.RAM>1024){
-        allocate.PGD.RAM=1024
-        writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.
-                   ")}
+        if(Sys.info()["sysname"] == "Windows" & allocate.PGD.RAM>1024){
+          allocate.PGD.RAM=1024
+          writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.
+                     ")}
 
       #Variable checks
-      if(r2.threshold < 0 | r2.threshold > 1){
-        stop("r^2 threshold must be a value between 0 and 1")
-      }
+        if(r2.threshold < 0 | r2.threshold > 1){
+          stop("r^2 threshold must be a value between 0 and 1")
+        }
 
-      if(r2.threshold<0.2){
-        writeLines("Linkage detection threshold is low (<0.2). Linkage will be classified at a higher frequency than default PLINK selection parameters.
-                   ")
-      }
+        if(r2.threshold<0.2){
+          writeLines("Linkage detection threshold is low (<0.2). Linkage will be classified at a higher frequency than default PLINK selection parameters.
+                     ")
+        }
 
+        if(is.null(ld.window)){
+          ld.window = 999999 ### sets the LD window to essentially check every SNP pairwise
+        }
 
-      if(is.null(ld.window)){
-        ld.window = 999999 ### sets the LD window to essentially check every SNP pairwise
-      }
+         if(ld.window < 0){
+          stop("LD window must be positive")
+        }
 
-       if(ld.window < 0){
-        stop("LD window must be positive")
-      }
-
-      if(length(which(LDpop %in% c("All",pops.exist)))==0){
-        stop(paste0("Parameter 'LDpop' must be a string of population names in the dataset, or ", "'All'. ", "Function stopped."),call. = FALSE)
-      }
+        if(length(which(LDpop %in% c("All",pops.exist)))==0){
+          stop(paste0("Parameter 'LDpop' must be a string of population names in the dataset, or ", "'All'. ", "Function stopped."),call. = FALSE)
+        }
 
   ### Will LD be calculated for All or specified populations.
-      if(LDpop != "All"){
+        if(LDpop != "All"){
 
-        subPOP <- as.character(LDpop)
+          subPOP <- as.character(LDpop)
 
-        ## subset out the population in which LD is to be calculated - this will make a file, which will be deleted after
-        subset_genepop(GenePop = GenePop, sPop = subPOP, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
-        ## remember path to the file created by subset_genepop
-        sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
-      }
+          ## subset out the population in which LD is to be calculated - this will make a file, which will be deleted after
+          subset_genepop(GenePop = GenePop, sPop = subPOP, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
+          ## remember path to the file created by subset_genepop
+          sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
+        }
 
         if(LDpop == "All"){
 
@@ -149,13 +148,10 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
         output.file.path <- "-outputfile for_FST.txt"
         ## string to run
         run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
-
-
         ### run PGDspider through system
         system(run.PGDspider)
 
       } # End MAC LINUX IF
-
 
   #### Windows call
 
@@ -171,7 +167,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
         output.file.path <- "-outputfile for_FST.txt"
         ## string to run
         run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
-
 
         ### run PGDspider through system
         shell(run.PGDspider)
@@ -203,8 +198,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
   ## reorder the dataframe from highest to lowest Fst
       FST.df <- FST.df[base::order(FST.df$FSTs, decreasing = TRUE),]
 
-
-
           #Console message
           writeLines("Converting GENEPOP to MAP-PED format.")
           writeLines("
@@ -213,7 +206,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
           writeLines("Warning messages are expected as part of conversion process using PGDspider.
 
                      ")
-
 
   ### convert file to .ped and .map using PGD spider
 
@@ -256,7 +248,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       remember.spidpath <- paste0(path.start, "/", "hyb.spid")
   ## move the input file as well to the same location as PGDspider - this makes this step so much easier
       file.copy(from <- sub_data_path, to = where.PGDspider, overwrite = TRUE)
-
 
   #### OS X LINUX call
       if(Sys.info()["sysname"] != "Windows"){
@@ -310,7 +301,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
                  ")
 
-
   ### prepare a string to call PLINK
   ### modify PLINK path so it plays nice with system
       where.PLINK.go <- gsub(x = where.PLINK, pattern = " ", replacement = "\\ ", fixed = TRUE)
@@ -337,7 +327,6 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
           writeLines("Creating Fst optimized unlinked panel.
 
                      ")
-
 
   ## copy the LD file created by PLINK to the working directory
       file.copy(from = paste0(where.PLINK, "plink.ld"), to = path.start)
