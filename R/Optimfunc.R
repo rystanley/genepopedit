@@ -14,7 +14,7 @@ Optimfunc <- function(x)
   startrow <- nrow(subdat)
 
   #Iterative selection based on ordered Fst (lower integers/lower row numbers = higher FST, )
-  while(class(subdat)!="integer")
+  while(nrow(subdat)>0)
   {
     highest <- subdat[1,which.min(subdat[1,])] #loci returned to the panel
     otherdat <- subdat[1,-which.min(subdat[1,])] #loci which will be eliminated from the panel due to being linked to the top loci by fst
@@ -26,9 +26,13 @@ Optimfunc <- function(x)
     }
     deltarow <- startrow - nrow(subdat) #Progress
     returned <- c(returned,highest)
+    
+    if(sum(subdat,na.rm=T)>0){
+      
     if(class(subdat)!="integer" & sum(!is.na(subdat[1,]))<=1){subdat <- subdat[-1,]}
     if(is.null(nrow(subdat))){returned <- c(returned,subdat[1])
     deltarow = startrow}
+      }
 
     #Progress bar
     setTxtProgressBar(CheckProgress, deltarow)

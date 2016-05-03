@@ -381,8 +381,8 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
         )[3]
         how.long <- round((how.long*nrow(linked.ranks.df2))/60, digits = 3)
 
-
-        writeLines(paste0("Note: ", nrow(linked.ranks.df2), " groups of linked loci detected. Approximate time to completion ", how.long, " minutes."))
+        if(how.long==0){writeLines(paste0("Note: ", nrow(linked.ranks.df2), " groups of linked loci detected. Approximate time to completion less than one minute."))}else
+        {writeLines(paste0("Note: ", nrow(linked.ranks.df2), " groups of linked loci detected. Completion time estimated as ", how.long, " minutes."))}
 
         to.keep <- FST.ld.ordered[Optimfunc(linked.ranks.df2)]
         to.drop <- setdiff(as.character(FST.df2$loci),to.keep)
