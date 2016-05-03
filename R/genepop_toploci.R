@@ -333,10 +333,10 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
     highest1 <-  LRD2[1,which.min(LRD2[1,])]
     otherdat1 <- LRD2[1,-which.min(LRD2[1,])]
     otherdat1 <- otherdat1[!is.na(otherdat1)]
- how.long <- system.time(
+
+    how.long <- system.time(
     for(i in otherdat1){LRD2[LRD2==i] <- NA}
         )
-
         how.long <- (how.long*nrow(linked.ranks.df2))/60
 
 
