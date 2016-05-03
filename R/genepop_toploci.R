@@ -327,6 +327,21 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         linked.ranks.df2 <- plyr::rbind.fill(lapply(holdlist,function(y){as.data.frame(t(y),stringsAsFactors=FALSE)}))
 
+        LRD2 <- as.matrix(linked.ranks.df2)
+
+        how.long <- system.time(
+    highest1 <- LRD2[1,which.min(LRD2[1,])] #loci returned to the panel
+    otherdat1 <- LRD2[1,-which.min(LRD2[1,])] #loci which will be eliminated from the panel due to being linked to the top loci by fst
+    otherdat1 <- otherdat1[!is.na(otherdat1)]
+
+    for(i in otherdat1){LRD2[LRD2==i] <- NA}
+        )
+
+        how.long <- (how.long*nrow(linked.ranks.df2))/60
+
+
+        writeLines(paste0("Note: ", nrow(linked.ranks.df2), " groups of linked loci detected. Approximate time to completion ", how.long, " minutes."))
+
         to.keep <- FST.ld.ordered[Optimfunc2(linked.ranks.df2)]
         to.drop <- setdiff(as.character(FST.df2$loci),to.keep)
 
