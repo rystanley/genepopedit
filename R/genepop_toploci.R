@@ -17,15 +17,15 @@
 
 genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.window = NULL,  where.PLINK, where.PGDspider, allocate.PGD.RAM = 2){
 
-  path.start <- getwd()  ### where to write the files created by genepopedit to
+      path.start <- getwd()  ### where to write the files created by genepopedit to
 
-  ## find the populations in the file
-  pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
+      ## find the populations in the file
+      pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
 
-  if(allocate.PGD.RAM%%1 != 0){
-    stop("Please specify an integer GB value to allocate to PGDspider.")
-  }
-  allocate.PGD.RAM <- allocate.PGD.RAM*1024
+      if(allocate.PGD.RAM%%1 != 0){
+        stop("Please specify an integer GB value to allocate to PGDspider.")
+      }
+      allocate.PGD.RAM <- allocate.PGD.RAM*1024
 
   #Variable checks
       if(r2.threshold < 0 | r2.threshold > 1){
@@ -72,16 +72,14 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         }
 
+          #Console message
+          writeLines("Converting GENEPOP to FSTAT format.")
+          writeLines("
 
-  writeLines("File conversion beginning ...")
-  writeLines("
+                     ")
+          writeLines("Warning messages are expected as part of conversion process using PGDspider.
 
-
-    ")
-  writeLines("Warning messages are expected as part of conversion process using PGDspider. Please ignore.
-
-
-    ")
+                     ")
 
   ### convert to FST format using PGDspider
 
@@ -90,30 +88,30 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       path.start.PGD <- gsub(x = path.start, pattern = " ", replacement = "\\")
       where.PGDspider.PGD <- gsub(x = where.PGDspider, pattern = " ", replacement = "\\ ", fixed = TRUE)
 
-  GP_FSTAT_SPID <- "# spid-file generated: Fri Apr 08 10:53:23 ADT 2016
+      GP_FSTAT_SPID <- "# spid-file generated: Fri Apr 08 10:53:23 ADT 2016
 
-  # GENEPOP Parser questions
-  PARSER_FORMAT=GENEPOP
+      # GENEPOP Parser questions
+      PARSER_FORMAT=GENEPOP
 
-  # Enter the size of the repeated motif (same for all loci: one number; different: comma separated list (e.g.: 2,2,3,2):
-  GENEPOP_PARSER_REPEAT_SIZE_QUESTION=
-  # Select the type of the data:
-  GENEPOP_PARSER_DATA_TYPE_QUESTION=SNP
-  # How are Microsat alleles coded?
-  GENEPOP_PARSER_MICROSAT_CODING_QUESTION=REPEATS
+      # Enter the size of the repeated motif (same for all loci: one number; different: comma separated list (e.g.: 2,2,3,2):
+      GENEPOP_PARSER_REPEAT_SIZE_QUESTION=
+      # Select the type of the data:
+      GENEPOP_PARSER_DATA_TYPE_QUESTION=SNP
+      # How are Microsat alleles coded?
+      GENEPOP_PARSER_MICROSAT_CODING_QUESTION=REPEATS
 
-  # FSTAT Writer questions
-  WRITER_FORMAT=FSTAT
+      # FSTAT Writer questions
+      WRITER_FORMAT=FSTAT
 
-  # Specify which data type should be included in the FSTAT file  (FSTAT can only analyze one data type per file):
-  FSTAT_WRITER_DATA_TYPE_QUESTION=SNP
-  # Save label file
-  FSTAT_WRITER_LABEL_FILE_QUESTION=
-  # Do you want to save an additional file with labels (population names)?
-  FSTAT_WRITER_INCLUDE_LABEL_QUESTION=false
-  # Specify the locus/locus combination you want to write to the FSTAT file:
-  FSTAT_WRITER_LOCUS_COMBINATION_QUESTION=
-  "
+      # Specify which data type should be included in the FSTAT file  (FSTAT can only analyze one data type per file):
+      FSTAT_WRITER_DATA_TYPE_QUESTION=SNP
+      # Save label file
+      FSTAT_WRITER_LABEL_FILE_QUESTION=
+      # Do you want to save an additional file with labels (population names)?
+      FSTAT_WRITER_INCLUDE_LABEL_QUESTION=false
+      # Specify the locus/locus combination you want to write to the FSTAT file:
+      FSTAT_WRITER_LOCUS_COMBINATION_QUESTION=
+      "
     #write conversion parameter file (".spid")
         write(x = GP_FSTAT_SPID, file = paste0(path.start, "/", "GP_FSTAT.spid"))
 
@@ -177,11 +175,13 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
   ## remember the path of the file created by genepop_fstat
       fst_data_path <- paste0(path.start, "/", "for_FST.txt")
 
+          #Console message
+          writeLines("
 
-      writeLines("
+                     ")
+          writeLines("Calculating Fst.
 
-
-        Calculating Fst")
+                     ")
 
   ### read in the FSTAT formatted file
      for.fst <- hierfstat::read.fstat("for_FST.txt")
@@ -196,15 +196,15 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       FST.df <- FST.df[base::order(FST.df$FSTs, decreasing = TRUE),]
 
 
-      writeLines("File conversion beginning ...")
-  writeLines("
 
+          #Console message
+          writeLines("Converting GENEPOP to MAP-PED format.")
+          writeLines("
 
-    ")
-  writeLines("Warning messages are expected as part of conversion process using PGDspider. Please ignore.
+                     ")
+          writeLines("Warning messages are expected as part of conversion process using PGDspider.
 
-
-    ")
+                     ")
 
 
   ### convert file to .ped and .map using PGD spider
@@ -212,31 +212,31 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
   ## create spid file
 
-  spidTop <- "# spid-file generated: Thu Mar 10 09:40:22 AST 2016
+      spidTop <- "# spid-file generated: Thu Mar 10 09:40:22 AST 2016
 
-  # GENEPOP Parser questions
-  PARSER_FORMAT=GENEPOP
+      # GENEPOP Parser questions
+      PARSER_FORMAT=GENEPOP
 
-  # Enter the size of the repeated motif (same for all loci: one number; different: comma separated list (e.g.: 2,2,3,2):
-  GENEPOP_PARSER_REPEAT_SIZE_QUESTION=
-  # Select the type of the data:
-  GENEPOP_PARSER_DATA_TYPE_QUESTION=SNP
-  # How are Microsat alleles coded?
-  GENEPOP_PARSER_MICROSAT_CODING_QUESTION=REPEATS
+      # Enter the size of the repeated motif (same for all loci: one number; different: comma separated list (e.g.: 2,2,3,2):
+      GENEPOP_PARSER_REPEAT_SIZE_QUESTION=
+      # Select the type of the data:
+      GENEPOP_PARSER_DATA_TYPE_QUESTION=SNP
+      # How are Microsat alleles coded?
+      GENEPOP_PARSER_MICROSAT_CODING_QUESTION=REPEATS
 
-  # PED Writer questions
-  WRITER_FORMAT=PED
+      # PED Writer questions
+      WRITER_FORMAT=PED
 
-  # Save MAP file"
+      # Save MAP file"
 
-      map.loc <- paste0("PED_WRITER_MAP_FILE_QUESTION= ", "PGDtest")
+          map.loc <- paste0("PED_WRITER_MAP_FILE_QUESTION= ", "PGDtest")
 
-  spidBottom <- "# Replacement character for allele encoded as 0 (0 encodes for missing data in PED):
-  PED_WRITER_ZERO_CHAR_QUESTION=
-  # Specify the locus/locus combination you want to write to the PED file:
-  PED_WRITER_LOCUS_COMBINATION_QUESTION=
-  # Do you want to save an additional MAP file with loci information?
-  PED_WRITER_MAP_QUESTION=true"
+      spidBottom <- "# Replacement character for allele encoded as 0 (0 encodes for missing data in PED):
+      PED_WRITER_ZERO_CHAR_QUESTION=
+      # Specify the locus/locus combination you want to write to the PED file:
+      PED_WRITER_LOCUS_COMBINATION_QUESTION=
+      # Do you want to save an additional MAP file with loci information?
+      PED_WRITER_MAP_QUESTION=true"
 
       spid.file <- c(spidTop, map.loc, spidBottom)
 
@@ -294,11 +294,13 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       plink_ped_path <- paste0(where.PLINK, "/", "PGDtest.ped")
       plink_map_path <- paste0(where.PLINK, "/", "PGDtest.map")
 
-  writeLines("
+          #Console message
+          writeLines("
 
-    Calculating Linkage
+                     ")
+          writeLines("Calculating Linkage.
 
-    ")
+                 ")
 
 
   ### prepare a string to call PLINK
@@ -320,11 +322,13 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
         shell(execute.PLINK)
       }
 
-      writeLines("
+          #Console message
+          writeLines("
 
-        Creating optimized panel!!!!!
+                     ")
+          writeLines("Creating Fst optimized unlinked panel.
 
-        ")
+                     ")
 
 
   ## copy the LD file created by PLINK to the working directory
@@ -388,11 +392,13 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         to.keep <- FST.df[-which(FST.df$loci %in% to.drop),]
 
-        writeLines("
+            #Console message
+            writeLines("
 
-          Writing output
+                       ")
+            writeLines("Writing output.
 
-          ")
+                       ")
 
         Unlinked.panel <- FST.df[which(FST.df$loci %in% to.keep$loci),]
 
@@ -429,12 +435,11 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       file.remove(paste0(where.PGDspider,"/for_FST.txt"))
       file.remove(paste0(path.start,"/GP_FSTAT.spid"))
 
-      #wrap up indicator
-      writeLines("
+          #Console message
+          writeLines("
 
-        Process Completed
-
-        ")
+                     ")
+          writeLines("Process Completed.")
 
 ## return output
     Output <- list(Linkages=Linked.df,

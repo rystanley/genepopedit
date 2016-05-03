@@ -9,10 +9,11 @@ Optimfunc <- function(x)
 {
   subdat <- as.matrix(x)
   returned <- NULL
-  nloci <- length(subdat)
-  #while(nrow(subdat)>0)
+  #Progress bar
   CheckProgress <- txtProgressBar(min = 0, max = nrow(subdat), style = 3)
   startrow <- nrow(subdat)
+
+  #Iterative selection based on ordered Fst (lower integers/lower row numbers = higher FST, )
   while(class(subdat)!="integer")
   {
     highest <- subdat[1,which.min(subdat[1,])] #loci returned to the panel
@@ -23,15 +24,13 @@ Optimfunc <- function(x)
     for(i in otherdat){subdat[subdat==i] <- NA}
     subdat <- subdat[apply(subdat,1,function(x){!highest%in%x}),]
     }
-
-    deltarow <- startrow - nrow(subdat)
+    deltarow <- startrow - nrow(subdat) #Progress
     returned <- c(returned,highest)
     if(class(subdat)!="integer" & sum(!is.na(subdat[1,]))<=1){subdat <- subdat[-1,]}
     if(is.null(nrow(subdat))){returned <- c(returned,subdat[1])
     deltarow = startrow}
 
-    # print(nrow(subdat))
-
+    #Progress bar
     setTxtProgressBar(CheckProgress, deltarow)
   }
   return(returned)
