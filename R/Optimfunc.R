@@ -32,7 +32,7 @@ Optimfunc <- function(x)
 
     # print(nrow(subdat))
 
-    setTxtProgressBar(CheckProgress, )
+    setTxtProgressBar(CheckProgress, deltarow)
   }
   return(returned)
 }
