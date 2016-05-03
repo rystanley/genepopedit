@@ -329,11 +329,11 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         LRD2 <- as.matrix(linked.ranks.df2)
 
-        how.long <- system.time(
-    highest1 <- LRD2[1,which.min(LRD2[1,])] #loci returned to the panel
-    otherdat1 <- LRD2[1,-which.min(LRD2[1,])] #loci which will be eliminated from the panel due to being linked to the top loci by fst
-    otherdat1 <- otherdat1[!is.na(otherdat1)]
 
+    highest1 <-  LRD2[1,which.min(LRD2[1,])]
+    otherdat1 <- LRD2[1,-which.min(LRD2[1,])]
+    otherdat1 <- otherdat1[!is.na(otherdat1)]
+ how.long <- system.time(
     for(i in otherdat1){LRD2[LRD2==i] <- NA}
         )
 
