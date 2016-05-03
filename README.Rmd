@@ -21,6 +21,9 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     * sample IDs.
     * loci names.
     * allele calls.
+    * allele frequencies by population grouping.
+    * loci linkage and global Weir and Cockerham's Fst. 
+    * lists of unlinked loci maximizing pairwise global Weir and Cockerham's Fst.
     
 * create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
