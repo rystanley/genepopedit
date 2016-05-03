@@ -5,7 +5,7 @@
 \title{Creates a panel of the top n unlinked loci, and exports the list of loci}
 \usage{
 genepop_toploci(GenePop, LDpop = "All", r2.threshold = 0.2,
-  ld.window = NULL, where.PLINK, where.PGDspider, allocate.PGD.RAM = 2)
+  ld.window = NULL, where.PLINK, where.PGDspider, allocate.PGD.RAM = 1)
 }
 \arguments{
 \item{GenePop}{A file path to the GENEPOP format file you wish to create your panel from}

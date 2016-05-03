@@ -15,7 +15,7 @@
 #' @importFrom plyr rbind.fill
 
 
-genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.window = NULL,  where.PLINK, where.PGDspider, allocate.PGD.RAM = 2){
+genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.window = NULL,  where.PLINK, where.PGDspider, allocate.PGD.RAM = 1){
 
       path.start <- getwd()  ### where to write the files created by genepopedit to
 
@@ -25,15 +25,23 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
       if(allocate.PGD.RAM%%1 != 0){
         stop("Please specify an integer GB value to allocate to PGDspider.")
       }
+
+      #Set up ram allocation. Note that only 1024 gb of ram will work with Windows
       allocate.PGD.RAM <- allocate.PGD.RAM*1024
 
-  #Variable checks
+      if(Sys.info()["sysname"] == "Windows" & allocate.PGD.RAM>1024){
+        allocate.PGD.RAM=1024
+        writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.
+                   ")}
+
+      #Variable checks
       if(r2.threshold < 0 | r2.threshold > 1){
         stop("r^2 threshold must be a value between 0 and 1")
       }
 
       if(r2.threshold<0.2){
-        writeLines("Linkage detection threshold is low (<0.2). Linkage will be classified at a higher frequency than default PLINK selection parameters.")
+        writeLines("Linkage detection threshold is low (<0.2). Linkage will be classified at a higher frequency than default PLINK selection parameters.
+                   ")
       }
 
 
@@ -371,18 +379,9 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         LRD2 <- as.matrix(linked.ranks.df2)
 
-
-    highest1 <-  LRD2[1,which.min(LRD2[1,])]
-    otherdat1 <- LRD2[1,-which.min(LRD2[1,])]
-    otherdat1 <- otherdat1[!is.na(otherdat1)]
-
-    how.long <- system.time(
-    for(i in otherdat1){LRD2[LRD2==i] <- NA}
-        )[3]
-        how.long <- round((how.long*nrow(linked.ranks.df2))/60, digits = 3)
-
-        if(how.long==0){writeLines(paste0("Note: ", nrow(linked.ranks.df2), " groups of linked loci detected. Approximate time to completion less than one minute."))}else
-        {writeLines(paste0("Note: ", nrow(linked.ranks.df2), " groups of linked loci detected. Completion time estimated as ", how.long, " minutes."))}
+        highest1 <-  LRD2[1,which.min(LRD2[1,])]
+        otherdat1 <- LRD2[1,-which.min(LRD2[1,])]
+        otherdat1 <- otherdat1[!is.na(otherdat1)]
 
         to.keep <- FST.ld.ordered[Optimfunc(linked.ranks.df2)]
         to.drop <- setdiff(as.character(FST.df2$loci),to.keep)
