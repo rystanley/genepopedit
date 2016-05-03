@@ -2,7 +2,7 @@
 % Please edit documentation in R/Optimfunc.R
 \name{Optimfunc}
 \alias{Optimfunc}
-\title{Decision matrix for selecting a panel of unlinked loci by fst}
+\title{Decision matrix for selecting a panel of unlinked loci by Fst}
 \usage{
 Optimfunc(x)
 }
@@ -10,6 +10,6 @@ Optimfunc(x)
 \item{Matrix}{ordered by Loci high (1) to low (n loci) by fst in rows and the number of columns corresponds to the linked loci.}
 }
 \description{
-Decision matrix for selecting unlinked loci while maximizing fst
+Decision matrix for selecting unlinked loci while maximizing Fst. Function is used by genepop_toploci.
 }
 
