@@ -336,8 +336,8 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
     how.long <- system.time(
     for(i in otherdat1){LRD2[LRD2==i] <- NA}
-        )
-        how.long <- (how.long*nrow(linked.ranks.df2))/60
+        )[3]
+        how.long <- round((how.long*nrow(linked.ranks.df2))/60, digits = 3)
 
 
         writeLines(paste0("Note: ", nrow(linked.ranks.df2), " groups of linked loci detected. Approximate time to completion ", how.long, " minutes."))
