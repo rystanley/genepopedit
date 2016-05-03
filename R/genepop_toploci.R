@@ -342,7 +342,7 @@ genepop_toploci <- function(GenePop, LDpop = "All", r2.threshold = 0.2, ld.windo
 
         writeLines(paste0("Note: ", nrow(linked.ranks.df2), " groups of linked loci detected. Approximate time to completion ", how.long, " minutes."))
 
-        to.keep <- FST.ld.ordered[Optimfunc2(linked.ranks.df2)]
+        to.keep <- FST.ld.ordered[Optimfunc(linked.ranks.df2)]
         to.drop <- setdiff(as.character(FST.df2$loci),to.keep)
 
         FST.df2$loci <- as.character(FST.df2$loci)
