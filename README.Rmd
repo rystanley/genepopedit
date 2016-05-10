@@ -182,12 +182,15 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | A path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
-**LDpop** | A string which denotes which of the populations you wish to calculate linkage disequilibrium from. The default is to calculate LD among all ("All") populations. Population names must match those returned by [*genepop_detective*](#genepopdetect).
 **where.PLINK** | A file path to the PLINK installation folder.
-**r2.theshold** | Linkage threshold based on correlation between loci. Value must be between 0 & 1. Default threshold (0.2) matched to PLINK defaults. 
-**ld.window** | The number of sequential loci to be considered for linkage. This sliding window is based on the input order of loci in the input data. Default (NULL) will calcualte linkage among **all loci**. This variable should not be changed unless the order and proximity of loci on the genome is known and integrated into the order within the input data.  
 **where.PGDspider** | A file path to the PGDspider installation folder.
+**r2.theshold** | Linkage threshold based on correlation between loci. Value must be between 0 & 1. Default threshold (0.2) matched to PLINK defaults. 
+**FST.threshold** | The minimum r^2 threshold to consider a pair of loci to be considered linked.
+**ld.window** | The number of sequential loci to be considered for linkage. This sliding window is based on the input order of loci in the input data. Default (NULL) will calcualte linkage among **all loci**. This variable should not be changed unless the order and proximity of loci on the genome is known and integrated into the order within the input data.
+**LDpop** | A string which denotes which of the populations you wish to calculate linkage disequilibrium from. The default is to calculate LD among all ("All") populations. Population names must match those returned by [*genepop_detective*](#genepopdetect).
 **allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.PGD.RAM_ will be set to 1 GB.
+**return.workspace** | Logical query (default: TRUE) sepecifying whether to return the output to the workspace.
+**save.output** | Logical query (default: FALSE) to save the output to the same location as the file being analyzed. Each of the outputs of the function will be saved as a separate file with the file name of the orginal data appended with "Linkages", "Loci-FST", and "Unlinked-Loci-FST" for the pairwise linked loci along with their r^2, all loci with their global Fst, and only the top unlinked loci with their Fst respectively.
 
 ***
 
