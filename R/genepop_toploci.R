@@ -457,10 +457,7 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
                  Fst_Unlinked=your.panel_unlinked
   )
 
-  if(return.workspace == TRUE){
 
-    return(Output)
-  }
 
   if(save.output == TRUE){
 
@@ -470,6 +467,11 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
     write.table(x = Output$Fst, file = paste0(write_path, "_Loci_FST.txt"))
     write.table(x = Output$Fst_Unlinked, file = paste0(write_path, "_Unlinked_Loci_FST.txt"))
 
+  }
+
+   if(return.workspace == TRUE){
+
+    return(Output)
   }
 
   }
