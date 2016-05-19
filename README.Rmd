@@ -341,6 +341,21 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **fname** | collective name assigned to each output the output files (3).
 **path** | the path to directory where the BGC files will be saved.
 
+#### genepop_treemix.R 
+* Convert Genepop format to a gzipped Treemix input file.
+<https://bitbucket.org/nygcresearch/treemix/wiki/Home>
+
+[_example use_](#genepoptreemix)
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**where.PGDspider** | A file path to the PGDspider installation folder.
+**where.PLINK** | A file path to the PLINK installation folder.
+**binaryout** | A name that you want to call your binary PED file created from PLINK.
+**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.PGD.RAM_ will be set to 1 GB.
+
+
 #### genepop_flatten.R 
 * Convert Genepop format to a flattened dataframe:
     * Sample IDs
@@ -791,6 +806,17 @@ BGC_groups=data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","
 genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",path=output_dir)
 
 ```
+<a name="genepoptreemix"/>
+##genepop\_treemix
+**genepopedit** is one of the few tools available to convert data to the format required for input into to the Treemix format. It creates a gzipped file that clusters your individuals based on the first 3 letters of the individual's code. Treemix can be used to infer migration weight and directionality among your populations after building a maximum likelihood phylogram. <https://bitbucket.org/nygcresearch/treemix/wiki/Home>
+
+```r
+#convert Genepop to Treemix input. 
+genepop_treemix(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",
+  where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/", binaryout= "BinaryPED", path=paste0(output_dir,"Treemix_IDsubset.txt"))
+
+```
+
 <a name="genepopflat"/>
 ##genepop\_flatten
 Flatten your geneotype data for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove loci and-or populations, this must be before hand using *subset_genepop* or its sister functions (see below for examples).

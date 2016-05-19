@@ -9,7 +9,7 @@
 #' as a single row (character).
 #' @param where.PGDspider A file path to the PGDspider installation folder.
 #' @param where.PLINK A file path to the PLINK installation folder.
-#' @param binaryout A name that you want to call your binar PED file created from PLINK
+#' @param binaryout A name that you want to call your binary PED file created from PLINK
 #' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
 #' @rdname genepop_treemix
 #' @importFrom data.table fread as.data.table
@@ -22,15 +22,15 @@ genepop_treemix<-function(GenePop, where.PGDspider, where.PLINK, binaryout, allo
   writeLines("\n\n             ")
   writeLines("Warning messages are expected as part of conversion process using PGDspider.\n\n             ")
   path.start.PGD <- gsub(x = path.start, pattern = " ", replacement = "\\")
-  where.PGDspider.PGD <- gsub(x = where.PGDspider, pattern = " ", 
+  where.PGDspider.PGD <- gsub(x = where.PGDspider, pattern = " ",
                               replacement = "\\ ", fixed = TRUE)
   allocate.PGD.RAM <- allocate.PGD.RAM * 1024
-  if (Sys.info()["sysname"] == "Windows" & allocate.PGD.RAM > 
+  if (Sys.info()["sysname"] == "Windows" & allocate.PGD.RAM >
       1024) {
     allocate.PGD.RAM = 1024
     writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.\n               ")
   }
-  
+
 GP_PED_SPID_Top<-"# spid-file generated: Thu May 19 13:29:37 ADT 2016\n\n # GENEPOP Parser questions\n PARSER_FORMAT=GENEPOP
   # Enter the size of the repeated motif (same for all loci: one number; different: comma separated list (e.g.: 2,2,3,2):
   GENEPOP_PARSER_REPEAT_SIZE_QUESTION=
@@ -38,10 +38,10 @@ GP_PED_SPID_Top<-"# spid-file generated: Thu May 19 13:29:37 ADT 2016\n\n # GENE
     GENEPOP_PARSER_DATA_TYPE_QUESTION=SNP
   # How are Microsat alleles coded?
   GENEPOP_PARSER_MICROSAT_CODING_QUESTION=REPEATS
-  
+
   # PED Writer questions
   WRITER_FORMAT=PED
-  
+
   # Save MAP file"
 map.loc<-paste0("PED_WRITER_MAP_FILE_QUESTION= ", where.PGDspider,"PGDtest")
 GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes for missing data in PED):
@@ -52,47 +52,47 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
     PED_WRITER_MAP_QUESTION=true"
   spid.file <- c(GP_PED_SPID_Top, map.loc, GP_PED_SPID_Bottom)
   write(x = spid.file, file = paste0(where.PGDspider.PGD, "/", "GP_PED.spid"))
- 
-  
+
+
   file.copy(from = GenePop, to = where.PGDspider, overwrite = TRUE)
   GenePop.name <- stringr::str_split(string = GenePop, pattern = "/")
   GenePop.name <- unlist(GenePop.name)
   GenePop.name <- GenePop.name[grep(x = GenePop.name, pattern = ".txt")]
-  file.rename(from = paste0(where.PGDspider, GenePop.name), 
+  file.rename(from = paste0(where.PGDspider, GenePop.name),
               to = paste0(where.PGDspider, "GPD_for_PED_to_BED.txt"))
   remember.TOPLOC.path <- paste0(where.PGDspider, "GPD_for_PED_to_BED.txt")
-  
+
   if (Sys.info()["sysname"] != "Windows") {
     input.file.call <- "-inputfile GPD_for_PED_to_BED.txt"
-    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, 
+    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM,
                              "m -Xms512m -jar PGDSpider2-cli.jar")
     spid.call <- "-spid GP_PED.spid"
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat PED"
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, "; ", 
+    goto.spider <- paste0("cd ", where.PGDspider.PGD, "; ",
                           execute.SPIDER)
     output.file.path <- "-outputfile PGDtest.ped"
-    run.PGDspider <- paste0(goto.spider, " ", input.file.call, 
-                            " ", input.format, " ", output.file.path, " ", output.format, 
+    run.PGDspider <- paste0(goto.spider, " ", input.file.call,
+                            " ", input.format, " ", output.file.path, " ", output.format,
                             " ", spid.call)
     system(run.PGDspider)
   }
   if (Sys.info()["sysname"] == "Windows") {
     input.file.call <- "-inputfile GPD_for_PED_to_BED.txt"
-    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, 
+    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM,
                              "m -Xms512m -jar PGDSpider2-cli.jar")
     spid.call <- "-spid GP_PED.spid"
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat PED"
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, " && ", 
+    goto.spider <- paste0("cd ", where.PGDspider.PGD, " && ",
                           execute.SPIDER)
     output.file.path <- "-outputfile PGDtest.ped"
-    run.PGDspider <- paste0(goto.spider, " ", input.file.call, 
-                            " ", input.format, " ", output.file.path, " ", output.format, 
+    run.PGDspider <- paste0(goto.spider, " ", input.file.call,
+                            " ", input.format, " ", output.file.path, " ", output.format,
                             " ", spid.call)
     shell(run.PGDspider)
   }
-  
+
   ped.path <- paste0(where.PGDspider, "/", "PGDtest.ped")
   map.path <- paste0(where.PGDspider, "/", "PGDtest.map")
   file.copy(from = ped.path, to = where.PLINK, overwrite = TRUE)
@@ -101,12 +101,12 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   plink_map_path <- paste0(where.PLINK, "/", "PGDtest.map")
   writeLines("\n\n             ")
   callplink<- paste0("cd ", where.PLINK)
-  
+
   if (Sys.info()["sysname"] != "Windows") {
     plink.input <- paste0(callplink, "; ", "plink --noweb --file PGDtest --make-bed --out ", binaryout)
     system(plink.input)
   }
-  
+
   if (Sys.info()["sysname"] == "Windows") {
     plink.input<-paste0(callplink, " && ", "plink --noweb --file PGDtest --make-bed --out ", binaryout)
     shell(plink.input)
@@ -133,7 +133,7 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   remember.fam.plink<-paste0(where.PLINK,paste0(binaryout,".fam"))
   bed.name=paste0(anal.name,".bed")
   remember.bed.plink<-paste0(where.PLINK,bed.name)
-  
+
 
 ###STEP 3###
 #####Now make the frequency cluster file in Plink
@@ -141,7 +141,7 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
     execute.PLINK2 <- paste0(callplink, "; ", "plink --noweb --bfile ", binaryout, " --freq --within ClusterFile.clust --out TreemixInput")
     system(execute.PLINK2)
   }
-  
+
 if (Sys.info()["sysname"] == "Windows") {
   execute.PLINK2<-paste0(callplink, " && ", "plink --noweb --bfile ", binaryout, " --freq --within ClusterFile.clust --out TreemixInput")
   shell(execute.PLINK2)
