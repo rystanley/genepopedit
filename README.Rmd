@@ -800,10 +800,10 @@ If you are interested conducting assignment analysis, you can convert to the for
 
 ```r
 #specify which populations are going to be included in the analysis and to which class they belong. Note Pops identified in P1 and-or P2 can also be specified as "Admixed" to test BGC output. 
-BGC_groups=data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("P1","P1","P1","Admixed","Admixed","Admixed","Admixed","P2","P2","P2"))
+  BGC_groups=data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("P1","P1","P1","Admixed","Admixed","Admixed","Admixed","P2","P2","P2"))
 
 #convert Genepop to BGC input files (3). Note in this case the variable path is a path to the directory where the input files will be saved.
-genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",path=output_dir)
+  genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",path=output_dir)
 
 ```
 <a name="genepoptreemix"/>
@@ -816,8 +816,7 @@ genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset
   treegroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("1","2","3","3","3","4","5","6","7","7"))
   
 #convert Genepop to Treemix input and keep intermediary conversion files (default: FALSE)
-genepop_treemix(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",
-  where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/", popgroup=treegroups,keep_inter=TRUE,, path=paste0(output_dir,"Treemix_IDsubset.txt"))
+  genepop_treemix(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",popgroup=treegroups,keep_inter=TRUE,path=paste0(output_dir,"Treemix_IDsubset.txt"))
 
 ```
 
