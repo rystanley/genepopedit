@@ -150,6 +150,8 @@ if (Sys.info()["sysname"] == "Windows") {
 #Now gzip the output from Plink, then run this gzipped file through the Python script that comes with Treemix.
 R.utils::gzip(filename=paste0(where.PLINK,"TreemixInput.frq.strat"))
 
+file.copy(from=paste0(where.PGDspider,"PGDtest.map"),to = paste0(path,"PGDtest.map"))
+file.copy(from=paste0(where.PGDspider,"PGDtest.ped"),to = paste0(path,"PGDtest.ped"))
 file.copy(from = paste0(where.PLINK,"TreemixInput.frq.strat.gz"), to = paste0(path,"TreemixInput.frq.strat.gz"))
 file.copy(from=paste0(where.PLINK,"ClusterFile.clust"),to=paste0(path,"ClusterFile.clust"))
 writeLines("\nCopying gzipped input file to path and removing unnecessary files\n")
@@ -158,6 +160,8 @@ file.remove("GP_PED.spid")
 file.remove("spider.conf.xml")
 file.remove("PGDSpider-cli.log")
 file.remove("GPD_for_PED_to_BED.txt")
+file.remove("PGDtest.map")
+file.remove("PGDtest.ped")
 setwd(where.PLINK)
 file.remove("PGDtest.ped")
 file.remove("PGDtest.map")
