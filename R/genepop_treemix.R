@@ -149,7 +149,7 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   famtoconvert<-read.table(paste0(where.PLINK,paste0("BinaryPED",".fam")), quote = "", sep=" ", header=FALSE)
 
   #Extrac population names based on the _ seperation
-  NameExtract <- substr(famtoconvert[,2],1,regexpr("_",NamePops)-1)
+  NameExtract <- substr(famtoconvert[,2],1,regexpr("_",famtoconvert[,2])-1)
 
 
   # Get the population groupings
