@@ -9,14 +9,14 @@
 #' as a single row (character).
 #' @param where.PGDspider A file path to the PGDspider installation folder.
 #' @param where.PLINK A file path to the PLINK installation folder.
-#' @param binaryout A name that you want to call your binary PED file created from PLINK
 #' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
+#' @param path file path to directory where the gzipped Treemix input file will be saved.
 #' @rdname genepop_treemix
 #' @importFrom data.table fread as.data.table
 #' @importFrom R.utils gzip
 #' @export
 
-genepop_treemix<-function(GenePop, where.PGDspider, where.PLINK, binaryout, allocate.PGD.RAM){
+genepop_treemix<-function(GenePop, where.PGDspider, where.PLINK, allocate.PGD.RAM, path){
   path.start<-getwd()
   writeLines("Converting GENEPOP to PED format for PLINK.")
   writeLines("\n\n             ")
@@ -103,34 +103,34 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   callplink<- paste0("cd ", where.PLINK)
 
   if (Sys.info()["sysname"] != "Windows") {
-    plink.input <- paste0(callplink, "; ", "plink --noweb --file PGDtest --make-bed --out ", binaryout)
+    plink.input <- paste0(callplink, "; ", "plink --noweb --file PGDtest --make-bed --out BinaryPED")
     system(plink.input)
   }
 
   if (Sys.info()["sysname"] == "Windows") {
-    plink.input<-paste0(callplink, " && ", "plink --noweb --file PGDtest --make-bed --out ", binaryout)
+    plink.input<-paste0(callplink, " && ", "plink --noweb --file PGDtest --make-bed --out BinaryPED")
     shell(plink.input)
   }
-  anal.name=stringr::str_split(string = plink.in, pattern = "/")
+  anal.name=stringr::str_split(string = "PGDtest", pattern = "/")
   anal.name=unlist(anal.name)
   anal.name=anal.name[length(anal.name)]
   map.name=paste0(anal.name,".map")
   ped.name=paste0(anal.name,".ped")
   remember.ped.plink<-paste0(where.PLINK,ped.name)
   remember.map.plink<-paste0(where.PLINK,map.name)
-  writeLines("\nConverted ped file to binary ped.\n\n             ")
+  writeLines("\nConverted ped file to binary ped.\n\n            ")
 
 
 #Step 2
 #Convert .fam file to .clust file
 #Will add a third column - the clusters column - based on the first 3 characters of your Individual IDs
-  famtoconvert<-read.table(paste0(where.PLINK,paste0(binaryout,".fam")), quote = "", sep=" ", header=FALSE)
+  famtoconvert<-read.table(paste0(where.PLINK,paste0("BinaryPED",".fam")), quote = "", sep=" ", header=FALSE)
   removecols<-famtoconvert[,1:2]
   removecols[,3]<-substr(removecols[,2],start=1,stop=3)
   write.table(x=removecols,file=paste0(where.PLINK,"ClusterFile.clust"),quote =FALSE,col.names = FALSE, row.names = FALSE)
   writeLines("\nCluster file created from .fam file.\n     ")
   writeLines("Creating frequency file using bed and cluster files.\n\n     ")
-  remember.fam.plink<-paste0(where.PLINK,paste0(binaryout,".fam"))
+  remember.fam.plink<-paste0(where.PLINK,"BinaryPED.fam")
   bed.name=paste0(anal.name,".bed")
   remember.bed.plink<-paste0(where.PLINK,bed.name)
 
@@ -138,17 +138,38 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
 ###STEP 3###
 #####Now make the frequency cluster file in Plink
   if (Sys.info()["sysname"] != "Windows") {
-    execute.PLINK2 <- paste0(callplink, "; ", "plink --noweb --bfile ", binaryout, " --freq --within ClusterFile.clust --out TreemixInput")
+    execute.PLINK2 <- paste0(callplink, "; ", "plink --noweb --bfile BinaryPED --freq --within ClusterFile.clust --out TreemixInput")
     system(execute.PLINK2)
   }
 
 if (Sys.info()["sysname"] == "Windows") {
-  execute.PLINK2<-paste0(callplink, " && ", "plink --noweb --bfile ", binaryout, " --freq --within ClusterFile.clust --out TreemixInput")
+  execute.PLINK2<-paste0(callplink, " && ", "plink --noweb --bfile BinaryPED --freq --within ClusterFile.clust --out TreemixInput")
   shell(execute.PLINK2)
 }
 
 #Now gzip the output from Plink, then run this gzipped file through the Python script that comes with Treemix.
 R.utils::gzip(filename=paste0(where.PLINK,"TreemixInput.frq.strat"))
+
+file.copy(from = paste0(where.PLINK,"TreemixInput.frq.strat.gz"), to = paste0(path,"TreemixInput.frq.strat.gz"))
+file.copy(from=paste0(where.PLINK,"ClusterFile.clust"),to=paste0(path,"ClusterFile.clust"))
+writeLines("\nCopying gzipped input file to path and removing unnecessary files\n")
+setwd(where.PGDspider)
+file.remove("GP_PED.spid")
+file.remove("spider.conf.xml")
+file.remove("PGDSpider-cli.log")
+file.remove("GPD_for_PED_to_BED.txt")
+setwd(where.PLINK)
+file.remove("PGDtest.ped")
+file.remove("PGDtest.map")
+file.remove("BinaryPED.nosex")
+file.remove("BinaryPED.log")
+file.remove("BinaryPED.bed")
+file.remove("BinaryPED.bim")
+file.remove("BinaryPED.fam")
+file.remove("TreemixInput.nosex")
+file.remove("TreemixInput.log")
+file.remove("TreemixInput.frq.strat.gz")
+file.remove("ClusterFile.clust")
 #should have .frq.gz as the extension after this
 writeLines("\nRun your new gzipped file through the Python script that comes with Treemix now. Then you are ready to put it into Treemix!")
 return()
