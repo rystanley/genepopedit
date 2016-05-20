@@ -214,19 +214,19 @@ R.utils::gzip(filename=paste0(where.PLINK,"TreemixInput.frq.strat"))
 
 #Keep the intermediate conversion files.
     if(keep_inter){
-    file.copy(from=paste0(where.PGDspider,"PGDtest.map"),to = paste0(path,"PGDtest.map"))
-    file.copy(from=paste0(where.PGDspider,"PGDtest.ped"),to = paste0(path,"PGDtest.ped"))
-    file.copy(from=paste0(where.PLINK,"ClusterFile.clust"),to=paste0(path,"ClusterFile.clust"))
-    file.rename(from = paste0(path,"PGDtest.map"),to=paste0(path,"treemix_map.map"))
-    file.rename(from = paste0(path,"PGDtest.ped"),to=paste0(path,"treemix_ped.ped"))
+      file.copy(from=paste0(where.PGDspider,"PGDtest.map"),to = paste0(path,"PGDtest.map"))
+      file.copy(from=paste0(where.PGDspider,"PGDtest.ped"),to = paste0(path,"PGDtest.ped"))
+      file.copy(from=paste0(where.PLINK,"ClusterFile.clust"),to=paste0(path,"ClusterFile.clust"))
+      file.rename(from = paste0(path,"PGDtest.map"),to=paste0(path,"treemix_map.map"))
+      file.rename(from = paste0(path,"PGDtest.ped"),to=paste0(path,"treemix_ped.ped"))
     }else{
       file.remove(paste0(where.PGDspider,"PGDtest.map"))
       file.remove(paste0(where.PGDspider,"PGDtest.ped"))
       file.remove(paste0(where.PLINK,"ClusterFile.clust"))
     }
 
+  writeLines("\nCopying gzipped input file to path and removing unnecessary files\n")
     file.copy(from = paste0(where.PLINK,"TreemixInput.frq.strat.gz"), to = paste0(path,"TreemixInput.frq.strat.gz"))
-    writeLines("\nCopying gzipped input file to path and removing unnecessary files\n")
     setwd(where.PGDspider)
     file.remove("GP_PED.spid")
     file.remove("spider.conf.xml")
