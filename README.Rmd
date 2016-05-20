@@ -812,9 +812,13 @@ genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset
 **genepopedit** is one of the few tools available to convert data to the format required for input into to the Treemix format. It creates a gzipped file that clusters your individuals based on the first 3 letters of the individual's code. Treemix can be used to infer migration weight and directionality among your populations after building a maximum likelihood phylogram. <https://bitbucket.org/nygcresearch/treemix/wiki/Home>
 
 ```r
-#convert Genepop to Treemix input. 
+
+# Set new population groupings (group CCC/DDD/EEE and III/JJJ)
+  treegroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),                      groups = c("1","2","3","3","3","4","5","6","7","7"))
+  
+#convert Genepop to Treemix input and keep intermediary conversion files (default: FALSE)
 genepop_treemix(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",
-  where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/", binaryout= "BinaryPED", path=paste0(output_dir,"Treemix_IDsubset.txt"))
+  where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/", popgroup=treegroups,keep_inter=TRUE,, path=paste0(output_dir,"Treemix_IDsubset.txt"))
 
 ```
 
