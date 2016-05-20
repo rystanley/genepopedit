@@ -1,6 +1,6 @@
 # Genepop_Treemix
-#' @title Convert a Genepop file for input in the program TREEMIX
-#' @description Convert Genepop to within-clusters binary PED file for TREEMIX
+#' @title Convert a Genepop to input required for phython processing to TREEMIX.
+#' @description Convert Genepop to within-clusters binary PED file for TREEMIX.
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard Genepop format with the first n+1 rows corresponding to the n loci names,
@@ -10,27 +10,49 @@
 #' @param where.PGDspider A file path to the PGDspider installation folder.
 #' @param where.PLINK A file path to the PLINK installation folder.
 #' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
+#' @param popgroup if specified (Default: NULL) popgroup is a dataframe or path to a csv.
+#' This dataframe contains two columns. Column 1 corresponds to the population names. These names
+#' should match the individual IDs (e.g. BON_01 ,  110110 would be 'BON'). The next column
+#' has the group. If groupings are the same as populations then leave as NULL (Default). If the input genepop file does not have population and sample ID seperation using ("_") then refer to genepop_ID().
+#' @param keep_inter A logical condition statement (default : FALSE) specifying whether to keep the map, ped, and clustering files generated during the conversion.
 #' @param path file path to directory where the gzipped Treemix input file will be saved.
 #' @rdname genepop_treemix
 #' @importFrom data.table fread as.data.table
 #' @importFrom R.utils gzip
 #' @export
 
-genepop_treemix<-function(GenePop, where.PGDspider, where.PLINK, allocate.PGD.RAM, path){
-  path.start<-getwd()
-  writeLines("Converting GENEPOP to PED format for PLINK.")
-  writeLines("\n\n             ")
-  writeLines("Warning messages are expected as part of conversion process using PGDspider.\n\n             ")
+genepop_treemix<-function(GenePop,where.PGDspider,where.PLINK,allocate.PGD.RAM=1,popgroup=NULL,keep_map_ped=FALSE, path){
+
+  path.start<-path
+
+  ## File path checks
+  if(substring(path,first = nchar(path),last=nchar(path))!="/"){
+    path <- paste0(path,"/")
+  }
   path.start.PGD <- gsub(x = path.start, pattern = " ", replacement = "\\")
+
   where.PGDspider.PGD <- gsub(x = where.PGDspider, pattern = " ",
                               replacement = "\\ ", fixed = TRUE)
-  allocate.PGD.RAM <- allocate.PGD.RAM * 1024
+
+  #Ram warning messages.
+  if(allocate.PGD.RAM%%1 != 0){
+    stop("Please specify an integer GB value to allocate to PGDspider.")
+  }
+
   if (Sys.info()["sysname"] == "Windows" & allocate.PGD.RAM >
       1024) {
     allocate.PGD.RAM = 1024
     writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.\n               ")
   }
 
+  #Ram allocation - gb to mb
+  allocate.PGD.RAM <- allocate.PGD.RAM * 1024
+
+  writeLines("Converting GENEPOP to PED format for PLINK.")
+  writeLines("\n\n             ")
+  writeLines("Warning messages are expected as part of conversion process using PGDspider.\n\n             ")
+
+#Create the spid files required by PGD for conversion
 GP_PED_SPID_Top<-"# spid-file generated: Thu May 19 13:29:37 ADT 2016\n\n # GENEPOP Parser questions\n PARSER_FORMAT=GENEPOP
   # Enter the size of the repeated motif (same for all loci: one number; different: comma separated list (e.g.: 2,2,3,2):
   GENEPOP_PARSER_REPEAT_SIZE_QUESTION=
@@ -125,9 +147,47 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
 #Convert .fam file to .clust file
 #Will add a third column - the clusters column - based on the first 3 characters of your Individual IDs
   famtoconvert<-read.table(paste0(where.PLINK,paste0("BinaryPED",".fam")), quote = "", sep=" ", header=FALSE)
-  removecols<-famtoconvert[,1:2]
-  removecols[,3]<-substr(removecols[,2],start=1,stop=3)
-  write.table(x=removecols,file=paste0(where.PLINK,"ClusterFile.clust"),quote =FALSE,col.names = FALSE, row.names = FALSE)
+
+  #Extrac population names based on the _ seperation
+  NameExtract <- substr(famtoconvert[,2],1,regexpr("_",NamePops)-1)
+
+
+  # Get the population groupings
+  if(!is.null(popgroup)) #if popgroup isn't NULL
+  {
+    if(is.character(popgroup)){popgroup <- read.csv(popgroup,header=T)} #if it is a path then read it in
+
+    if(length(intersect(unique(NameExtract),popgroup[,1]))!=length(unique(NameExtract))){
+      message("Popuation levels missing form popgroups input. STRUCTURE groups now set to default population levels")
+      groupvec <- NameExtract
+      for (i in 1:length(unique(NameExtract))) # replace with numbers
+      {
+        groupvec[which(groupvec==unique(NameExtract)[i])] = i
+      }
+    }
+
+    groupvec=NameExtract
+    for (i in 1:nrow(popgroup))
+    {
+      groupvec[which(groupvec==popgroup[i,1])]=rep(popgroup[i,2],length(groupvec[which(groupvec==popgroup[i,1])]))
+    }
+
+  }
+
+  if(is.null(popgroup)) #if popgroup isn't NULL
+  {
+    groupvec <- NameExtract
+    for (i in 1:length(unique(NameExtract))) # replace with numbers
+    {
+      groupvec[which(groupvec==unique(NameExtract)[i])] = i
+    }
+
+  }
+
+  #Add grouping levels
+  famtoconvert[,3] <- as.character(groupvec)
+
+  write.table(x=famtoconvert[,1:3],file=paste0(where.PLINK,"ClusterFile.clust"),quote =FALSE,col.names = FALSE, row.names = FALSE)
   writeLines("\nCluster file created from .fam file.\n     ")
   writeLines("Creating frequency file using bed and cluster files.\n\n     ")
   remember.fam.plink<-paste0(where.PLINK,"BinaryPED.fam")
@@ -150,32 +210,44 @@ if (Sys.info()["sysname"] == "Windows") {
 #Now gzip the output from Plink, then run this gzipped file through the Python script that comes with Treemix.
 R.utils::gzip(filename=paste0(where.PLINK,"TreemixInput.frq.strat"))
 
-file.copy(from=paste0(where.PGDspider,"PGDtest.map"),to = paste0(path,"PGDtest.map"))
-file.copy(from=paste0(where.PGDspider,"PGDtest.ped"),to = paste0(path,"PGDtest.ped"))
-file.copy(from = paste0(where.PLINK,"TreemixInput.frq.strat.gz"), to = paste0(path,"TreemixInput.frq.strat.gz"))
-file.copy(from=paste0(where.PLINK,"ClusterFile.clust"),to=paste0(path,"ClusterFile.clust"))
-writeLines("\nCopying gzipped input file to path and removing unnecessary files\n")
-setwd(where.PGDspider)
-file.remove("GP_PED.spid")
-file.remove("spider.conf.xml")
-file.remove("PGDSpider-cli.log")
-file.remove("GPD_for_PED_to_BED.txt")
-file.remove("PGDtest.map")
-file.remove("PGDtest.ped")
-setwd(where.PLINK)
-file.remove("PGDtest.ped")
-file.remove("PGDtest.map")
-file.remove("BinaryPED.nosex")
-file.remove("BinaryPED.log")
-file.remove("BinaryPED.bed")
-file.remove("BinaryPED.bim")
-file.remove("BinaryPED.fam")
-file.remove("TreemixInput.nosex")
-file.remove("TreemixInput.log")
-file.remove("TreemixInput.frq.strat.gz")
-file.remove("ClusterFile.clust")
-#should have .frq.gz as the extension after this
-writeLines("\nRun your new gzipped file through the Python script that comes with Treemix now. Then you are ready to put it into Treemix!")
+#Clean files and return to path.
+
+#Keep the intermediate conversion files.
+    if(keep_inter){
+    file.copy(from=paste0(where.PGDspider,"PGDtest.map"),to = paste0(path,"PGDtest.map"))
+    file.copy(from=paste0(where.PGDspider,"PGDtest.ped"),to = paste0(path,"PGDtest.ped"))
+    file.copy(from=paste0(where.PLINK,"ClusterFile.clust"),to=paste0(path,"ClusterFile.clust"))
+    file.rename(from = paste0(path,"PGDtest.map"),to=paste0(path,"treemix_map.map"))
+    file.rename(from = paste0(path,"PGDtest.ped"),to=paste0(path,"treemix_ped.ped"))
+    }else{
+      file.remove(paste0(where.PGDspider,"PGDtest.map"))
+      file.remove(paste0(where.PGDspider,"PGDtest.ped"))
+      file.remove(paste0(where.PLINK,"ClusterFile.clust"))
+    }
+
+    file.copy(from = paste0(where.PLINK,"TreemixInput.frq.strat.gz"), to = paste0(path,"TreemixInput.frq.strat.gz"))
+    writeLines("\nCopying gzipped input file to path and removing unnecessary files\n")
+    setwd(where.PGDspider)
+    file.remove("GP_PED.spid")
+    file.remove("spider.conf.xml")
+    file.remove("PGDSpider-cli.log")
+    file.remove("GPD_for_PED_to_BED.txt")
+    file.remove("PGDtest.map")
+    file.remove("PGDtest.ped")
+    setwd(where.PLINK)
+    file.remove("PGDtest.ped")
+    file.remove("PGDtest.map")
+    file.remove("BinaryPED.nosex")
+    file.remove("BinaryPED.log")
+    file.remove("BinaryPED.bed")
+    file.remove("BinaryPED.bim")
+    file.remove("BinaryPED.fam")
+    file.remove("TreemixInput.nosex")
+    file.remove("TreemixInput.log")
+    file.remove("TreemixInput.frq.strat.gz")
+    file.remove("ClusterFile.clust")
+    #should have .frq.gz as the extension after this
+    writeLines("\nRun your new gzipped file through the Python script that comes with Treemix now. Then you are ready to put it into Treemix!")
 return()
 }
 
