@@ -352,9 +352,10 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **where.PGDspider** | A file path to the PGDspider installation folder.
 **where.PLINK** | A file path to the PLINK installation folder.
-**binaryout** | A name that you want to call your binary PED file created from PLINK.
 **allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.PGD.RAM_ will be set to 1 GB.
-
+**popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then population levels will be assigned an individual group.
+**keep_inter** | A logical vector specifying whether the intermediate conversion steps (.map,.ped, and clustering file) should be returned to the path.
+**path** | the path to directory where the TREEMIX files will be saved.
 
 #### genepop_flatten.R 
 * Convert Genepop format to a flattened dataframe:
