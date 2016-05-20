@@ -21,7 +21,7 @@
 #' @importFrom R.utils gzip
 #' @export
 
-genepop_treemix<-function(GenePop,where.PGDspider,where.PLINK,allocate.PGD.RAM=1,popgroup=NULL,keep_map_ped=FALSE, path){
+genepop_treemix<-function(GenePop,where.PGDspider,where.PLINK,allocate.PGD.RAM=1,popgroup=NULL,keep_inter=FALSE,path){
 
   path.start<-path
 
