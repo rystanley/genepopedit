@@ -808,7 +808,7 @@ If you are interested conducting assignment analysis, you can convert to the for
 ```
 <a name="genepoptreemix"/>
 ##genepop\_treemix
-**genepopedit** is one of the few tools available to convert data to the format required for input into to the Treemix format. It creates a gzipped file that clusters your individuals based on the first 3 letters of the individual's code. Treemix can be used to infer migration weight and directionality among your populations after building a maximum likelihood phylogram <https://bitbucket.org/nygcresearch/treemix/wiki/Home>. [_Function description_](#funcconvert)
+**genepopedit** is one of the few tools available to convert data to the format required for input into to the Treemix format. It creates a gzipped file that clusters your individuals based on the population ID of the individual's code. Population IDs are extracted using the "_" to differentiate population from sample ID (e.g. BON_01 is population BON sample 01). If samples are not seperated refer to [_genepop_ID_](#genepopidfix). Grouping levels for populations can also be changed using [_subset_genepop_rename_](#subsetrenm). Treemix can be used to infer migration weight and directionality among your populations after building a maximum likelihood phylogram <https://bitbucket.org/nygcresearch/treemix/wiki/Home>. [_Function description_](#funcconvert)
 
 ```r
 
