@@ -10,10 +10,6 @@
 #' @param where.PGDspider A file path to the PGDspider installation folder.
 #' @param where.PLINK A file path to the PLINK installation folder.
 #' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
-#' @param popgroup if specified (Default: NULL) popgroup is a dataframe or path to a csv.
-#' This dataframe contains two columns. Column 1 corresponds to the population names. These names
-#' should match the individual IDs (e.g. BON_01 ,  110110 would be 'BON'). The next column
-#' has the group. If groupings are the same as populations then leave as NULL (Default). If the input genepop file does not have population and sample ID seperation using ("_") then refer to genepop_ID().
 #' @param keep_inter A logical condition statement (default : FALSE) specifying whether to keep the map, ped, and clustering files generated during the conversion.
 #' @param path file path to directory where the gzipped Treemix input file will be saved.
 #' @rdname genepop_treemix
@@ -21,7 +17,7 @@
 #' @importFrom R.utils gzip
 #' @export
 
-genepop_treemix<-function(GenePop,where.PGDspider,where.PLINK,allocate.PGD.RAM=1,popgroup=NULL,keep_inter=FALSE,path){
+genepop_treemix<-function(GenePop,where.PGDspider,where.PLINK,allocate.PGD.RAM=1,keep_inter=FALSE,path){
 
   path.start<-path
 
@@ -151,41 +147,7 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   #Extrac population names based on the _ seperation
   NameExtract <- substr(famtoconvert[,2],1,regexpr("_",famtoconvert[,2])-1)
 
-
-  # Get the population groupings
-  if(!is.null(popgroup)) #if popgroup isn't NULL
-  {
-    if(is.character(popgroup)){popgroup <- read.csv(popgroup,header=T)} #if it is a path then read it in
-
-    if(length(intersect(unique(NameExtract),popgroup[,1]))!=length(unique(NameExtract))){
-      message("Popuation levels missing form popgroups input. STRUCTURE groups now set to default population levels")
-      groupvec <- NameExtract
-      for (i in 1:length(unique(NameExtract))) # replace with numbers
-      {
-        groupvec[which(groupvec==unique(NameExtract)[i])] = i
-      }
-    }
-
-    groupvec=NameExtract
-    for (i in 1:nrow(popgroup))
-    {
-      groupvec[which(groupvec==popgroup[i,1])]=rep(popgroup[i,2],length(groupvec[which(groupvec==popgroup[i,1])]))
-    }
-
-  }
-
-  if(is.null(popgroup)) #if popgroup isn't NULL
-  {
-    groupvec <- NameExtract
-    for (i in 1:length(unique(NameExtract))) # replace with numbers
-    {
-      groupvec[which(groupvec==unique(NameExtract)[i])] = i
-    }
-
-  }
-
-  #Add grouping levels
-  famtoconvert[,3] <- as.character(groupvec)
+  famtoconvert[,3] <- as.character(NameExtract)
 
   write.table(x=famtoconvert[,1:3],file=paste0(where.PLINK,"ClusterFile.clust"),quote =FALSE,col.names = FALSE, row.names = FALSE)
   writeLines("\nCluster file created from .fam file.\n     ")
@@ -232,8 +194,6 @@ R.utils::gzip(filename=paste0(where.PLINK,"TreemixInput.frq.strat"))
     file.remove("spider.conf.xml")
     file.remove("PGDSpider-cli.log")
     file.remove("GPD_for_PED_to_BED.txt")
-    file.remove("PGDtest.map")
-    file.remove("PGDtest.ped")
     setwd(where.PLINK)
     file.remove("PGDtest.ped")
     file.remove("PGDtest.map")
@@ -245,7 +205,6 @@ R.utils::gzip(filename=paste0(where.PLINK,"TreemixInput.frq.strat"))
     file.remove("TreemixInput.nosex")
     file.remove("TreemixInput.log")
     file.remove("TreemixInput.frq.strat.gz")
-    file.remove("ClusterFile.clust")
     #should have .frq.gz as the extension after this
     writeLines("\nRun your new gzipped file through the Python script that comes with Treemix now. Then you are ready to put it into Treemix!")
 return()

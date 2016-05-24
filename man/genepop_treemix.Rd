@@ -2,10 +2,10 @@
 % Please edit documentation in R/genepop_treemix.R
 \name{genepop_treemix}
 \alias{genepop_treemix}
-\title{Convert a Genepop file for input in the program TREEMIX}
+\title{Convert a Genepop to input required for phython processing to TREEMIX.}
 \usage{
-genepop_treemix(GenePop, where.PGDspider, where.PLINK, binaryout,
-  allocate.PGD.RAM)
+genepop_treemix(GenePop, where.PGDspider, where.PLINK, allocate.PGD.RAM = 1,
+  keep_inter = FALSE, path)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
@@ -19,11 +19,13 @@ as a single row (character).}
 
 \item{where.PLINK}{A file path to the PLINK installation folder.}
 
-\item{binaryout}{A name that you want to call your binar PED file created from PLINK}
-
 \item{allocate.PGD.RAM}{An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.}
+
+\item{keep_inter}{A logical condition statement (default : FALSE) specifying whether to keep the map, ped, and clustering files generated during the conversion.}
+
+\item{path}{file path to directory where the gzipped Treemix input file will be saved.}
 }
 \description{
-Convert Genepop to within-clusters binary PED file for TREEMIX
+Convert Genepop to within-clusters binary PED file for TREEMIX.
 }
 
