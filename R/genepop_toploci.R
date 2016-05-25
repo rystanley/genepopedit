@@ -69,8 +69,6 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
     stop("FST threshold must be a value between 0 and 1")
   }
 
-
-
   #Console message
   writeLines("Converting GENEPOP to FSTAT format.")
   writeLines("
@@ -371,11 +369,11 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   ld.unique <- c(as.character(Linked$SNP_A), as.character(Linked$SNP_B))
   ld.unique <- as.character(ld.unique[which(duplicated(ld.unique)==FALSE)])
 
-  if(length(ld.unique > 1)){
+  if(length(ld.unique) > 1){
 
     FST.df2 <- FST.df[which(FST.df$loci %in% ld.unique),]
     FST.ld.ordered <- as.character(FST.df2[order(FST.df2$FSTs,decreasing=T),"loci"])
-    write.table(x = Output$Linkages, file = paste0(write_path, "_linkages.txt"))
+
     holdlist <- list()
     for(i in FST.ld.ordered){
       hold <- c(i,as.character(Linked[which(Linked[,1]%in%i),2]),
