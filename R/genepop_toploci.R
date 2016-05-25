@@ -410,8 +410,9 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
     Unlinked.panel <- FST.df[which(FST.df$loci %in% to.keep$loci),]
 
+
     your.panel <- FST.df
-    your.panel_un <- Unlinked.panel
+    your.panel_un <- Unlinked.panel[which(Unlinked.panel$FSTs>=FST.threshold),]
     your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
     your.panel_unlinked <- your.panel_un[order(your.panel_un$FSTs,decreasing = TRUE),]
     Linked.df <- Linked
