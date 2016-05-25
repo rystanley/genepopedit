@@ -28,11 +28,16 @@ Optimfunc <- function(x)
     returned <- c(returned,highest)
 
     if(sum(as.numeric(subdat),na.rm=T)>0){
-
-      if(class(subdat)!="integer" & sum(!is.na(subdat[1,]))<=1){subdat <- subdat[-1,]}
+      
+      if(length(as.data.frame(subdat))>1){
+          if(class(subdat)!="integer" & sum(!is.na(subdat[1,]))<=1){subdat <- subdat[-1,]}
+      }
+      
       if(is.null(nrow(subdat))){returned <- c(returned,subdat[1])
+      
       deltarow = startrow
       subdat=matrix(,nrow=0,ncol=5) # this is a blank matrix to stop the while loop}
+      
       }
     }
 
