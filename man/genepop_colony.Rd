@@ -5,7 +5,7 @@
 \title{Convert Genepop to Colony format.}
 \usage{
 genepop_colony(GenePop, where.PLINK, where.PGDspider, denote.missing = "000",
-  allocate.PGD.RAM = 1)
+  allocate.PGD.RAM = 1, path)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
@@ -22,6 +22,8 @@ as a single row (character).}
 \item{denote.missing}{The value that denotes missing data in your input file}
 
 \item{allocate.PGD.RAM}{An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.}
+
+\item{path}{file path to directory where the Colony files (4) will be saved.}
 }
 \description{
 Function to convert Genepop to Colony format.
