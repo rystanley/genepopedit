@@ -239,7 +239,7 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
 
   blankmat <- matrix(nrow = nrow(coldat), ncol = (length(coldat)*2))
 
-  locidim <- nchar(x = as.character(testdat[1,1]))/2
+  locidim <- nchar(x = as.character(coldat[1,1]))/2
 
   LHS <- function(x){stringi::stri_sub(as.character(x), 1, locidim)}
   RHS <- function(x){stringi::stri_sub(as.character(x), locidim+1, 2*locidim)}
