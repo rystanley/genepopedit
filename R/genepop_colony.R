@@ -12,9 +12,6 @@
 #' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
 #' @param path file path to directory where the Colony files (4) will be saved.
 #' @rdname genepop_colony
-#' @import magrittr
-#' @importFrom dplyr filter do group_by ungroup
-#' @importFrom data.table fread as.data.table
 #' @importFrom stringr str_split
 #' @importFrom stringi stri_sub
 #' @export
