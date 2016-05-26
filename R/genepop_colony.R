@@ -20,12 +20,6 @@
 
 genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing = "000", allocate.PGD.RAM = 1){
 
-  GenePop = "/Users/brendanwringe/Desktop/DFO Aquaculture Interaction/Salmon SNP Data Feb 16 2016 - WIld Captures/Wild Capture Analysis March 17 2016/test/genepopedit_examplefile.txt"
-  where.PLINK <- "~/Desktop/DFO Aquaculture Interaction/Software/plink_mac/"
-  where.PGDspider <- "~/Desktop/DFO Aquaculture Interaction/Software/PGDSpider_2.0.9.0/"
-  denote.missing = "000"
-  allocate.PGD.RAM = 1
-
    path.start <- getwd()  ### where to write the files created by genepopedit to
 
    if(allocate.PGD.RAM%%1 != 0){
