@@ -35,7 +35,6 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
         writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.
                    ")}
 
-
   ## get the name of the file specified by GenePop
       GeneNAME <-  filename_check(X = GenePop)
 
@@ -61,7 +60,6 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
 
   ## check that the path to PGDspider has been specified correctly
     where.PGDspider <- path_ending(path = where.PGDspider)
-
 
   ## create spid file
       spidTop <- "# spid-file generated: Thu Mar 10 09:40:22 AST 2016
@@ -156,7 +154,7 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
     writeLines("
 
                ")
-    writeLines("Calculating Stuff.
+    writeLines("Estimating missing data using PLINK.
 
                ")
 
@@ -281,5 +279,4 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
       file.remove(remember.spidpath.WD)
       file.remove(remember.GenePopColony.PGD)
       file.remove(remember.missingreform)
-
   }
