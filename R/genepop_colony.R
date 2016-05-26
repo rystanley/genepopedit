@@ -40,7 +40,7 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
 
 
   ## get the name of the file specified by GenePop
-      GeneNAME <-  genepop_filename(X = GenePop)
+      GeneNAME <-  filename_check(X = GenePop)
 
 
   ## move the file specified by GenePop to the working directory
