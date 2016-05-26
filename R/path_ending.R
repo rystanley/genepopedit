@@ -8,10 +8,12 @@
 
 path_ending <- function(path){
 
-  if(stringi::stri_sub(path, -1) != "/"){path <- paste0(path, "/")
-  writeLines("Note: File paths should end in a backslash (/) we have fixed this for you because we are nice")
-  return(path)}
+  if(stringi::stri_sub(path, -1) != "/"){
+    path <- paste0(path, "/")
+    writeLines("Note: File paths should end in a backslash (/) we have fixed this for you because we are nice")
+      }
   if(stringi::stri_sub(path, -1) == "/"){path <- path}
-  quotes <-
+
+  return(path)
 
 }
