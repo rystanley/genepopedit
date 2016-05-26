@@ -6,7 +6,6 @@
 #' @export
 #' @importFrom stringr str_split
 
-
 filename_check <- function(X){
 
   GeneSplit <- unlist(stringr::str_split(string = X, pattern = "/"))
