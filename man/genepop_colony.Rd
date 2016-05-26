@@ -8,8 +8,7 @@ genepop_colony(GenePop, where.PLINK, where.PGDspider, denote.missing = "000",
   allocate.PGD.RAM = 1, path)
 }
 \arguments{
-\item{GenePop}{the genepop data to be manipulated. This can be either a file path
-or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
+\item{GenePop}{the genepop data to be manipulated. This is read in as a complete file path.
 This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
 or a single comma deliminated row of loci names followed by the locus data. Populations are
 separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
