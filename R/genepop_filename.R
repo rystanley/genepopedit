@@ -9,7 +9,7 @@
 
 genepop_filename <- function(X){
 
-  GeneSplit <- unlist(stringr::str_split(string = GenePop, pattern = "/"))
+  GeneSplit <- unlist(stringr::str_split(string = X, pattern = "/"))
   GeneSplit <- GeneSplit[grep(x = GeneSplit, pattern = ".txt")]
 
   return(GeneSplit)
