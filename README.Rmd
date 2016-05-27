@@ -907,11 +907,11 @@ Individual geneotypes can be simulated using the _alleleotype_genepop()_ functio
 
 ```r
 #simulate individual geneotypes allele frequencies stratified by population.
-  #Source example data from genepopedit
-    data("pooledDNA")
-  
-  #inspect data format
-    head(pooledDNA)
+  #Create an example pooled DNA input file
+    pooledDNA <- data.frame(Pop=c("Pop1","Pop2","Pop3","Pop4","Pop5"),Loci1=round(runif(5,0,1),2),Loci2=round(runif(5,0,1),2),Loci3=round(runif(5,0,1),2),Loci4=round(runif(5,0,1),2),Loci5=round(runif(5,0,1),2),Loci6=round(runif(5,0,1),2))
+    
+    #inspect the input
+    pooledDNA
 
   #simulate 200 individual geneotypes for each population
     alleleotype(pooledDNA,numsim=200,path=paste0(output_dir,"SimulatedGeneotypes.txt"))
