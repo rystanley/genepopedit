@@ -1,5 +1,5 @@
 #genepopedit
-[![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genepopedit)][![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
 
 The goal of **genepopedit** is to provide a simple and flexible tool for manipulating large multi-locus genotype datasets in R. 
 
@@ -27,7 +27,9 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     
 * create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
-* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, TREEMIX and flattened/unflattened format.
+* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, TREEMIX, Colony, and flattened/unflattened format.
+
+* simulate individual genotypes using pooled DNA allele frequencies.
 
 ***
 
@@ -398,6 +400,20 @@ We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/softw
 **output_format** | format of the of the converted file. This format should match the dropdown menus of pgdSpider in terms of spelling and capitalization (e.g. GENEPOP & FSTAT).
 **spid** | complete file path to the .spid file created by pgdSpider defining the conversion between input_format and output_format. Note that parameters of this .spid file must match the conversion and input file as specified by pgdSpider.
 **where.PGDspider** | the filepath to the folder where pgdSpider installation files are stored.
+
+***
+
+## Simulate individual samples using pooled DNA allele frequencies <a name="pooleddna"/>
+
+#### alleleotype_genepop.R
+* A tool to simulate genotypes using pooled DNA allele frequencies and randomization.
+
+[_example use_](#pooldna)
+
+**Variable name** | **Input**  
+--------------|---------------------------------
+**input** | complete file path to the input file to be converted or an object in the workspace. The first column should denote populations and adjacent columns the allele frequency (major or minor) for each loci (named in the column header). **numsim** | the number of simulated individuals to be returned. 
+**path** | the filepath & filename of output.
 
 ***
 
@@ -853,4 +869,29 @@ There are a broad range of data formats which can be converted to and from using
   spid="c:/Users/YOURNAME/Documents/spids/GENEPOP_FSTAT.spid",
   where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/")
 
+```
+
+#**Simulate genotypes using pooled DNA allele frequencies**
+
+<a name="pooldna"/>
+##alleleotype_genepop()
+Individual geneotypes can be simulated using the _alleleotype_genepop()_ function and formated to GENEPOP for use in conventional genomic analyses (e.g. assigner, DAPC, STRUCTURE). This function will simulate individuals for each population provided by the input file. The output can then be diagnosed, sampled and formated using other **genepopedit functions**. [_Function description_](#pooleddna)
+
+```r
+#simulate individual geneotypes allele frequencies stratified by population.
+  #Source example data from genepopedit
+  data("pooledDNA")
+  
+  #inspect data format
+  head(pooledDNA)
+
+  #simulate 200 individual geneotypes for each population
+  alleleotype(pooledDNA,numsim=200,path=paste0(output_dir,"SimulatedGeneotypes.txt"))
+  
+  #To validate output simulate 100 (default) geneotypes per population and compare allele frequencies to those of the input file. Estimated frequencies per population and SNP should match those of the input file within +/- 1%.
+  
+   alleleotype(pooledDNA,numsim=100,path=paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
+   
+   genepop_allelefreq(paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
+  
 ```
