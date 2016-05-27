@@ -7,7 +7,7 @@
 #' @import magrittr
 #' @importFrom plyr ddply round_any
 #' @importFrom dplyr group_by do ungroup select mutate_each mutate
-#' @importFrom data.table fread melt dcast
+#' @importFrom data.table fread melt dcast as.data.table
 #' @rdname alleleotype_genepop
 #' @export
 
