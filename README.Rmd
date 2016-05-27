@@ -330,6 +330,21 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then population levels will be assigned an individual group.
 **path** | the filepath & filename of output.
 
+#### genepop_colony.R 
+* Convert Genepop format to Colony format.
+<https://www.zsl.org/science/software/colony>
+
+[_example use_](#genepopcolony)
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**where.PGDspider** | A file path to the PGDspider installation folder.
+**where.PLINK** | A file path to the PLINK installation folder.
+**denote.missing** | The value that denotes missing data in your input file (default: "000").
+**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.PGD.RAM_ will be set to 1 GB.
+**path** | file path to directory where the Colony files (4) will be saved.
+
 #### genepop_bgc.R 
 * Convert Genepop format to Bayesian Genomic Clines (BGC) format (3 files).
 <https://sites.google.com/site/bgcsoftware/>
@@ -412,7 +427,8 @@ We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/softw
 
 **Variable name** | **Input**  
 --------------|---------------------------------
-**input** | complete file path to the input file to be converted or an object in the workspace. The first column should denote populations and adjacent columns the allele frequency (major or minor) for each loci (named in the column header). **numsim** | the number of simulated individuals to be returned. 
+**input** | complete file path to the input file to be converted or an object in the workspace. The first column should denote populations and adjacent columns the allele frequency (major or minor) for each loci (named in the column header).
+**numsim** | the number of simulated individuals to be returned per population (default: 100). 
 **path** | the filepath & filename of output.
 
 ***
@@ -809,6 +825,18 @@ If you are interested conducting assignment analysis, you can convert to the for
    genepop_assigner(GenePop="Genepop_IDsubset.txt",popgroup=pGroups,path=paste0(output_dir,"assigner_IDsubset_NewGroups.txt"))
   
 ```
+<a name="genepopcolony"/>
+##genepop\_colony
+If you are interested in investigating sibship or parentage, you can convert to the format required for the software Colony. Returned are functions for translating the Colony output and those required by the maximum likelihood analysis. 'Individual' and 'Loci' conversion files can be used to match the loci and individual names formatted for input to Colony to those provided as input by the user.'MarkerTypeErrorRT' file defines the allele dropout rates as calculated using the 'missing' function in PLINK. Rates of other error types are assumed to be equal to the estimated allele dropout rates. 'GENOTYPES' are the geneotypes in two columns per loci format. Output from Colony is based on the input for of the 
+ 'GENOTYPES' file. Original loci and individual names can be assigned using the conversion output files. All files are returned to path and are named according tot he input filename. <https://www.zsl.org/science/software/colony>. [_Function description_](#funcconvert)
+
+
+```r
+#convert Genepop format to the files necessary for Colony 
+  genepop_colony(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",denote.missing = "000",path=output_dir)
+  
+```
+
 <a name="genepopbgc"/>
 ##genepop\_bgc
 **genepopedit** is one of the few tools available to convert data to the format required for input into to the "Bayesian estimation of Genomic Clines" (BGC) format. BGC can evalute genomic clinal patterns and introgression among loci. To convert to BGC format you must specify which populations you consider to be ancestral or **parental** (P1,P2) and which you assume could be hybridized (**admixed**). <https://sites.google.com/site/bgcsoftware/>. [_Function description_](#funcconvert)
@@ -875,23 +903,23 @@ There are a broad range of data formats which can be converted to and from using
 
 <a name="pooldna"/>
 ##alleleotype_genepop()
-Individual geneotypes can be simulated using the _alleleotype_genepop()_ function and formated to GENEPOP for use in conventional genomic analyses (e.g. assigner, DAPC, STRUCTURE). This function will simulate individuals for each population provided by the input file. The output can then be diagnosed, sampled and formated using other **genepopedit functions**. [_Function description_](#pooleddna)
+Individual geneotypes can be simulated using the _alleleotype_genepop()_ function and formated to GENEPOP for use in conventional genomic analyses (e.g. assigner, DAPC, STRUCTURE). This function will simulate individuals for each population provided by the input file. The output can then be diagnosed, sampled, and formated using other **genepopedit functions**. [_Function description_](#pooleddna)
 
 ```r
 #simulate individual geneotypes allele frequencies stratified by population.
   #Source example data from genepopedit
-  data("pooledDNA")
+    data("pooledDNA")
   
   #inspect data format
-  head(pooledDNA)
+    head(pooledDNA)
 
   #simulate 200 individual geneotypes for each population
-  alleleotype(pooledDNA,numsim=200,path=paste0(output_dir,"SimulatedGeneotypes.txt"))
+    alleleotype(pooledDNA,numsim=200,path=paste0(output_dir,"SimulatedGeneotypes.txt"))
   
   #To validate output simulate 100 (default) geneotypes per population and compare allele frequencies to those of the input file. Estimated frequencies per population and SNP should match those of the input file within +/- 1%.
   
-   alleleotype(pooledDNA,numsim=100,path=paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
+     alleleotype(pooledDNA,numsim=100,path=paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
    
-   genepop_allelefreq(paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
+    genepop_allelefreq(paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
   
 ```
