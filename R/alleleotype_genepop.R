@@ -1,8 +1,8 @@
 # Simulate genotypes from pooled DNA samples
 #' @title Alleleotype -> GENEPOP format
 #' @description Simulate individuals using pooled DNA major allele frequencies. Return as GENEPOP formatted data.
-#' @param input path to input file (csv) containing major allele frequencies. First column is the SNP names and the remaining columsn are the population based allele frequencies from the pooled DNA sample. 
-#' @param numsim number of simulated individuals per population to be returned.  
+#' @param input path to input file (csv) containing major allele frequencies. First column is the SNP names and the remaining columsn are the population based allele frequencies from the pooled DNA sample.
+#' @param numsim number of simulated individuals per population to be returned.
 #' @param path the filepath and filename of output.
 #' @import magrittr
 #' @importFrom plyr ddply round_any
@@ -13,27 +13,27 @@
 
 ##
 alleleotype_genepop <- function(input,numsim=100,path){
-  
+
   ## Functions used for simulating individuals
-  
+
     #create dataframes of alleles which will be used to create genotypes
       simind <- function(x,n=100){
         coeff <- n/100 #multiple of 100
         return(data.frame(alleleotype=c(rep("001",round(x*100)*coeff*2),
                                         rep("003",(round((1-x)*100)*coeff*2)))))}
-      
+
     #Function used to shuffle output from 'simind' for each column (locus) to randomly simulate individual genotypes
       shufflefun <- function(x){sample(x,length(x),replace=FALSE)}
-    
+
     ## The number of individuals to be sampled will be simulated at base 100 (for rounding)
   nsim <- plyr::round_any(numsim,100,f=ceiling)
-  
+
   # Simulations are based on alleles so nsim and numsim need to be multiplied by two to generate snps
   numsim <- numsim*2
-  
+
   #if inputdata is a path read in the data
-    if(is.character(inputpath)){
-      df <- data.table::fread(inputpath,stringsAsFactors = FALSE)
+    if(is.character(input)){
+      df <- data.table::fread(input,stringsAsFactors = FALSE)
     }
 
   #create molten data for dplyr grouping
@@ -44,14 +44,14 @@ alleleotype_genepop <- function(input,numsim=100,path){
       do(simind(.$value,n=nsim))%>%
       sample_n(.,numsim)%>%ungroup()%>%
         data.table(stringsAsFactors=FALSE)
-    
+
     df2[] <- lapply(df2, as.character) # covert from factor to character
 
   #Simulate individuals by sampling without replacement the possible alleles. This is essentially shuffling the potential alleles randomly at each locus and then drawing individuals from this
 
     #set up a idvariable which helps dcast deal with repeat values see link [[1]]
       df2 <- ddply(df2,.(Pop,variable),transform,newid=paste(Pop,seq_along(variable)))
-    
+
     #go from wide to long using the new ID variable which will be removed then the order of each column will be shifted
       df3 <- df2%>%dcast(.,Pop+newid~variable, value.var="alleleotype")%>%select(.,-newid)%>%
         group_by(Pop)%>%mutate_each(funs(shufflefun))%>%ungroup()%>%data.frame()
@@ -61,8 +61,8 @@ alleleotype_genepop <- function(input,numsim=100,path){
       secondAllele.row <- df3[1:nrow(df3) %% 2 == 0,-1] #even ros
 
   #Create temporary matrix which will be populated with interlaced even and odd columns
-    #matrix dimensions  
-      rows.combined <- dim(firstAllele.row)[1] 
+    #matrix dimensions
+      rows.combined <- dim(firstAllele.row)[1]
       cols.combined <- dim(firstAllele.row)[2]*2 #because alleles for each SNP are seperated
 
     #create NULL frame to be populated
@@ -79,20 +79,20 @@ alleleotype_genepop <- function(input,numsim=100,path){
     #Create matrix which will be used in apply to specify which columns to be combined
       ColumnPasteFrame=rbind(firstAllele.col,secondAllele.col)
 
-    #Combine the alleles for each SNP 
+    #Combine the alleles for each SNP
       CombinationFrame <- apply(ColumnPasteFrame,2,FUN=function(x){apply(AlleleFrame[,x],1,paste,collapse="")})
-    
+
     #Add the population labels
       AlleleFrame <- as.data.table(cbind(as.character(df3[!1:nrow(df3) %% 2 == 0,"Pop"]),
                                    CombinationFrame),
                                     stringsAsFactors=FALSE )#Add population
-   #Fix column names                             
+   #Fix column names
       colnames(AlleleFrame)=c("Pop",colnames(firstAllele.row))
 
 ## Reformat into GENEPOP format
-    
+
     #Temporary column for group-mutate
-      AlleleFrame$ID <- AlleleFrame$Pop 
+      AlleleFrame$ID <- AlleleFrame$Pop
 
     #mutate 'Pop' column to add sequential unique sample IDs within each population drop temporary group variable
       AlleleFrame <- AlleleFrame%>%group_by(ID)%>%
@@ -107,11 +107,11 @@ alleleotype_genepop <- function(input,numsim=100,path){
 
 #Find population names and insert Genepop "Pop" delimiters
       NameExtract <- substr(PopVec,1,regexpr("_",PopVec)-1)
-    
+
       if(length(table(NameExtract))>1){PopLengths <- table(NameExtract)[-length(table(NameExtract))]} else {PopLengths=1}
-      
+
       if(length(table(NameExtract))==2){PopPosition = PopLengths+1}
-      
+
       if(length(table(NameExtract))>2){
         PopPosition <- c(PopLengths[1]+1,rep(NA,(length(PopLengths)-1)))
         for (i in 2:length(PopLengths)){
