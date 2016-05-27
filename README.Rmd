@@ -331,7 +331,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | the filepath & filename of output.
 
 #### genepop_colony.R 
-* Convert Genepop format to Colony format.
+* Convert Genepop from GENEPOP file to the input files (2) required by Colony.
 <https://www.zsl.org/science/software/colony>
 
 [_example use_](#genepopcolony)
