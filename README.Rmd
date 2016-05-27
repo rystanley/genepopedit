@@ -903,7 +903,7 @@ There are a broad range of data formats which can be converted to and from using
 
 <a name="pooldna"/>
 ##alleleotype_genepop()
-Individual geneotypes can be simulated using the _alleleotype_genepop()_ function and formated to GENEPOP for use in conventional genomic analyses (e.g. assigner, DAPC, STRUCTURE). This function will simulate individuals for each population provided by the input file. The output can then be diagnosed, sampled, and formated using other **genepopedit functions**. [_Function description_](#pooleddna)
+Individual geneotypes can be simulated using the _alleleotype_genepop()_ function and formatted to GENEPOP for use in conventional genomic analyses (e.g. assigner, DAPC, STRUCTURE). This function will simulate individuals for each population provided by the input file. The output can then be diagnosed, sampled, and formatted using other **genepopedit functions**. [_Function description_](#pooleddna)
 
 ```r
 #simulate individual geneotypes allele frequencies stratified by population.
