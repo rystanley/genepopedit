@@ -43,7 +43,7 @@ alleleotype_genepop <- function(input,numsim=100,path){
     df2 <- df%>%group_by(Pop,variable)%>%
       do(simind(.$value,n=nsim))%>%
       sample_n(.,numsim)%>%ungroup()%>%
-        data.table(stringsAsFactors=FALSE)
+        as.data.table(stringsAsFactors=FALSE)
 
     df2[] <- lapply(df2, as.character) # covert from factor to character
 
@@ -83,7 +83,7 @@ alleleotype_genepop <- function(input,numsim=100,path){
       CombinationFrame <- apply(ColumnPasteFrame,2,FUN=function(x){apply(AlleleFrame[,x],1,paste,collapse="")})
 
     #Add the population labels
-      AlleleFrame <- as.data.table(cbind(as.character(df3[!1:nrow(df3) %% 2 == 0,"Pop"]),
+      AlleleFrame <- data.table::as.data.table(cbind(as.character(df3[!1:nrow(df3) %% 2 == 0,"Pop"]),
                                    CombinationFrame),
                                     stringsAsFactors=FALSE )#Add population
    #Fix column names
