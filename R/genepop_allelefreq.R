@@ -10,8 +10,7 @@
 #' @param popgroup population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
 #' @rdname genepop_allelefreq
 #' @import magrittr
-#' @importFrom data.table fread as.data.table
-#' @importFrom reshape2 melt
+#' @importFrom data.table fread as.data.table melt
 #' @importFrom dplyr filter summarise group_by ungroup summarise_each funs funs_
 #' @export
 #'
@@ -112,7 +111,7 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
         majorfreqs <- as.vector(t(mallele[1,]))
         majordf <- data.frame(variable=names(temp2[-length(temp2)]),major=majorfreqs)
 
-        tData <- reshape2::melt(temp2,id.vars="Pops") #transposed dataframe
+        tData <- data.table::melt(temp2,id.vars="Pops") #transposed dataframe
         transposeData=merge(tData,majordf,by="variable") # add the major allele for a given locus
 
         Prec <- as.data.frame(transposeData%>%
@@ -155,7 +154,7 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
       majorfreqs <- as.vector(t(mallele[1,]))
       majordf <- data.frame(variable=names(temp5[-length(temp5)]),major=majorfreqs)
 
-      tData <- reshape2::melt(temp5,id.vars="Pops") #transposed dataframe
+      tData <- data.table::melt(temp5,id.vars="Pops") #transposed dataframe
       transposeData=merge(tData,majordf,by="variable") # add the major allele for a given locus
 
       Output <- as.data.frame(transposeData%>%
