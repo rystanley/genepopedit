@@ -918,7 +918,7 @@ Individual geneotypes can be simulated using the _alleleotype_genepop()_ functio
   
   #To validate output simulate 100 (default) geneotypes per population and compare allele frequencies to those of the input file. Estimated frequencies per population and SNP should match those of the input file within +/- 1%.
   
-     alleleotype(pooledDNA,numsim=100,path=paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
+     alleleotype_genepop(pooledDNA,numsim=100,path=paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
    
     genepop_allelefreq(paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
   
