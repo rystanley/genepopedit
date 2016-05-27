@@ -5,7 +5,7 @@
 #' @param numsim number of simulated individuals per population to be returned.
 #' @param path the filepath and filename of output.
 #' @import magrittr
-#' @importFrom plyr ddply round_any
+#' @importFrom plyr round_any
 #' @importFrom dplyr group_by do ungroup select mutate_each mutate
 #' @importFrom data.table fread melt dcast as.data.table
 #' @rdname alleleotype_genepop
@@ -45,12 +45,15 @@ alleleotype_genepop <- function(input,numsim=100,path){
       sample_n(.,numsim)%>%ungroup()%>%
         as.data.table(stringsAsFactors=FALSE)
 
-    df2[] <- lapply(df2, as.character) # covert from factor to character
-
   #Simulate individuals by sampling without replacement the possible alleles. This is essentially shuffling the potential alleles randomly at each locus and then drawing individuals from this
 
+    df2$newid="999"
     #set up a idvariable which helps dcast deal with repeat values see link [[1]]
-      df2 <- ddply(df2,.(Pop,variable),transform,newid=paste(Pop,seq_along(variable)))
+    df2 <- df2%>%group_by(Pop,variable)%>%
+      mutate(newid = paste(Pop,seq_along(newid)))%>%
+      ungroup()%>%as.data.table(stringsAsFactors=FALSE)
+
+    df2[] <- lapply(df2, as.character) # covert from factor to character
 
     #go from wide to long using the new ID variable which will be removed then the order of each column will be shifted
       df3 <- df2%>%dcast(.,Pop+newid~variable, value.var="alleleotype")%>%select(.,-newid)%>%
