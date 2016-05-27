@@ -34,7 +34,7 @@ alleleotype_genepop <- function(input,numsim=100,path){
   #if inputdata is a path read in the data
     if(is.character(input)){
       df <- data.table::fread(input,stringsAsFactors = FALSE)
-    }
+    }else{df <- data.table::as.data.table(input)}
 
   #create molten data for dplyr grouping
     df <- data.table::melt(df,id.vars="Pop")
