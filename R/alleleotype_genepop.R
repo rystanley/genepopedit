@@ -25,11 +25,6 @@ alleleotype_genepop <- function(input,numsim=100,path){
         return(Output)
         }
 
-      simind <- function(x,n=100){
-        coeff <- n/100 #multiple of 100
-        return(c(rep("001",round(x*100)*coeff*2),
-                                        rep("003",(round((1-x)*100)*coeff*2))))}
-
     #Function used to shuffle output from 'simind' for each column (locus) to randomly simulate individual genotypes
       shufflefun <- function(x){sample(x,length(x),replace=FALSE)}
 
