@@ -19,41 +19,50 @@ alleleotype_genepop <- function(input,numsim=100,path){
     #create dataframes of alleles which will be used to create genotypes
       simind <- function(x,n=100){
         coeff <- n/100 #multiple of 100
-        return(data.frame(alleleotype=c(rep("001",round(x*100)*coeff*2),
-                                        rep("003",(round((1-x)*100)*coeff*2)))))}
+        Output=data.frame(alleleotype=c(rep("001",round(x*100)*coeff*2),
+                                        rep("003",(round((1-x)*100)*coeff*2))))
+        Output$alleleotype <- as.character(Output$alleleotype)
+        return(Output)
+        }
+
+      simind <- function(x,n=100){
+        coeff <- n/100 #multiple of 100
+        return(c(rep("001",round(x*100)*coeff*2),
+                                        rep("003",(round((1-x)*100)*coeff*2))))}
 
     #Function used to shuffle output from 'simind' for each column (locus) to randomly simulate individual genotypes
       shufflefun <- function(x){sample(x,length(x),replace=FALSE)}
 
     ## The number of individuals to be sampled will be simulated at base 100 (for rounding)
-  nsim <- plyr::round_any(numsim,100,f=ceiling)
+       nsim <- plyr::round_any(numsim,100,f=ceiling)
 
   # Simulations are based on alleles so nsim and numsim need to be multiplied by two to generate snps
-  numsim <- numsim*2
+      numsim <- numsim*2
 
   #if inputdata is a path read in the data
-    if(is.character(input)){
-      df <- data.table::fread(input,stringsAsFactors = FALSE)
-    }else{df <- data.table::as.data.table(input)}
+      if(is.character(input)){
+        df <- data.table::fread(input,stringsAsFactors = FALSE)
+      }else{df <- data.table::as.data.table(input)}
 
   #create molten data for dplyr grouping
-    df <- data.table::melt(df,id.vars="Pop")
+      df <- data.table::melt(df,id.vars="Pop")
+      df2 <- as.data.frame(df)
 
   #create populate the alleles from alleleotype data prune to specified sample size (numsim)
-    df2 <- df%>%group_by(Pop,variable)%>%
-      do(simind(.$value,n=nsim))%>%
-      sample_n(.,numsim)%>%ungroup()%>%
-        as.data.table(stringsAsFactors=FALSE)
+      df2 <- df2%>%
+        group_by(Pop,variable)%>%
+        do(simind(.$value,n=nsim))%>%
+        sample_n(.,numsim)%>%ungroup()%>%data.frame()
 
   #Simulate individuals by sampling without replacement the possible alleles. This is essentially shuffling the potential alleles randomly at each locus and then drawing individuals from this
 
-    df2$newid="999"
+      df2$newid="999"
     #set up a idvariable which helps dcast deal with repeat values see link [[1]]
-    df2 <- df2%>%group_by(Pop,variable)%>%
-      mutate(newid = paste(Pop,seq_along(newid)))%>%
-      ungroup()%>%as.data.table(stringsAsFactors=FALSE)
+      df2 <- df2%>%group_by(Pop,variable)%>%
+        mutate(newid = paste(Pop,1:length(newid),sep="_"))%>%
+        ungroup()%>%as.data.frame(stringsAsFactors=FALSE)%>%as.data.table()
 
-    df2[] <- lapply(df2, as.character) # covert from factor to character
+      df2[] <- lapply(df2,as.character)
 
     #go from wide to long using the new ID variable which will be removed then the order of each column will be shifted
       df3 <- df2%>%dcast(.,Pop+newid~variable, value.var="alleleotype")%>%select(.,-newid)%>%
