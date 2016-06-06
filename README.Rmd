@@ -871,7 +871,7 @@ If you are interested in investigating sibship or parentage, you can convert to 
 
 ```
 <a name="genepopgsi"/>
-##genepop\_GSI
+##genepop\_GSIsim
 If you are interested in assessing the accuracy of a genetic stock identification analysis, given a genetic baseline, you can convert directly from GENEPOP to a GSI_sim formatted text file. **genepopedit** is among the few tools currenlty available to format data for GSI_sim.  <https://swfsc.noaa.gov/textblock.aspx?Division=FED&ParentMenuId=54&id=12964> [_Function description_](#funcconvert)
 
 ```r
