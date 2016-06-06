@@ -27,7 +27,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     
 * create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
-* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, TREEMIX, Colony, and flattened/unflattened format.
+* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, TREEMIX, Colony, GSI_sim, and flattened/unflattened format.
 
 * simulate individual genotypes using pooled DNA allele frequencies.
 
@@ -372,6 +372,17 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.PGD.RAM_ will be set to 1 GB.
 **keep_inter** | A logical vector specifying whether the intermediate conversion steps (.map,.ped, and clustering file) should be returned to the path.
 **path** | the path to directory where the TREEMIX files will be saved.
+
+#### genepop_GSIsim.R 
+* Convert Genepop format to the format required for Genetic Stock Identification analysis (GSI)
+<https://swfsc.noaa.gov/textblock.aspx?Division=FED&ParentMenuId=54&id=12964>
+
+[_example use_](#genepopgsi)
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**path** | the filepath & filename of output.
 
 #### genepop_flatten.R 
 * Convert Genepop format to a flattened dataframe:
@@ -857,6 +868,16 @@ If you are interested in investigating sibship or parentage, you can convert to 
 
 #convert Genepop to Treemix input and keep intermediary conversion files (default: FALSE)
   genepop_treemix(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",keep_inter=TRUE,path=paste0(output_dir,"Treemix_IDsubset.txt"))
+
+```
+<a name="genepopgsi"/>
+##genepop\_GSI
+If you are interested in assessing the accuracy of a genetic stock identification analysis, given a genetic baseline, you can convert directly from GENEPOP to a GSI_sim formatted text file. **genepopedit** is among the few tools currenlty available to format data for GSI_sim.  <https://swfsc.noaa.gov/textblock.aspx?Division=FED&ParentMenuId=54&id=12964> [_Function description_](#funcconvert)
+
+```r
+
+#convert Genepop to GSIsim format
+  genepop_GSIsim(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"GSIsim_IDsubset.txt"))
 
 ```
 
