@@ -1,22 +1,20 @@
-# GenePop allelefreq
-#' @title Explore population specific allele frequencies.
-#' @description Function returns population derived allele frequencies.
+# Genepop -> GSI sim
+#' @title Convert Genepop to GSI sim format.
+#' @description Covert from GENEPOP to format required by gsi_sim.
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single comma delimited row of loci names followed by the locus data. Populations are
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space, space space) and is read in as
 #' as a single row (character).
-#' @param popgroup population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
-#' @rdname genepop_allelefreq
-#' @import magrittr
-#' @importFrom data.table fread as.data.table melt
-#' @importFrom dplyr filter summarise group_by ungroup summarise_each funs funs_
+#' @param path the filepath and filename of output.
+#' @rdname genepop_GSIsim
+#' @importFrom data.table fread as.data.table
 #' @export
 #'
 
-genepop_allelefreq <- function(GenePop,popgroup=NULL){
-
+##
+genepop_GSIsim <- function(GenePop,path){
 
   #Check to see if GenePop is a data.frame from the workspace
   if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
@@ -78,6 +76,7 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
   ## Get the population names (prior to the _ in the Sample ID)
   NamePops <- temp[,1] # Sample names of each
   NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
+  UniquePops <- NameExtract[!duplicated(NameExtract)] #the unique values of each population for the gsisim label
 
     PopNum <- data.frame(table(NameExtract))
     colnames(PopNum)[1] <- "Population"
@@ -86,8 +85,22 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
     alleleEx <- max(unique(nchar(as.character(temp2[nrow(temp2),2]))),na.rm=T)
 
     #get the allele values summary header
-    firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,alleleEx/2)))))
-    secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(alleleEx/2)+1,alleleEx)))))
+    firstAllele <-  as.data.frame(sapply(temp2,function(x)as.character(substring(x,1,alleleEx/2))),stringsAsFactors = FALSE)
+    secondAllele <-  as.data.frame(sapply(temp2,function(x)as.character(substring(x,(alleleEx/2)+1,alleleEx))),stringsAsFactors = FALSE)
+
+    #Create temporary matrix which will be populated with interlaced even and odd columns
+    #matrix dimensions
+    rows.combined <- dim(firstAllele)[1]
+    cols.combined <- dim(firstAllele)[2]*2 #because alleles for each SNP are seperated
+
+    #create NULL frame to be populated
+    AlleleFrame <- as.data.frame(matrix(NA, nrow=rows.combined, ncol=cols.combined))
+
+    #populate the frame
+    AlleleFrame[,seq(1,cols.combined,2)] <- firstAllele #first allele
+    AlleleFrame[,seq(2,cols.combined,2)] <- secondAllele #second allele
+
+    AlleleFrame <- cbind(NamePops,AlleleFrame)
 
     ## population grouping variables
     pPops <- NULL
@@ -97,76 +110,22 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL){
 
     pPops <- c(1,pPops)
 
-    #count populatons
-    lPops=as.vector(table(NameExtract)[unique(NameExtract)])
-    PopGroupVec <- rep(1:length(lPops),times=lPops)
-    PopGroupVec <- PopGroupVec[order(PopGroupVec)]
+    # paste together the Loci as one long integer separated for each loci by a space
+    Loci <- do.call(paste,c(AlleleFrame[,], sep=" "))
 
-    if(is.null(popgroup)){
-        temp2$Pops <- PopGroupVec
-        temp2[] <- lapply(temp2, as.character)
+    ##Add in the population seperation values
+    if(length(table(temp2$Pop))!=1){Loci <- insert_vals(Vec=Loci,breaks=pPops,newVal="Pop")}
 
-        ## Identify major alleles for each loci
-        mallele <- temp2[,-length(temp2)]%>%summarise_each(funs(AlleleFreq(.)))
-        majorfreqs <- as.vector(t(mallele[1,]))
-        majordf <- data.frame(variable=names(temp2[-length(temp2)]),major=majorfreqs)
+    #create the seperation variables
+    PopSeps=paste("Pop",UniquePops,sep=" ")
 
-        tData <- data.table::melt(temp2,id.vars="Pops") #transposed dataframe
-        transposeData=merge(tData,majordf,by="variable") # add the major allele for a given locus
+    #replace existing Pop labels with the modified "Pop + Population name" labels.
+    Loci[which(Loci=="Pop")]=PopSeps
 
-        Prec <- transposeData%>%
-          group_by(Pops,variable)%>%
-          summarise(prec=AlleleFreqLoci(value,unique(major)))%>%
-          ungroup()%>%data.frame()
+    #Add the individual count, loci count, Loci Names and allele calls.
+    Output <- c(paste(nrow(temp2),length(names(temp2)),sep=" "),names(temp2),Loci)
 
-        PopLabels <- data.frame(Names=NameExtract,Pops=as.character(PopGroupVec))
-        PopLabels <- PopLabels%>%
-                        group_by(Pops)%>%
-                        summarise(Name=paste(unique(Names),collapse="_"))%>%
-          ungroup()%>%data.frame()
-        PopLabels [] <- lapply(PopLabels , as.character)
-
-        Output <- merge(Prec,PopLabels,by="Pops")
-        Output <- Output[,c(4,2,3)]
-        colnames(Output) <- c("Population","Loci","MAF")
-
-    }
-
-    if(!is.null(popgroup)){
-      popgroup[] <- lapply(popgroup, as.character)
-      colnames(popgroup)=c("Name","Group")
-      temp3 <- temp2[which(NameExtract %in% popgroup[,1]),]
-      temp3$Name <- NameExtract[which(NameExtract %in% popgroup[,1])]
-      temp4 <- merge(temp3,popgroup,by="Name")
-
-      PopLabels <- data.frame(PopNames=temp4$Name,Group=temp4$Group)
-      PopLabels <- as.data.frame(PopLabels%>%
-                                   group_by(Group)%>%
-                                   summarise(Name=paste(unique(PopNames),collapse="_"))%>%ungroup())
-
-      #temp5 <- merge(temp4[,-grep("Pops",names(temp4))],PopLabels,by="Group")
-      temp5 <- merge(PopLabels,temp4[,-grep("Pops|Name",names(temp4))],by="Group")
-      #temp5 <- temp5[,c(names(temp2),names(temp5)[length(temp5)])] # select columns
-      #colnames(temp5)[length(temp5)]="Pops"
-      temp5 <- temp5[,c(setdiff(names(temp2),c("Pops","Group")),"Name")] # select columns
-      temp5[] <- lapply(temp5, as.character)
-
-      ## Identify major alleles for each loci
-      mallele <- temp5[,-length(temp5)]%>%summarise_each(funs(AlleleFreq(.)))
-      majorfreqs <- as.vector(t(mallele[1,]))
-      majordf <- data.frame(variable=names(temp5[-length(temp5)]),major=majorfreqs)
-
-      tData <- data.table::melt(temp5,id.vars="Name") #transposed dataframe
-      transposeData=merge(tData,majordf,by="variable") # add the major allele for a given locus
-
-      Output <- transposeData%>%
-                 group_by(Name,variable)%>%
-                 summarise(prec=AlleleFreqLoci(value,unique(major)))%>%
-                 ungroup()%>%data.frame()
-
-      colnames(Output)=c("Population","Loci","MAF")
-    }
-
-return(Output)# return the allele frequency list
+    # Save the file
+    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 }
