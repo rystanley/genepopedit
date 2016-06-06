@@ -1,7 +1,7 @@
 # Simulate genotypes from pooled DNA samples
 #' @title Alleleotype -> GENEPOP format
 #' @description Simulate individuals using pooled DNA major allele frequencies. Return as GENEPOP formatted data.
-#' @param input path to input file (csv) containing major allele frequencies. First column is the SNP names and the remaining columsn are the population based allele frequencies from the pooled DNA sample.
+#' @param input path to input file (csv) containing major allele frequencies. First column is the SNP names and the remaining columsn are the population based allele frequencies from the pooled DNA sample. input can also be a data.frame from the workspace. The column headers of the dataframe must begin with 'Pop' followed by the specified loci names.
 #' @param numsim number of simulated individuals per population to be returned.
 #' @param path the filepath and filename of output.
 #' @import magrittr
@@ -56,7 +56,7 @@ alleleotype_genepop <- function(input,numsim=100,path){
 
   #Simulate individuals by sampling without replacement the possible alleles. This is essentially shuffling the potential alleles randomly at each locus and then drawing individuals from this
 
-      writeLines("Compiling geneotypes from simulated allele calls. Note this can take time ")
+      writeLines("Compiling geneotypes from simulated allele calls. Note this can take some time depending on input parameters (# loci * # populations")
 
       df2$newid="999"
     #set up a idvariable which helps dcast deal with repeat values see link [[1]]
