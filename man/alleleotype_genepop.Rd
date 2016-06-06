@@ -7,7 +7,7 @@
 alleleotype_genepop(input, numsim = 100, path)
 }
 \arguments{
-\item{input}{path to input file (csv) containing major allele frequencies. First column is the SNP names and the remaining columsn are the population based allele frequencies from the pooled DNA sample.}
+\item{input}{path to input file (csv) containing major allele frequencies. First column is the SNP names and the remaining columsn are the population based allele frequencies from the pooled DNA sample. input can also be a data.frame from the workspace. The column headers of the dataframe must begin with 'Pop' followed by the specified loci names.}
 
 \item{numsim}{number of simulated individuals per population to be returned.}
 
