@@ -17,11 +17,12 @@ alleleotype_genepop <- function(input,numsim=100,path){
   ## Functions used for simulating individuals
 
     #create dataframes of alleles which will be used to create genotypes
-      simind <- function(x,n=100){
+      simind <- function(x,n=100,numsim){
         coeff <- n/100 #multiple of 100
         Output=data.frame(alleleotype=c(rep("001",round(x*100)*coeff*2),
                                         rep("003",(round((1-x)*100)*coeff*2))))
         Output$alleleotype <- as.character(Output$alleleotype)
+        Output <- dplyr::sample_n(Output,numsim) #sample the specified sample size
         return(Output)
         }
 
@@ -41,15 +42,21 @@ alleleotype_genepop <- function(input,numsim=100,path){
 
   #create molten data for dplyr grouping
       df <- data.table::melt(df,id.vars="Pop")
+      df <- df[,value:=as.numeric(value)] #make the MAF is numeric
+      df <- df[,value:=round(value,2)]
       df2 <- as.data.frame(df)
 
   #create populate the alleles from alleleotype data prune to specified sample size (numsim)
+
+      writeLines("Simulating individual allele calls. Note progress bar is for dplyr pipe and not the complete calculation.")
+
       df2 <- df2%>%
         group_by(Pop,variable)%>%
-        do(simind(.$value,n=nsim))%>%
-        sample_n(.,numsim)%>%ungroup()%>%data.frame()
+        do(simind(.$value,n=nsim,numsim=numsim))%>%ungroup()%>%data.frame()
 
   #Simulate individuals by sampling without replacement the possible alleles. This is essentially shuffling the potential alleles randomly at each locus and then drawing individuals from this
+
+      writeLines("Compiling geneotypes from simulated allele calls. Note this can take time ")
 
       df2$newid="999"
     #set up a idvariable which helps dcast deal with repeat values see link [[1]]
@@ -97,6 +104,8 @@ alleleotype_genepop <- function(input,numsim=100,path){
       colnames(AlleleFrame)=c("Pop",colnames(firstAllele.row))
 
 ## Reformat into GENEPOP format
+
+      writeLines("Converting to GENEPOP format.")
 
     #Temporary column for group-mutate
       AlleleFrame$ID <- AlleleFrame$Pop
