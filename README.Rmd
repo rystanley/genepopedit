@@ -175,6 +175,7 @@ Calculate allele frequencies (major) for a given set of loci aggregated by popul
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
 **popgroup** | population grouping using the "Pop" delimiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
+**Wide** | logical (default: FALSE) defining whether the output should be cast in 'wide' format. Note that 'wide' format is accepted as the input for alleleotype_genepop().
 
 #### genepop_toploci.R
 This function will return the the panel with the highest Fst for unlinked loci ordered by Fst. Returned loci have the highest Fst from the _original panel_ and are not linked to any other loci in the _returned panel_. Note this function requires the installation and access to both PGDspider for format conversion & PLINK for linkage calculations. [_See installation instructions here_](#extrainstall)
@@ -939,8 +940,14 @@ Individual geneotypes can be simulated using the _alleleotype_genepop()_ functio
   
   #To validate output simulate 100 (default) geneotypes per population and compare allele frequencies to those of the input file. Estimated frequencies per population and SNP should match those of the input file within +/- 1%.
   
-     alleleotype_genepop(pooledDNA,numsim=100,path=paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
+    alleleotype_genepop(pooledDNA,numsim=100,path=paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
    
     genepop_allelefreq(paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
+    
+  #Note you can simulate new geneotypes using the summary from genepop_allelefreq(... , Wide=TRUE).
+    GeneFreq <- genepop_allelefreq("Genepop_IDsubset.txt",Wide=TRUE)
+    
+    alleleotype_genepop(GeneFreq,numsim=100,path=paste0(output_dir,"SimulatedGeneotypes_Genepop_IDsubset.txt"))
+  
   
 ```
