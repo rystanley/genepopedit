@@ -172,6 +172,7 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL,Wide=FALSE){
        Output[] <- lapply(Output,as.character)
       #go from wide to long using the new ID variable which will be removed then the order of each column will be shifted
       Output <- Output%>%dcast(.,Population~Loci, value.var="MAF")%>%data.frame()
+      colnames(Output)[1]="Pop"
     }
 
 return(Output)# return the allele frequency table
