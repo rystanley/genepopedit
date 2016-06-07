@@ -4,7 +4,7 @@
 \alias{genepop_allelefreq}
 \title{Explore population specific allele frequencies.}
 \usage{
-genepop_allelefreq(GenePop, popgroup = NULL)
+genepop_allelefreq(GenePop, popgroup = NULL, Wide = FALSE)
 }
 \arguments{
 \item{GenePop}{the genepop data to be manipulated. This can be either a file path
@@ -15,6 +15,8 @@ separated by "Pop". Each individual ID is linked to the locus data by " ,  " (sp
 as a single row (character).}
 
 \item{popgroup}{population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.}
+
+\item{Wide}{logical specifying whether the allele frequencies should be returned as long (default:FALSE) or wide (TRUE) format. Note that the wide format can be used as the input for alleleotype_genepop to simulate geneotypes.}
 }
 \description{
 Function returns population derived allele frequencies.
