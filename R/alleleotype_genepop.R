@@ -14,7 +14,6 @@
 ##
 alleleotype_genepop <- function(input,numsim=100,path){
 
-  ## Functions used for simulating individuals
 
     #create dataframes of alleles which will be used to create genotypes
       simind <- function(x,n=100,numsim){
@@ -39,6 +38,9 @@ alleleotype_genepop <- function(input,numsim=100,path){
       if(is.character(input)){
         df <- data.table::fread(input,stringsAsFactors = FALSE)
       }else{df <- data.table::as.data.table(input)}
+
+      #Save the original order of the loci to match output
+      NameOrder=names(df)[-1]
 
   #create molten data for dplyr grouping
       df <- data.table::melt(df,id.vars="Pop")
@@ -114,6 +116,9 @@ alleleotype_genepop <- function(input,numsim=100,path){
       AlleleFrame <- AlleleFrame%>%group_by(ID)%>%
         mutate(Pop=paste0(Pop,"_",1:length(Pop)))%>%
         ungroup()%>%select(-ID)%>%data.frame()
+
+    #re-order to match input
+      AlleleFrame <- AlleleFrame[,c("Pop",NameOrder)]
 
 # Paste together the Loci as one long integer separated for each loci by a space
       Loci <- do.call(paste,c(AlleleFrame[,-1], sep=" "))
