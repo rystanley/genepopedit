@@ -129,6 +129,7 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL,Wide=FALSE){
         Output <- merge(Prec,PopLabels,by="Pops")
         Output <- Output[,c(4,2,3)]
         colnames(Output) <- c("Population","Loci","MAF")
+        Output$Loci=as.character(Output$Loci)
 
     }
 
@@ -165,13 +166,14 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL,Wide=FALSE){
                  ungroup()%>%data.frame()
 
       colnames(Output)=c("Population","Loci","MAF")
+      Output$Loci=as.character(Output$Loci)
     }
 
     #If the output is to be in wide format or to be left (default) as long (transposed format). Note taht wide formate is accepted for genotype simulation by alleleotype_genepop().
     if(Wide){
-       Output[] <- lapply(Output,as.character)
-      #go from wide to long using the new ID variable which will be removed then the order of each column will be shifted
+      Output[] <- lapply(Output,as.character)
       Output <- Output%>%dcast(.,Population~Loci, value.var="MAF")%>%data.frame()
+      Output <- Output[,c("Population",names(temp2)[-length(temp2)])]
       colnames(Output)[1]="Pop"
     }
 
