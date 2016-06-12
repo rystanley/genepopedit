@@ -1,6 +1,6 @@
 # Genepop -> GSI sim
 #' @title Convert Genepop to GSI sim format.
-#' @description Covert from GENEPOP to format required by gsi_sim.
+#' @description Covert from GENEPOP to format required by gsi_sim. Note that output has SampleIDs formated as Population_Population_ID instead of conventioanl Population_ID to fit commong sampleID naming approach of genepopedit into the convention of gsi_sim.
 #' @param GenePop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
@@ -99,6 +99,12 @@ genepop_GSIsim <- function(GenePop,path){
     #populate the frame
     AlleleFrame[,seq(1,cols.combined,2)] <- firstAllele #first allele
     AlleleFrame[,seq(2,cols.combined,2)] <- secondAllele #second allele
+
+    #The structure of gsi_sim has two underscores in front of each unique sample ID. Because in the case of
+    #genepopedit all sample IDs are separeted from population ID's by a single _, the output of genepop_GSIsim will
+    #have Population_Population_sampleID
+
+    NamePops <- paste(NameExtract,NamePops,sep="_")
 
     AlleleFrame <- cbind(NamePops,AlleleFrame)
 
