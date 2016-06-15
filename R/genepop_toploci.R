@@ -462,9 +462,9 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
     write_path <- gsub(x = GenePop, pattern = ".txt", replacement = "")
 
-    write.table(x = Output$Linkages, file = paste0(write_path, "_linkages.txt"))
-    write.table(x = Output$Fst, file = paste0(write_path, "_Loci_FST.txt"))
-    write.table(x = Output$Fst_Unlinked, file = paste0(write_path, "_Unlinked_Loci_FST.txt"))
+    write.table(x = Output$Linkages, file = paste0(write_path, "_linkages.txt"),row.names = FALSE,quote=FALSE)
+    write.table(x = Output$Fst, file = paste0(write_path, "_Loci_FST.txt"),row.names=FALSE,quote = FALSE)
+    write.table(x = Output$Fst_Unlinked, file = paste0(write_path, "_Unlinked_Loci_FST.txt"),row.names=FALSE,quote = FALSE)
 
   }
 
