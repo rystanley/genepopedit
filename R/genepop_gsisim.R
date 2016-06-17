@@ -120,7 +120,10 @@ genepop_GSIsim <- function(GenePop,path){
     Loci <- do.call(paste,c(AlleleFrame[,], sep=" "))
 
     ##Add in the population seperation values
-    if(length(table(temp2$Pop))!=1){Loci <- insert_vals(Vec=Loci,breaks=pPops,newVal="Pop")}
+    if(length(npops)!=1){Loci <- insert_vals(Vec=Loci,breaks=pPops,newVal="Pop")}
+
+    #Add the first Pop label if only one population
+    if(length(npops)==1){Loci=c("Pop",Loci)}
 
     #create the seperation variables
     PopSeps=paste("Pop",UniquePops,sep=" ")
