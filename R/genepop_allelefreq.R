@@ -13,7 +13,6 @@
 #' @import magrittr
 #' @importFrom data.table fread as.data.table melt
 #' @importFrom dplyr filter summarise group_by ungroup summarise_each funs funs_
-#' @importFrom reshape2 dcast
 #' @export
 #'
 
@@ -174,6 +173,8 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL,Wide=FALSE){
     if(Wide){
       Output[] <- lapply(Output,as.character)
       Output <- Output%>%dcast(.,Population~Loci, value.var="MAF")%>%data.frame()
+      #data.table::dcast adds an "x" to the column names which must be removed for matching
+      names(Output)[2:length(names(Output))]=gsub("X","",names(Output)[2:length(names(Output))])
       Output <- Output[,c("Population",names(temp2)[-length(temp2)])]
       colnames(Output)[1]="Pop"
     }
