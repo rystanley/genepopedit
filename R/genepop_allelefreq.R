@@ -11,8 +11,9 @@
 #' @param Wide logical specifying whether the allele frequencies should be returned as long (default:FALSE) or wide (TRUE) format. Note that the wide format can be used as the input for alleleotype_genepop to simulate geneotypes.
 #' @rdname genepop_allelefreq
 #' @import magrittr
-#' @importFrom data.table fread as.data.table melt dcast
+#' @importFrom data.table fread as.data.table melt
 #' @importFrom dplyr filter summarise group_by ungroup summarise_each funs funs_
+#' @importFrom reshape2 dcast
 #' @export
 #'
 
