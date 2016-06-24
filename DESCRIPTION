@@ -21,13 +21,18 @@ Imports:
     data.table,
     reshape2,
     stringr,
+    stringi,
     R.utils,
     plyr
 Suggests:
     adegenet,
-    ade4
+    ade4,
+    knitr,
+    rmarkdown
 License: GPL (>=2)
 LazyLoad: yes
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
+URL: https://github.com/rystanley/genepopedit
+BugReports: https://github.com/rystanley/genepopedit/issues
