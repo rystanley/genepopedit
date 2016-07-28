@@ -82,8 +82,12 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL,Wide=FALSE){
     PopNum <- data.frame(table(NameExtract))
     colnames(PopNum)[1] <- "Population"
 
-    #convert the snp data into character format to get rid of factor levels
-    alleleEx <- max(unique(nchar(as.character(temp2[nrow(temp2),2]))),na.rm=T)
+    #allele coding length
+    alleleEx <- max(sapply(temp2[,1],FUN=function(x){nchar(as.character(x[!is.na(x)]))})) #presumed allele length
+
+    #check to make sure the allele length is a even number
+    if(!alleleEx %% 2 ==0){stop(paste("The length of each allele is assumed to be equal (e.g. loci - 001001 with 001 for each allele), but a max loci length of", alleleEx, "was detected. Please check data."))}
+
 
     #get the allele values summary header
     firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,alleleEx/2)))))

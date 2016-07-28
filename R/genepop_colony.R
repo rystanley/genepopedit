@@ -199,21 +199,21 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
   ## save as a new .txt file, which is now formatted to be read into R easily
     write(x = Missings_reform, file = "MissingsReform.txt")
   ## read back in
-    DaMissings <- read.table("MissingsReform.txt", header = TRUE)
+    MissingDataReform <- read.table("MissingsReform.txt", header = TRUE)
     remember.missingreform <- paste0(path.start, "/MissingsReform.txt")
 
   ### only want to keep the LOCI NAMES, and the PROPORTION MISSING, will duplicate loci names so can add a row of 0 to indicate the loci are codominant
-    DaMissings <- DaMissings[, c("SNP", "SNP", "F_MISS", "F_MISS")] #### NOT SURE THIS IS THE BEST VALUE <- BUT, I have seen the error rate just duplicated
+    MissingDataReform <- MissingDataReform[, c("SNP", "SNP", "F_MISS", "F_MISS")] #### NOT SURE THIS IS THE BEST VALUE <- BUT, I have seen the error rate just duplicated
   ## transpose to make the correct format
-    DaMissings <- t(DaMissings)
-    yourloci <- DaMissings[1, ]
+    MissingDataReform <- t(MissingDataReform)
+    yourloci <- MissingDataReform[1, ]
     lociconvert <- paste0("Loci_", 1:length(yourloci))
 
   ## change the names of the loci to Loci plus number because colony can't deal with >20 characters
   ## add a row of 0 to denote codominant
-    DaMissings[1, ] <- lociconvert
-    DaMissings[2, ] <- 0
-    DaMissings <- data.frame(DaMissings)
+    MissingDataReform[1, ] <- lociconvert
+    MissingDataReform[2, ] <- 0
+    MissingDataReform <- data.frame(MissingDataReform)
 
   #Tabularize and format data
     flatdat <- genepop_flatten(GenePop = GenePop)
@@ -259,7 +259,7 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
     ## Individuals
       write.table(x = indivs, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_Individual_Conversion.txt"), quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
     ## Marker Type & Error Rate
-      write.table(x = DaMissings, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_MarkerTypeErrorRT.txt"), quote = FALSE, row.names = FALSE, col.names = FALSE, sep = ",")
+      write.table(x = MissingDataReform, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_MarkerTypeErrorRT.txt"), quote = FALSE, row.names = FALSE, col.names = FALSE, sep = ",")
     ## Genotypes
       write.table(x = blankmat, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_GENOTYPES.txt"), quote = FALSE, row.names = FALSE, col.names = FALSE, sep = ",")
 

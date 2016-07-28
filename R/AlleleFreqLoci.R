@@ -9,22 +9,25 @@
 AlleleFreqLoci <- function(x,major)
 {
 
-  xtest <- x[1:10]
-  AlleleLength <- max(nchar(as.character(xtest)),na.rm=T)
+  #allele coding length
+  alleleEx <- max(sapply(x,FUN=function(x){nchar(as.character(x[!is.na(x)]))})) #presumed allele length
 
-  if(AlleleLength==2) # four character locus - 2 digit allele code
+  #check to make sure the allele length is a even number
+  if(!alleleEx %% 2 ==0){stop(paste("The length of each allele is assumed to be equal (e.g. loci - 001001 with 001 for each allele), but a max loci length of", alleleEx, "was detected. Please check data."))}
+
+    if(alleleEx==2) # four character locus - 2 digit allele code
   {
     x1 <- as.numeric(substring(x,1,1)) # get first allele
     x2 <- as.numeric(substring(x,2,2)) # get second allele
   }
 
-  if(AlleleLength==4) # four character locus - 2 digit allele code
+  if(alleleEx==4) # four character locus - 2 digit allele code
   {
     x1 <- as.numeric(substring(x,1,2)) # get first allele
     x2 <- as.numeric(substring(x,3,4)) # get second allele
   }
 
-  if(AlleleLength==6) # six character locus - 3 digit allele code
+  if(alleleEx==6) # six character locus - 3 digit allele code
   {
     x1 <- as.numeric(substring(x,1,3)) # get first allele
     x2 <- as.numeric(substring(x,4,6)) # get second allele

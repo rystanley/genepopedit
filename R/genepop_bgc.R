@@ -92,11 +92,15 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   #convert the snp data into character format to get rid of factor levels
   temp2[] <- lapply(temp2, as.character)
 
-  alleleEx <- as.character(temp2[1,1]) #example allele
+  #allele coding length
+  alleleEx <- max(sapply(temp2[,1],FUN=function(x){nchar(as.character(x[!is.na(x)]))})) #presumed allele length
+
+  #check to make sure the allele length is a even number
+  if(!alleleEx %% 2 ==0){stop(paste("The length of each allele is assumed to be equal (e.g. loci - 001001 with 001 for each allele), but a max loci length of", alleleEx, "was detected. Please check data."))}
 
   #get the allele values summary header
-  firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,(nchar(alleleEx)/2))))))
-  secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(nchar(alleleEx)/2)+1,nchar(alleleEx))))))
+  firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,(alleleEx/2))))))
+  secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(alleleEx/2)+1,alleleEx)))))
 
   # switch from combined allele in one row to two allele each in their own row according to a given locus
   holdframe <- rbind(firstAllele,secondAllele)#create a dummy data frame
@@ -209,7 +213,7 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   temp3 <- apply(temp2,2,missingfix)
 
   #convert to zygosity format (2 0 - homozygous major, 0 2 - homozygous minor, 1 1 - heterozygous, -9 -9 - missing data )
-  temp4 <- apply(temp3,2,majorminor)
+  temp4 <- apply(temp3,2,FUN = function(x) {majorminor(x,allele_length=alleleEx)})
 
   MixedStruct <- temp4[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1]),]
   MixedPops <- NameExtract[which(NameExtract %in% popdef[which(popdef[,2]=="Admixed"),1])]
