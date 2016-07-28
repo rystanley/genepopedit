@@ -158,22 +158,24 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
     P2_alleles <- P2_raw[,i];P2_alleles[which(P2_alleles==-9)]=NA
 
     #If the population only has one allele for a given locus then a zero and the allele have be be added
-    if(length(table(P1_alleles))==1){
+    if(length(table(P1_alleles))==1|sum(is.na(P1_alleles))==length(P1_alleles)){
+      if(length(table(P1_alleles))==1){
       hold <- as.data.frame(table(P1_alleles))
       hold[,1] <- as.character(hold[,1])
       hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
       hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
       P1_alleles <- hold[,2]
-      rm(hold)
+      rm(hold)} else {P1_alleles <- c(0,0)}
     } else {P1_alleles <- as.character(as.data.frame(table(P1_alleles))[,2])}
 
-    if(length(table(P2_alleles))==1){
+    if(length(table(P2_alleles))==1 | sum(is.na(P2_alleles))==length(P2_alleles)){
+      if(length(table(P2_alleles))==1){
       hold <- as.data.frame(table(P2_alleles))
       hold[,1] <- as.character(hold[,1])
       hold <- rbind(hold,c(setdiff(as.numeric(Allele_Map[which(Allele_Map$SNP==i),c("Allele1","Allele2")]),hold[1,1]),0)) #add in the extra value
       hold <- hold[order(hold[,1]),] #sort the right order from a conventional table output
       P2_alleles <- hold[,2]
-      rm(hold)
+      rm(hold)} else{P2_alleles <- c(0,0)}
     } else {P2_alleles <- as.character(as.data.frame(table(P2_alleles))[,2])}
 
 

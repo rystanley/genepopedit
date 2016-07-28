@@ -7,6 +7,7 @@
 #' @export
 
 majorminor<- function(Vec,allele_length=6){
+  if(sum(is.na(Vec))!=length(Vec)){
   Vec <- as.character(Vec)
   firstAllele <-  as.data.frame(sapply(Vec,function(x)as.character(substring(x,1,(allele_length/2)))),stringsAsFactors = F)
   secondAllele <-  as.data.frame(sapply(Vec,function(x)as.character(substring(x,(allele_length/2)+1,allele_length))),stringsAsFactors = F)
@@ -20,5 +21,6 @@ majorminor<- function(Vec,allele_length=6){
   Vec=gsub(paste0(AlleleMajor,AlleleMinor),"1 1",Vec) #heterozygous
   Vec=gsub(paste0(AlleleMinor,AlleleMajor),"1 1",Vec) #heterozygous
   Vec=gsub(paste0(AlleleMinor,AlleleMinor),"0 2",Vec) #homozygous minor
+  } else {Vec=rep("0 0",length(Vec))}
   return(Vec)
 }
