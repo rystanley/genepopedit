@@ -1,5 +1,8 @@
 #genepopedit
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genepopedit)][![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
+[![Travis-CI Build Status](https://travis-ci.org/thierrygosselin/genepopedit.svg?branch=master)](https://travis-ci.org/thierrygosselin/genepopedit)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/thierrygosselin/genepopedit?branch=master&svg=true)](https://ci.appveyor.com/project/thierrygosselin/genepopedit)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genepopedit)]
+[![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
 
 The goal of **genepopedit** is to provide a simple and flexible tool for manipulating large multi-locus genotype datasets in R. 
 
@@ -27,7 +30,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     
 * create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
-* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, TREEMIX, Colony, GSI_sim, and flattened/unflattened format.
+* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, TREEMIX, Colony, gsi_sim, and flattened/unflattened format.
 
 * simulate individual genotypes using pooled DNA allele frequencies.
 
