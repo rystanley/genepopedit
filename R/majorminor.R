@@ -1,12 +1,12 @@
 # BGC Allele conversion - this function is built specifically for genepop_bgc in genepopedit
 #' @title Function to convert allele in character format to bgc zygosity format.
 #' @description sub-function used by genepop_bgc
-#' @param Vector of characters representing alleles
-#' @param allele_length the number of characters in an allele (default: 6 e.g. 130120)
+#' @param Vec Vector of characters representing alleles.
+#' @param allele_length The number of characters in an allele (default: 6 e.g. 130120).
 #' @rdname majorminor
 #' @export
 
-majorminor<- function(Vec,allele_length=6){
+majorminor<- function(Vec, allele_length = 6){
   if(sum(is.na(Vec))!=length(Vec)){
   Vec <- as.character(Vec)
   firstAllele <-  as.data.frame(sapply(Vec,function(x)as.character(substring(x,1,(allele_length/2)))),stringsAsFactors = F)
