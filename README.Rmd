@@ -8,7 +8,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 
 **Use genepopedit to subset a SNP dataset by:**
 
-* removing specified loci.
+* removing specified loci. 
 
 * removing specified populations. 
 
