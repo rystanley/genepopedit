@@ -143,7 +143,10 @@ Pull request how-to:
   * Make the changes using github’s in-page editor and save.
   * Submit a pull request and include a brief description of your changes. (e.g. "_spelling errors_" or "_indexing error_").
   
-To cite the current version of **genepopedit**, please refer to our zenodo DOI:
+
+Full package description and available citation now available at **Molecular Ecology Resources** <http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12569/abstract>
+
+A Zenodo DOI is also avaiable for the most recent release of **genepopedit**:
 [![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
 
 ***
