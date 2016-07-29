@@ -34,6 +34,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 
 * simulate individual genotypes using pooled DNA allele frequencies.
 
+
 ***
 
 ![workflow-diagram](vignettes/vignette_small.png)
@@ -115,6 +116,9 @@ library(genepopedit) # load the library
 
   * PGDspider: <http://www.cmpg.unibe.ch/software/PGDSpider/>
   * plink: <http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml>
+  
+  
+** NOTE THAT appveyor BUILD FAILURE IS LINKED TO AN ERROR IN THE BUILD CHECK AND NOT *genepopedit* itself. This package has been tested on Windows, Linux (Unbuntu & Mint), and IOS operating systems. **
 
 ***
 
