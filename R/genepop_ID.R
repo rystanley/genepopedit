@@ -9,14 +9,15 @@
 #' as a single row (character).
 #' @param path the filepath and filename of output.
 #' @rdname genepop_ID
-#' @importFrom data.table fread as.data.table
+#' @importFrom data.table fread
+#' @importFrom utils write.table
 #' @export
 
 
 genepop_ID <- function(GenePop,path){
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -34,7 +35,7 @@ genepop_ID <- function(GenePop,path){
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
+    GenePop <- as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
   ## Stacks version information
@@ -127,6 +128,6 @@ genepop_ID <- function(GenePop,path){
     Output <- c(as.character(stacks.version),names(temp2),Loci)
 
     # Save the file
-    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 } #End function

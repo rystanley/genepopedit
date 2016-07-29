@@ -16,6 +16,9 @@
 #' @importFrom hierfstat read.fstat wc
 #' @importFrom stringr str_split str_detect
 #' @importFrom plyr rbind.fill
+#' @importFrom utils write.table
+#' @importFrom utils read.table
+
 
 
 genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold = 0.2, FST.threshold = 0.05,  ld.window = NULL, LDpop = "All", allocate.PGD.RAM = 1, return.workspace = TRUE, save.output = FALSE){
@@ -362,7 +365,7 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   ## save as a new .txt file, which is now formatted to be read into R easily
   write(x = LDs_reform, file = "LDsReform.txt")
   ## read back in
-  Linked <- read.table("LDsReform.txt", header = TRUE)
+  Linked <- utils::read.table("LDsReform.txt", header = TRUE)
   ## keep only the needed columns
   Linked <- Linked[c("SNP_A", "SNP_B", "R2")]
   ### turn both columns into a single vector of unduplicated loci names
@@ -462,9 +465,9 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
     write_path <- gsub(x = GenePop, pattern = ".txt", replacement = "")
 
-    write.table(x = Output$Linkages, file = paste0(write_path, "_linkages.txt"),row.names = FALSE,quote=FALSE)
-    write.table(x = Output$Fst, file = paste0(write_path, "_Loci_FST.txt"),row.names=FALSE,quote = FALSE)
-    write.table(x = Output$Fst_Unlinked, file = paste0(write_path, "_Unlinked_Loci_FST.txt"),row.names=FALSE,quote = FALSE)
+    utils::write.table(x = Output$Linkages, file = paste0(write_path, "_linkages.txt"),row.names = FALSE,quote=FALSE)
+    utils::write.table(x = Output$Fst, file = paste0(write_path, "_Loci_FST.txt"),row.names=FALSE,quote = FALSE)
+    utils::write.table(x = Output$Fst_Unlinked, file = paste0(write_path, "_Unlinked_Loci_FST.txt"),row.names=FALSE,quote = FALSE)
 
   }
 

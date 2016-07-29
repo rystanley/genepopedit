@@ -5,6 +5,7 @@
 #' df must be an object in the workspace.
 #' @param path the filepath and filename of output.
 #' @rdname genepop_unflatten
+#' @importFrom utils write.table
 #' @export
 #'
 genepop_unflatten <- function(df,path){
@@ -39,7 +40,7 @@ genepop_unflatten <- function(df,path){
   Output <- c("No STACKS version specified",names(temp2),Loci)
 
   # Save the file
-  write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+  utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 }
 

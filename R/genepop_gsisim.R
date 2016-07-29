@@ -9,7 +9,8 @@
 #' as a single row (character).
 #' @param path the filepath and filename of output.
 #' @rdname genepop_GSIsim
-#' @importFrom data.table fread as.data.table
+#' @importFrom data.table fread
+#' @importFrom utils write.table
 #' @export
 #'
 
@@ -17,7 +18,7 @@
 genepop_GSIsim <- function(GenePop,path){
 
   #Check to see if GenePop is a data.frame from the workspace
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -135,6 +136,6 @@ genepop_GSIsim <- function(GenePop,path){
     Output <- c(paste(nrow(temp2),length(names(temp2)),sep=" "),names(temp2),Loci)
 
     # Save the file
-    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 }

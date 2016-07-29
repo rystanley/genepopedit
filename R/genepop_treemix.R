@@ -13,8 +13,9 @@
 #' @param keep_inter A logical condition statement (default : FALSE) specifying whether to keep the map, ped, and clustering files generated during the conversion.
 #' @param path file path to directory where the gzipped Treemix input file will be saved.
 #' @rdname genepop_treemix
-#' @importFrom data.table fread as.data.table
 #' @importFrom R.utils gzip
+#' @importFrom utils write.table
+#' @importFrom utils read.table
 #' @export
 
 genepop_treemix<-function(GenePop,where.PGDspider,where.PLINK,allocate.PGD.RAM=1,keep_inter=FALSE,path){
@@ -142,14 +143,19 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
 #Step 2
 #Convert .fam file to .clust file
 #Will add a third column - the clusters column - based on the first 3 characters of your Individual IDs
-  famtoconvert<-read.table(paste0(where.PLINK,paste0("BinaryPED",".fam")), quote = "", sep=" ", header=FALSE)
+  famtoconvert <- utils::read.table(
+    paste0(where.PLINK,paste0("BinaryPED",".fam")),
+    quote = "",
+    sep=" ",
+    header=FALSE
+    )
 
   #Extrac population names based on the _ seperation
   NameExtract <- substr(famtoconvert[,2],1,regexpr("_",famtoconvert[,2])-1)
 
   famtoconvert[,3] <- as.character(NameExtract)
 
-  write.table(x=famtoconvert[,1:3],file=paste0(where.PLINK,"ClusterFile.clust"),quote =FALSE,col.names = FALSE, row.names = FALSE)
+  utils::write.table(x=famtoconvert[,1:3],file=paste0(where.PLINK,"ClusterFile.clust"),quote =FALSE,col.names = FALSE, row.names = FALSE)
   writeLines("\nCluster file created from .fam file.\n     ")
   writeLines("Creating frequency file using bed and cluster files.\n\n     ")
   remember.fam.plink<-paste0(where.PLINK,"BinaryPED.fam")

@@ -23,13 +23,15 @@
 #' In this case AAA/BBB & DDD/FFF would be clustered together between population flags in genepop.
 #' @param path to the output .txt file.
 #' @rdname subset_genepop_aggregate
-#' @importFrom data.table fread as.data.table
+#' @importFrom data.table fread
+#' @importFrom utils read.csv
+#' @importFrom utils write.table
 #' @export
 
 subset_genepop_aggregate <- function(GenePop,subs=NULL,keep=TRUE,agPopFrame,path){
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -47,7 +49,7 @@ subset_genepop_aggregate <- function(GenePop,subs=NULL,keep=TRUE,agPopFrame,path
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
+    GenePop <- as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
   ## Stacks version information
@@ -109,7 +111,7 @@ subset_genepop_aggregate <- function(GenePop,subs=NULL,keep=TRUE,agPopFrame,path
 
     if(!is.data.frame(agPopFrame)) #if it isn't a dataframe then read in the path
     {
-      agPopFrame <- read.csv(agPopFrame,header=T)
+      agPopFrame <- utils::read.csv(agPopFrame,header=T)
     }
 
     sPop <- as.character(agPopFrame[,1]) # these are the populations of interest
@@ -176,6 +178,6 @@ subset_genepop_aggregate <- function(GenePop,subs=NULL,keep=TRUE,agPopFrame,path
       }
 
     # Save the file
-    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 } #End function

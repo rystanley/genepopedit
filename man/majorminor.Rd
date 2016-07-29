@@ -7,9 +7,9 @@
 majorminor(Vec, allele_length = 6)
 }
 \arguments{
-\item{allele_length}{the number of characters in an allele (default: 6 e.g. 130120)}
+\item{Vec}{Vector of characters representing alleles.}
 
-\item{Vector}{of characters representing alleles}
+\item{allele_length}{The number of characters in an allele (default: 6 e.g. 130120).}
 }
 \description{
 sub-function used by genepop_bgc

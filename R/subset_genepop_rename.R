@@ -22,6 +22,8 @@
 #' @param path the filepath and filename of output.
 #' @rdname subset_genepop_rename
 #' @importFrom data.table fread as.data.table
+#' @importFrom utils read.csv
+#' @importFrom utils write.table
 #' @export
 
 subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",path){
@@ -99,7 +101,7 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",pa
 
     if(!is.data.frame(nameframe)) #if it isn't a dataframe then read in the path
     {
-      nameframe <- read.csv(nameframe,header=T)
+      nameframe <- utils::read.csv(nameframe,header=T)
     }
 
     sPop <- as.character(nameframe[,1]) # these are the populations of interest
@@ -160,7 +162,7 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",pa
     {
     if(!is.data.frame(nameframe)) #if it isn't a dataframe then read in the path
     {
-      nameframe <- read.csv(nameframe,header=T)
+      nameframe <- utils::read.csv(nameframe,header=T)
     }
 
     nameframe[]=lapply(nameframe,as.character)
@@ -201,6 +203,6 @@ subset_genepop_rename <- function(GenePop,nameframe,renumber=FALSE,meta="Pop",pa
     Output <- c(stacks.version,names(temp2),Loci)
 
     # Save the file
-    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 } #End function

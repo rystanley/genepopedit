@@ -10,17 +10,18 @@
 #' @param path the filepath and filename of output.
 #' @rdname genepop_newhybrids
 #' @importFrom data.table fread as.data.table
+#' @importFrom utils write.table
 #' @export
 
 
 genepop_newhybrids <- function(GenePop,path=NULL){
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
-    GenePop <- data.table::fread(GenePop,
+    GenePop <- fread(GenePop,
                                  header = FALSE, sep = "\t",
                                  stringsAsFactors = FALSE)
   }
@@ -34,7 +35,7 @@ genepop_newhybrids <- function(GenePop,path=NULL){
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
+    GenePop <- as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
   ## Stacks version information
@@ -89,6 +90,6 @@ Output=c(paste0("NumIndivs ",nrow(temp)),
          paste0("LocusNames ",do.call(paste,c(as.list(colnames(temp2))))),
          temp3)
 
-write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 }

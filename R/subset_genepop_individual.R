@@ -14,6 +14,7 @@
 #' @param path the filepath and filename of output.
 #' @rdname subset_genepop_individual
 #' @importFrom data.table fread as.data.table
+#' @importFrom utils write.table
 #' @export
 
 ##
@@ -135,6 +136,6 @@ subset_genepop_individual <- function(GenePop,indiv=NULL,keep=FALSE,path){
     Output <- c(stacks.version,names(temp2),Loci)
 
     # Save the file
-    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 } #End function
