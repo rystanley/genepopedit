@@ -14,6 +14,8 @@
 #' @rdname genepop_colony
 #' @importFrom stringr str_split
 #' @importFrom stringi stri_sub
+#' @importFrom utils write.table
+#' @importFrom utils read.table
 #' @export
 
 
@@ -199,7 +201,7 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
   ## save as a new .txt file, which is now formatted to be read into R easily
     write(x = Missings_reform, file = "MissingsReform.txt")
   ## read back in
-    MissingDataReform <- read.table("MissingsReform.txt", header = TRUE)
+    MissingDataReform <- utils::read.table("MissingsReform.txt", header = TRUE)
     remember.missingreform <- paste0(path.start, "/MissingsReform.txt")
 
   ### only want to keep the LOCI NAMES, and the PROPORTION MISSING, will duplicate loci names so can add a row of 0 to indicate the loci are codominant
@@ -255,13 +257,13 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
     #Check file path
       path <- path_ending(path)
     ## Loci
-      write.table(x = lociout, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_Loci_Conversion.txt"), quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
+      utils::write.table(x = lociout, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_Loci_Conversion.txt"), quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
     ## Individuals
-      write.table(x = indivs, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_Individual_Conversion.txt"), quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
+      utils::write.table(x = indivs, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_Individual_Conversion.txt"), quote = FALSE, row.names = FALSE, col.names = TRUE, sep = ",")
     ## Marker Type & Error Rate
-      write.table(x = MissingDataReform, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_MarkerTypeErrorRT.txt"), quote = FALSE, row.names = FALSE, col.names = FALSE, sep = ",")
+      utils::write.table(x = MissingDataReform, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_MarkerTypeErrorRT.txt"), quote = FALSE, row.names = FALSE, col.names = FALSE, sep = ",")
     ## Genotypes
-      write.table(x = blankmat, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_GENOTYPES.txt"), quote = FALSE, row.names = FALSE, col.names = FALSE, sep = ",")
+      utils::write.table(x = blankmat, file = paste0(path, unlist(stringr::str_split(string = GeneNAME, pattern = ".txt"))[1], "_GENOTYPES.txt"), quote = FALSE, row.names = FALSE, col.names = FALSE, sep = ",")
 
   ## Clean up intermediate files.
       file.remove(remember.GenePopColony)

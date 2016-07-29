@@ -12,7 +12,8 @@
 #' should be saved as a file specified in the path (default) argument or whether it should be returned to the workspace
 #' if returned to the workspace the object will be called "Output_fstat".
 #' @rdname genepop_fstat
-#' @importFrom data.table fread as.data.table
+#' @importFrom data.table fread
+#' @importFrom utils write.table
 #' @export
 
 
@@ -21,7 +22,7 @@ genepop_fstat <- function(GenePop,path=NULL,addworkspace=FALSE)
   {
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -39,7 +40,7 @@ genepop_fstat <- function(GenePop,path=NULL,addworkspace=FALSE)
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
+    GenePop <- as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
   ## Stacks version information
@@ -120,10 +121,10 @@ genepop_fstat <- function(GenePop,path=NULL,addworkspace=FALSE)
 
     #return to the workspace
     if(addworkspace){
-      Output_fstat<<-as.data.frame(Output)
+      Output_fstat <- as.data.frame(Output)
     }
     # Save the file
     if(!addworkspace){
-      write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+      utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
     }
 } #End function

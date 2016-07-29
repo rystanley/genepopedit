@@ -7,7 +7,7 @@
 Optimfunc(x)
 }
 \arguments{
-\item{Matrix}{ordered by Loci high (1) to low (n loci) by fst in rows and the number of columns corresponds to the linked loci.}
+\item{x}{Matrix ordered by Loci high (1) to low (n loci) by fst in rows and the number of columns corresponds to the linked loci.}
 }
 \description{
 Decision matrix for selecting unlinked loci while maximizing Fst. Function is used by genepop_toploci.

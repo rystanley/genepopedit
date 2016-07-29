@@ -14,15 +14,15 @@
 #' where the first column is the population and the second is the number to be sampled.
 #' @rdname genepop_sample
 #' @import magrittr
-#' @importFrom data.table fread as.data.table
-#' @importFrom dplyr filter sample_n sample_frac group_by ungroup
+#' @importFrom data.table fread
+#' @import dplyr
 #' @export
 
 ##
 genepop_sample <- function(GenePop,nsample){
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -40,7 +40,7 @@ genepop_sample <- function(GenePop,nsample){
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
+    GenePop <- as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
   ## Stacks version information
@@ -96,7 +96,7 @@ genepop_sample <- function(GenePop,nsample){
     #fixed number from each pop *note we use a NULL filter so we can call dplyr::
     if(!length(nsample)>1){
       if(as.integer(nsample)>0){
-        sampledf <- as.data.frame(dplyr::filter(Popdf)%>%group_by(Pops)%>%sample_n(nsample)%>%ungroup())
+        sampledf <- as.data.frame(filter(Popdf)%>%group_by(Pops)%>%sample_n(nsample)%>%ungroup())
         sub_individuals <- sampledf$Indiv
       }
     }
@@ -109,7 +109,7 @@ genepop_sample <- function(GenePop,nsample){
           nsample <- 0.9#maximum sample of 0.9
           warning("Maximum proportion permitted is 90% nsample changed to 0.9")
         }
-      sampledf  <- as.data.frame(dplyr::filter(Popdf)%>%group_by(Pops)%>%sample_frac(nsample)%>%ungroup())
+      sampledf  <- as.data.frame(filter(Popdf)%>%group_by(Pops)%>%sample_frac(nsample)%>%ungroup())
       sub_individuals <- sampledf$Indiv
      }
    }

@@ -15,7 +15,7 @@
 #' "Loci" = vector of Loci.
 #' "Allele" = vector of allele values.
 #' @rdname genepop_detective
-#' @importFrom data.table fread as.data.table
+#' @importFrom data.table fread
 #' @export
 #'
 
@@ -27,7 +27,7 @@ genepop_detective <- function(GenePop,variable="Pops"){
   }
 
   #Check to see if GenePop is a data.frame from the workspace
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){

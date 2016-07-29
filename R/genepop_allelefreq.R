@@ -11,7 +11,7 @@
 #' @param Wide logical specifying whether the allele frequencies should be returned as long (default:FALSE) or wide (TRUE) format. Note that the wide format can be used as the input for alleleotype_genepop to simulate geneotypes.
 #' @rdname genepop_allelefreq
 #' @import magrittr
-#' @importFrom data.table fread as.data.table melt
+#' @importFrom data.table fread as.data.table melt dcast
 #' @importFrom dplyr filter summarise group_by ungroup summarise_each funs funs_
 #' @export
 #'
@@ -176,7 +176,7 @@ genepop_allelefreq <- function(GenePop,popgroup=NULL,Wide=FALSE){
     #If the output is to be in wide format or to be left (default) as long (transposed format). Note taht wide formate is accepted for genotype simulation by alleleotype_genepop().
     if(Wide){
       Output[] <- lapply(Output,as.character)
-      Output <- Output%>%dcast(.,Population~Loci, value.var="MAF")%>%data.frame()
+      Output <- Output %>% data.table::dcast(.,Population~Loci, value.var="MAF") %>% data.frame()
       #data.table::dcast adds an "x" to the column names which must be removed for matching
       names(Output)[2:length(names(Output))]=gsub("X","",names(Output)[2:length(names(Output))])
       Output <- Output[,c("Population",names(temp2)[-length(temp2)])]

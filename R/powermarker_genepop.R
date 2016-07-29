@@ -7,16 +7,18 @@
 #' @param path the filepath and filename of output.
 #' @param sampleid Whether you want the sampleid in your Genepop to be based off the 'Sample_ID' column (TRUE) or the 'POP_ID' column (FALSE) in the Powermarker file
 #' @rdname powermarker_genepop
+#' @importFrom utils read.table
+#' @importFrom utils write.table
 #' @export
 #'
 
 powermarker_genepop<-function(Powermarker, missing_data, path,sampleid=TRUE){
-  
-  classdef <- read.table(Powermarker, header = TRUE, nrows = 5) # find column classes
+
+  classdef <- utils::read.table(Powermarker, header = TRUE, nrows = 5) # find column classes
   classes <- sapply(classdef, class)
-  input <- read.table(Powermarker, header = TRUE, colClasses = classes,stringsAsFactors = FALSE)
-  
-   #input<-read.table(Powermarker)
+  input <- utils::read.table(Powermarker, header = TRUE, colClasses = classes,stringsAsFactors = FALSE)
+
+   #input<-utils::read.table(Powermarker)
   input.hold<-input[c(1,2)]
   input<-input[,-c(1,2)]
   loci_names<-colnames(input)
@@ -69,12 +71,12 @@ if(sampleid){PopVec <- paste0(SampleID," ,  ")}
 if(!sampleid){
   SampleNumbers <- NULL
   for(i in unique(input.hold[,1])){
-    numclass <- 1:length(which(input.hold[,1]==i)) 
+    numclass <- 1:length(which(input.hold[,1]==i))
     SampleNumbers <- c(SampleNumbers,numclass)
   }
-  
+
   PopVec <- paste0(input.hold[,1],"_",SampleNumbers," ,  ")
-  
+
   }
 
 #Paste these to the Loci
@@ -87,8 +89,8 @@ if(length(table(input.hold[,1]))!=1){Loci <- insert_vals(Vec=Loci,breaks=PopPosi
 Loci <- c("Pop",Loci)
 
 Output<-c("Powermarker to Genepop by genepopedit",loci_names,Loci)
-  
+
 #Save the Genepop file
-  write.table(Output,path, col.names=FALSE, row.names=FALSE, quote=FALSE)
+  utils::write.table(Output,path, col.names=FALSE, row.names=FALSE, quote=FALSE)
 }
 

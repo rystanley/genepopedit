@@ -20,14 +20,16 @@
 #' @param path file path to directory where the BGC files (3) will be saved.
 #' @rdname genepop_bgc
 #' @import magrittr
-#' @importFrom dplyr filter do group_by ungroup
-#' @importFrom data.table fread as.data.table
+#' @import dplyr
+#' @importFrom data.table fread
+#' @importFrom utils write.table
+#' @importFrom utils read.csv
 #' @export
 
 genepop_bgc <- function(GenePop,popdef,fname,path){
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -45,7 +47,7 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
+    GenePop <- as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
   ## Stacks version information
@@ -124,7 +126,7 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   holdframe[holdframe==120]=3
   holdframe[holdframe==130]=4
 
-  if(is.character(popdef)){popdef <- read.csv("popdef.csv",header=T)} #if popdef is a path then read it in
+  if(is.character(popdef)){popdef <- utils::read.csv("popdef.csv",header=T)} #if popdef is a path then read it in
 
   #Extract the parental data and admixed data
   P1_raw <- holdframe[which(holdframe$Pop %in% popdef[which(popdef[,2]=="P1"),1]),]#Parental 1
@@ -195,10 +197,10 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   ##Save output for BGC formatted for the parental populations ------------
   if(substring(path,nchar(path))!="/"){path=paste0(path,"/")}
 
-  write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
+  utils::write.table(x = P1_BGC,file=paste0(path,fname,"_Parental1_BGC.txt",sep=""),
               sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
-  write.table(x = P2_BGC,file=paste0(path,fname,"_Parental2_BGC.txt",sep=""),
+  utils::write.table(x = P2_BGC,file=paste0(path,fname,"_Parental2_BGC.txt",sep=""),
               sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
   #Convert the admixed data to BGC format --------------
@@ -247,7 +249,7 @@ genepop_bgc <- function(GenePop,popdef,fname,path){
   MixedData=as.vector(temp6)
 
   ##Save output for BGC formatted for the parental and mixed populations ------------
-  write.table(x = MixedData,file=paste(path,fname,"_Admixed_BGC.txt",sep=""),
+  utils::write.table(x = MixedData,file=paste(path,fname,"_Admixed_BGC.txt",sep=""),
               sep="\t",quote=FALSE,row.names=FALSE,col.names=FALSE)
 
 } #end of function

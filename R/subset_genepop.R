@@ -22,8 +22,9 @@
 #'  naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
 #'            text- sPop <- c("Aqua01", "GRR","GHR","TRS").
 #' @param path the filepath and filename of output.
-#' @rdname subset_genepop
+#' @rdname subset_genepopt
 #' @importFrom data.table fread as.data.table
+#' @importFrom utils write.table
 #' @export
 
 
@@ -234,6 +235,6 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
     }
 
     # Save the file
-    write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+    utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 } #End function

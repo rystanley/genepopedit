@@ -1,6 +1,6 @@
 #genepopedit
-[![Travis-CI Build Status](https://travis-ci.org/rystanley/genepopedit.svg?branch=master)](https://travis-ci.org/rystanley/genepopedit)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rystanley/genepopedit?branch=master&svg=true)](https://ci.appveyor.com/project/rystanley/genepopedit)
+[![Travis-CI Build Status](https://travis-ci.org/thierrygosselin/genepopedit.svg?branch=master)](https://travis-ci.org/thierrygosselin/genepopedit)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/thierrygosselin/genepopedit?branch=master&svg=true)](https://ci.appveyor.com/project/thierrygosselin/genepopedit)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genepopedit)](http://cran.r-project.org/package=genepopedit)
 [![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
 
@@ -99,14 +99,13 @@ You can install **genepopedit** as a R package using the following 2 steps:
 **Step 1** Install the _R_ package *devtools*
 ```r
 if (!require("devtools")) install.packages("devtools") # to install
-library(devtools) # to load
 ```
 
 **Step 2** Install *genepopedit*:
 ```r
 #install the package from *Github*
-install_github("rystanley/genepopedit") 
-library(genepopedit)# load the library
+devtools::install_github("rystanley/genepopedit") 
+library(genepopedit) # load the library
 ```
 
 <a name="extrainstall"/>
@@ -489,7 +488,7 @@ Functions available in **genepopedit** require that the population and sample nu
 #Use genepop_ID to fix the sample IDs prior to the use of genepopedit functions.
 filepath="~myfile.txt" #path to 'myfile' which has sample IDs without the required _ separation. Note this can also be an object in the workspace.
 
-genepop_ID(GenePop=filepath,path=paste0(output_dir,"Genepop_SampleID_fixed.txt"))
+genepop_ID(GenePop=filepath, path=paste0(output_dir,"Genepop_SampleID_fixed.txt"))
 ```
 
 ***
@@ -502,15 +501,15 @@ This function queries meta-data from your genepop data without having to open it
 
 Return *population names*
 ```r
-PopNames <- genepop_detective(GenePopData,variable="Pops")
+PopNames <- genepop_detective(GenePopData, variable="Pops")
 ```
 Return *population counts*
 ```r
-PopCounts <- genepop_detective(GenePopData,variable="PopNum")
+PopCounts <- genepop_detective(GenePopData, variable="PopNum")
 ```
 Return *sample IDs*
 ```r
-SampleIDs <- genepop_detective(GenePopData,variable="Inds")
+SampleIDs <- genepop_detective(GenePopData, variable="Inds")
 ```
 Return *Loci names* using the file path instead of the workspace object.
 ```r
@@ -540,7 +539,7 @@ This function will calculate allele frequencies based on the major allele among 
 #calculate major allele frequencies according to the specified population groupings.
   popgrouping <- data.frame(Name=c("AAA","BBB","CCC","DDD","EEE","FFF"),groups=c("gr1","gr1","gr2","gr2","gr3","gr3"))
 
-  AlleleFreq_specified <- genepop_allelefreq(GenePopData,popgroup=popgrouping)
+  AlleleFreq_specified <- genepop_allelefreq(GenePopData, popgroup=popgrouping)
 ```
 
 <a name="genepoptoploc"/>
@@ -583,14 +582,14 @@ Create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, &
 #subset the Genepop file and 'keep' the specified loci names.
   subloci <-c("Loci03","Loci15","Loci23","Loci49","Loci62","Loci81","Loci88","Loci94")
   
-  subset_genepop(GenePop=GenePopData,keep=TRUE,subs=subloci,path=paste0(output_dir,"Genepop_Loci_selection.txt"))
+  subset_genepop(GenePop = GenePopData, keep = TRUE, subs = subloci, path = paste0(output_dir,"Genepop_Loci_selection.txt"))
 ```
 
-You can also choose all loci not in the vector specified using keep=FALSE.
+You can also choose all loci not in the vector specified using keep = FALSE.
 
 ```r
 #subset the Genepop file and do not 'keep' the specified 'subs'
-  subset_genepop(GenePop=GenePopData,keep=FALSE,subs=subloci,path=paste0(output_dir,"Genepop_Loci_neutral.txt"))
+  subset_genepop(GenePop = GenePopData, keep = FALSE, subs = subloci, path = paste0(output_dir,"Genepop_Loci_neutral.txt"))
 ```
 
 You can also remove populations within this function. Here we again select loci under selection, but remove populations 3 & 7 (CCC/GGG). To do this we create a list of all populations we want to keep
@@ -605,12 +604,12 @@ You can also remove populations within this function. Here we again select loci 
   PopKeep <- c("AAA","BBB","DDD","EEE","FFF","HHH","III","JJJ")
 #or
   #if you have fewer pops to remove
-  PopKeep <- setdiff(PopNames,c("CCC","GGG"))
+  PopKeep <- setdiff(PopNames, c("CCC","GGG"))
   
   #vector of loci to keep
   subloci <- c("Loci03","Loci15","Loci23","Loci49","Loci62","Loci81","Loci88","Loci94")
   
-  subset_genepop(GenePop=GenePopData,keep=TRUE,subs=subloci,sPop=PopKeep,path=paste0(output_dir,"Genepop_Loci_selection_subpop.txt"))
+  subset_genepop(GenePop = GenePopData, keep = TRUE, subs = subloci, sPop = PopKeep, path = paste0(output_dir,"Genepop_Loci_selection_subpop.txt"))
 ```
 <a name="subsetrenm"/>
 ##subset\_genepop\_rename
@@ -623,11 +622,11 @@ Now change the names of some of the populations. In this example we will rename 
 #create a dataframe for renaming. 
 #column 1 = the original pop names.
 #column 2 = the new names. 
-  PopRename <- data.frame(oPop=c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),
-  newname=c("AAA","BBB","CCC","YYY","EEE","FFF","GGG","ZZZ","III","JJJ"))
+  PopRename <- data.frame(oPop = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),
+  newname = c("AAA","BBB","CCC","YYY","EEE","FFF","GGG","ZZZ","III","JJJ"))
 
 #rename populations
-  subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed.txt"),nameframe=PopRename)
+  subset_genepop_rename(GenePop = GenePopData, path = paste0(output_dir,"Genepop_renamed.txt"),nameframe = PopRename)
 ```
 
 Populations can also be grouped by a common name. The result is similar to subset-genepop-aggregate except that population names will be replaced. Here it is useful to enable renumbering (renumber = TRUE) or there individuals with the same number will be assigned the same ID, if populations are combined. 
@@ -639,19 +638,19 @@ Populations can also be grouped by a common name. The result is similar to subse
 #create a dataframe for renaming. 
 #column 1 = the original pop names.
 #column 2 = the new names. 
-  PopRename_group <- data.frame(oPop=c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),newname=c("Pop1","Pop1","Pop1","Pop1","Pop1","Pop2","Pop2","Pop2","Pop2","Pop2"))
+  PopRename_group <- data.frame(oPop = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),newname = c("Pop1","Pop1","Pop1","Pop1","Pop1","Pop2","Pop2","Pop2","Pop2","Pop2"))
 
 #rename populations
-  subset_genepop_rename(GenePop=GenePopData,nameframe=PopRename_group,renumber=TRUE,meta="Pop",path=paste0(output_dir,"Genepop_renamed_renumbered.txt"))
+  subset_genepop_rename(GenePop = GenePopData, nameframe = PopRename_group, renumber = TRUE, meta="Pop",path = paste0(output_dir,"Genepop_renamed_renumbered.txt"))
 ```
 
 Alternatively the sampleIDs can be renamed directly. 
 ```r
 #create a renaming vector (column 1 = old column 2 = new)
-  IndRename_group <- data.frame(new=c("AAA_10","BBB_10","CCC_10","DDD_10"),old=c("AAA_99","BBB_99","CCC_99","DDD_99"))
+  IndRename_group <- data.frame(new = c("AAA_10","BBB_10","CCC_10","DDD_10"),old = c("AAA_99","BBB_99","CCC_99","DDD_99"))
 
 #rename sampleIDs
-  subset_genepop_rename(GenePop=GenePopData,nameframe=IndRename_group,meta="Ind",path=paste0(output_dir,"Genepop_ID_renamed.txt"))
+  subset_genepop_rename(GenePop = GenePopData, nameframe = IndRename_group, meta="Ind",path = paste0(output_dir,"Genepop_ID_renamed.txt"))
 ```
 
 If your sample IDs are not split between the population and the sample number using an _ then you can rename the populations before using any subsetting functions. Note that in this example because there is already a _ separating populations the 
@@ -662,15 +661,15 @@ PopNames <- genepop_detective(GenePopData,"Inds")
 PopNames_fixed <- paste0(PopNames,"_") #add the underscore seperator
 
 #create a dataframe for renaming. 
-  PopRename_fixed <- data.frame(oPop=PopNames,newname=PopNames_fixed)
+  PopRename_fixed <- data.frame(oPop = PopNames, newname = PopNames_fixed)
 
 #rename populations * note here you will keep the original sample #s (renumber = F)
-  subset_genepop_rename(GenePop=GenePopData,path=paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe=PopRename_fixed,renumber=FALSE)
+  subset_genepop_rename(GenePop = GenePopData, path = paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe = PopRename_fixed, renumber = FALSE)
 ```
 
 <a name="subsetagg"/>
 ##subset\_genepop\_aggregate
-Now lets change group some populations together. In this example we will combine populations DDD/EEE & FFF/HHH and remove populations JJJ/GGG (*not listed in column 1 of PopRename*). No loci will be removed from this dataframe (*subs=NULL*). This is useful when you don't want a clustering program (e.g. STRUCTURE or Bayescan) to assume differences among population groups. [_Function description_](#funcmanip)
+Now lets change group some populations together. In this example we will combine populations DDD/EEE & FFF/HHH and remove populations JJJ/GGG (*not listed in column 1 of PopRename*). No loci will be removed from this dataframe (*subs = NULL*). This is useful when you don't want a clustering program (e.g. STRUCTURE or Bayescan) to assume differences among population groups. [_Function description_](#funcmanip)
 
 ```r
 #Use genepop_detective to find the meta-data for populations
@@ -679,11 +678,11 @@ Now lets change group some populations together. In this example we will combine
 #create a dataframe for renaming. 
 #column 1 = the original pop names and the list of pops required.
 #column 2 = Grouping variables. 
-  PopAggregate <-data.frame(oP=c("AAA","BBB","CCC","DDD","EEE","FFF","HHH","III"),
-  agname=c("AAA","Pop1","CCC","Pop1","DDD","Pop2","HHH","Pop2"))
+  PopAggregate <-data.frame(oP = c("AAA","BBB","CCC","DDD","EEE","FFF","HHH","III"),
+  agname = c("AAA","Pop1","CCC","Pop1","DDD","Pop2","HHH","Pop2"))
 
 #re-cast Genepop format to group populations based on 'PopAggregate'
-  subset_genepop_aggregate(GenePop=GenePopData,subs=NULL,path=paste0(output_dir,"Genepop_grouped.txt"),agPopFrame=PopAggregate)
+  subset_genepop_aggregate(GenePop = GenePopData, subs = NULL, path = paste0(output_dir,"Genepop_grouped.txt"),agPopFrame = PopAggregate)
 ```
 
 Now that we have two grouped populations, we can use the population rename function to give them a common name.
@@ -698,11 +697,11 @@ Now that we have two grouped populations, we can use the population rename funct
 #we can see that "BBB" & "DDD" and "FFF" & "III" are at the end but still have different names. 
 
 #create renaming frame
-  PopRename <- data.frame(oPop=c("AAA","CCC","EEE","HHH","BBB","DDD","FFF","III"),
+  PopRename <- data.frame(oPop = c("AAA","CCC","EEE","HHH","BBB","DDD","FFF","III"),
   newname = c("AAA","CCC","EEE","HHH","Group1","Group1","Group2","Group2"))
 
 #Rename the grouped populations
-  subset_genepop_rename(GenePop=GenePopData2,nameframe=PopRename,path=paste0(output_dir,"Genepop_grouped_renamed.txt"))
+  subset_genepop_rename(GenePop = GenePopData2, nameframe = PopRename, path = paste0(output_dir,"Genepop_grouped_renamed.txt"))
                  
                  
 ```
@@ -718,7 +717,7 @@ _This function is best run at the beginning of the analysis prior to removal of 
 #vector of sample IDs to remove
   subid <- c("AAA_1","AAA_3","BBB_20","CCC_21","EEE_3","EEE_26","HHH_25","JJJ_4")
 
-  subset_genepop_individual(GenePop=GenePopData,indiv=subid,keep=FALSE, path=paste0(output_dir,"Genepop_IDsubset.txt"))
+  subset_genepop_individual(GenePop = GenePopData, indiv = subid, keep = FALSE, path = paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
 
 ***
@@ -737,7 +736,7 @@ There are several ways we can sub-sample each population
 
 Use a fixed number (e.g. 5 from each population)
 ```r
-  SubSamp <- genepop_sample(GenePopData,nsample=5)
+  SubSamp <- genepop_sample(GenePopData, nsample = 5)
 ```
 
 *or*
@@ -745,7 +744,7 @@ Use a fixed number (e.g. 5 from each population)
 
 Use a fixed fraction (e.g. 25% from each population)
 ```r
-  SubSamp <- genepop_sample(GenePopData,nsample=0.25)
+  SubSamp <- genepop_sample(GenePopData, nsample = 0.25)
 ```
 
 *or*
@@ -756,9 +755,9 @@ Use a fraction which varies for each population
   Pops <- genepop_detective(GenePopData,"Pops")
 
 #create a dataframe which defines how many you want to sample from each population. Note here we create a column which has an entry for each population.
-  subdf <- data.frame(Pops=Pops,nsample=c(5,2,3,5,6,5,2,3,5,6))
+  subdf <- data.frame(Pops = Pops, nsample = c(5, 2, 3, 5, 6, 5, 2, 3, 5, 6))
 
-  SubSamp <- genepop_sample(GenePopData,nsample=subdf)
+  SubSamp <- genepop_sample(GenePopData, nsample = subdf)
 ```
 
 *or*
@@ -769,9 +768,9 @@ Use a fraction which varies for each population
   Pops <- genepop_detective(GenePopData,"Pops")
 
 #create a dataframe which defines how many you want to sample from each population. Note here we create a column which has an entry for each population.
-  subdf <- data.frame(Pops=Pops,nsample=c(5,2,3,5,6,5,2,3,5,6)/10)
+  subdf <- data.frame(Pops = Pops, nsample = c(5, 2, 3, 5, 6, 5, 2, 3, 5, 6)/10)
 
-  SubSamp <- genepop_sample(GenePopData,nsample=subdf)
+  SubSamp <- genepop_sample(GenePopData, nsample = subdf)
 ```
 
 Once you select a method to sub-sample each population, you can use the function subset-genepop-indiv to create the sampled genepop file.
@@ -779,11 +778,11 @@ Once you select a method to sub-sample each population, you can use the function
 For example if you wanted to create a training and assignment dataset  in genepop format using the random stratified sampled we selected using subset-genepop-indiv:
 
 ```r
-#Create training dataset (keep=TRUE)
-  subset_genepop_individual(GenePopData,indiv=SubSamp,keep=TRUE,path=paste0(output_dir,"Genepop_training.txt"))
+#Create training dataset (keep = TRUE)
+  subset_genepop_individual(GenePopData, indiv = SubSamp, keep = TRUE, path = paste0(output_dir,"Genepop_training.txt"))
 
-#Create an assignment dataset using the remaining individuals (keep=FALSE)
-  subset_genepop_individual(GenePopData,indiv=SubSamp,keep=FALSE,path=paste0(output_dir,"Genepop_assignment.txt"))
+#Create an assignment dataset using the remaining individuals (keep = FALSE)
+  subset_genepop_individual(GenePopData, indiv = SubSamp, keep = FALSE, path = paste0(output_dir,"Genepop_assignment.txt"))
 ```
 
 ***
@@ -796,13 +795,13 @@ If you are interested in investigating population structure you can convert your
 
 ```r
 #convert Genepop format to STRUCTURE to default groupings
-  genepop_structure(GenePop="Genepop_IDsubset.txt"path=paste0(output_dir,"Sturcture_IDsubset_groups.txt")
+  genepop_structure(GenePop="Genepop_IDsubset.txt"path = paste0(output_dir,"Sturcture_IDsubset_groups.txt")
   
 # Specify population groupings (group CCC/DDD/EEE and III/JJJ)
   pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("1","2","3","3","3","4","5","6","7","7"))
 
 #convert Genepop format to STRUCTURE with new groupings
-  genepop_structure(GenePop="Genepop_IDsubset.txt",popgroup=pGroups, path=paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
+  genepop_structure(GenePop="Genepop_IDsubset.txt",popgroup = pGroups, path = paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
 
 ```
 <a name="genepopfst"/>
@@ -813,10 +812,10 @@ This data can be used by the R package 'hierfstat' <https://cran.r-project.org/w
 
 ```r
 #convert Genepop format to FSTAT (.dat)
-  genepop_fstat(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"Fstat_IDsubset.dat"))
+  genepop_fstat(GenePop="Genepop_IDsubset.txt",path = paste0(output_dir,"Fstat_IDsubset.dat"))
 
 #convert Genepop format to FSTAT but keep the data in the workspace
-  genepop_fstat(GenePop="Genepop_IDsubset.txt",addworkspace=TRUE)
+  genepop_fstat(GenePop="Genepop_IDsubset.txt",addworkspace = TRUE)
 ```
 <a name="genepopnh"/>
 ##genepop\_newhybrids
@@ -824,7 +823,7 @@ If you are interested in testing for hybridization you can convert from Genepop 
 
 ```r
 #convert Genepop format to New Hybrids format (.txt)
-  genepop_newhybrids(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"NewHybrids_IDsubset.txt"))
+  genepop_newhybrids(GenePop="Genepop_IDsubset.txt",path = paste0(output_dir,"NewHybrids_IDsubset.txt"))
 ```
 <a name="genepopagn"/>
 ##genepop\_assigner
@@ -832,12 +831,12 @@ If you are interested conducting assignment analysis, you can convert to the for
 
 ```r
 #convert Genepop format to assigner format (.txt) using the populations each as their own assessment level
-  genepop_assigner(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"assigner_IDsubset.txt"))
+  genepop_assigner(GenePop="Genepop_IDsubset.txt",path = paste0(output_dir,"assigner_IDsubset.txt"))
   
 # Set new population assignment groupings (group CCC/DDD/EEE and III/JJJ)
   pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("1","2","3","3","3","4","5","6","7","7"))
    
-   genepop_assigner(GenePop="Genepop_IDsubset.txt",popgroup=pGroups,path=paste0(output_dir,"assigner_IDsubset_NewGroups.txt"))
+   genepop_assigner(GenePop="Genepop_IDsubset.txt",popgroup = pGroups, path = paste0(output_dir,"assigner_IDsubset_NewGroups.txt"))
   
 ```
 <a name="genepopcolony"/>
@@ -848,20 +847,20 @@ If you are interested in investigating sibship or parentage, you can convert to 
 
 ```r
 #convert Genepop format to the files necessary for Colony 
-  genepop_colony(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",denote.missing = "000",path=output_dir)
+  genepop_colony(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",denote.missing = "000",path = output_dir)
   
 ```
 
 <a name="genepopbgc"/>
 ##genepop\_bgc
-**genepopedit** is one of the few tools available to convert data to the format required for input into to the "Bayesian estimation of Genomic Clines" (BGC) format. BGC can evalute genomic clinal patterns and introgression among loci. To convert to BGC format you must specify which populations you consider to be ancestral or **parental** (P1,P2) and which you assume could be hybridized (**admixed**). <https://sites.google.com/site/bgcsoftware/>. [_Function description_](#funcconvert)
+**genepopedit** is one of the few tools available to convert data to the format required for input into to the "Bayesian estimation of Genomic Clines" (BGC) format. BGC can evalute genomic clinal patterns and introgression among loci. To convert to BGC format you must specify which populations you consider to be ancestral or **parental** (P1, P2) and which you assume could be hybridized (**admixed**). <https://sites.google.com/site/bgcsoftware/>. [_Function description_](#funcconvert)
 
 ```r
 #specify which populations are going to be included in the analysis and to which class they belong. Note Pops identified in P1 and-or P2 can also be specified as "Admixed" to test BGC output. 
-  BGC_groups=data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("P1","P1","P1","Admixed","Admixed","Admixed","Admixed","P2","P2","P2"))
+  BGC_groups = data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("P1","P1","P1","Admixed","Admixed","Admixed","Admixed","P2","P2","P2"))
 
 #convert Genepop to BGC input files (3). Note in this case the variable path is a path to the directory where the input files will be saved.
-  genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef=BGC_groups,fname="BGC_IDsubset",path=output_dir)
+  genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef = BGC_groups, fname="BGC_IDsubset",path = output_dir)
 
 ```
 <a name="genepoptreemix"/>
@@ -871,17 +870,17 @@ If you are interested in investigating sibship or parentage, you can convert to 
 ```r
 
 #convert Genepop to Treemix input and keep intermediary conversion files (default: FALSE)
-  genepop_treemix(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",keep_inter=TRUE,path=paste0(output_dir,"Treemix_IDsubset.txt"))
+  genepop_treemix(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",keep_inter = TRUE, path = paste0(output_dir,"Treemix_IDsubset.txt"))
 
 ```
 <a name="genepopgsi"/>
 ##genepop\_GSIsim
-If you are interested in assessing the accuracy of a genetic stock identification analysis, given a genetic baseline, you can convert directly from GENEPOP to a GSI_sim formatted text file. **genepopedit** is among the few tools currenlty available to format data for GSI_sim.  <https://swfsc.noaa.gov/textblock.aspx?Division=FED&ParentMenuId=54&id=12964> [_Function description_](#funcconvert)
+If you are interested in assessing the accuracy of a genetic stock identification analysis, given a genetic baseline, you can convert directly from GENEPOP to a GSI_sim formatted text file. **genepopedit** is among the few tools currenlty available to format data for GSI_sim.  <https://swfsc.noaa.gov/textblock.aspx?Division = FED&ParentMenuId = 54&id = 12964> [_Function description_](#funcconvert)
 
 ```r
 
 #convert Genepop to GSIsim format
-  genepop_GSIsim(GenePop="Genepop_IDsubset.txt",path=paste0(output_dir,"GSIsim_IDsubset.txt"))
+  genepop_GSIsim(GenePop="Genepop_IDsubset.txt",path = paste0(output_dir,"GSIsim_IDsubset.txt"))
 
 ```
 
@@ -905,7 +904,7 @@ If you are working with a flattened dataframe in your workspace you can convert 
 flat.df <- GenePop_df[,-c(2,3)]
 
 # create a Genepop format which can be used by other genepopedit functions
-genepop_unflatten(flat.df,path=paste0(output_dir,"GenePop_UNFLATTENED.txt"))
+genepop_unflatten(flat.df, path = paste0(output_dir,"GenePop_UNFLATTENED.txt"))
 ```
 
 #**Conversion using PGDspider**
@@ -915,9 +914,9 @@ genepop_unflatten(flat.df,path=paste0(output_dir,"GenePop_UNFLATTENED.txt"))
 There are a broad range of data formats which can be converted to and from using PGDspider. If you have multiple files which you are going to be converting using the same conversion parameters, _PGDspideR.R_ can be useful, providing a code based interface to exploit the conversion functions of PGDspider. [_Function description_](#funcpgd)
 ```r
 #convert between GENEPOP and FSTAT format using PGDspider
-  pgdSpideR(input=paste0(output_dir,"Genepop_IDsubset.txt"),
+  pgdSpideR(input = paste0(output_dir,"Genepop_IDsubset.txt"),
   input_format="GENEPOP",
-  output=paste0(output_dir,"Genepop_IDsubset_FSTAT.dat",
+  output = paste0(output_dir,"Genepop_IDsubset_FSTAT.dat",
   output_format="FSTAT",
   spid="c:/Users/YOURNAME/Documents/spids/GENEPOP_FSTAT.spid",
   where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/")
@@ -933,24 +932,24 @@ Individual geneotypes can be simulated using the _alleleotype_genepop()_ functio
 ```r
 #simulate individual geneotypes allele frequencies stratified by population.
   #Create an example pooled DNA input file
-    pooledDNA <- data.frame(Pop=c("Pop1","Pop2","Pop3","Pop4","Pop5"),Loci1=round(runif(5,0,1),2),Loci2=round(runif(5,0,1),2),Loci3=round(runif(5,0,1),2),Loci4=round(runif(5,0,1),2),Loci5=round(runif(5,0,1),2),Loci6=round(runif(5,0,1),2))
+    pooledDNA <- data.frame(Pop = c("Pop1","Pop2","Pop3","Pop4","Pop5"),Loci1 = round(runif(5, 0, 1),2),Loci2 = round(runif(5, 0, 1),2),Loci3 = round(runif(5, 0, 1),2),Loci4 = round(runif(5, 0, 1),2),Loci5 = round(runif(5, 0, 1),2),Loci6 = round(runif(5, 0, 1),2))
     
     #inspect the input
     pooledDNA
 
   #simulate 200 individual geneotypes for each population
-    alleleotype(pooledDNA,numsim=200,path=paste0(output_dir,"SimulatedGeneotypes.txt"))
+    alleleotype(pooledDNA, numsim = 200, path = paste0(output_dir,"SimulatedGeneotypes.txt"))
   
   #To validate output simulate 100 (default) geneotypes per population and compare allele frequencies to those of the input file. Estimated frequencies per population and SNP should match those of the input file within +/- 1%.
   
-    alleleotype_genepop(pooledDNA,numsim=100,path=paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
+    alleleotype_genepop(pooledDNA, numsim = 100, path = paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
    
     genepop_allelefreq(paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
     
-  #Note you can simulate new geneotypes using the summary from genepop_allelefreq(... , Wide=TRUE).
-    GeneFreq <- genepop_allelefreq("Genepop_IDsubset.txt",Wide=TRUE)
+  #Note you can simulate new geneotypes using the summary from genepop_allelefreq(... , Wide = TRUE).
+    GeneFreq <- genepop_allelefreq("Genepop_IDsubset.txt",Wide = TRUE)
     
-    alleleotype_genepop(GeneFreq,numsim=100,path=paste0(output_dir,"SimulatedGeneotypes_Genepop_IDsubset.txt"))
+    alleleotype_genepop(GeneFreq, numsim = 100, path = paste0(output_dir,"SimulatedGeneotypes_Genepop_IDsubset.txt"))
   
   
 ```

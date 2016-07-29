@@ -13,14 +13,16 @@
 #' has the group. If groupings are the same as populations then leave as NULL (Default).If the input genepop file does not have population and sample ID seperation using ("_") then refer to genepop_ID().
 #' @param path the filepath and filename of output.
 #' @rdname genepop_structure
-#' @importFrom data.table fread as.data.table
+#' @importFrom data.table fread
+#' @importFrom utils write.table
+#' @importFrom utils read.csv
 #' @export
 
 
 genepop_structure <- function(GenePop,popgroup=NULL,path=NULL){
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -38,7 +40,7 @@ genepop_structure <- function(GenePop,popgroup=NULL,path=NULL){
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
+    GenePop <- as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
   ## Stacks version information
@@ -106,7 +108,7 @@ genepop_structure <- function(GenePop,popgroup=NULL,path=NULL){
   # Get the population groupings
   if(!is.null(popgroup)) #if popgroup isn't NULL
   {
-    if(is.character(popgroup)){popgroup <- read.csv(popgroup,header=T)} #if it is a path then read it in
+    if(is.character(popgroup)){popgroup <- utils::read.csv(popgroup,header=T)} #if it is a path then read it in
 
     if(length(intersect(unique(NameExtract),popgroup[,1]))!=length(unique(NameExtract))){
       message("Popuation levels missing form popgroups input. STRUCTURE groups now set to default population levels")
@@ -143,6 +145,6 @@ genepop_structure <- function(GenePop,popgroup=NULL,path=NULL){
   Output <- c(headinfo,Loci)
 
   #Save Output
-  write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
+  utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 }

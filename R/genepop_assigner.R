@@ -13,14 +13,16 @@
 #' has the group. These values must be numeric. If groupings are the same as populations then leave as NULL (Default).
 #' @param path the filepath and filename of output.
 #' @rdname genepop_assigner
-#' @importFrom data.table fread as.data.table
+#' @importFrom data.table fread
+#' @importFrom utils write.table
+#' @importFrom utils read.csv
 #' @export
 
 
 genepop_assigner <- function(GenePop,popgroup=NULL,path=NULL){
 
   #Check to see if GenePop is a data.frame from the workspace and convert to data.table
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  if(is.data.frame(GenePop)){GenePop <- as.data.table(GenePop)}
 
   #Check to see if Genepop is a file path or dataframe
   if(is.character(GenePop)){
@@ -38,7 +40,7 @@ genepop_assigner <- function(GenePop,popgroup=NULL,path=NULL){
     GenePop <- as.vector(GenePop)
     GenePop <- GenePop[-1,]
     GenePop <- c(lociheader,GenePop)
-    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
+    GenePop <- as.data.table(GenePop,stringsAsFactors = FALSE)
   }
 
   ## Stacks version information
@@ -87,7 +89,7 @@ genepop_assigner <- function(GenePop,popgroup=NULL,path=NULL){
 
 if(!is.null(popgroup)) #if popgroup isn't NULL
 {
-  if(is.character(popgroup)){popgroup <- read.csv(popgroup,header=T)} #if it is a path then read it in
+  if(is.character(popgroup)){popgroup <- utils::read.csv(popgroup,header=T)} #if it is a path then read it in
 
   if(length(intersect(unique(NameExtract),popgroup[,1]))!=length(unique(NameExtract))){
         message("Popuation levels missing form popgroups input. asssignr groups now set to default population levels")
@@ -122,6 +124,6 @@ Output <- data.frame(Output,stringsAsFactors = FALSE)
 colnames(Output)=c("POP_ID","INDIVIDUALS",colnames(temp2)) #add the column headers
 Output$POP_ID <- as.numeric(Output$POP_ID)
 Output <- Output[order(Output$POP_ID,decreasing = FALSE),]
-write.table(Output,path,row.names=FALSE,col.names = TRUE,quote=FALSE,sep="\t")
+utils::write.table(Output,path,row.names=FALSE,col.names = TRUE,quote=FALSE,sep="\t")
 
 }
