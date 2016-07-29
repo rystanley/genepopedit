@@ -36,7 +36,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 
 ***
 
-![workflow-diagram](vignette/vignette_small.png)
+![workflow-diagram](vignettes/vignette_small.png)
 
 __Fig 1.__ **genepopedit** *workflow including data preparation, diagnostics, manipulation and transformation. Files, functions, and function operations are denoted by black, grey and blue text, respectively. Function inputs and outputs are denoted by dashed and solid lines, respectively.*
 
