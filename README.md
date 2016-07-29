@@ -143,6 +143,9 @@ Pull request how-to:
   * Make the changes using github’s in-page editor and save.
   * Submit a pull request and include a brief description of your changes. (e.g. "_spelling errors_" or "_indexing error_").
   
+***
+
+#**Citation** 
 
 Full package description and available citation now available at **Molecular Ecology Resources** <http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12569/abstract>
 
@@ -268,6 +271,21 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**path** | the filepath & filename of output.
+
+***
+
+##**Simulation** <a name="pooleddna"/>
+
+#### alleleotype_genepop.R
+* A tool to simulate individual genotypes using pooled sequencing allele frequencies and randomization.
+
+[_example use_](#pooldna)
+
+**Variable name** | **Input**  
+--------------|---------------------------------
+**input** | complete file path to the input file to be converted or an object in the workspace. The first column should denote populations and adjacent columns the allele frequency (major or minor) for each loci (named in the column header).
+**numsim** | the number of simulated individuals to be returned per population (default: 100). 
 **path** | the filepath & filename of output.
 
 ***
@@ -436,21 +454,6 @@ We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/softw
 **output_format** | format of the of the converted file. This format should match the dropdown menus of pgdSpider in terms of spelling and capitalization (e.g. GENEPOP & FSTAT).
 **spid** | complete file path to the .spid file created by pgdSpider defining the conversion between input_format and output_format. Note that parameters of this .spid file must match the conversion and input file as specified by pgdSpider.
 **where.PGDspider** | the filepath to the folder where pgdSpider installation files are stored.
-
-***
-
-## Simulate individual samples using pooled DNA allele frequencies <a name="pooleddna"/>
-
-#### alleleotype_genepop.R
-* A tool to simulate genotypes using pooled DNA allele frequencies and randomization.
-
-[_example use_](#pooldna)
-
-**Variable name** | **Input**  
---------------|---------------------------------
-**input** | complete file path to the input file to be converted or an object in the workspace. The first column should denote populations and adjacent columns the allele frequency (major or minor) for each loci (named in the column header).
-**numsim** | the number of simulated individuals to be returned per population (default: 100). 
-**path** | the filepath & filename of output.
 
 ***
 
