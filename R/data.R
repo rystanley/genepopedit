@@ -10,7 +10,7 @@
 #' \item Samples: 30 indivuals/population
 #' }
 #'
-#' @source bla bla bla.
+#' @source This data has been randomly generated to demonstrate the functionality of genepopedit.
 #'
 #' @keywords datasets
 "GenePopData"

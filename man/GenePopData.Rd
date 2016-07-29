@@ -8,7 +8,7 @@ This dataset contains genomic data coded as 3 digit alleles.}
 \format{A data frame with 411 rows and 1 variable: representing a genepop file with
 100 Single Nucleotide Polymorphisms (SNPs).}
 \source{
-bla bla bla.
+This data has been randomly generated to demonstrate the functionality of genepopedit.
 }
 \usage{
 GenePopData
