@@ -99,14 +99,13 @@ You can install **genepopedit** as a R package using the following 2 steps:
 **Step 1** Install the _R_ package *devtools*
 ```r
 if (!require("devtools")) install.packages("devtools") # to install
-library(devtools) # to load
 ```
 
 **Step 2** Install *genepopedit*:
 ```r
 #install the package from *Github*
-install_github("rystanley/genepopedit") 
-library(genepopedit)# load the library
+devtools::install_github("rystanley/genepopedit") 
+library(genepopedit) # load the library
 ```
 
 <a name="extrainstall"/>
