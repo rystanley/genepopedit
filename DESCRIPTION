@@ -23,8 +23,7 @@ Imports:
     stringr,
     stringi,
     R.utils,
-    plyr,
-    DBI (>= 0.4.1)
+    plyr
 Suggests:
     adegenet,
     ade4,
