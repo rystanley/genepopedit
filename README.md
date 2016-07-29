@@ -1,6 +1,6 @@
 #genepopedit
-[![Travis-CI Build Status](https://travis-ci.org/thierrygosselin/genepopedit.svg?branch=master)](https://travis-ci.org/thierrygosselin/genepopedit)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/thierrygosselin/genepopedit?branch=master&svg=true)](https://ci.appveyor.com/project/thierrygosselin/genepopedit)
+[![Travis-CI Build Status](https://travis-ci.org/rystanley/genepopedit.svg?branch=master)](https://travis-ci.org/rystanley/genepopedit)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rystanley/genepopedit?branch=master&svg=true)](https://ci.appveyor.com/project/rystanley/genepopedit)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/genepopedit)](http://cran.r-project.org/package=genepopedit)
 [![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
 
@@ -36,7 +36,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 
 ***
 
-![workflow-diagram](vignette/vignette_small.png)
+![workflow-diagram](vignettes/vignette_small.png)
 
 __Fig 1.__ **genepopedit** *workflow including data preparation, diagnostics, manipulation and transformation. Files, functions, and function operations are denoted by black, grey and blue text, respectively. Function inputs and outputs are denoted by dashed and solid lines, respectively.*
 
