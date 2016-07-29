@@ -275,7 +275,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 ***
 
-##**Simulation** <a name="pooleddna"/>
+#**Simulation** <a name="pooleddna"/>
 
 #### alleleotype_genepop.R
 * A tool to simulate individual genotypes using pooled sequencing allele frequencies and randomization.
