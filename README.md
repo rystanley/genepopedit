@@ -309,7 +309,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 ***
 
-#**Conversion** <a name="funcconvert"/>
+#**Transformation** <a name="funcconvert"/>
 
 #### genepop_structure.R 
 * Convert Genepop format to NewHybrids format.
