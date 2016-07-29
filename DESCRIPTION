@@ -15,10 +15,10 @@ Depends:
     R (>= 3.0.1)
 Imports:
     tidyr,
+    data.table,
     dplyr,
     magrittr,
     hierfstat,
-    data.table,
     reshape2,
     stringr,
     stringi,
