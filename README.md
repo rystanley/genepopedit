@@ -118,7 +118,7 @@ library(genepopedit) # load the library
   * plink: <http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml>
   
   
-** NOTE THAT appveyor BUILD FAILURE IS LINKED TO AN ERROR IN THE BUILD CHECK AND NOT *genepopedit* itself. This package has been tested on Windows, Linux (Unbuntu & Mint), and IOS operating systems. **
+** Note that appveyor build 'failure' is linked to an error in the build check and not *genepopedit* itself. This package has been tested on Windows, Linux (Unbuntu & Mint), and IOS operating systems. **
 
 ***
 
