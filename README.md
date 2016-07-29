@@ -30,7 +30,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     
 * create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
-* convert Genepop to STRUCTURE, fstat, New Hybrids, assigner, BGC, TREEMIX, Colony, gsi_sim, and flattened/unflattened format.
+* convert Genepop to STRUCTURE, FSTAT, NEWHYBRIDS, ASSIGNER, BGC, TREEMIX, COLONGY, Genetic Stock Identification (gsi_sim), and flattened/unflattened format.
 
 * simulate individual genotypes using pooled DNA allele frequencies.
 
