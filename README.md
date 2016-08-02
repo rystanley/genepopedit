@@ -147,7 +147,7 @@ Pull request how-to:
 
 #**Citation** 
 
-Full package description and available citation now available at **Molecular Ecology Resources** <http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12569/abstract>
+Full package description and citation now available at **Molecular Ecology Resources** <http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12569/abstract>
 
 A Zenodo DOI is also avaiable for the most recent release of **genepopedit**:
 [![DOI](https://zenodo.org/badge/19199/rystanley/genepopedit.svg)](https://zenodo.org/badge/latestdoi/19199/rystanley/genepopedit)
