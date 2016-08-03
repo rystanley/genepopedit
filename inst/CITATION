@@ -1,0 +1,11 @@
+citHeader("To cite genepopedit in publications use:")
+
+citEntry(
+  entry="Manual",
+  title = "genepopedit: a simple and flexible tool for manipulating multilocus molecular data in R",
+  year = "2016",
+  author = personList(as.person("Ryan Stanley")),
+  url = "https://github.com/rystanley/github",
+  doi = "http://dx.doi.org/10.5281/zenodo.59102",
+  textVersion = paste("Stanley, R.R.E., Jeffery, N. W., Wringe, B.F., DiBacco, C., Bradbury, I.R. (2016). genepopedit: a simple and flexible tool for manipulating multilocus molecular data in R. doi : 10.5281/zenodo.59102")
+) 
