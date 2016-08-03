@@ -1,7 +1,7 @@
 # Genepop -> Colony
 #' @title Convert Genepop to Colony format.
 #' @description Function to convert Genepop to Colony format.
-#' @param GenePop the genepop data to be manipulated. This is read in as a complete file path.
+#' @param genepop the genepop data to be manipulated. This is read in as a complete file path.
 #' This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
 #' or a single comma deliminated row of loci names followed by the locus data. Populations are
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
@@ -20,7 +20,7 @@
 
 
 ##
-genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing = "000", allocate.PGD.RAM = 1,path){
+genepop_colony <- function(genepop, where.PLINK, where.PGDspider, denote.missing = "000", allocate.PGD.RAM = 1,path){
 
    path.start <- getwd()  ### where to write the files created by genepopedit to
 
@@ -37,11 +37,11 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
         writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.
                    ")}
 
-  ## get the name of the file specified by GenePop
-      GeneNAME <-  filename_check(X = GenePop)
+  ## get the name of the file specified by genepop
+      GeneNAME <-  filename_check(X = genepop)
 
-  ## move the file specified by GenePop to the working directory
-      file.copy(from = GenePop, to = path.start)
+  ## move the file specified by genepop to the working directory
+      file.copy(from = genepop, to = path.start)
       remember.GenePop <- paste0(path.start, "/", GeneNAME)
 
   ## rename the file in the working directory
@@ -218,7 +218,7 @@ genepop_colony <- function(GenePop, where.PLINK, where.PGDspider, denote.missing
     MissingDataReform <- data.frame(MissingDataReform)
 
   #Tabularize and format data
-    flatdat <- genepop_flatten(GenePop = GenePop)
+    flatdat <- genepop_flatten(genepop = genepop)
     indivs <- data.frame(Ind_Names = flatdat$SampleID, Number = 1:nrow(flatdat))
     colnames(indivs) <- c("Individual Names", "Corresponding Number")
     lociout <- data.frame(A= yourloci, B = lociconvert)
