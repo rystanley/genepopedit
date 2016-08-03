@@ -6,6 +6,8 @@
 
 The goal of **genepopedit** is to provide a simple and flexible tool for manipulating large multi-locus genotype datasets in R. 
 
+** Note on starting on Aug 3 2016 genepopedit will only accept lowercase input variables. Full changes will be in effect by Aug 5 2016 and on all versions > 1.0.0.5 ** 
+
 **Use genepopedit to subset a SNP dataset by:**
 
 * removing specified loci. 
@@ -197,13 +199,13 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **Variable name** | **Input**  
 --------------|-----------------------------------
 **Genepop** | A path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
-**where.PLINK** | A file path to the PLINK installation folder.
-**where.PGDspider** | A file path to the PGDspider installation folder.
+**where.plink** | A file path to the PLINK installation folder.
+**where.pgdspider** | A file path to the PGDspider installation folder.
 **r2.theshold** | Linkage threshold based on correlation between loci. Value must be between 0 & 1. Default: 0.2 matched to PLINK defaults. 
-**FST.threshold** | The minimum r^2 threshold to consider a pair of loci to be considered linked (default: 0.05).
+**fst.threshold** | The minimum r^2 threshold to consider a pair of loci to be considered linked (default: 0.05).
 **ld.window** | The number of sequential loci to be considered for linkage. This sliding window is based on the input order of loci in the input data. Default (NULL) will calcualte linkage among **all loci**. This variable should not be changed unless the order and proximity of loci on the genome is known and integrated into the order within the input data.
-**LDpop** | A string which denotes which of the populations you wish to calculate linkage disequilibrium from. The default is to calculate LD among all ("All") populations. Population names must match those returned by [*genepop_detective*](#genepopdetect).
-**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.PGD.RAM_ will be set to 1 GB.
+**ldpop** | A string which denotes which of the populations you wish to calculate linkage disequilibrium from. The default is to calculate LD among all ("All") populations. Population names must match those returned by [*genepop_detective*](#genepopdetect).
+**allocate.pgd.ram** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.pgd.ram_ will be set to 1 GB.
 **return.workspace** | Logical query (default: TRUE) sepecifying whether to return the output to the workspace.
 **save.output** | Logical query (default: FALSE) to save the output to the same location as the file being analyzed. Each of the outputs of the function will be saved as a separate file with the file name of the orginal data appended with "Linkages", "Loci-FST", and "Unlinked-Loci-FST" for the pairwise linked loci along with their r^2, all loci with their global Fst, and only the top unlinked loci with their Fst respectively.
 
@@ -367,10 +369,10 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **Variable name** | **Input**  
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
-**where.PGDspider** | A file path to the PGDspider installation folder.
-**where.PLINK** | A file path to the PLINK installation folder.
+**where.pgdspider** | A file path to the PGDspider installation folder.
+**where.plink** | A file path to the PLINK installation folder.
 **denote.missing** | The value that denotes missing data in your input file (default: "000").
-**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.PGD.RAM_ will be set to 1 GB.
+**allocate.pgd.ram** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.pgd.ram_ will be set to 1 GB.
 **path** | file path to directory where the Colony files (4) will be saved.
 
 #### genepop_bgc.R 
@@ -395,9 +397,9 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **Variable name** | **Input**  
 --------------|---------------------------------
 **Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
-**where.PGDspider** | A file path to the PGDspider installation folder.
-**where.PLINK** | A file path to the PLINK installation folder.
-**allocate.PGD.RAM** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.PGD.RAM_ will be set to 1 GB.
+**where.pgdspider** | A file path to the PGDspider installation folder.
+**where.plink** | A file path to the PLINK installation folder.
+**allocate.pgd.ram** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.pgd.ram_ will be set to 1 GB.
 **keep_inter** | A logical vector specifying whether the intermediate conversion steps (.map,.ped, and clustering file) should be returned to the path.
 **path** | the path to directory where the TREEMIX files will be saved.
 
@@ -453,7 +455,7 @@ We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/softw
 **output** | complete file path to the defining where the converted file will be stored.
 **output_format** | format of the of the converted file. This format should match the dropdown menus of pgdSpider in terms of spelling and capitalization (e.g. GENEPOP & FSTAT).
 **spid** | complete file path to the .spid file created by pgdSpider defining the conversion between input_format and output_format. Note that parameters of this .spid file must match the conversion and input file as specified by pgdSpider.
-**where.PGDspider** | the filepath to the folder where pgdSpider installation files are stored.
+**where.pgdspider** | the filepath to the folder where pgdSpider installation files are stored.
 
 ***
 
@@ -566,8 +568,8 @@ This function will calculate linkage disequilibrium and global Weir and Cockerha
 #To calculate LD we use PLINK which requires a file conversion using PGDspider. 
 
   TopLoci <- genepop_toploci(GenePop="genepopedit_examplefile.txt",
-  where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",
-  where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/" )
+  where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",
+  where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/" )
   
 #Linked loci
   TopLoci$Linked
@@ -859,7 +861,7 @@ If you are interested in investigating sibship or parentage, you can convert to 
 
 ```r
 #convert Genepop format to the files necessary for Colony 
-  genepop_colony(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",denote.missing = "000",path = output_dir)
+  genepop_colony(GenePop="Genepop_IDsubset.txt",where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",denote.missing = "000",path = output_dir)
   
 ```
 
@@ -882,7 +884,7 @@ If you are interested in investigating sibship or parentage, you can convert to 
 ```r
 
 #convert Genepop to Treemix input and keep intermediary conversion files (default: FALSE)
-  genepop_treemix(GenePop="Genepop_IDsubset.txt",where.PLINK="c:/Users/YOURNAME/Documents/Programs/plink/",where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",keep_inter = TRUE, path = paste0(output_dir,"Treemix_IDsubset.txt"))
+  genepop_treemix(GenePop="Genepop_IDsubset.txt",where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",keep_inter = TRUE, path = paste0(output_dir,"Treemix_IDsubset.txt"))
 
 ```
 <a name="genepopgsi"/>
@@ -931,7 +933,7 @@ There are a broad range of data formats which can be converted to and from using
   output = paste0(output_dir,"Genepop_IDsubset_FSTAT.dat",
   output_format="FSTAT",
   spid="c:/Users/YOURNAME/Documents/spids/GENEPOP_FSTAT.spid",
-  where.PGDspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/")
+  where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/")
 
 ```
 
