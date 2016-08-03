@@ -15,12 +15,12 @@
 #' @param keep logical vector which defines whether you want to remove the loci or keep them.
 #' The default is to keep them keep <- TRUE assuming you are removing neutral markers
 #' and only keeping the subs.
-#' @param sPop is the populations of interest. Note these are specified in the order which they appear in the
+#' @param spop is the populations of interest. Note these are specified in the order which they appear in the
 #'  original genepop file. i.e. first pop = 1 second pop = 2
-#'  Examples: numeric - sPop <- c(1,3,4,7) or
+#'  Examples: numeric - spop <- c(1,3,4,7) or
 #'  the population ID (alpha-numeric code before the underscore). Here we assume conventional
 #'  naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
-#'            text- sPop <- c("Aqua01", "GRR","GHR","TRS").
+#'            text- spop <- c("Aqua01", "GRR","GHR","TRS").
 #' @param path the filepath and filename of output.
 #' @rdname subset_genepop
 #' @importFrom data.table fread as.data.table
@@ -29,7 +29,7 @@
 
 
 ##
-subset_genepop <- function(genepop,subs=NULL,keep=TRUE,sPop=NULL,path)
+subset_genepop <- function(genepop,subs=NULL,keep=TRUE,spop=NULL,path)
   {
 
   #Check to see if genepop is a data.frame from the workspace and convert to data.table
@@ -147,21 +147,21 @@ subset_genepop <- function(genepop,subs=NULL,keep=TRUE,sPop=NULL,path)
 
 ## Now subset the rows
     # is a population subset required
-    if(length(sPop)>0){
+    if(length(spop)>0){
 
-      if(sum(is.numeric(sPop))>0){ # if the subsetted populations are numeric
-      ind <- which(reqCols$Pop %in% sPop) # index where the populations are
+      if(sum(is.numeric(spop))>0){ # if the subsetted populations are numeric
+      ind <- which(reqCols$Pop %in% spop) # index where the populations are
       reqCols <- reqCols[ind,]
       temp <- temp[ind,]
       temp2 <- temp2[ind,]
       NamePops <- NamePops[ind]
       }
 
-      if(sum(is.numeric(sPop))==0){ # if the subsetted populations are character indexes
-        reqCols <- reqCols[which(NameExtract %in% sPop),]
-        temp <- temp[which(NameExtract %in% sPop),]
-        temp2 <- temp2[which(NameExtract %in% sPop),]
-        NamePops <- NamePops[which(NameExtract %in%sPop)]
+      if(sum(is.numeric(spop))==0){ # if the subsetted populations are character indexes
+        reqCols <- reqCols[which(NameExtract %in% spop),]
+        temp <- temp[which(NameExtract %in% spop),]
+        temp2 <- temp2[which(NameExtract %in% spop),]
+        NamePops <- NamePops[which(NameExtract %in%spop)]
       }
 
 

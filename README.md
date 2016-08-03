@@ -88,7 +88,7 @@ Alternatively, the loci names can be read in the first row as a single character
     TAG_03  , 120120 110110 110110
     TAG_04  , 120120 110110 110110
     
-In both formats each row is read in as a single character vector. Sample IDs have the population and sample number separated by a "_". Between sample ID and the loci is conventional Genepop separator "   , " *(space,space space)*. Note if your population label is note separated from the sample number in the Sample IDs refer to the help section for . [ subset\_genpop\_rename ](#subsetrenm)
+In both formats each row is read in as a single character vector. Sample IDs have the population and sample number separated by a "_". Between sample ID and the loci is conventional Genepop separator "   , " *(space,space space)*. Note if your population label is note separated from the sample number in the Sample IDs refer to the help section for . [ subset\_genepop\_rename ](#subsetrenm)
 
 <span style="color:red"><STRONG> Note </span></STRONG> that input and output "**path**" variables all require the **FULL** file path. Relative paths will not work with _genepopedit_ functions.  
 
@@ -170,7 +170,7 @@ A Zenodo DOI is also avaiable for the most recent release of **genepopedit**:
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
 **variable** | variable to report.
 
   * variable="Pops" -> returns vector of population names (default)
@@ -187,9 +187,9 @@ Calculate allele frequencies (major) for a given set of loci aggregated by popul
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
 **popgroup** | population grouping using the "Pop" delimiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
-**Wide** | logical (default: FALSE) defining whether the output should be cast in 'wide' format. Note that 'wide' format is accepted as the input for alleleotype_genepop().
+**wide** | logical (default: FALSE) defining whether the output should be cast in 'wide' format. Note that 'wide' format is accepted as the input for alleleotype_genepop().
 
 #### genepop_toploci.R
 This function will return the the panel with the highest Fst for unlinked loci ordered by Fst. Returned loci have the highest Fst from the _original panel_ and are not linked to any other loci in the _returned panel_. Note this function requires the installation and access to both PGDspider for format conversion & PLINK for linkage calculations. [_See installation instructions here_](#extrainstall)
@@ -198,7 +198,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | A path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
+**genepop** | A path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
 **where.plink** | A file path to the PLINK installation folder.
 **where.pgdspider** | A file path to the PGDspider installation folder.
 **r2.theshold** | Linkage threshold based on correlation between loci. Value must be between 0 & 1. Default: 0.2 matched to PLINK defaults. 
@@ -221,10 +221,10 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **subs** | vector loci names of interest (default: NULL)
 **keep** | logical whether to keep loci specified by subs (default: TRUE) or to keep remaining loci.
-**sPop** | populations to be retained (default: NULL).
+**spop** | populations to be retained (default: NULL).
 **path** | the filepath & filename of output.
 
 #### subset_genepop_rename.R
@@ -234,7 +234,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **nameframe** | a dataframe or path to a csv detailing the original and any edited population names or sampleIDs.
 **renumber** | logical (default: FALSE) whether the sample numbers are to be replaced. 
 **meta** | character defining which meta information is being edited. Options are "Pop" (default) or "Ind" for populations or sampleIDs respectively. This parameter must be specified.
@@ -247,7 +247,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **subs** | vector loci names of interest (default: NULL)
 **keep** | logical whether to keep loci specified by subs (default: TRUE) or to keep remaining loci.
 **agPopFrame** | a dataframe or path to a csv detailing the population names & populations to be aggregated.
@@ -260,7 +260,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **indiv** | vector sample IDs of interest.
 **keep** | logical whether to delete sample IDs specified by indiv (default: TRUE) or delete all other IDs.
 **path** | the filepath & filename of output.
@@ -272,7 +272,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 **Variable name** | **Input**  
 --------------|-----------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **path** | the filepath & filename of output.
 
 ***
@@ -321,7 +321,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
   
 **Variable name** | **Input**  
 --------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then population levels will be assigned an individual group.
 **path** | the filepath & filename of output.
 
@@ -333,7 +333,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
   
 **Variable name** | **Input**  
 --------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 **path** | the filepath & filename of output.
 **addworkspace** | logical to specify whether to save fstat conversion to path (default) or to workspace as Output_fstat object.
 
@@ -345,7 +345,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
   
 **Variable name** | **Input**  
 --------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 **path** | the filepath & filename of output.
 
 #### genepop_assigner.R 
@@ -356,7 +356,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
   
 **Variable name** | **Input**  
 --------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then population levels will be assigned an individual group.
 **path** | the filepath & filename of output.
 
@@ -368,7 +368,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
   
 **Variable name** | **Input**  
 --------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **where.pgdspider** | A file path to the PGDspider installation folder.
 **where.plink** | A file path to the PLINK installation folder.
 **denote.missing** | The value that denotes missing data in your input file (default: "000").
@@ -383,7 +383,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
   
 **Variable name** | **Input**  
 --------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **popdef** | popgroup is a dataframe or path to a csv. This dataframe contains two columns. Column 1 corresponds to the population names. The next column has the grouping classification corresponding to each population defining parental 1 ("P1") parental 2 ("P2") and admixed ("Admixed") populations.
 **fname** | collective name assigned to each output the output files (3).
 **path** | the path to directory where the BGC files will be saved.
@@ -396,7 +396,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
   
 **Variable name** | **Input**  
 --------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **where.pgdspider** | A file path to the PGDspider installation folder.
 **where.plink** | A file path to the PLINK installation folder.
 **allocate.pgd.ram** | An integer defining how many GB of ram will be made available to PGD spider during calculation of LD. Default (1 GB) should be sufficient for most calculations. Note that for Windows based platforms the limitation for PGDspider is ~1 GB. If a value other than default is specified on Windows _allocate.pgd.ram_ will be set to 1 GB.
@@ -411,7 +411,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
   
 **Variable name** | **Input**  
 --------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **path** | the filepath & filename of output.
 
 #### genepop_flatten.R 
@@ -425,7 +425,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 **Variable name** | **Input**  
 --------------|---------------------------------
-**Genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
 
 #### genepop_unflatten.R 
 * Convert flattened dataframe to genepop format:
@@ -441,7 +441,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 ### Conversion using PGDspider <a name="funcpgd"/>
 
-We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/software/PGDSpider/>. This function will enable R to interact with PGDspider to convert among file formats not included in **genpopedit** conversion functions. Currently this is best accomplished using the .spid files generated by PGDspider to define the conversion process. Once a .spid file is created, **genepopedit** can continue to convert files provided the conversion parameters in the .spid file match those required for the conversion. This program will require installation of PGDspider. [_See installation instructions here_](#pgdinstall)
+We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/software/PGDSpider/>. This function will enable R to interact with PGDspider to convert among file formats not included in **genepopedit** conversion functions. Currently this is best accomplished using the .spid files generated by PGDspider to define the conversion process. Once a .spid file is created, **genepopedit** can continue to convert files provided the conversion parameters in the .spid file match those required for the conversion. This program will require installation of PGDspider. [_See installation instructions here_](#pgdinstall)
 
 #### PGDspideR.R
 * call conversion tools of pgdSpider through R
@@ -502,7 +502,7 @@ Functions available in **genepopedit** require that the population and sample nu
 #Use genepop_ID to fix the sample IDs prior to the use of genepopedit functions.
 filepath="~myfile.txt" #path to 'myfile' which has sample IDs without the required _ separation. Note this can also be an object in the workspace.
 
-genepop_ID(GenePop=filepath, path=paste0(output_dir,"Genepop_SampleID_fixed.txt"))
+genepop_ID(genepop=filepath, path=paste0(output_dir,"Genepop_SampleID_fixed.txt"))
 ```
 
 ***
@@ -567,7 +567,7 @@ This function will calculate linkage disequilibrium and global Weir and Cockerha
 #Evaluate Fst and linkage among all loci and return an unlinked panel optimized by global Fst. 
 #To calculate LD we use PLINK which requires a file conversion using PGDspider. 
 
-  TopLoci <- genepop_toploci(GenePop="genepopedit_examplefile.txt",
+  TopLoci <- genepop_toploci(genepop="genepopedit_examplefile.txt",
   where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",
   where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/" )
   
@@ -596,14 +596,14 @@ Create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, &
 #subset the Genepop file and 'keep' the specified loci names.
   subloci <-c("Loci03","Loci15","Loci23","Loci49","Loci62","Loci81","Loci88","Loci94")
   
-  subset_genepop(GenePop = GenePopData, keep = TRUE, subs = subloci, path = paste0(output_dir,"Genepop_Loci_selection.txt"))
+  subset_genepop(genepop= GenePopData, keep = TRUE, subs = subloci, path = paste0(output_dir,"Genepop_Loci_selection.txt"))
 ```
 
 You can also choose all loci not in the vector specified using keep = FALSE.
 
 ```r
 #subset the Genepop file and do not 'keep' the specified 'subs'
-  subset_genepop(GenePop = GenePopData, keep = FALSE, subs = subloci, path = paste0(output_dir,"Genepop_Loci_neutral.txt"))
+  subset_genepop(genepop= GenePopData, keep = FALSE, subs = subloci, path = paste0(output_dir,"Genepop_Loci_neutral.txt"))
 ```
 
 You can also remove populations within this function. Here we again select loci under selection, but remove populations 3 & 7 (CCC/GGG). To do this we create a list of all populations we want to keep
@@ -623,7 +623,7 @@ You can also remove populations within this function. Here we again select loci 
   #vector of loci to keep
   subloci <- c("Loci03","Loci15","Loci23","Loci49","Loci62","Loci81","Loci88","Loci94")
   
-  subset_genepop(GenePop = GenePopData, keep = TRUE, subs = subloci, sPop = PopKeep, path = paste0(output_dir,"Genepop_Loci_selection_subpop.txt"))
+  subset_genepop(genepop= GenePopData, keep = TRUE, subs = subloci, spop = PopKeep, path = paste0(output_dir,"Genepop_Loci_selection_subpop.txt"))
 ```
 <a name="subsetrenm"/>
 ##subset\_genepop\_rename
@@ -640,7 +640,7 @@ Now change the names of some of the populations. In this example we will rename 
   newname = c("AAA","BBB","CCC","YYY","EEE","FFF","GGG","ZZZ","III","JJJ"))
 
 #rename populations
-  subset_genepop_rename(GenePop = GenePopData, path = paste0(output_dir,"Genepop_renamed.txt"),nameframe = PopRename)
+  subset_genepop_rename(genepop= GenePopData, path = paste0(output_dir,"Genepop_renamed.txt"),nameframe = PopRename)
 ```
 
 Populations can also be grouped by a common name. The result is similar to subset-genepop-aggregate except that population names will be replaced. Here it is useful to enable renumbering (renumber = TRUE) or there individuals with the same number will be assigned the same ID, if populations are combined. 
@@ -655,7 +655,7 @@ Populations can also be grouped by a common name. The result is similar to subse
   PopRename_group <- data.frame(oPop = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),newname = c("Pop1","Pop1","Pop1","Pop1","Pop1","Pop2","Pop2","Pop2","Pop2","Pop2"))
 
 #rename populations
-  subset_genepop_rename(GenePop = GenePopData, nameframe = PopRename_group, renumber = TRUE, meta="Pop",path = paste0(output_dir,"Genepop_renamed_renumbered.txt"))
+  subset_genepop_rename(genepop= GenePopData, nameframe = PopRename_group, renumber = TRUE, meta="Pop",path = paste0(output_dir,"Genepop_renamed_renumbered.txt"))
 ```
 
 Alternatively the sampleIDs can be renamed directly. 
@@ -664,7 +664,7 @@ Alternatively the sampleIDs can be renamed directly.
   IndRename_group <- data.frame(new = c("AAA_10","BBB_10","CCC_10","DDD_10"),old = c("AAA_99","BBB_99","CCC_99","DDD_99"))
 
 #rename sampleIDs
-  subset_genepop_rename(GenePop = GenePopData, nameframe = IndRename_group, meta="Ind",path = paste0(output_dir,"Genepop_ID_renamed.txt"))
+  subset_genepop_rename(genepop= GenePopData, nameframe = IndRename_group, meta="Ind",path = paste0(output_dir,"Genepop_ID_renamed.txt"))
 ```
 
 If your sample IDs are not split between the population and the sample number using an _ then you can rename the populations before using any subsetting functions. Note that in this example because there is already a _ separating populations the 
@@ -678,7 +678,7 @@ PopNames_fixed <- paste0(PopNames,"_") #add the underscore seperator
   PopRename_fixed <- data.frame(oPop = PopNames, newname = PopNames_fixed)
 
 #rename populations * note here you will keep the original sample #s (renumber = F)
-  subset_genepop_rename(GenePop = GenePopData, path = paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe = PopRename_fixed, renumber = FALSE)
+  subset_genepop_rename(genepop= GenePopData, path = paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe = PopRename_fixed, renumber = FALSE)
 ```
 
 <a name="subsetagg"/>
@@ -696,7 +696,7 @@ Now lets change group some populations together. In this example we will combine
   agname = c("AAA","Pop1","CCC","Pop1","DDD","Pop2","HHH","Pop2"))
 
 #re-cast Genepop format to group populations based on 'PopAggregate'
-  subset_genepop_aggregate(GenePop = GenePopData, subs = NULL, path = paste0(output_dir,"Genepop_grouped.txt"),agPopFrame = PopAggregate)
+  subset_genepop_aggregate(genepop= GenePopData, subs = NULL, path = paste0(output_dir,"Genepop_grouped.txt"),agPopFrame = PopAggregate)
 ```
 
 Now that we have two grouped populations, we can use the population rename function to give them a common name.
@@ -715,7 +715,7 @@ Now that we have two grouped populations, we can use the population rename funct
   newname = c("AAA","CCC","EEE","HHH","Group1","Group1","Group2","Group2"))
 
 #Rename the grouped populations
-  subset_genepop_rename(GenePop = GenePopData2, nameframe = PopRename, path = paste0(output_dir,"Genepop_grouped_renamed.txt"))
+  subset_genepop_rename(genepop= GenePopData2, nameframe = PopRename, path = paste0(output_dir,"Genepop_grouped_renamed.txt"))
                  
                  
 ```
@@ -731,7 +731,7 @@ _This function is best run at the beginning of the analysis prior to removal of 
 #vector of sample IDs to remove
   subid <- c("AAA_1","AAA_3","BBB_20","CCC_21","EEE_3","EEE_26","HHH_25","JJJ_4")
 
-  subset_genepop_individual(GenePop = GenePopData, indiv = subid, keep = FALSE, path = paste0(output_dir,"Genepop_IDsubset.txt"))
+  subset_genepop_individual(genepop= GenePopData, indiv = subid, keep = FALSE, path = paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
 
 ***
@@ -809,13 +809,13 @@ If you are interested in investigating population structure you can convert your
 
 ```r
 #convert Genepop format to STRUCTURE to default groupings
-  genepop_structure(GenePop="Genepop_IDsubset.txt"path = paste0(output_dir,"Sturcture_IDsubset_groups.txt")
+  genepop_structure(genepop="Genepop_IDsubset.txt"path = paste0(output_dir,"Sturcture_IDsubset_groups.txt")
   
 # Specify population groupings (group CCC/DDD/EEE and III/JJJ)
   pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("1","2","3","3","3","4","5","6","7","7"))
 
 #convert Genepop format to STRUCTURE with new groupings
-  genepop_structure(GenePop="Genepop_IDsubset.txt",popgroup = pGroups, path = paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
+  genepop_structure(genepop="Genepop_IDsubset.txt",popgroup = pGroups, path = paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
 
 ```
 <a name="genepopfst"/>
@@ -826,10 +826,10 @@ This data can be used by the R package 'hierfstat' <https://cran.r-project.org/w
 
 ```r
 #convert Genepop format to FSTAT (.dat)
-  genepop_fstat(GenePop="Genepop_IDsubset.txt",path = paste0(output_dir,"Fstat_IDsubset.dat"))
+  genepop_fstat(genepop="Genepop_IDsubset.txt",path = paste0(output_dir,"Fstat_IDsubset.dat"))
 
 #convert Genepop format to FSTAT but keep the data in the workspace
-  genepop_fstat(GenePop="Genepop_IDsubset.txt",addworkspace = TRUE)
+  genepop_fstat(genepop="Genepop_IDsubset.txt",addworkspace = TRUE)
 ```
 <a name="genepopnh"/>
 ##genepop\_newhybrids
@@ -837,7 +837,7 @@ If you are interested in testing for hybridization you can convert from Genepop 
 
 ```r
 #convert Genepop format to New Hybrids format (.txt)
-  genepop_newhybrids(GenePop="Genepop_IDsubset.txt",path = paste0(output_dir,"NewHybrids_IDsubset.txt"))
+  genepop_newhybrids(genepop="Genepop_IDsubset.txt",path = paste0(output_dir,"NewHybrids_IDsubset.txt"))
 ```
 <a name="genepopagn"/>
 ##genepop\_assigner
@@ -845,12 +845,12 @@ If you are interested conducting assignment analysis, you can convert to the for
 
 ```r
 #convert Genepop format to assigner format (.txt) using the populations each as their own assessment level
-  genepop_assigner(GenePop="Genepop_IDsubset.txt",path = paste0(output_dir,"assigner_IDsubset.txt"))
+  genepop_assigner(genepop="Genepop_IDsubset.txt",path = paste0(output_dir,"assigner_IDsubset.txt"))
   
 # Set new population assignment groupings (group CCC/DDD/EEE and III/JJJ)
   pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("1","2","3","3","3","4","5","6","7","7"))
    
-   genepop_assigner(GenePop="Genepop_IDsubset.txt",popgroup = pGroups, path = paste0(output_dir,"assigner_IDsubset_NewGroups.txt"))
+   genepop_assigner(genepop="Genepop_IDsubset.txt",popgroup = pGroups, path = paste0(output_dir,"assigner_IDsubset_NewGroups.txt"))
   
 ```
 <a name="genepopcolony"/>
@@ -861,7 +861,7 @@ If you are interested in investigating sibship or parentage, you can convert to 
 
 ```r
 #convert Genepop format to the files necessary for Colony 
-  genepop_colony(GenePop="Genepop_IDsubset.txt",where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",denote.missing = "000",path = output_dir)
+  genepop_colony(genepop="Genepop_IDsubset.txt",where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",denote.missing = "000",path = output_dir)
   
 ```
 
@@ -874,7 +874,7 @@ If you are interested in investigating sibship or parentage, you can convert to 
   BGC_groups = data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("P1","P1","P1","Admixed","Admixed","Admixed","Admixed","P2","P2","P2"))
 
 #convert Genepop to BGC input files (3). Note in this case the variable path is a path to the directory where the input files will be saved.
-  genepop_bgc(GenePop="Genepop_IDsubset.txt",popdef = BGC_groups, fname="BGC_IDsubset",path = output_dir)
+  genepop_bgc(genepop="Genepop_IDsubset.txt",popdef = BGC_groups, fname="BGC_IDsubset",path = output_dir)
 
 ```
 <a name="genepoptreemix"/>
@@ -884,7 +884,7 @@ If you are interested in investigating sibship or parentage, you can convert to 
 ```r
 
 #convert Genepop to Treemix input and keep intermediary conversion files (default: FALSE)
-  genepop_treemix(GenePop="Genepop_IDsubset.txt",where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",keep_inter = TRUE, path = paste0(output_dir,"Treemix_IDsubset.txt"))
+  genepop_treemix(genepop="Genepop_IDsubset.txt",where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",keep_inter = TRUE, path = paste0(output_dir,"Treemix_IDsubset.txt"))
 
 ```
 <a name="genepopgsi"/>
@@ -894,7 +894,7 @@ If you are interested in assessing the accuracy of a genetic stock identificatio
 ```r
 
 #convert Genepop to GSIsim format
-  genepop_GSIsim(GenePop="Genepop_IDsubset.txt",path = paste0(output_dir,"GSIsim_IDsubset.txt"))
+  genepop_GSIsim(genepop="Genepop_IDsubset.txt",path = paste0(output_dir,"GSIsim_IDsubset.txt"))
 
 ```
 
@@ -960,8 +960,8 @@ Individual geneotypes can be simulated using the _alleleotype_genepop()_ functio
    
     genepop_allelefreq(paste0(output_dir,"SimulatedGeneotypesValidate.txt"))
     
-  #Note you can simulate new geneotypes using the summary from genepop_allelefreq(... , Wide = TRUE).
-    GeneFreq <- genepop_allelefreq("Genepop_IDsubset.txt",Wide = TRUE)
+  #Note you can simulate new geneotypes using the summary from genepop_allelefreq(... , wide = TRUE).
+    GeneFreq <- genepop_allelefreq("Genepop_IDsubset.txt",wide = TRUE)
     
     alleleotype_genepop(GeneFreq, numsim = 100, path = paste0(output_dir,"SimulatedGeneotypes_Genepop_IDsubset.txt"))
   

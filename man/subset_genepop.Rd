@@ -4,7 +4,7 @@
 \alias{subset_genepop}
 \title{Genepop subset loci and populations}
 \usage{
-subset_genepop(genepop, subs = NULL, keep = TRUE, sPop = NULL, path)
+subset_genepop(genepop, subs = NULL, keep = TRUE, spop = NULL, path)
 }
 \arguments{
 \item{genepop}{the genepop data to be manipulated. This can be either a file path
@@ -24,12 +24,12 @@ e.g. subs <-c(1,2,3,4) would return the first 4 loci
 The default is to keep them keep <- TRUE assuming you are removing neutral markers
 and only keeping the subs.}
 
-\item{sPop}{is the populations of interest. Note these are specified in the order which they appear in the
+\item{spop}{is the populations of interest. Note these are specified in the order which they appear in the
 original genepop file. i.e. first pop = 1 second pop = 2
-Examples: numeric - sPop <- c(1,3,4,7) or
+Examples: numeric - spop <- c(1,3,4,7) or
 the population ID (alpha-numeric code before the underscore). Here we assume conventional
 naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
-          text- sPop <- c("Aqua01", "GRR","GHR","TRS").}
+          text- spop <- c("Aqua01", "GRR","GHR","TRS").}
 
 \item{path}{the filepath and filename of output.}
 }
