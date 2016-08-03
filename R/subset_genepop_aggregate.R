@@ -12,7 +12,7 @@
 #' @param keep logical vector which defines whether you want to remove the loci or keep them.
 #' The default is to keep them keep <- TRUE assuming you are removing neutral markers
 #' and only keeping the subs
-#' @param agPopFrame a dataframe or path to a csv.
+#' @param agpopframe a dataframe or path to a csv.
 #' This dataframe contains two columns: Column 1 corresponds to the population names.
 #' Here we consider the alpha-numeric characters before the first underscore '_' to be the population name.
 #' so that IDs are "Population_sample#" (e.g. Aqua23_04 = Population Aqua23, individual 4).
@@ -28,7 +28,7 @@
 #' @importFrom utils write.table
 #' @export
 
-subset_genepop_aggregate <- function(genepop,subs=NULL,keep=TRUE,agPopFrame,path){
+subset_genepop_aggregate <- function(genepop,subs=NULL,keep=TRUE,agpopframe,path){
 
   #Check to see if genepop is a data.frame from the workspace and convert to data.table
   if(is.data.frame(genepop)){genepop <- as.data.table(genepop)}
@@ -109,12 +109,12 @@ subset_genepop_aggregate <- function(genepop,subs=NULL,keep=TRUE,agPopFrame,path
 
 ## Now subset the Populations
 
-    if(!is.data.frame(agPopFrame)) #if it isn't a dataframe then read in the path
+    if(!is.data.frame(agpopframe)) #if it isn't a dataframe then read in the path
     {
-      agPopFrame <- utils::read.csv(agPopFrame,header=T)
+      agpopframe <- utils::read.csv(agpopframe,header=T)
     }
 
-    sPop <- as.character(agPopFrame[,1]) # these are the populations of interest
+    sPop <- as.character(agpopframe[,1]) # these are the populations of interest
 
     # is a population subset required
         reqCols <- reqCols[which(NameExtract %in% sPop),]
@@ -126,7 +126,7 @@ subset_genepop_aggregate <- function(genepop,subs=NULL,keep=TRUE,agPopFrame,path
     NameExtract2 <- NameExtract[which(NameExtract %in% sPop)]
     #Create a new vector with the new population names
     for (i in sPop){
-      NameExtract2[which(NameExtract2 == i)]=as.character(agPopFrame[which(agPopFrame[,1]==i),2])
+      NameExtract2[which(NameExtract2 == i)]=as.character(agpopframe[which(agpopframe[,1]==i),2])
     }
 
     #reorder variables according to the new population groupings

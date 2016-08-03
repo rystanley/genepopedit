@@ -4,7 +4,7 @@
 \alias{subset_genepop_aggregate}
 \title{Genepop subset, combine, and reorder populations}
 \usage{
-subset_genepop_aggregate(genepop, subs = NULL, keep = TRUE, agPopFrame,
+subset_genepop_aggregate(genepop, subs = NULL, keep = TRUE, agpopframe,
   path)
 }
 \arguments{
@@ -22,7 +22,7 @@ subs <- c("190-56","145_21",456_12") would return loci with these defined names.
 The default is to keep them keep <- TRUE assuming you are removing neutral markers
 and only keeping the subs}
 
-\item{agPopFrame}{a dataframe or path to a csv.
+\item{agpopframe}{a dataframe or path to a csv.
 This dataframe contains two columns: Column 1 corresponds to the population names.
 Here we consider the alpha-numeric characters before the first underscore '_' to be the population name.
 so that IDs are "Population_sample#" (e.g. Aqua23_04 = Population Aqua23, individual 4).

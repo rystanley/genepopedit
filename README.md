@@ -250,7 +250,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **subs** | vector loci names of interest (default: NULL)
 **keep** | logical whether to keep loci specified by subs (default: TRUE) or to keep remaining loci.
-**agPopFrame** | a dataframe or path to a csv detailing the population names & populations to be aggregated.
+**agpopframe** | a dataframe or path to a csv detailing the population names & populations to be aggregated.
 **path** | the filepath & filename of output.
 
 #### subset_genepop_individuals.R
@@ -696,7 +696,7 @@ Now lets change group some populations together. In this example we will combine
   agname = c("AAA","Pop1","CCC","Pop1","DDD","Pop2","HHH","Pop2"))
 
 #re-cast Genepop format to group populations based on 'PopAggregate'
-  subset_genepop_aggregate(genepop= GenePopData, subs = NULL, path = paste0(output_dir,"Genepop_grouped.txt"),agPopFrame = PopAggregate)
+  subset_genepop_aggregate(genepop= GenePopData, subs = NULL, path = paste0(output_dir,"Genepop_grouped.txt"),agpopframe = PopAggregate)
 ```
 
 Now that we have two grouped populations, we can use the population rename function to give them a common name.
