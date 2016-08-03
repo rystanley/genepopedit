@@ -1,24 +1,24 @@
 # Powermarker Genepop
 #' @title Convert Powermarker format to Genepop
 #' @description Function converts Powermarker to standard Genepop format
-#' @param Powermarker the Powermarker data to be manipulated. The first column should be the 'POP_ID' column which identifies the populations.
+#' @param powermarker the powermarker data to be manipulated. The first column should be the 'POP_ID' column which identifies the populations.
 #' The second column should be 'Sample_ID' which designates the individual sample IDs. The remaining columns contain the locus alleles in the format of 'A/A' etc.
 #' @param missing_data The symbol (typically "-", "?", or "9") which will be replaced with 000.
 #' @param path the filepath and filename of output.
-#' @param sampleid Whether you want the sampleid in your Genepop to be based off the 'Sample_ID' column (TRUE) or the 'POP_ID' column (FALSE) in the Powermarker file
+#' @param sampleid Whether you want the sampleid in your Genepop to be based off the 'Sample_ID' column (TRUE) or the 'POP_ID' column (FALSE) in the powermarker file
 #' @rdname powermarker_genepop
 #' @importFrom utils read.table
 #' @importFrom utils write.table
 #' @export
 #'
 
-powermarker_genepop<-function(Powermarker, missing_data, path,sampleid=TRUE){
+powermarker_genepop<-function(powermarker, missing_data, path,sampleid=TRUE){
 
-  classdef <- utils::read.table(Powermarker, header = TRUE, nrows = 5) # find column classes
+  classdef <- utils::read.table(powermarker, header = TRUE, nrows = 5) # find column classes
   classes <- sapply(classdef, class)
-  input <- utils::read.table(Powermarker, header = TRUE, colClasses = classes,stringsAsFactors = FALSE)
+  input <- utils::read.table(powermarker, header = TRUE, colClasses = classes,stringsAsFactors = FALSE)
 
-   #input<-utils::read.table(Powermarker)
+
   input.hold<-input[c(1,2)]
   input<-input[,-c(1,2)]
   loci_names<-colnames(input)
@@ -88,7 +88,7 @@ if(length(table(input.hold[,1]))!=1){Loci <- insert_vals(Vec=Loci,breaks=PopPosi
 #Add the first "Pop" label
 Loci <- c("Pop",Loci)
 
-Output<-c("Powermarker to Genepop by genepopedit",loci_names,Loci)
+Output<-c("powermarker to Genepop by genepopedit",loci_names,Loci)
 
 #Save the Genepop file
   utils::write.table(Output,path, col.names=FALSE, row.names=FALSE, quote=FALSE)
