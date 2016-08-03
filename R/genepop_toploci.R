@@ -1,14 +1,14 @@
 # Get top loci
 #' @title Creates a panel of the top n unlinked loci, and exports the list of loci
 #' @description Extract the genotypes of individuals at the top n (by Fst) unlinked loci. The default threshold of r2>0.2 is employed for assigning 'linked' loci (default for plink).
-#' @param GenePop A file path to the GENEPOP format file you wish to create your panel from
-#' @param where.PLINK A file path to the PLINK installation folder.
-#' @param where.PGDspider A file path to the PGDspider installation folder.
+#' @param genepop A file path to the genepop format file you wish to create your panel from
+#' @param where.plink A file path to the PLINK installation folder.
+#' @param where.pgdspider A file path to the PGDspider installation folder.
 #' @param r2.threshold The minimum r^2 threshold to consider a pair of loci to be in LD
-#' @param FST.threshold The minimum FST threshold required to retain a locus
+#' @param fst.threshold The minimum FST threshold required to retain a locus
 #' @param ld.window Number of adjacent SNPs to compare each SNP against for LD - default is NULL, which translates to a window size of 99999, which essentially asks to compare each SNP against all others
-#' @param LDpop A string which populations (default: "All") will be used to calculate linkage disequilibrium. Names must match names returned by genepop_detective().
-#' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
+#' @param ldpop A string which populations (default: "All") will be used to calculate linkage disequilibrium. Names must match names returned by genepop_detective().
+#' @param allocate.pgd.ram An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
 #' @param return.workspace (default: TRUE) Logical query to return the output to the workspace
 #' @param save.output Logical query (default: FALSE) to save the output to the same location as the file being analyzed. Each of the outputs of the function will be saved as a separate file with the file name of the orginal data appended with "_Linkages", "Loci_FST", and "Unlinked_Loci_FST" for the pairwise linked loci along with their r^2, all loci with their global Fst, and only the top unlinked loci with their Fst respectively.
 #' @rdname genepop_toploci
@@ -21,7 +21,7 @@
 
 
 
-genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold = 0.2, FST.threshold = 0.05,  ld.window = NULL, LDpop = "All", allocate.PGD.RAM = 1, return.workspace = TRUE, save.output = FALSE){
+genepop_toploci <- function(genepop, where.plink, where.pgdspider, r2.threshold = 0.2, fst.threshold = 0.05,  ld.window = NULL, ldpop = "All", allocate.pgd.ram = 1, return.workspace = TRUE, save.output = FALSE){
 
   path.start <- getwd()  ### where to write the files created by genepopedit to
 
@@ -32,17 +32,17 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
 
   ## find the populations in the file
-  pops.exist <- genepop_detective(GenePop) ## see what populations are in the file
+  pops.exist <- genepop_detective(genepop) ## see what populations are in the file
 
-  if(allocate.PGD.RAM%%1 != 0){
+  if(allocate.pgd.ram%%1 != 0){
     stop("Please specify an integer GB value to allocate to PGDspider.")
   }
 
   #Set up ram allocation. Note that only 1024 gb of ram will work with Windows
-  allocate.PGD.RAM <- allocate.PGD.RAM*1024
+  allocate.pgd.ram <- allocate.pgd.ram*1024
 
-  if(Sys.info()["sysname"] == "Windows" & allocate.PGD.RAM>1024){
-    allocate.PGD.RAM=1024
+  if(Sys.info()["sysname"] == "Windows" & allocate.pgd.ram>1024){
+    allocate.pgd.ram=1024
     writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.
                ")}
 
@@ -64,11 +64,11 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
     stop("LD window must be positive")
   }
 
-  if(length(which(LDpop %in% c("All",pops.exist)))==0){
-    stop(paste0("Parameter 'LDpop' must be a string of population names in the dataset, or ", "'All'. ", "Function stopped."),call. = FALSE)
+  if(length(which(ldpop %in% c("All",pops.exist)))==0){
+    stop(paste0("Parameter 'ldpop' must be a string of population names in the dataset, or ", "'All'. ", "Function stopped."),call. = FALSE)
   }
 
-  if(FST.threshold < 0 | FST.threshold > 1){
+  if(fst.threshold < 0 | fst.threshold > 1){
     stop("FST threshold must be a value between 0 and 1")
   }
 
@@ -86,7 +86,7 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   # modify the path to play nice with spaces
 
   path.start.PGD <- gsub(x = path.start, pattern = " ", replacement = "\\")
-  where.PGDspider.PGD <- gsub(x = where.PGDspider, pattern = " ", replacement = "\\ ", fixed = TRUE)
+  where.pgdspider.PGD <- gsub(x = where.pgdspider, pattern = " ", replacement = "\\ ", fixed = TRUE)
 
   GP_FSTAT_SPID <- "# spid-file generated: Fri Apr 08 10:53:23 ADT 2016
 
@@ -116,15 +116,15 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   write(x = GP_FSTAT_SPID, file = paste0(path.start, "/", "GP_FSTAT.spid"))
 
   ### move spid file to the PGDspider folder
-  file.copy(from = paste0(path.start, "/GP_FSTAT.spid"), to = where.PGDspider, overwrite = TRUE)
+  file.copy(from = paste0(path.start, "/GP_FSTAT.spid"), to = where.pgdspider, overwrite = TRUE)
   remember.spidpath <- paste0(path.start, "/", "GP_FSTAT.spid")
   ## move the input file as well to the same location as PGDspider - this makes this step so much easier
-  file.copy(from <- GenePop, to = where.PGDspider, overwrite = TRUE)
-  GenePop.name <- stringr::str_split(string = GenePop, pattern = "/")
+  file.copy(from <- genepop, to = where.pgdspider, overwrite = TRUE)
+  GenePop.name <- stringr::str_split(string = genepop, pattern = "/")
   GenePop.name <- unlist(GenePop.name)
   GenePop.name <- GenePop.name[grep(x = GenePop.name, pattern = ".txt")]
-  file.rename(from = paste0(where.PGDspider, GenePop.name), to = paste0(where.PGDspider, "GPD_for_GET_TOP_LOC.txt"))
-  remember.TOPLOC.path <- paste0(where.PGDspider, "GPD_for_GET_TOP_LOC.txt")
+  file.rename(from = paste0(where.pgdspider, GenePop.name), to = paste0(where.pgdspider, "GPD_for_GET_TOP_LOC.txt"))
+  remember.TOPLOC.path <- paste0(where.pgdspider, "GPD_for_GET_TOP_LOC.txt")
 
 
   #### OS X and LINUX CALL
@@ -133,11 +133,11 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
     ### create a string to call PGDspider
     input.file.call <- "-inputfile GPD_for_GET_TOP_LOC.txt"
-    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
+    execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram, "m -Xms512m -jar PGDSpider2-cli.jar")
     spid.call <- "-spid GP_FSTAT.spid"
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat FSTAT"
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, "; ", execute.SPIDER)
+    goto.spider <- paste0("cd ", where.pgdspider.PGD, "; ", execute.SPIDER)
     output.file.path <- "-outputfile for_FST.txt"
     ## string to run
     run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
@@ -152,11 +152,11 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
     ### create a string to call PGDspider
     input.file.call <- "-inputfile GPD_for_GET_TOP_LOC.txt"
-    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
+    execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram, "m -Xms512m -jar PGDSpider2-cli.jar")
     spid.call <- "-spid GP_FSTAT.spid"
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat FSTAT"
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, " && ", execute.SPIDER)
+    goto.spider <- paste0("cd ", where.pgdspider.PGD, " && ", execute.SPIDER)
     output.file.path <- "-outputfile for_FST.txt"
     ## string to run
     run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
@@ -167,7 +167,7 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   } # End WINDOWS IF
 
   ### move the FSTAT format file back to the working directory
-  file.copy(from = paste0(where.PGDspider, "/for_FST.txt"), to = path.start, overwrite = TRUE)
+  file.copy(from = paste0(where.pgdspider, "/for_FST.txt"), to = path.start, overwrite = TRUE)
   ## remember the path of the file created by genepop_fstat
   fst_data_path <- paste0(path.start, "/", "for_FST.txt")
 
@@ -191,7 +191,7 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   ## reorder the dataframe from highest to lowest Fst
   FST.df <- FST.df[base::order(FST.df$FSTs, decreasing = TRUE),]
 
-  FST.Filter.Vec <- as.character(FST.df[which(FST.df$FSTs >= FST.threshold), 1])
+  FST.Filter.Vec <- as.character(FST.df[which(FST.df$FSTs >= fst.threshold), 1])
 
   #Console message
   writeLines("Converting GENEPOP to MAP-PED format.")
@@ -204,26 +204,26 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
 
   ### Will LD be calculated for All or specified populations.
-  if(LDpop != "All"){
+  if(ldpop != "All"){
 
-    subPOP <- as.character(LDpop)
+    subPOP <- as.character(ldpop)
 
     ## subset out the population in which LD is to be calculated - this will make a file, which will be deleted after
-    subset_genepop(GenePop = GenePop, sPop = subPOP, subs = FST.Filter.Vec, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
+    subset_genepop(genepop = genepop, sPop = subPOP, subs = FST.Filter.Vec, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
     ## remember path to the file created by subset_genepop
     sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
   }
 
-  if(LDpop == "All"){
+  if(ldpop == "All"){
 
     popLDsubsetDF <- data.frame(op=pops.exist, paste0("PopA", rep(1:length(pops.exist)))) ## make a both the same
 
-    subset_genepop_aggregate(GenePop = GenePop, agPopFrame = popLDsubsetDF, path = paste0(path.start, "/", "subset_for_LD.txt"))
+    subset_genepop_aggregate(genepop = genepop, agPopFrame = popLDsubsetDF, path = paste0(path.start, "/", "subset_for_LD.txt"))
     sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
-    subset_genepop(GenePop = sub_data_path, subs = FST.Filter.Vec, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
+    subset_genepop(genepop = sub_data_path, subs = FST.Filter.Vec, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
     ## now rename
 
-    subset_genepop_rename(GenePop = sub_data_path, path = sub_data_path, nameframe = popLDsubsetDF,renumber=TRUE)
+    subset_genepop_rename(genepop = sub_data_path, path = sub_data_path, nameframe = popLDsubsetDF,renumber=TRUE)
 
   }
 
@@ -267,20 +267,20 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   write(x = spid.file, file = paste0(path.start, "/", "hyb.spid"))
 
   ### move spid file to the PGDspider folder
-  file.copy(from = paste0(path.start, "/hyb.spid"), to = where.PGDspider, overwrite = TRUE)
+  file.copy(from = paste0(path.start, "/hyb.spid"), to = where.pgdspider, overwrite = TRUE)
   remember.spidpath <- paste0(path.start, "/", "hyb.spid")
   ## move the input file as well to the same location as PGDspider - this makes this step so much easier
-  file.copy(from <- sub_data_path, to = where.PGDspider, overwrite = TRUE)
+  file.copy(from <- sub_data_path, to = where.pgdspider, overwrite = TRUE)
 
   #### OS X LINUX call
   if(Sys.info()["sysname"] != "Windows"){
     ### create a string to call PGDspider
     input.file.call <- paste0("-inputfile subset_for_LD.txt")
-    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
+    execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram, "m -Xms512m -jar PGDSpider2-cli.jar")
     spid.call <- "-spid hyb.spid"
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat PED"
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, "; ", execute.SPIDER)
+    goto.spider <- paste0("cd ", where.pgdspider.PGD, "; ", execute.SPIDER)
     output.file.path <- paste0("-outputfile PGDtest.ped")
     ## string to run
     run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
@@ -293,11 +293,11 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   if(Sys.info()["sysname"] == "Windows"){
     ### create a string to call PGDspider
     input.file.call <- paste0("-inputfile subset_for_LD.txt")
-    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
+    execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram, "m -Xms512m -jar PGDSpider2-cli.jar")
     spid.call <- "-spid hyb.spid"
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat PED"
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, " && ", execute.SPIDER)
+    goto.spider <- paste0("cd ", where.pgdspider.PGD, " && ", execute.SPIDER)
     output.file.path <- paste0("-outputfile PGDtest.ped")
     ## string to run
     run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
@@ -307,14 +307,14 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   }
 
   ## move the created ped and map files to the PLINK folder
-  ped.path <- paste0(where.PGDspider, "/", "PGDtest.ped")
-  map.path <- paste0(where.PGDspider, "/", "PGDtest.map")
+  ped.path <- paste0(where.pgdspider, "/", "PGDtest.ped")
+  map.path <- paste0(where.pgdspider, "/", "PGDtest.map")
 
-  file.copy(from = ped.path, to = where.PLINK, overwrite = TRUE)
-  file.copy(from = map.path, to = where.PLINK, overwrite = TRUE)
+  file.copy(from = ped.path, to = where.plink, overwrite = TRUE)
+  file.copy(from = map.path, to = where.plink, overwrite = TRUE)
 
-  plink_ped_path <- paste0(where.PLINK, "/", "PGDtest.ped")
-  plink_map_path <- paste0(where.PLINK, "/", "PGDtest.map")
+  plink_ped_path <- paste0(where.plink, "/", "PGDtest.ped")
+  plink_map_path <- paste0(where.plink, "/", "PGDtest.map")
 
   #Console message
   writeLines("
@@ -326,8 +326,8 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
   ### prepare a string to call PLINK
   ### modify PLINK path so it plays nice with system
-  where.PLINK.go <- gsub(x = where.PLINK, pattern = " ", replacement = "\\ ", fixed = TRUE)
-  go.to.PLINK <- paste0("cd ", where.PLINK.go)
+  where.plink.go <- gsub(x = where.plink, pattern = " ", replacement = "\\ ", fixed = TRUE)
+  go.to.PLINK <- paste0("cd ", where.plink.go)
 
   ### OSX LINUX PLINK call
   if(Sys.info()["sysname"] != "Windows"){
@@ -352,7 +352,7 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
              ")
 
   ## copy the LD file created by PLINK to the working directory
-  file.copy(from = paste0(where.PLINK, "plink.ld"), to = path.start)
+  file.copy(from = paste0(where.plink, "plink.ld"), to = path.start)
 
   ## the format of the LD file is a bit messed up - it is not a regular matrix - have to modify the file a bit to get it to read in properly
 
@@ -415,7 +415,7 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
 
     your.panel <- FST.df
-    your.panel_un <- Unlinked.panel[which(Unlinked.panel$FSTs>=FST.threshold),]
+    your.panel_un <- Unlinked.panel[which(Unlinked.panel$FSTs>=fst.threshold),]
     your.panel <- your.panel[order(your.panel$FSTs,decreasing=TRUE),]
     your.panel_unlinked <- your.panel_un[order(your.panel_un$FSTs,decreasing = TRUE),]
     Linked.df <- Linked
@@ -435,16 +435,16 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
   file.remove(sub_data_path)
   file.remove(ped.path)
   file.remove(map.path)
-  file.remove(paste0(where.PGDspider, "/hyb.spid"))
-  file.remove(paste0(where.PGDspider, "/GP_FSTAT.spid"))
+  file.remove(paste0(where.pgdspider, "/hyb.spid"))
+  file.remove(paste0(where.pgdspider, "/GP_FSTAT.spid"))
   file.remove(fst_data_path)
   file.remove(plink_map_path)
   file.remove(plink_ped_path)
   file.remove(paste0(path.start, "/plink.txt"))
   file.remove(paste0(path.start, "/LDsReform.txt"))
   file.remove(remember.TOPLOC.path)
-  file.remove(paste0(where.PGDspider,"/subset_for_LD.txt"))
-  file.remove(paste0(where.PGDspider,"/for_FST.txt"))
+  file.remove(paste0(where.pgdspider,"/subset_for_LD.txt"))
+  file.remove(paste0(where.pgdspider,"/for_FST.txt"))
   file.remove(paste0(path.start,"/GP_FSTAT.spid"))
 
   #Console message
@@ -463,7 +463,7 @@ genepop_toploci <- function(GenePop, where.PLINK, where.PGDspider, r2.threshold 
 
   if(save.output == TRUE){
 
-    write_path <- gsub(x = GenePop, pattern = ".txt", replacement = "")
+    write_path <- gsub(x = genepop, pattern = ".txt", replacement = "")
 
     utils::write.table(x = Output$Linkages, file = paste0(write_path, "_linkages.txt"),row.names = FALSE,quote=FALSE)
     utils::write.table(x = Output$Fst, file = paste0(write_path, "_Loci_FST.txt"),row.names=FALSE,quote = FALSE)
