@@ -8,7 +8,7 @@
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space, space space) and is read in as
 #' as a single row (character).
 #' @param popgroup population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
-#' @param Wide logical specifying whether the allele frequencies should be returned as long (default:FALSE) or wide (TRUE) format. Note that the wide format can be used as the input for alleleotype_genepop to simulate geneotypes.
+#' @param wide logical specifying whether the allele frequencies should be returned as long (default:FALSE) or wide (TRUE) format. Note that the wide format can be used as the input for alleleotype_genepop to simulate geneotypes.
 #' @rdname genepop_allelefreq
 #' @import magrittr
 #' @importFrom data.table fread as.data.table melt dcast
@@ -16,7 +16,7 @@
 #' @export
 #'
 
-genepop_allelefreq <- function(genepop,popgroup=NULL,Wide=FALSE){
+genepop_allelefreq <- function(genepop,popgroup=NULL,wide=FALSE){
 
   #Check to see if genepop is a data.frame from the workspace
   if(is.data.frame(genepop)){genepop <- data.table::as.data.table(genepop)}
@@ -174,7 +174,7 @@ genepop_allelefreq <- function(genepop,popgroup=NULL,Wide=FALSE){
     }
 
     #If the output is to be in wide format or to be left (default) as long (transposed format). Note taht wide formate is accepted for genotype simulation by alleleotype_genepop().
-    if(Wide){
+    if(wide){
       Output[] <- lapply(Output,as.character)
       Output <- Output %>% data.table::dcast(.,Population~Loci, value.var="MAF") %>% data.frame()
       #data.table::dcast adds an "x" to the column names which must be removed for matching
