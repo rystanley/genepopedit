@@ -4,11 +4,11 @@
 \alias{subset_genepop_aggregate}
 \title{Genepop subset, combine, and reorder populations}
 \usage{
-subset_genepop_aggregate(GenePop, subs = NULL, keep = TRUE, agPopFrame,
+subset_genepop_aggregate(genepop, subs = NULL, keep = TRUE, agPopFrame,
   path)
 }
 \arguments{
-\item{GenePop}{the genepop data to be manipulated. This can be either a file path
+\item{genepop}{the genepop data to be manipulated. This can be either a file path
 or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 or a single comma delimited row of loci names followed by the locus data. Populations are

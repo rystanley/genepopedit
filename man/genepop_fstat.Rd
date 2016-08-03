@@ -4,10 +4,10 @@
 \alias{genepop_fstat}
 \title{Convert Genepop to FSTAT format.}
 \usage{
-genepop_fstat(GenePop, path = NULL, addworkspace = FALSE)
+genepop_fstat(genepop, path = NULL, addworkspace = FALSE)
 }
 \arguments{
-\item{GenePop}{the genepop data to be manipulated. This can be either a file path
+\item{genepop}{the genepop data to be manipulated. This can be either a file path
 or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 or a single comma delimited row of loci names followed by the locus data. Populations are

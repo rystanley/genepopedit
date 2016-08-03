@@ -4,12 +4,12 @@
 \alias{subset_genepop}
 \title{Genepop subset loci and populations}
 \usage{
-subset_genepop(GenePop, subs = NULL, keep = TRUE, sPop = NULL, path)
+subset_genepop(genepop, subs = NULL, keep = TRUE, sPop = NULL, path)
 }
 \arguments{
-\item{GenePop}{the genepop data to be manipulated. This can be either a file path
+\item{genepop}{the genepop data to be manipulated. This can be either a file path
 or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
-This will be the standard Genepop format with the first n+1 rows corresponding to the n loci names,
+This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 or a single comma delimited row of loci names followed by the locus data. Populations are
 separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 as a single row (character).}
@@ -25,7 +25,7 @@ The default is to keep them keep <- TRUE assuming you are removing neutral marke
 and only keeping the subs.}
 
 \item{sPop}{is the populations of interest. Note these are specified in the order which they appear in the
-original Genepop file. i.e. first pop = 1 second pop = 2
+original genepop file. i.e. first pop = 1 second pop = 2
 Examples: numeric - sPop <- c(1,3,4,7) or
 the population ID (alpha-numeric code before the underscore). Here we assume conventional
 naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).

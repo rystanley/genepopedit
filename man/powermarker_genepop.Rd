@@ -4,17 +4,17 @@
 \alias{powermarker_genepop}
 \title{Convert Powermarker format to Genepop}
 \usage{
-powermarker_genepop(Powermarker, missing_data, path, sampleid = TRUE)
+powermarker_genepop(powermarker, missing_data, path, sampleid = TRUE)
 }
 \arguments{
-\item{Powermarker}{the Powermarker data to be manipulated. The first column should be the 'POP_ID' column which identifies the populations.
+\item{powermarker}{the powermarker data to be manipulated. The first column should be the 'POP_ID' column which identifies the populations.
 The second column should be 'Sample_ID' which designates the individual sample IDs. The remaining columns contain the locus alleles in the format of 'A/A' etc.}
 
 \item{missing_data}{The symbol (typically "-", "?", or "9") which will be replaced with 000.}
 
 \item{path}{the filepath and filename of output.}
 
-\item{sampleid}{Whether you want the sampleid in your Genepop to be based off the 'Sample_ID' column (TRUE) or the 'POP_ID' column (FALSE) in the Powermarker file}
+\item{sampleid}{Whether you want the sampleid in your Genepop to be based off the 'Sample_ID' column (TRUE) or the 'POP_ID' column (FALSE) in the powermarker file}
 }
 \description{
 Function converts Powermarker to standard Genepop format

@@ -4,10 +4,10 @@
 \alias{genepop_ID}
 \title{Add separation ("_") between population name and sample number}
 \usage{
-genepop_ID(GenePop, path)
+genepop_ID(genepop, path)
 }
 \arguments{
-\item{GenePop}{the genepop data to be manipulated. This can be either a file path
+\item{genepop}{the genepop data to be manipulated. This can be either a file path
 or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 or a single comma delimited row of loci names followed by the locus data. Populations are

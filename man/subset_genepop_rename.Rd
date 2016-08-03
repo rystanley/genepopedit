@@ -4,11 +4,11 @@
 \alias{subset_genepop_rename}
 \title{Genepop subset and rename populations}
 \usage{
-subset_genepop_rename(GenePop, nameframe, renumber = FALSE, meta = "Pop",
+subset_genepop_rename(genepop, nameframe, renumber = FALSE, meta = "Pop",
   path)
 }
 \arguments{
-\item{GenePop}{the genepop data to be manipulated. This can be either a file path
+\item{genepop}{the genepop data to be manipulated. This can be either a file path
 or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 or a single comma delimited row of loci names followed by the locus data. Populations are

@@ -4,26 +4,26 @@
 \alias{genepop_toploci}
 \title{Creates a panel of the top n unlinked loci, and exports the list of loci}
 \usage{
-genepop_toploci(GenePop, where.PLINK, where.PGDspider, r2.threshold = 0.2,
-  FST.threshold = 0.05, ld.window = NULL, LDpop = "All",
-  allocate.PGD.RAM = 1, return.workspace = TRUE, save.output = FALSE)
+genepop_toploci(genepop, where.plink, where.pgdspider, r2.threshold = 0.2,
+  fst.threshold = 0.05, ld.window = NULL, ldpop = "All",
+  allocate.pgd.ram = 1, return.workspace = TRUE, save.output = FALSE)
 }
 \arguments{
-\item{GenePop}{A file path to the GENEPOP format file you wish to create your panel from}
+\item{genepop}{A file path to the genepop format file you wish to create your panel from}
 
-\item{where.PLINK}{A file path to the PLINK installation folder.}
+\item{where.plink}{A file path to the PLINK installation folder.}
 
-\item{where.PGDspider}{A file path to the PGDspider installation folder.}
+\item{where.pgdspider}{A file path to the PGDspider installation folder.}
 
 \item{r2.threshold}{The minimum r^2 threshold to consider a pair of loci to be in LD}
 
-\item{FST.threshold}{The minimum FST threshold required to retain a locus}
+\item{fst.threshold}{The minimum FST threshold required to retain a locus}
 
 \item{ld.window}{Number of adjacent SNPs to compare each SNP against for LD - default is NULL, which translates to a window size of 99999, which essentially asks to compare each SNP against all others}
 
-\item{LDpop}{A string which populations (default: "All") will be used to calculate linkage disequilibrium. Names must match names returned by genepop_detective().}
+\item{ldpop}{A string which populations (default: "All") will be used to calculate linkage disequilibrium. Names must match names returned by genepop_detective().}
 
-\item{allocate.PGD.RAM}{An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.}
+\item{allocate.pgd.ram}{An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.}
 
 \item{return.workspace}{(default: TRUE) Logical query to return the output to the workspace}
 

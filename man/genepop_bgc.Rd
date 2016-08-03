@@ -4,10 +4,10 @@
 \alias{genepop_bgc}
 \title{Convert Genepop to Bayesian Genomic Clines (BGC) format.}
 \usage{
-genepop_bgc(GenePop, popdef, fname, path)
+genepop_bgc(genepop, popdef, fname, path)
 }
 \arguments{
-\item{GenePop}{the genepop data to be manipulated. This can be either a file path
+\item{genepop}{the genepop data to be manipulated. This can be either a file path
 or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 This will the standard genepop format with a the first n+1 rows corresponding the the n loci names,
 or a single comma deliminated row of loci names followed by the locus data. Populations are

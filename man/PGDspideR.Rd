@@ -4,7 +4,7 @@
 \alias{PGDspideR}
 \title{Execute PGDspider data format conversions in R}
 \usage{
-PGDspideR(input, input_format, output, output_format, spid, where.PGDspider)
+PGDspideR(input, input_format, output, output_format, spid, where.pgdspider)
 }
 \arguments{
 \item{input}{the full path to the input file.}
@@ -17,7 +17,7 @@ PGDspideR(input, input_format, output, output_format, spid, where.PGDspider)
 
 \item{spid}{the fill file path to the spid file generated in PGDspider.}
 
-\item{where.PGDspider}{A file path to the PGDspider installation folder.}
+\item{where.pgdspider}{A file path to the PGDspider installation folder.}
 }
 \description{
 Function to between file types in R.
