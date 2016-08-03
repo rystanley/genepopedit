@@ -1,15 +1,15 @@
 # Genepop_Treemix
 #' @title Convert a Genepop to input required for phython processing to TREEMIX.
 #' @description Convert Genepop to within-clusters binary PED file for TREEMIX.
-#' @param GenePop the genepop data to be manipulated. This can be either a file path
+#' @param genepop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
-#' This will be the standard Genepop format with the first n+1 rows corresponding to the n loci names,
+#' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single comma delimited row of loci names followed by the locus data. Populations are
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
-#' @param where.PGDspider A file path to the PGDspider installation folder.
-#' @param where.PLINK A file path to the PLINK installation folder.
-#' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
+#' @param where.pgdspider A file path to the PGDspider installation folder.
+#' @param where.plink A file path to the PLINK installation folder.
+#' @param allocate.pgd.ram An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
 #' @param keep_inter A logical condition statement (default : FALSE) specifying whether to keep the map, ped, and clustering files generated during the conversion.
 #' @param path file path to directory where the gzipped Treemix input file will be saved.
 #' @rdname genepop_treemix
@@ -18,7 +18,7 @@
 #' @importFrom utils read.table
 #' @export
 
-genepop_treemix<-function(GenePop,where.PGDspider,where.PLINK,allocate.PGD.RAM=1,keep_inter=FALSE,path){
+genepop_treemix<-function(genepop,where.pgdspider,where.plink,allocate.pgd.ram=1,keep_inter=FALSE,path){
 
   path.start<-path
 
@@ -28,22 +28,22 @@ genepop_treemix<-function(GenePop,where.PGDspider,where.PLINK,allocate.PGD.RAM=1
   }
   path.start.PGD <- gsub(x = path.start, pattern = " ", replacement = "\\")
 
-  where.PGDspider.PGD <- gsub(x = where.PGDspider, pattern = " ",
+  where.pgdspider.PGD <- gsub(x = where.pgdspider, pattern = " ",
                               replacement = "\\ ", fixed = TRUE)
 
   #Ram warning messages.
-  if(allocate.PGD.RAM%%1 != 0){
+  if(allocate.pgd.ram%%1 != 0){
     stop("Please specify an integer GB value to allocate to PGDspider.")
   }
 
-  if (Sys.info()["sysname"] == "Windows" & allocate.PGD.RAM >
+  if (Sys.info()["sysname"] == "Windows" & allocate.pgd.ram >
       1024) {
-    allocate.PGD.RAM = 1024
+    allocate.pgd.ram = 1024
     writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.\n               ")
   }
 
   #Ram allocation - gb to mb
-  allocate.PGD.RAM <- allocate.PGD.RAM * 1024
+  allocate.pgd.ram <- allocate.pgd.ram * 1024
 
   writeLines("Converting GENEPOP to PED format for PLINK.")
   writeLines("\n\n             ")
@@ -62,7 +62,7 @@ GP_PED_SPID_Top<-"# spid-file generated: Thu May 19 13:29:37 ADT 2016\n\n # GENE
   WRITER_FORMAT=PED
 
   # Save MAP file"
-map.loc<-paste0("PED_WRITER_MAP_FILE_QUESTION= ", where.PGDspider,"PGDtest")
+map.loc<-paste0("PED_WRITER_MAP_FILE_QUESTION= ", where.pgdspider,"PGDtest")
 GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes for missing data in PED):
   PED_WRITER_ZERO_CHAR_QUESTION=
   # Specify the locus/locus combination you want to write to the PED file:
@@ -70,25 +70,25 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   # Do you want to save an additional MAP file with loci information?
     PED_WRITER_MAP_QUESTION=true"
   spid.file <- c(GP_PED_SPID_Top, map.loc, GP_PED_SPID_Bottom)
-  write(x = spid.file, file = paste0(where.PGDspider.PGD, "/", "GP_PED.spid"))
+  write(x = spid.file, file = paste0(where.pgdspider.PGD, "/", "GP_PED.spid"))
 
 
-  file.copy(from = GenePop, to = where.PGDspider, overwrite = TRUE)
-  GenePop.name <- stringr::str_split(string = GenePop, pattern = "/")
+  file.copy(from = genepop, to = where.pgdspider, overwrite = TRUE)
+  GenePop.name <- stringr::str_split(string = genepop, pattern = "/")
   GenePop.name <- unlist(GenePop.name)
   GenePop.name <- GenePop.name[grep(x = GenePop.name, pattern = ".txt")]
-  file.rename(from = paste0(where.PGDspider, GenePop.name),
-              to = paste0(where.PGDspider, "GPD_for_PED_to_BED.txt"))
-  remember.TOPLOC.path <- paste0(where.PGDspider, "GPD_for_PED_to_BED.txt")
+  file.rename(from = paste0(where.pgdspider, GenePop.name),
+              to = paste0(where.pgdspider, "GPD_for_PED_to_BED.txt"))
+  remember.TOPLOC.path <- paste0(where.pgdspider, "GPD_for_PED_to_BED.txt")
 
   if (Sys.info()["sysname"] != "Windows") {
     input.file.call <- "-inputfile GPD_for_PED_to_BED.txt"
-    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM,
+    execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram,
                              "m -Xms512m -jar PGDSpider2-cli.jar")
     spid.call <- "-spid GP_PED.spid"
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat PED"
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, "; ",
+    goto.spider <- paste0("cd ", where.pgdspider.PGD, "; ",
                           execute.SPIDER)
     output.file.path <- "-outputfile PGDtest.ped"
     run.PGDspider <- paste0(goto.spider, " ", input.file.call,
@@ -98,12 +98,12 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   }
   if (Sys.info()["sysname"] == "Windows") {
     input.file.call <- "-inputfile GPD_for_PED_to_BED.txt"
-    execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM,
+    execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram,
                              "m -Xms512m -jar PGDSpider2-cli.jar")
     spid.call <- "-spid GP_PED.spid"
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat PED"
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, " && ",
+    goto.spider <- paste0("cd ", where.pgdspider.PGD, " && ",
                           execute.SPIDER)
     output.file.path <- "-outputfile PGDtest.ped"
     run.PGDspider <- paste0(goto.spider, " ", input.file.call,
@@ -112,14 +112,14 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
     shell(run.PGDspider)
   }
 
-  ped.path <- paste0(where.PGDspider, "/", "PGDtest.ped")
-  map.path <- paste0(where.PGDspider, "/", "PGDtest.map")
-  file.copy(from = ped.path, to = where.PLINK, overwrite = TRUE)
-  file.copy(from = map.path, to = where.PLINK, overwrite = TRUE)
-  plink_ped_path <- paste0(where.PLINK, "/", "PGDtest.ped")
-  plink_map_path <- paste0(where.PLINK, "/", "PGDtest.map")
+  ped.path <- paste0(where.pgdspider, "/", "PGDtest.ped")
+  map.path <- paste0(where.pgdspider, "/", "PGDtest.map")
+  file.copy(from = ped.path, to = where.plink, overwrite = TRUE)
+  file.copy(from = map.path, to = where.plink, overwrite = TRUE)
+  plink_ped_path <- paste0(where.plink, "/", "PGDtest.ped")
+  plink_map_path <- paste0(where.plink, "/", "PGDtest.map")
   writeLines("\n\n             ")
-  callplink<- paste0("cd ", where.PLINK)
+  callplink<- paste0("cd ", where.plink)
 
   if (Sys.info()["sysname"] != "Windows") {
     plink.input <- paste0(callplink, "; ", "plink --noweb --file PGDtest --make-bed --out BinaryPED")
@@ -135,8 +135,8 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   anal.name=anal.name[length(anal.name)]
   map.name=paste0(anal.name,".map")
   ped.name=paste0(anal.name,".ped")
-  remember.ped.plink<-paste0(where.PLINK,ped.name)
-  remember.map.plink<-paste0(where.PLINK,map.name)
+  remember.ped.plink<-paste0(where.plink,ped.name)
+  remember.map.plink<-paste0(where.plink,map.name)
   writeLines("\nConverted ped file to binary ped.\n\n            ")
 
 
@@ -144,7 +144,7 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
 #Convert .fam file to .clust file
 #Will add a third column - the clusters column - based on the first 3 characters of your Individual IDs
   famtoconvert <- utils::read.table(
-    paste0(where.PLINK,paste0("BinaryPED",".fam")),
+    paste0(where.plink,paste0("BinaryPED",".fam")),
     quote = "",
     sep=" ",
     header=FALSE
@@ -155,12 +155,12 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
 
   famtoconvert[,3] <- as.character(NameExtract)
 
-  utils::write.table(x=famtoconvert[,1:3],file=paste0(where.PLINK,"ClusterFile.clust"),quote =FALSE,col.names = FALSE, row.names = FALSE)
+  utils::write.table(x=famtoconvert[,1:3],file=paste0(where.plink,"ClusterFile.clust"),quote =FALSE,col.names = FALSE, row.names = FALSE)
   writeLines("\nCluster file created from .fam file.\n     ")
   writeLines("Creating frequency file using bed and cluster files.\n\n     ")
-  remember.fam.plink<-paste0(where.PLINK,"BinaryPED.fam")
+  remember.fam.plink<-paste0(where.plink,"BinaryPED.fam")
   bed.name=paste0(anal.name,".bed")
-  remember.bed.plink<-paste0(where.PLINK,bed.name)
+  remember.bed.plink<-paste0(where.plink,bed.name)
 
 
 ###STEP 3###
@@ -176,31 +176,31 @@ if (Sys.info()["sysname"] == "Windows") {
 }
 
 #Now gzip the output from Plink, then run this gzipped file through the Python script that comes with Treemix.
-R.utils::gzip(filename=paste0(where.PLINK,"TreemixInput.frq.strat"))
+R.utils::gzip(filename=paste0(where.plink,"TreemixInput.frq.strat"))
 
 #Clean files and return to path.
 
 #Keep the intermediate conversion files.
     if(keep_inter){
-      file.copy(from=paste0(where.PGDspider,"PGDtest.map"),to = paste0(path,"PGDtest.map"))
-      file.copy(from=paste0(where.PGDspider,"PGDtest.ped"),to = paste0(path,"PGDtest.ped"))
-      file.copy(from=paste0(where.PLINK,"ClusterFile.clust"),to=paste0(path,"ClusterFile.clust"))
+      file.copy(from=paste0(where.pgdspider,"PGDtest.map"),to = paste0(path,"PGDtest.map"))
+      file.copy(from=paste0(where.pgdspider,"PGDtest.ped"),to = paste0(path,"PGDtest.ped"))
+      file.copy(from=paste0(where.plink,"ClusterFile.clust"),to=paste0(path,"ClusterFile.clust"))
       file.rename(from = paste0(path,"PGDtest.map"),to=paste0(path,"treemix_map.map"))
       file.rename(from = paste0(path,"PGDtest.ped"),to=paste0(path,"treemix_ped.ped"))
     }else{
-      file.remove(paste0(where.PGDspider,"PGDtest.map"))
-      file.remove(paste0(where.PGDspider,"PGDtest.ped"))
-      file.remove(paste0(where.PLINK,"ClusterFile.clust"))
+      file.remove(paste0(where.pgdspider,"PGDtest.map"))
+      file.remove(paste0(where.pgdspider,"PGDtest.ped"))
+      file.remove(paste0(where.plink,"ClusterFile.clust"))
     }
 
   writeLines("\nCopying gzipped input file to path and removing unnecessary files\n")
-    file.copy(from = paste0(where.PLINK,"TreemixInput.frq.strat.gz"), to = paste0(path,"TreemixInput.frq.strat.gz"))
-    setwd(where.PGDspider)
+    file.copy(from = paste0(where.plink,"TreemixInput.frq.strat.gz"), to = paste0(path,"TreemixInput.frq.strat.gz"))
+    setwd(where.pgdspider)
     file.remove("GP_PED.spid")
     file.remove("spider.conf.xml")
     file.remove("PGDSpider-cli.log")
     file.remove("GPD_for_PED_to_BED.txt")
-    setwd(where.PLINK)
+    setwd(where.plink)
     file.remove("PGDtest.ped")
     file.remove("PGDtest.map")
     file.remove("BinaryPED.nosex")
