@@ -301,8 +301,8 @@ This function will return the the panel with the highest Fst for unlinked loci o
   
 **Variable name** | **Input**  
 --------------|---------------------------------
-*Genepop* | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
-*nsample*| object which defines sampling.
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+**nsample**| object which defines sampling.
 
   * nsample (integer) -> (e.g. nsample = 5) nsample will be sampled at random from each strata (population).
   * nsample (fraction) -> (e.g. nsample = 0.5) a fraction will be sampled at random from each strata (population).
