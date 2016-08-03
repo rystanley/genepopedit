@@ -1,9 +1,9 @@
 # Subset Genepop
 #' @title Genepop subset loci and populations
 #' @description Function to subset loci and populations
-#' @param GenePop the genepop data to be manipulated. This can be either a file path
+#' @param genepop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
-#' This will be the standard Genepop format with the first n+1 rows corresponding to the n loci names,
+#' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
 #' or a single comma delimited row of loci names followed by the locus data. Populations are
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
@@ -16,59 +16,59 @@
 #' The default is to keep them keep <- TRUE assuming you are removing neutral markers
 #' and only keeping the subs.
 #' @param sPop is the populations of interest. Note these are specified in the order which they appear in the
-#'  original Genepop file. i.e. first pop = 1 second pop = 2
+#'  original genepop file. i.e. first pop = 1 second pop = 2
 #'  Examples: numeric - sPop <- c(1,3,4,7) or
 #'  the population ID (alpha-numeric code before the underscore). Here we assume conventional
 #'  naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
 #'            text- sPop <- c("Aqua01", "GRR","GHR","TRS").
 #' @param path the filepath and filename of output.
-#' @rdname subset_genepopt
+#' @rdname subset_genepop
 #' @importFrom data.table fread as.data.table
 #' @importFrom utils write.table
 #' @export
 
 
 ##
-subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
+subset_genepop <- function(genepop,subs=NULL,keep=TRUE,sPop=NULL,path)
   {
 
-  #Check to see if GenePop is a data.frame from the workspace and convert to data.table
-  if(is.data.frame(GenePop)){GenePop <- data.table::as.data.table(GenePop)}
+  #Check to see if genepop is a data.frame from the workspace and convert to data.table
+  if(is.data.frame(genepop)){genepop <- data.table::as.data.table(genepop)}
 
-  #Check to see if Genepop is a file path or dataframe
-  if(is.character(GenePop)){
-    GenePop <- data.table::fread(GenePop,
+  #Check to see if genepop is a file path or dataframe
+  if(is.character(genepop)){
+    genepop <- data.table::fread(genepop,
                           header = FALSE, sep = "\t",
                            stringsAsFactors = FALSE)
   }
 
   ## check if loci names are read in as one large character vector (1 row)
-  header <- GenePop[1,]
+  header <- genepop[1,]
   if(length(gregexpr(',', header, fixed=F)[[1]])>1){
     lociheader <- strsplit(header,",")
     lociheader <- gsub(" ","",unlist(lociheader))
     #remove the first column of loci names
-    GenePop <- as.vector(GenePop)
-    GenePop <- GenePop[-1,]
-    GenePop <- c(lociheader,GenePop)
-    GenePop <- data.table::as.data.table(GenePop,stringsAsFactors = FALSE)
+    genepop <- as.vector(genepop)
+    genepop <- genepop[-1,]
+    genepop <- c(lociheader,genepop)
+    genepop <- data.table::as.data.table(genepop,stringsAsFactors = FALSE)
   }
 
 ## Stacks version information
-    stacks.version <- GenePop[1,] #this could be blank or any other source. First row is ignored by GenePop
+    stacks.version <- genepop[1,] #this could be blank or any other source. First row is ignored by genepop
 
 #Remove first label of the stacks version
-    GenePop <- GenePop[-1,]
-    colnames(GenePop) <- "data"
+    genepop <- genepop[-1,]
+    colnames(genepop) <- "data"
 
 #ID the rows which flag the Populations
-    Pops  <-  which(GenePop$data == "Pop" | GenePop$data =="pop" | GenePop$data == "POP")
+    Pops  <-  which(genepop$data == "Pop" | genepop$data =="pop" | genepop$data == "POP")
     npops  <-  1:length(Pops)
 
 ## separate the data into the column headers and the rest
-    ColumnData <- GenePop$data[1:(Pops[1]-1)]
+    ColumnData <- genepop$data[1:(Pops[1]-1)]
     ColumnData <- gsub("\r","",ColumnData)#remove any hidden carriage returns
-    snpData <- GenePop[Pops[1]:NROW(GenePop),]
+    snpData <- genepop[Pops[1]:NROW(genepop),]
 
 #Get a datafile with just the snp data no pops
     tempPops <- which(snpData$data=="Pop"| snpData$data =="pop" | snpData$data == "POP") ## Changed because we allowed
@@ -97,7 +97,7 @@ subset_genepop <- function(GenePop,subs=NULL,keep=TRUE,sPop=NULL,path)
     NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
 
   ## Now add the population tags using npops (number of populations and Pops for the inter differences)
-    tPops <- c(Pops,NROW(GenePop))
+    tPops <- c(Pops,NROW(genepop))
     PopIDs <- NULL
     for (i in 2:length(tPops)){
       hold <- tPops[i]-tPops[i-1]-1
