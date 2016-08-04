@@ -466,7 +466,8 @@ The example genepop data is a GenePop data format with 10 populations, 30 indivi
 
 ```r
 #Load example data in your workspace. 'GenePopData' will now be available for use.
-  data("ExampleGenePop")
+  data("genepopedit_data")
+  head(GenePopData) #View the data and the first 4 loci names. 
 ```
 If reading in data to your workspace use the following *read.table* code specifics and associated parameters (sep="\t",quote="",stringsAsFactors=FALSE)
 
