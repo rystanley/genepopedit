@@ -570,7 +570,7 @@ This function will calculate linkage disequilibrium and global Weir and Cockerha
 
   TopLoci <- genepop_toploci(genepop="genepopedit_examplefile.txt",
   where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",
-  where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/" )
+  where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",fst.threshold = 0.04)
   
 #Linked loci
   TopLoci$Linked
