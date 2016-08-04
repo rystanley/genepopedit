@@ -209,7 +209,7 @@ genepop_toploci <- function(genepop, where.plink, where.pgdspider, r2.threshold 
     subPOP <- as.character(ldpop)
 
     ## subset out the population in which LD is to be calculated - this will make a file, which will be deleted after
-    subset_genepop(genepop = genepop, sPop = subPOP, subs = FST.Filter.Vec, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
+    subset_genepop(genepop = genepop, spop = subPOP, subs = FST.Filter.Vec, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
     ## remember path to the file created by subset_genepop
     sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
   }
