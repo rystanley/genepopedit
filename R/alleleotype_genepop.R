@@ -52,7 +52,7 @@ alleleotype_genepop <- function(input,numsim=100,path){
 
   writeLines("Simulating individual allele calls. Note progress bar is for dplyr pipe and not the complete calculation.")
 
-  df2 <- df2 %>%
+  df2 <- df %>%
     group_by(Pop,variable) %>%
     do(simind(.$value,n = nsim, numsim = numsim)) %>%
     ungroup() %>%
