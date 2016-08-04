@@ -6,10 +6,10 @@
 #' or a single comma deliminated row of loci names followed by the locus data. Populations are
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
-#' @param where.PLINK A file path to the PLINK installation folder.
-#' @param where.PGDspider A file path to the PGDspider installation folder.
+#' @param where.plink A file path to the PLINK installation folder.
+#' @param where.pgdspider A file path to the PGDspider installation folder.
 #' @param denote.missing The value that denotes missing data in your input file
-#' @param allocate.PGD.RAM An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
+#' @param allocate.pgd.ram An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.
 #' @param path file path to directory where the Colony files (4) will be saved.
 #' @rdname genepop_colony
 #' @importFrom stringr str_split
@@ -20,20 +20,20 @@
 
 
 ##
-genepop_colony <- function(genepop, where.PLINK, where.PGDspider, denote.missing = "000", allocate.PGD.RAM = 1,path){
+genepop_colony <- function(genepop, where.plink, where.pgdspider, denote.missing = "000", allocate.pgd.ram = 1,path){
 
    path.start <- getwd()  ### where to write the files created by genepopedit to
 
    ## Warning messages
-       if(allocate.PGD.RAM%%1 != 0){
+       if(allocate.pgd.ram%%1 != 0){
         stop("Please specify an integer GB value to allocate to PGDspider.")
       }
 
     #Set up ram allocation. Note that only 1024 gb of ram will work with Windows
-      allocate.PGD.RAM <- allocate.PGD.RAM*1024
+      allocate.pgd.ram <- allocate.pgd.ram*1024
 
-      if(Sys.info()["sysname"] == "Windows" & allocate.PGD.RAM>1024){
-        allocate.PGD.RAM=1024
+      if(Sys.info()["sysname"] == "Windows" & allocate.pgd.ram>1024){
+        allocate.pgd.ram=1024
         writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.
                    ")}
 
@@ -44,9 +44,19 @@ genepop_colony <- function(genepop, where.PLINK, where.PGDspider, denote.missing
       file.copy(from = genepop, to = path.start)
       remember.GenePop <- paste0(path.start, "/", GeneNAME)
 
+  ## hold version of the genepop in a temporary folder ## needed when getwd() is the same as the locaiton of genepop
+      dir.create("temporaryCOLONYcontainer")
+      file.copy(from = genepop, to = "temporaryCOLONYcontainer/")
+
   ## rename the file in the working directory
       file.rename(from = remember.GenePop, paste0(path.start, "/genepop_colony.txt"))
       remember.GenePopColony <- paste0(path.start, "/genepop_colony.txt")
+
+  ## add the original back to the directory
+      file.copy(paste("temporaryCOLONYcontainer",GeneNAME,sep="/"),paste(path.start,GeneNAME,sep="/"))
+
+  ## delete temporary container
+      unlink("temporaryCOLONYcontainer", recursive = TRUE, force = FALSE)
 
   ### convert file to .ped and .map using PGD spider
 
@@ -60,7 +70,7 @@ genepop_colony <- function(genepop, where.PLINK, where.PGDspider, denote.missing
                  ")
 
   ## check that the path to PGDspider has been specified correctly
-    where.PGDspider <- path_ending(path = where.PGDspider)
+    where.pgdspider <- path_ending(path = where.pgdspider)
 
   ## create spid file
       spidTop <- "# spid-file generated: Thu Mar 10 09:40:22 AST 2016
@@ -96,25 +106,25 @@ genepop_colony <- function(genepop, where.PLINK, where.PGDspider, denote.missing
       remember.spidpath.WD <- paste0(path.start, "/", "GenePopColony.spid")
 
   ### move spid file to the PGDspider folder
-      file.copy(from = paste0(path.start, "/GenePopColony.spid"), to = where.PGDspider, overwrite = TRUE)
-      remember.spidpath.PGD <- paste0(where.PGDspider, "GenePopColony.spid")
+      file.copy(from = paste0(path.start, "/GenePopColony.spid"), to = where.pgdspider, overwrite = TRUE)
+      remember.spidpath.PGD <- paste0(where.pgdspider, "GenePopColony.spid")
 
   ## Convert Genepop to MAP/PED
       ## move the input file as well to the same location as PGDspider - this makes this step so much easier
-      file.copy(from <- remember.GenePopColony, to = where.PGDspider, overwrite = TRUE)
-      remember.GenePopColony.PGD <- paste0(where.PGDspider, "/genepop_colony.txt")
+      file.copy(from <- remember.GenePopColony, to = where.pgdspider, overwrite = TRUE)
+      remember.GenePopColony.PGD <- paste0(where.pgdspider, "/genepop_colony.txt")
 
-      where.PGDspider.PGD <- gsub(x = where.PGDspider, pattern = " ", replacement = "\\ ", fixed = TRUE)
+      where.pgdspider.PGD <- gsub(x = where.pgdspider, pattern = " ", replacement = "\\ ", fixed = TRUE)
 
       #### OS X LINUX call
       if(Sys.info()["sysname"] != "Windows"){
         ### create a string to call PGDspider
         input.file.call <- paste0("-inputfile genepop_colony.txt")
-        execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
+        execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram, "m -Xms512m -jar PGDSpider2-cli.jar")
         spid.call <- "-spid GenePopColony.spid"
         input.format <- "-inputformat GENEPOP"
         output.format <- "-outputformat PED"
-        goto.spider <- paste0("cd ", where.PGDspider.PGD, "; ", execute.SPIDER)
+        goto.spider <- paste0("cd ", where.pgdspider.PGD, "; ", execute.SPIDER)
         output.file.path <- paste0("-outputfile Colony_Out.ped")
         ## string to run
         run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
@@ -127,11 +137,11 @@ genepop_colony <- function(genepop, where.PLINK, where.PGDspider, denote.missing
       if(Sys.info()["sysname"] == "Windows"){
         ### create a string to call PGDspider
         input.file.call <- paste0("-inputfile genepop_colony.txt")
-        execute.SPIDER <- paste0("java -Xmx", allocate.PGD.RAM, "m -Xms512m -jar PGDSpider2-cli.jar")
+        execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram, "m -Xms512m -jar PGDSpider2-cli.jar")
         spid.call <- "-spid GenePopColony.spid"
         input.format <- "-inputformat GENEPOP"
         output.format <- "-outputformat PED"
-        goto.spider <- paste0("cd ", where.PGDspider.PGD, " && ", execute.SPIDER)
+        goto.spider <- paste0("cd ", where.pgdspider.PGD, " && ", execute.SPIDER)
         output.file.path <- paste0("-outputfile Colony_Out.ped")
         ## string to run
         run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
@@ -141,14 +151,14 @@ genepop_colony <- function(genepop, where.PLINK, where.PGDspider, denote.missing
       }
 
   ## move the created ped and map files to the PLINK folder
-      ped.path <- paste0(where.PGDspider, "/", "Colony_Out.ped")
-      map.path <- paste0(where.PGDspider, "/", "Colony_Out.map")
+      ped.path <- paste0(where.pgdspider, "/", "Colony_Out.ped")
+      map.path <- paste0(where.pgdspider, "/", "Colony_Out.map")
 
-      file.copy(from = ped.path, to = where.PLINK, overwrite = TRUE)
-      file.copy(from = map.path, to = where.PLINK, overwrite = TRUE)
+      file.copy(from = ped.path, to = where.plink, overwrite = TRUE)
+      file.copy(from = map.path, to = where.plink, overwrite = TRUE)
 
-      plink_ped_path <- paste0(where.PLINK, "/", "Colony_Out.ped")
-      plink_map_path <- paste0(where.PLINK, "/", "Colony_Out.map")
+      plink_ped_path <- paste0(where.plink, "/", "Colony_Out.ped")
+      plink_map_path <- paste0(where.plink, "/", "Colony_Out.map")
 
 ## Call plink.
   #Console message
@@ -160,12 +170,12 @@ genepop_colony <- function(genepop, where.PLINK, where.PGDspider, denote.missing
                ")
 
   ## check that PLINK folder has been specified correctly
-    where.PLINK <- path_ending(path = where.PLINK)
+    where.plink <- path_ending(path = where.plink)
 
   ### prepare a string to call PLINK
   ### modify PLINK path so it plays nice with system
-    where.PLINK.go <- gsub(x = where.PLINK, pattern = " ", replacement = "\\ ", fixed = TRUE)
-    go.to.PLINK <- paste0("cd ", where.PLINK.go)
+    where.plink.go <- gsub(x = where.plink, pattern = " ", replacement = "\\ ", fixed = TRUE)
+    go.to.PLINK <- paste0("cd ", where.plink.go)
 
   ### OSX LINUX PLINK call
     if(Sys.info()["sysname"] != "Windows"){
@@ -182,13 +192,13 @@ genepop_colony <- function(genepop, where.PLINK, where.PGDspider, denote.missing
     }
 
   ### PLINK is going to make a few files, will want to remove them later just to be nice
-    remember.nosex <- paste0(where.PLINK, "plink.nosex")
-    remember.log <- paste0(where.PLINK, "plink.log")
-    remember.imiss <- paste0(where.PLINK, "plink.imiss")
-    remember.lmiss.PLINK <- paste0(where.PLINK, "plink.lmiss")
+    remember.nosex <- paste0(where.plink, "plink.nosex")
+    remember.log <- paste0(where.plink, "plink.log")
+    remember.imiss <- paste0(where.plink, "plink.imiss")
+    remember.lmiss.PLINK <- paste0(where.plink, "plink.lmiss")
 
   ## copy the LOCI MISSING file created by PLINK to the working directory
-    file.copy(from = paste0(where.PLINK, "plink.lmiss"), to = path.start)
+    file.copy(from = paste0(where.plink, "plink.lmiss"), to = path.start)
     remeber.lmiss.WD <- paste0(path.start, "/plink.limiss")
 
   ## rename the file and change it to a txt
