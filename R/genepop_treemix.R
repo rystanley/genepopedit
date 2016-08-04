@@ -47,7 +47,7 @@ genepop_treemix<-function(genepop,where.pgdspider,where.plink,allocate.pgd.ram=1
 
   writeLines("Converting GENEPOP to PED format for PLINK.")
   writeLines("\n\n             ")
-  writeLines("Warning messages are expected as part of conversion process using PGDspider.\n\n             ")
+  writeLines("Warning messages are expected as part of conversion process using PGDspider. Note this process can be inhibited by inadequate system resources.\n\n             ")
 
 #Create the spid files required by PGD for conversion
 GP_PED_SPID_Top<-"# spid-file generated: Thu May 19 13:29:37 ADT 2016\n\n # GENEPOP Parser questions\n PARSER_FORMAT=GENEPOP
@@ -62,6 +62,7 @@ GP_PED_SPID_Top<-"# spid-file generated: Thu May 19 13:29:37 ADT 2016\n\n # GENE
   WRITER_FORMAT=PED
 
   # Save MAP file"
+
 map.loc<-paste0("PED_WRITER_MAP_FILE_QUESTION= ", where.pgdspider,"PGDtest")
 GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes for missing data in PED):
   PED_WRITER_ZERO_CHAR_QUESTION=
@@ -96,6 +97,7 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
                             " ", spid.call)
     system(run.PGDspider)
   }
+
   if (Sys.info()["sysname"] == "Windows") {
     input.file.call <- "-inputfile GPD_for_PED_to_BED.txt"
     execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram,
