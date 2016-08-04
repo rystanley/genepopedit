@@ -218,7 +218,7 @@ genepop_toploci <- function(genepop, where.plink, where.pgdspider, r2.threshold 
 
     popLDsubsetDF <- data.frame(op=pops.exist, paste0("PopA", rep(1:length(pops.exist)))) ## make a both the same
 
-    subset_genepop_aggregate(genepop = genepop, agPopFrame = popLDsubsetDF, path = paste0(path.start, "/", "subset_for_LD.txt"))
+    subset_genepop_aggregate(genepop = genepop, agpopframe = popLDsubsetDF, path = paste0(path.start, "/", "subset_for_LD.txt"))
     sub_data_path <- paste0(path.start, "/", "subset_for_LD.txt")
     subset_genepop(genepop = sub_data_path, subs = FST.Filter.Vec, keep = TRUE, path = paste0(path.start, "/", "subset_for_LD.txt"))
     ## now rename
