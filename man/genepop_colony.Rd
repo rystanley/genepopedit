@@ -4,8 +4,8 @@
 \alias{genepop_colony}
 \title{Convert Genepop to Colony format.}
 \usage{
-genepop_colony(genepop, where.PLINK, where.PGDspider, denote.missing = "000",
-  allocate.PGD.RAM = 1, path)
+genepop_colony(genepop, where.plink, where.pgdspider, denote.missing = "000",
+  allocate.pgd.ram = 1, path)
 }
 \arguments{
 \item{genepop}{the genepop data to be manipulated. This is read in as a complete file path.
@@ -14,13 +14,13 @@ or a single comma deliminated row of loci names followed by the locus data. Popu
 separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 as a single row (character).}
 
-\item{where.PLINK}{A file path to the PLINK installation folder.}
+\item{where.plink}{A file path to the PLINK installation folder.}
 
-\item{where.PGDspider}{A file path to the PGDspider installation folder.}
+\item{where.pgdspider}{A file path to the PGDspider installation folder.}
 
 \item{denote.missing}{The value that denotes missing data in your input file}
 
-\item{allocate.PGD.RAM}{An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.}
+\item{allocate.pgd.ram}{An integer value in GB to specify the maximum amount of RAM to allocate to PGDspider. The default is 1 GB, which should be sufficient for most analyses.}
 
 \item{path}{file path to directory where the Colony files (4) will be saved.}
 }
