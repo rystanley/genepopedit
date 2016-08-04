@@ -13,6 +13,6 @@
 #' @source This data has been randomly generated to demonstrate the functionality of genepopedit.
 #'
 #' @keywords datasets
-"ExampleGenePop"
+"GenePopData"
 
 
