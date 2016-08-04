@@ -810,7 +810,7 @@ If you are interested in investigating population structure you can convert your
 
 ```r
 #convert Genepop format to STRUCTURE to default groupings
-  genepop_structure(genepop="Genepop_IDsubset.txt"path = paste0(output_dir,"Sturcture_IDsubset_groups.txt")
+  genepop_structure(genepop="Genepop_IDsubset.txt",path = paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
   
 # Specify population groupings (group CCC/DDD/EEE and III/JJJ)
   pGroups <- data.frame(pops = c("AAA","BBB","CCC","DDD","EEE","FFF","GGG","HHH","III","JJJ"),groups = c("1","2","3","3","3","4","5","6","7","7"))
@@ -953,7 +953,7 @@ Individual geneotypes can be simulated using the _alleleotype_genepop()_ functio
     pooledDNA
 
   #simulate 200 individual geneotypes for each population
-    alleleotype(pooledDNA, numsim = 200, path = paste0(output_dir,"SimulatedGeneotypes.txt"))
+    alleleotype_genepop(pooledDNA, numsim = 200, path = paste0(output_dir,"SimulatedGeneotypes.txt"))
   
   #To validate output simulate 100 (default) geneotypes per population and compare allele frequencies to those of the input file. Estimated frequencies per population and SNP should match those of the input file within +/- 1%.
   
