@@ -6,7 +6,7 @@
 
 The goal of **genepopedit** is to provide a simple and flexible tool for manipulating large multi-locus genotype datasets in R. 
 
-** Note on starting on Aug 3 2016 genepopedit will only accept lowercase input variables. Full changes will be in effect by Aug 5 2016 and on all versions > 1.0.0.5 ** 
+** **Note input parameters for genepopedit versions > 1.0.0.5 are now all completely lowercase.** ** 
 
 **Use genepopedit to subset a SNP dataset by:**
 
@@ -136,7 +136,7 @@ This package has been developed to be used by anyone who is looking for a more e
 
 * If you don’t understand something, please let me know: 
 (ryan.stanley _at_ dfo-mpo.gc.ca). 
-* Any ideas on how to improve the functionality is very much appreciated. 
+* Any ideas on how to improve the functionality are very much appreciated. 
 * If you spot a typo, feel free to edit and send a pull request.
 
 Pull request how-to: 
