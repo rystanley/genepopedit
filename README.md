@@ -389,7 +389,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | the path to directory where the BGC files will be saved.
 
 #### genepop_treemix.R 
-* Convert Genepop format to a gzipped Treemix input file.
+* Convert Genepop to format required for first step in TREEMIX conversion.
 <https://bitbucket.org/nygcresearch/treemix/wiki/Home>
 
 [_example use_](#genepoptreemix)
