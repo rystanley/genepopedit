@@ -45,7 +45,7 @@ genepop_treemix<-function(genepop,where.pgdspider,where.plink,allocate.pgd.ram=1
   #Ram allocation - gb to mb
   allocate.pgd.ram <- allocate.pgd.ram * 1024
 
-  writeLines("Converting GENEPOP to PED format for PLINK.")
+  writeLines("Converting GENEPOP to PED format for PLINK. Note that this step will format data needed to execute the Phyton conversions. Refer to TREEMIX documentation for Phython conversion workflow and scripting")
   writeLines("\n\n             ")
   writeLines("Warning messages are expected as part of conversion process using PGDspider. Note this process can be inhibited by inadequate system resources.\n\n             ")
 
