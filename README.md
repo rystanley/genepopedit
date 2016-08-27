@@ -277,6 +277,17 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **path** | the filepath & filename of output.
 
+#### genepop_reorder.R 
+* Return genepop file with populations ordered sequentially according to specified population order. 
+
+[_example use_](#genepopreorder)
+  
+  **Variable name** | **Input**  
+    --------------|---------------------------------
+    **genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
+    **reorder** | vector of populaton names which will be used to reorder the output file. Note population names must be unique(n=1) and match those returned by genepop_detective(). 
+    **path** | the filepath & filename of output.
+
 ***
 
 #**Simulation** <a name="pooleddna"/>
@@ -415,17 +426,6 @@ This function will return the the panel with the highest Fst for unlinked loci o
 --------------|---------------------------------
 **genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **path** | the filepath & filename of output.
-
-#### genepop_reorder.R 
-* Return genepop file with populations ordered sequentially according to specified population order. 
-
-[_example use_](#genepopreorder)
-  
-  **Variable name** | **Input**  
-    --------------|---------------------------------
-    **genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
-    **reorder** | vector of populaton names which will be used to reorder the output file. Note population names must be unique(n=1) and match those returned by genepop_detective(). 
-    **path** | the filepath & filename of output.
 
 #### genepop_flatten.R 
 * Convert Genepop format to a flattened dataframe:
@@ -748,6 +748,18 @@ _This function is best run at the beginning of the analysis prior to removal of 
   subset_genepop_individual(genepop= GenePopData, indiv = subid, keep = FALSE, path = paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
 
+<a name="genepopreorder"/>
+##genepop\_reorder
+Reorder the genepop file sequentially according to a specified ordering (see below for examples). [_Function description_](#funcmanip)
+
+```r
+#Identify populaton names
+  pops <- genepop_detective(genepop="Genepop_IDsubset.txt")
+
+#reorder populatons. In this example the first and last example will be switched 
+  genepop_reorder(genepop="Genepop_IDsubset.txt",reorder=pops[c(length(pops),2:(length(pops)-1),1)]),path=paste0(output_dir,"GenePop_reordered.txt")
+```
+
 ***
 
 #**Sampling**
@@ -911,19 +923,6 @@ If you are interested in assessing the accuracy of a genetic stock identificatio
   genepop_GSIsim(genepop="Genepop_IDsubset.txt",path = paste0(output_dir,"GSIsim_IDsubset.txt"))
 
 ```
-
-<a name="genepopreorder"/>
-##genepop\_reorder
-Reorder the genepop file sequentially according to a specified ordering (see below for examples). [_Function description_](#funcconvert)
-
-```r
-#Identify populaton names
-  pops <- genepop_detective(genepop="Genepop_IDsubset.txt")
-
-#reorder populatons. In this example the first and last example will be switched 
-  genepop_reorder(genepop="Genepop_IDsubset.txt",reorder=pops[c(length(pops),2:(length(pops)-1),1)]),path=paste0(output_dir,"GenePop_reordered.txt")
-```
-
 
 <a name="genepopflat"/>
 ##genepop\_flatten
