@@ -99,7 +99,7 @@ Most molecular based file formats can be converted to and from *Genepop* using c
 ***
 
 ## Installation
-You can install **genepopedit** as a R package using the following 2 steps. Before installation it is recommended you open up a new R session without any packages loaded. During installation using devtools some packages may be automatically downloaded. If an older version of these packages is currently loaded it can cause errors or installation failure. 
+You can install **genepopedit** as a R package using the following 2 steps. Before installation it is recommended that you open up a new R session without any packages loaded. During the devtools installation process some package dependencies may be downloaded or updated. Installation errors can arise if an older version of a package dependency is already loaded.  
 
 **Step 1** Install the _R_ package *devtools*
 ```r
