@@ -23,6 +23,9 @@ powermarker_genepop<-function(powermarker, missing_data, path,sampleid=TRUE){
   input<-input[,-c(1,2)]
   loci_names<-colnames(input)
 
+  if (missing_data %in% c("?",".","|","^","$","[","{","+",")","(")) {
+    missing_data=paste0("\\",missing_data)
+  }
 
 input.conv <- as.data.frame(sapply(input, gsub, pattern = missing_data, replacement="000"), stringsAsFactors=FALSE)
 input.conv <- as.data.frame(sapply(input.conv, gsub, pattern = "A", replacement="001", fixed = TRUE), stringsAsFactors=FALSE)
