@@ -34,7 +34,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
     
 * create datasets for training, assignment, and outlier detection, according to a population stratified random sample. 
 
-* convert Genepop to STRUCTURE, FSTAT, NEWHYBRIDS, ASSIGNER, BGC, TREEMIX, COLONY, Genetic Stock Identification (gsi_sim), and flattened/unflattened format.
+* convert Genepop to STRUCTURE, FSTAT, NEWHYBRIDS, ASSIGNER, BGC, TREEMIX, COLONY, Genetic Stock Identification (gsi_sim), HZAR, and flattened/unflattened format.
 
 * simulate individual genotypes using pooled DNA allele frequencies.
 
@@ -327,7 +327,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 #**Transformation** <a name="funcconvert"/>
 
 #### genepop_structure.R 
-* Convert Genepop format to NewHybrids format.
+* Convert Genepop format to Structure format.
   <http://pritchardlab.stanford.edu/structure.html>
   
 [_example use_](#genepopstruc)
@@ -426,6 +426,18 @@ This function will return the the panel with the highest Fst for unlinked loci o
 --------------|---------------------------------
 **genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **path** | the filepath & filename of output.
+
+#### genepop_hzar.R 
+* Convert Genepop format to HZAR format.
+<https://cran.r-project.org/web/packages/hzar/index.html>
+
+[_example use_](#genepophzar)
+  
+**Variable name** | **Input**  
+--------------|---------------------------------
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file
+**distances** | A dataframe or path to a text file with your distances between populations. Should contain 2 columns-Populations and Distances.There should be the same number of populations as in the Genepop file.
+**path** | the filepath and filename of output.
 
 #### genepop_flatten.R 
 * Convert Genepop format to a flattened dataframe:
@@ -921,6 +933,17 @@ If you are interested in assessing the accuracy of a genetic stock identificatio
 
 #convert Genepop to GSIsim format
   genepop_GSIsim(genepop="Genepop_IDsubset.txt",path = paste0(output_dir,"GSIsim_IDsubset.txt"))
+
+```
+
+<a name="genepophzar"/>
+##genepop\_hzar
+
+If you are interested in exploring clines in allele frequency over distance, you can convert from Genepop to HZAR format.This data can be used by the R package 'hzar' <https://cran.r-project.org/web/packages/hzar/index.html> [_Function description_](#funcconvert)
+
+```r
+#convert Genepop format to HZAR (.csz)
+  genepop_hzar(genepop="Genepop_IDsubset.txt",distances=data.frame(Pop=genepop_detective("Genepop_IDsubset.txt"), Distance=c(5,8,22,3,84,39,45.5,67,101),stringsAsFactors=FALSE), path = paste0(output_dir,"HZAR_Input.csv"))
 
 ```
 
