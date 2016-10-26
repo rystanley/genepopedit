@@ -20,7 +20,7 @@ genepop_unflatten <- function(df,path){
 
   ## Now add the population tags using npops (number of populations and Pops for the inter differences)
 
-  PopLengths <- table(NameExtract)[-length(table(NameExtract))]
+  PopLengths <- table(factor(NameExtract, levels=unique(NameExtract)))[-length(table(NameExtract))]
 
   if(length(table(NameExtract))==2){PopPosition = PopLengths+1}
 
