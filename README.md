@@ -66,29 +66,29 @@ _* if STACKS version is not specified_
     Loci_2
     Loci_3
     Pop
-    BON_01  , 120120 110110 110110
-    BON_02  , 100100 110110 110110
-    BON_03  , 100100 110110 110110
-    BON_04  , 100100 110110 110110
+    BON_01 ,  120120 110110 110110
+    BON_02 ,  100100 110110 110110
+    BON_03 ,  100100 110110 110110
+    BON_04 ,  100100 110110 110110
     Pop
-    TAG_01  , 120120 110110 110110
-    TAG_02  , 120120 110110 110110
-    TAG_03  , 120120 110110 110110
-    TAG_04  , 120120 110110 110110
+    TAG_01 ,  120120 110110 110110
+    TAG_02 ,  120120 110110 110110
+    TAG_03 ,  120120 110110 110110
+    TAG_04 ,  120120 110110 110110
 
 Alternatively, the loci names can be read in the first row as a single character separated by commas. 
 
     Loci_1,Loci_2,Loci,3
     Pop
-    BON_01  , 120120 110110 110110
-    BON_02  , 100100 110110 110110
-    BON_03  , 100100 110110 110110
-    BON_04  , 100100 110110 110110
+    BON_01 ,  120120 110110 110110
+    BON_02 ,  100100 110110 110110
+    BON_03 ,  100100 110110 110110
+    BON_04 ,  100100 110110 110110
     Pop
-    TAG_01  , 120120 110110 110110
-    TAG_02  , 120120 110110 110110
-    TAG_03  , 120120 110110 110110
-    TAG_04  , 120120 110110 110110
+    TAG_01 ,  120120 110110 110110
+    TAG_02 ,  120120 110110 110110
+    TAG_03 ,  120120 110110 110110
+    TAG_04 ,  120120 110110 110110
     
 In both formats each row is read in as a single character vector. Sample IDs have the population and sample number separated by a "_". Between sample ID and the loci is conventional Genepop separator "   , " *(space,space space)*. Note if your population label is note separated from the sample number in the Sample IDs refer to the help section for . [ subset\_genepop\_rename ](#subsetrenm)
 
