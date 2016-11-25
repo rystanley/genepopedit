@@ -140,6 +140,6 @@ genepop_hzar<-function(genepop,distances,path){
   colnames(Output)[1:2]=c("Population","Distance")
 
 
-  write.csv(Output,file = path,quote = FALSE,row.names =FALSE )
+  write.table(Output,file = path,quote = FALSE,row.names =FALSE, sep="\t")
 
 }

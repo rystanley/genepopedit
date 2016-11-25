@@ -7,7 +7,7 @@
 #' or a single comma delimited row of loci names followed by the locus data. Populations are
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space,space space) and is read in as
 #' as a single row (character).
-#' @param reorder vector of the populatoin names in the order required. Note all populatoin names must be included and can be
+#' @param reorder vector of the population names in the order required. Note all population names must be included and can be
 #' determined using genepop_detective().
 #' @param path the filepath and filename of output.
 #' @rdname genepop_reorder
