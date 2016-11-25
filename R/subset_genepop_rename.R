@@ -173,6 +173,8 @@ subset_genepop_rename <- function(genepop,nameframe,renumber=FALSE,meta="Pop",pa
 
     NamePops[nameframe$ind] <- nameframe[,2] #replace values
 
+    NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
+
     #Now stitch the data together
     # paste together the Loci as one long integer separated for each loci by a space
     Loci <- do.call(paste,c(temp2[,], sep=" "))
