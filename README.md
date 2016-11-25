@@ -687,7 +687,7 @@ Populations can also be grouped by a common name. The result is similar to subse
 Alternatively the sampleIDs can be renamed directly. 
 ```r
 #create a renaming vector (column 1 = old column 2 = new)
-  IndRename_group <- data.frame(new = c("AAA_10","BBB_10","CCC_10","DDD_10"),old = c("AAA_99","BBB_99","CCC_99","DDD_99"))
+  IndRename_group <- data.frame(old = c("AAA_10","BBB_10","CCC_10","DDD_10"),new = c("AAA_99","BBB_99","CCC_99","DDD_99"))
 
 #rename sampleIDs
   subset_genepop_rename(genepop= GenePopData, nameframe = IndRename_group, meta="Ind",path = paste0(output_dir,"Genepop_ID_renamed.txt"))
