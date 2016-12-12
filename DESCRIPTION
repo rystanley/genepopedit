@@ -22,7 +22,9 @@ Imports:
     stringr,
     stringi,
     R.utils,
-    plyr
+    plyr,
+    tibble,
+    tidyverse
 Suggests:
     adegenet,
     ade4,
