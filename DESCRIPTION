@@ -23,7 +23,9 @@ Imports:
     stringr,
     stringi,
     R.utils,
-    plyr
+    plyr,
+    purrr,
+    readr
 Suggests:
     adegenet,
     ade4,
