@@ -63,7 +63,7 @@ GP_PED_SPID_Top<-"# spid-file generated: Thu May 19 13:29:37 ADT 2016\n\n # GENE
 
   # Save MAP file"
 
-map.loc<-paste0("PED_WRITER_MAP_FILE_QUESTION= ", where.pgdspider,"PGDtest")
+map.loc<-paste0("PED_WRITER_MAP_FILE_QUESTION= ", "PGDtest")
 GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes for missing data in PED):
   PED_WRITER_ZERO_CHAR_QUESTION=
   # Specify the locus/locus combination you want to write to the PED file:
@@ -124,7 +124,7 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   callplink<- paste0("cd ", where.plink)
 
   if (Sys.info()["sysname"] != "Windows") {
-    plink.input <- paste0(callplink, "; ", "plink --noweb --file PGDtest --make-bed --out BinaryPED")
+    plink.input <- paste0(callplink, "; ", "./plink --noweb --file PGDtest --make-bed --out BinaryPED")
     system(plink.input)
   }
 
