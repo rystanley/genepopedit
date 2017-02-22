@@ -136,8 +136,8 @@ subset_genepop_rename <- function(genepop,nameframe,renumber=FALSE,meta="Pop",pa
     Loci <- do.call(paste,c(temp2[,], sep=" "))
 
     #Grab the Population tags that each individual had following the format ID_,__
-    popvec1 <- unlist(strsplit(gsub(pattern="_",replacement="",temp[,1]),split = "[^0-9]+"))
-    popvec2 <- popvec1[which(popvec1 != "")]
+    popvec1 <- unlist(strsplit(as.character(temp[,1]),split = "_"))
+    popvec2 <- popvec1[!popvec1%in%unique(NameExtract)]
 
     if(renumber)
     {
