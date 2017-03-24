@@ -963,11 +963,8 @@ Flatten your geneotype data for other calculations. This function will convert a
 If you are working with a flattened dataframe in your workspace you can convert it back to Genepop format. **Note that the first column of this data.frame should correspond to the sampleID (e.g. "BON_01") and the remaining columns should be Loci. [_Function description_](#funcconvert)
 
 ```r
-## remove the "Population" "SampleNum" exported by genepop_flatten
-flat.df <- GenePop_df[,-c(2,3)]
-
 # create a Genepop format which can be used by other genepopedit functions
-genepop_unflatten(flat.df, path = paste0(output_dir,"GenePop_UNFLATTENED.txt"))
+genepop_unflatten(GenePop_df, path = paste0(output_dir,"GenePop_UNFLATTENED.txt"))
 ```
 
 #**Conversion using PGDspider**
