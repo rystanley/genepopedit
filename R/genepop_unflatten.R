@@ -12,11 +12,26 @@ genepop_unflatten <- function(df,path){
 
   #Make sure all loci are characters and now factors
   df <- as.data.frame(apply(df,2, as.character),stringsAsFactors = F)
+
+  #check to see if the dataframe was created using genepop_flatten and remove the extra columns
+  if("Population" %in% colnames(df)){df <- df[,-grep("Population",colnames(df))]}
+  if("SampleNum" %in% colnames(df)){df <- df[,-grep("SampleNum",colnames(df))]}
+
   NamePops <- df[,1] # Sample names of each
   NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
 
   #Loci
   temp2 <- df[,2:length(df)]
+
+  #Order the vector of population names and the loci by population. This is done in situations where the populations labels might be
+  #missaligned (e.g. Pop1 Pop1 .... Pop2 ... Pop3 ... Pop1Pop4 ....) #Note that this will change the order to alpha numeric. This should
+  #not have any influence on the analysis
+
+  reorder <- order(NameExtract) #vector which defines sorting
+
+  NameExtract <- NameExtract[reorder]
+  temp2 <- temp2[reorder,]
+  NamePops <- NamePops[reorder]
 
   ## Now add the population tags using npops (number of populations and Pops for the inter differences)
 
