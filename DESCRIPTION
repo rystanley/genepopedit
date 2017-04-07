@@ -23,7 +23,8 @@ Imports:
     stringi,
     R.utils,
     plyr,
-    tibble
+    tibble,
+    tidyr
 Suggests:
     adegenet,
     ade4,
