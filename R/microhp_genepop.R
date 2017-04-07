@@ -3,7 +3,7 @@
 #' @description Function makes a genepop file.
 #' @param microhp This is a file path to the micro-haplo-plot file. See update for link to this file format.
 #' @param path the filepath and filename of output.
-#' @importFrom reshape2 melt
+#' @importFrom data.table melt
 #' @importFrom stringr str_pad
 #' @importFrom tidyr spread
 #' @export
@@ -17,7 +17,7 @@ micro_genepop <- function(microhp, path){
   hap_dat <- hap_dat[, c(2, 3, 4, 5, 6)]
 
   ## find unique loci
-  to_find_alleles <- reshape2::melt(data = hap_dat, id.vars = "locus", measure.vars = c("haplotype.1", "haplotype.2"))
+  to_find_alleles <- data.table::melt(data = hap_dat, id.vars = "locus", measure.vars = c("haplotype.1", "haplotype.2"))
   to_get_loci <- unique(to_find_alleles[c("locus")])
 
   ### loop to look for the unique alleles of each loci, rename them as numbers
