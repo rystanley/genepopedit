@@ -23,19 +23,22 @@ micro_genepop <- function(microhp, path){
   ### loop to look for the unique alleles of each loci, rename them as numbers
 
   for(i in 1:nrow(to_get_loci)){
-    hold.levels <- data.frame(value = unique(to_find_alleles[to_find_alleles$locus == to_get_loci[i,], ]$value), allele = as.numeric(as.factor(unique(to_find_alleles[to_find_alleles$locus == to_get_loci[i,], ]$value))))
+    hold.levels <- data.frame(value = unique(to_find_alleles[to_find_alleles$locus == to_get_loci[i,], ]$value), allele =     as.numeric(as.factor(unique(to_find_alleles[to_find_alleles$locus == to_get_loci[i,], ]$value))))
 
+    hold.levels$value = as.character(hold.levels$value)
 
-      for(j in 1:nrow(hold.levels)){
-        ## if statement because if there is no replacement, then find replace screws up
-        if(length(hap_dat[hap_dat2$locus == to_get_loci$locus[i] & hap_dat$haplotype.1 == hold.levels$value[j], ]$haplotype.1) > 0){
-            hap_dat2[hap_dat2$locus == to_get_loci$locus[i] & hap_dat2$haplotype.1 == hold.levels$value[j], ]$haplotype.1 = hold.levels$allele[j]
-        }
-        if(length(hap_dat[hap_dat2$locus == to_get_loci$locus[i] & hap_dat$haplotype.2 == hold.levels$value[j], ]$haplotype.2) > 0){
-           hap_dat2[hap_dat2$locus == to_get_loci$locus[i] & hap_dat2$haplotype.2 == hold.levels$value[j], ]$haplotype.2 = hold.levels$allele[j]
-            }
-          }
-        }
+    # j = 1
+    for(j in 1:nrow(hold.levels)){
+
+      if(length(hap_dat[hap_dat$locus == to_get_loci$locus[i] & hap_dat$haplotype.1 == hold.levels$value[j], ]$haplotype.1) > 0){
+        hap_dat[hap_dat$locus == to_get_loci$locus[i] & hap_dat$haplotype.1 == hold.levels$value[j], ]$haplotype.1 = hold.levels$allele[j]
+      }
+      if(length(hap_dat[hap_dat$locus == to_get_loci$locus[i] & hap_dat$haplotype.2 == hold.levels$value[j], ]$haplotype.2) > 0){
+        hap_dat[hap_dat$locus == to_get_loci$locus[i] & hap_dat$haplotype.2 == hold.levels$value[j], ]$haplotype.2 = hold.levels$allele[j]
+      }
+    }
+  }
+
 
   ## make each alelle call three digits by adding zeroes
   hap_dat$haplotype.1 <- stringr::str_pad(string = hap_dat$haplotype.1, width = 3, pad = "0", side = "left")
@@ -45,7 +48,7 @@ micro_genepop <- function(microhp, path){
   hap_dat$GENOTYPE <- paste0(hap_dat$haplotype.1, hap_dat$haplotype.2)
 
   ## remove unneeded columns, make into a flat dataframe for genepopunflatten
-  hap_dat_form <- hap_dat2[, c(1, 2, 6)]
+  hap_dat_form <- hap_dat[, c(1, 2, 6)]
 
   ## go from long to wide format
   hap_dat_FLAT <- tidyr::spread(data = hap_dat_form, key = locus, value = GENOTYPE)
