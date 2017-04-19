@@ -53,6 +53,9 @@ micro_genepop <- function(microhp, path){
   ## go from long to wide format
   hap_dat_FLAT <- tidyr::spread(data = hap_dat_form, key = locus, value = GENOTYPE)
 
+  #Replace NA values with 000000
+  hap_dat_FLAT[is.na(hap_dat_FLAT)]=000000
+
   ### genepopunlfatten out
   genepopedit::genepop_unflatten(df = hap_dat_FLAT, path = path)
 
