@@ -570,8 +570,8 @@ Return *Allele values* using the file path instead of the workspace object.
 ```r
 Alleles <- genepop_detective("genepopedit_examplefile.txt",variable="Allele")
 ```
-<a name="genepopafreq"/>
-## genepop\_allelefreq
+
+## genepop\_allelefreq <a name="genepopafreq"/>
 This function will calculate allele frequencies based on the major allele among populations for each population group. [_Function description_](#funcdiag)
 
 ```r
@@ -584,11 +584,11 @@ This function will calculate allele frequencies based on the major allele among 
   AlleleFreq_specified <- genepop_allelefreq(GenePopData, popgroup=popgrouping)
 ```
 
-<a name="genepoptoploc"/>
-## genepop\_toploci
+
+## genepop\_toploci <a name="genepoptoploc"/>
 This function will calculate linkage disequilibrium and global Weir and Cockerham's Fst for loci among populations. The function seeks a loci panel which maximizes global Fst for unlinked loci. The returned object is a list containing Linked loci ($Linked), global FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by PLINK. This threshold (0-1) can be adjusted, though values <0.2 may be limited by computational resources. Note that the available RAM for conversions using PGDspider is limited to 1 GB on Windows based operating systems. [_Function description_](#funcdiag)
 
-**Warning messages & daignostics will be returned to the console by PGDspider & PLINK. These warnings are expected.** 
+**Warning messages & diagnostics will be returned to the console by PGDspider & PLINK. These warnings are expected.** 
 
 ```r
 
