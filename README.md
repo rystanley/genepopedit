@@ -136,7 +136,7 @@ library(genepopedit) # load the library
 
 Support funding was inpart provided by the Canadian Healthy Oceans Nework (**CHONe**) <https://chone2.ca>
 
-![chone-logo](vignettes/CHONeLogo.jpg)
+![](vignettes/CHONeLogo.jpg)
 
 This package has been developed to be used by anyone who is looking for a more efficient and **repeatable** method to manipulate large multi-locus datasets. The package is open, and I encourage you to tinker and look for improvements. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package.
 
@@ -537,11 +537,11 @@ genepop_ID(genepop=filepath, path=paste0(output_dir,"Genepop_SampleID_fixed.txt"
 
 ***
 
-# **Diagnostics**
+# **Diagnostics** <a name="genepopdetect"/>
 
-<a name="genepopdetect"/>
 ## genepop\_detective
 This function queries meta-data from your genepop data without having to open it in a text editor. Function returns a vector of population names, population counts, sample IDs, or Loci names. [_Function description_](#funcdiag)
+
 
 Return *population names*
 ```r
