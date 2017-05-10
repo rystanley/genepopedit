@@ -134,7 +134,7 @@ library(genepopedit) # load the library
   * Nick Jeffery <https://github.com/NickJeff13>
   * Brendan Wringe <https://github.com/bwringe>
 
-Support funding was inpart provided by the Canadian Healthy Oceans Nework <https://chone2.ca>
+Support funding was inpart provided by the Canadian Healthy Oceans Nework (**CHONe**) <https://chone2.ca>
 
 ![chone-logo](vignettes/CHONe+logo-Horzontial-RGB-300DPI.jpg)
 
