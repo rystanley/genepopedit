@@ -613,8 +613,8 @@ This function will calculate linkage disequilibrium and global Weir and Cockerha
 
 # **Manipulation**
 
-<a name="subsetgenp"/>
-##subset\_genepop
+
+##subset\_genepop <a name="subsetgenp"/>
 Create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, & 94*. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100). [_Function description_](#funcmanip)
 
 ```r
@@ -653,8 +653,8 @@ You can also remove populations within this function. Here we again select loci 
   
   subset_genepop(genepop= GenePopData, keep = TRUE, subs = subloci, spop = PopKeep, path = paste0(output_dir,"Genepop_Loci_selection_subpop.txt"))
 ```
-<a name="subsetrenm"/>
-## subset\_genepop\_rename
+
+## subset\_genepop\_rename <a name="subsetrenm"/>
 Now change the names of some of the populations. In this example we will rename populations DDD & HHH to YYY & ZZZ. [_Function description_](#funcmanip)
 
 ```r
@@ -709,8 +709,8 @@ PopNames_fixed <- paste0(PopNames,"_") #add the underscore seperator
   subset_genepop_rename(genepop= GenePopData, path = paste0(output_dir,"Genepop_renamed_renumbered.txt"),nameframe = PopRename_fixed, renumber = FALSE)
 ```
 
-<a name="subsetagg"/>
-## subset\_genepop\_aggregate
+
+## subset\_genepop\_aggregate <a name="subsetagg"/>
 Now lets change group some populations together. In this example we will combine populations DDD/EEE & FFF/HHH and remove populations JJJ/GGG (*not listed in column 1 of PopRename*). No loci will be removed from this dataframe (*subs = NULL*). This is useful when you don't want a clustering program (e.g. STRUCTURE or Bayescan) to assume differences among population groups. [_Function description_](#funcmanip)
 
 ```r
@@ -747,8 +747,8 @@ Now that we have two grouped populations, we can use the population rename funct
                  
                  
 ```
-<a name="subsetidv"/>
-## subset\_genepop\_individual
+
+## subset\_genepop\_individual <a name="subsetidv"/>
 Remove some individual samples from the dataframe. Here we consider the 'individual' ID to be an alpha-numeric code which at the start of each row of data. The keep parameter defines whether the specified list is removed or retained (default: keep = FALSE).
 _This function is best run at the beginning of the analysis prior to removal of specific loci or populations._ [_Function description_](#funcmanip)
 
@@ -762,8 +762,8 @@ _This function is best run at the beginning of the analysis prior to removal of 
   subset_genepop_individual(genepop= GenePopData, indiv = subid, keep = FALSE, path = paste0(output_dir,"Genepop_IDsubset.txt"))
 ```
 
-<a name="genepopreorder"/>
-## genepop\_reorder
+
+## genepop\_reorder <a name="genepopreorder"/>
 Reorder the genepop file sequentially according to a specified ordering (see below for examples). [_Function description_](#funcmanip)
 
 ```r
@@ -778,8 +778,8 @@ Reorder the genepop file sequentially according to a specified ordering (see bel
 
 # **Sampling**
 
-<a name="genepopsamp"/>
-## genepop\_sample
+
+## genepop\_sample <a name="genepopsamp"/>
 Function which will allow you to create subsets of the genepop. This might be useful for creating training and leave-out datasets for assignment. [_Function description_](#funcsamp)
 
 ```r
@@ -843,8 +843,8 @@ For example if you wanted to create a training and assignment dataset  in genepo
 
 # **Conversion**
 
-<a name="genepopstruc"/>
-## genepop\_structure
+
+## genepop\_structure <a name="genepopstruc"/>
 If you are interested in investigating population structure you can convert your modified Genepop object or path to saved file directly into a STRUCTURE formatted text (.str) file <http://pritchardlab.stanford.edu/structure.html>. [_Function description_](#funcconvert)
 
 ```r
@@ -858,8 +858,8 @@ If you are interested in investigating population structure you can convert your
   genepop_structure(genepop="Genepop_IDsubset.txt",popgroup = pGroups, path = paste0(output_dir,"Sturcture_IDsubset_groups.txt"))
 
 ```
-<a name="genepopfst"/>
-## genepop\_fstat
+
+## genepop\_fstat <a name="genepopfst"/>
 
 If you are interested in doing calculating gene diversities and-or F-statistics with the cleaned loci datasets, you can convert from Genepop to FSTAT format 
 This data can be used by the R package 'hierfstat' <https://cran.r-project.org/web/packages/hierfstat/index.html> or the program 'FSTAT' <http://www2.unil.ch/popgen/softwares/fstat.htm> [_Function description_](#funcconvert)
@@ -871,16 +871,16 @@ This data can be used by the R package 'hierfstat' <https://cran.r-project.org/w
 #convert Genepop format to FSTAT but keep the data in the workspace
   genepop_fstat(genepop="Genepop_IDsubset.txt",addworkspace = TRUE)
 ```
-<a name="genepopnh"/>
-## genepop\_newhybrids
+
+## genepop\_newhybrids <a name="genepopnh"/>
 If you are interested in testing for hybridization you can convert from Genepop to the format necessary for the program New Hybrids <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>. [_Function description_](#funcconvert)
 
 ```r
 #convert Genepop format to New Hybrids format (.txt)
   genepop_newhybrids(genepop="Genepop_IDsubset.txt",path = paste0(output_dir,"NewHybrids_IDsubset.txt"))
 ```
-<a name="genepopagn"/>
-## genepop\_assigner
+
+## genepop\_assigner <a name="genepopagn"/>
 If you are interested conducting assignment analysis, you can convert to the format required for the R package "assigner" <https://github.com/thierrygosselin/assigner>. [_Function description_](#funcconvert)
 
 ```r
@@ -893,8 +893,8 @@ If you are interested conducting assignment analysis, you can convert to the for
    genepop_assigner(genepop="Genepop_IDsubset.txt",popgroup = pGroups, path = paste0(output_dir,"assigner_IDsubset_NewGroups.txt"))
   
 ```
-<a name="genepopcolony"/>
-## genepop\_colony
+
+## genepop\_colony <a name="genepopcolony"/>
 If you are interested in investigating sibship or parentage, you can convert to the format required for the software Colony. Returned are functions for translating the Colony output and those required by the maximum likelihood analysis. 'Individual' and 'Loci' conversion files can be used to match the loci and individual names formatted for input to Colony to those provided as input by the user.'MarkerTypeErrorRT' file defines the allele dropout rates as calculated using the 'missing' function in PLINK. Rates of other error types are assumed to be equal to the estimated allele dropout rates. 'GENOTYPES' are the geneotypes in two columns per loci format. Output from Colony is based on the input for of the 
  'GENOTYPES' file. Original loci and individual names can be assigned using the conversion output files. All files are returned to path and are named according tot he input filename. <https://www.zsl.org/science/software/colony>. [_Function description_](#funcconvert)
 
@@ -905,8 +905,8 @@ If you are interested in investigating sibship or parentage, you can convert to 
   
 ```
 
-<a name="genepopbgc"/>
-## genepop\_bgc
+
+## genepop\_bgc <a name="genepopbgc"/>
 **genepopedit** is one of the few tools available to convert data to the format required for input into to the "Bayesian estimation of Genomic Clines" (BGC) format. BGC can evalute genomic clinal patterns and introgression among loci. To convert to BGC format you must specify which populations you consider to be ancestral or **parental** (P1, P2) and which you assume could be hybridized (**admixed**). <https://sites.google.com/site/bgcsoftware/>. [_Function description_](#funcconvert)
 
 ```r
@@ -917,8 +917,8 @@ If you are interested in investigating sibship or parentage, you can convert to 
   genepop_bgc(genepop="Genepop_IDsubset.txt",popdef = BGC_groups, fname="BGC_IDsubset",path = output_dir)
 
 ```
-<a name="genepoptreemix"/>
-## genepop\_treemix
+
+## genepop\_treemix <a name="genepoptreemix"/>
 **genepopedit** is one of the few tools available to convert data to the format required for input into the Treemix format. It creates a gzipped file that clusters your individuals based on the population ID of the individual's code. Population IDs are extracted using the "_" to differentiate population from sample ID (e.g. BON_01 is population BON sample 01). If samples are not separated refer to [_genepop_ID_](#genepopidfix). Grouping levels for populations can also be changed using [_subset_genepop_rename_](#subsetrenm). Note that this is just the first of two steps in the process; the gzipped output from this function needs to be run through the Python script (Python 2.7+ must be installed first) that accompanies Treemix. This output from "plink2treemix.py" is then ready to run in Treemix. This Python script can be downloaded from <https://bitbucket.org/nygcresearch/treemix/downloads>.  Treemix is used to infer migration weight and directionality among your populations, as well as detecting population splits and mixtures <https://bitbucket.org/nygcresearch/treemix/wiki/Home>. [_Function description_](#funcconvert)
 
 ```r
@@ -927,8 +927,8 @@ If you are interested in investigating sibship or parentage, you can convert to 
   genepop_treemix(genepop="Genepop_IDsubset.txt",where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",keep_inter = TRUE, path = paste0(output_dir,"Treemix_IDsubset.txt"))
 
 ```
-<a name="genepopgsi"/>
-## genepop\_GSIsim
+
+## genepop\_GSIsim <a name="genepopgsi"/>
 If you are interested in assessing the accuracy of a genetic stock identification analysis, given a genetic baseline, you can convert directly from GENEPOP to a GSI_sim formatted text file. **genepopedit** is among the few tools currenlty available to format data for GSI_sim.  <https://swfsc.noaa.gov/textblock.aspx?Division = FED&ParentMenuId = 54&id = 12964> [_Function description_](#funcconvert)
 
 ```r
@@ -938,8 +938,8 @@ If you are interested in assessing the accuracy of a genetic stock identificatio
 
 ```
 
-<a name="genepophzar"/>
-## genepop\_hzar
+
+## genepop\_hzar <a name="genepophzar"/>
 
 If you are interested in exploring clines in allele frequency over distance, you can convert from Genepop to HZAR format.This data can be used by the R package 'hzar' <https://cran.r-project.org/web/packages/hzar/index.html> [_Function description_](#funcconvert)
 
@@ -949,8 +949,8 @@ If you are interested in exploring clines in allele frequency over distance, you
 
 ```
 
-<a name="genepopflat"/>
-## genepop\_flatten
+
+## genepop\_flatten <a name="genepopflat"/>
 Flatten your geneotype data for other calculations. This function will convert and return the genepop format into a dataframe. Because this function returns the dataframe, it needs to be assigned a variable ID. Note that this function does not have any subsetting capabilities. If you would like to remove loci and-or populations, this must be before hand using *subset_genepop* or its sister functions (see below for examples). [_Function description_](#funcconvert)
 
 ```r
@@ -960,8 +960,8 @@ Flatten your geneotype data for other calculations. This function will convert a
 #inspect the output for the first 10 columns 
   head(GenePop_df[,1:10])
 ```
-<a name="genepopunflat"/>
-## genepop\_unflatten
+
+## genepop\_unflatten <a name="genepopunflat"/>
 If you are working with a flattened dataframe in your workspace you can convert it back to Genepop format. **Note that the first column of this data.frame should correspond to the sampleID (e.g. "BON_01") and the remaining columns should be Loci. [_Function description_](#funcconvert)
 
 ```r
@@ -971,8 +971,8 @@ genepop_unflatten(GenePop_df, path = paste0(output_dir,"GenePop_UNFLATTENED.txt"
 
 # **Conversion using PGDspider**
 
-<a name="pgdspiderConvert"/>
-## PGDspideR
+
+## PGDspideR <a name="pgdspiderConvert"/>
 There are a broad range of data formats which can be converted to and from using PGDspider. If you have multiple files which you are going to be converting using the same conversion parameters, _PGDspideR.R_ can be useful, providing a code based interface to exploit the conversion functions of PGDspider. [_Function description_](#funcpgd)
 ```r
 #convert between GENEPOP and FSTAT format using PGDspider
@@ -987,8 +987,8 @@ There are a broad range of data formats which can be converted to and from using
 
 #**Simulate genotypes using pooled DNA allele frequencies**
 
-<a name="pooldna"/>
-## alleleotype_genepop()
+
+## alleleotype_genepop <a name="pooldna"/>
 Individual geneotypes can be simulated using the _alleleotype_genepop()_ function and formatted to GENEPOP for use in conventional genomic analyses (e.g. assigner, DAPC, STRUCTURE). This function will simulate individuals for each population provided by the input file. The output can then be diagnosed, sampled, and formatted using other **genepopedit functions**. [_Function description_](#pooleddna)
 
 ```r
