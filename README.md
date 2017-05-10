@@ -47,7 +47,7 @@ __Fig 1.__ **genepopedit** *workflow including data preparation, diagnostics, ma
 
 ***
 **Requirement:**
-genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format <http://genepop.curtin.edu.au/>. Specifically, we use the _three number_ format (e.g. 110110) where the six digits correspond to the alleles of a given locus for an individual. Locus names can be listed in the first row separated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
+genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format [link](http://genepop.curtin.edu.au/). Specifically, we use the _three number_ format (e.g. 110110) where the six digits correspond to the alleles of a given locus for an individual. Locus names can be listed in the first row separated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
 
     nrows = nLOCI + nINDIVIDUALS + nPOPULATIONS - 1
     
@@ -94,7 +94,7 @@ In both formats each row is read in as a single character vector. Sample IDs hav
 
 <span style="color:red"><STRONG> Note </span></STRONG> that input and output "**path**" variables all require the **FULL** file path. Relative paths will not work with _genepopedit_ functions.  
 
-Most molecular based file formats can be converted to and from *Genepop* using conversion programs such as the R package _adegenet_ <https://github.com/thibautjombart/adegenet/wiki> or the program *PGDspider* <http://www.cmpg.unibe.ch/software/PGDSpider/>. 
+Most molecular based file formats can be converted to and from *Genepop* using conversion programs such as the R package [adegenet](https://github.com/thibautjombart/adegenet/wiki) or the program [PGDspider](http://www.cmpg.unibe.ch/software/PGDSpider/). 
 
 ***
 
@@ -118,8 +118,8 @@ library(genepopedit) # load the library
 
 **Step 3** Install *PGDspider* and *plink*. Note these programs are required for the use of **genepop_toploc()** and **PGDspideR()** only!
 
-  * PGDspider: <http://www.cmpg.unibe.ch/software/PGDSpider/>
-  * plink: <http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml>
+  * PGDspider [link](http://www.cmpg.unibe.ch/software/PGDSpider/)
+  * plink [link](http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml)
   
   
 ** Note that appveyor build 'failure' is linked to an error in the build check and not *genepopedit* itself. This package has been tested on Windows, Linux (Unbuntu & Mint), and IOS operating systems. **
@@ -134,7 +134,7 @@ library(genepopedit) # load the library
   * Nick Jeffery <https://github.com/NickJeff13>
   * Brendan Wringe <https://github.com/bwringe>
 
-Support funding was inpart provided by the Canadian Healthy Oceans Nework (**CHONe**) <https://chone2.ca>
+Support funding was inpart provided by the Canadian Healthy Oceans Nework [CHONe](https://chone2.ca)
 
 ![](vignettes/CHONeLogo.jpg)
 
@@ -331,8 +331,8 @@ This function will return the the panel with the highest Fst for unlinked loci o
 # **Transformation** <a name="funcconvert"/>
 
 #### genepop_structure.R 
-* Convert Genepop format to Structure format.
-  <http://pritchardlab.stanford.edu/structure.html>
+* Convert Genepop format to [Structure](http://web.stanford.edu/group/pritchardlab/structure.html) format.
+  
   
 [_example use_](#genepopstruc)
   
@@ -343,8 +343,8 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | the filepath & filename of output.
 
 #### genepop_fstat.R 
-* Convert Genepop format to fstat format.
-<https://cran.r-project.org/web/packages/hierfstat/index.html>
+* Convert Genepop format to [fstat](https://cran.r-project.org/web/packages/hierfstat/index.html) format.
+
 
 [_example use_](#genepopfst)
   
@@ -355,8 +355,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **addworkspace** | logical to specify whether to save fstat conversion to path (default) or to workspace as Output_fstat object.
 
 #### genepop_newhybrids.R 
-* Convert Genepop format to NewHybrids format.
-  <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>
+* Convert Genepop format to [NewHybrids](http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs) format.
   
 [_example use_](#genepopnh)
   
@@ -366,8 +365,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | the filepath & filename of output.
 
 #### genepop_assigner.R 
-* Convert Genepop format to assigner format.
-<https://github.com/thierrygosselin/assigner>
+* Convert Genepop format to [assigner](https://github.com/thierrygosselin/assigner) format.
 
 [_example use_](#genepopagn)
   
@@ -378,8 +376,8 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | the filepath & filename of output.
 
 #### genepop_colony.R 
-* Convert Genepop from GENEPOP file to the input files (2) required by Colony.
-<https://www.zsl.org/science/software/colony>
+* Convert Genepop from GENEPOP file to the input files (2) required by [Colony](https://www.zsl.org/science/software/colony)
+
 
 [_example use_](#genepopcolony)
   
@@ -393,8 +391,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | file path to directory where the Colony files (4) will be saved.
 
 #### genepop_bgc.R 
-* Convert Genepop format to Bayesian Genomic Clines (BGC) format (3 files).
-<https://sites.google.com/site/bgcsoftware/>
+* Convert Genepop format to [Bayesian Genomic Clines](https://sites.google.com/site/bgcsoftware/) (BGC) format (3 files).
 
 [_example use_](#genepopbgc)
   
@@ -406,8 +403,8 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | the path to directory where the BGC files will be saved.
 
 #### genepop_treemix.R 
-* Convert Genepop to format required for first step in TREEMIX conversion.
-<https://bitbucket.org/nygcresearch/treemix/wiki/Home>
+* Convert Genepop to format required for first step in [TREEMIX](https://bitbucket.org/nygcresearch/treemix/wiki/Home) conversion.
+
 
 [_example use_](#genepoptreemix)
   
@@ -421,8 +418,8 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | the path to directory where the TREEMIX files will be saved.
 
 #### genepop_GSIsim.R 
-* Convert Genepop format to the format required for Genetic Stock Identification analysis (GSI)
-<https://swfsc.noaa.gov/textblock.aspx?Division=FED&ParentMenuId=54&id=12964>
+* Convert Genepop format to the format required for [Genetic Stock Identification analysis](https://swfsc.noaa.gov/textblock.aspx?Division=FED&ParentMenuId=54&id=12964) (GSI)
+
 
 [_example use_](#genepopgsi)
   
@@ -432,8 +429,8 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | the filepath & filename of output.
 
 #### genepop_hzar.R 
-* Convert Genepop format to HZAR format.
-<https://cran.r-project.org/web/packages/hzar/index.html>
+* Convert Genepop format to [HZAR](https://cran.r-project.org/web/packages/hzar/index.html) format.
+
 
 [_example use_](#genepophzar)
   
@@ -470,7 +467,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 ### Conversion using PGDspider <a name="funcpgd"/>
 
-We have developed an _R_ interface for PGDspider <http://www.cmpg.unibe.ch/software/PGDSpider/>. This function will enable R to interact with PGDspider to convert among file formats not included in **genepopedit** conversion functions. Currently this is best accomplished using the .spid files generated by PGDspider to define the conversion process. Once a .spid file is created, **genepopedit** can continue to convert files provided the conversion parameters in the .spid file match those required for the conversion. This program will require installation of PGDspider. [_See installation instructions here_](#pgdinstall)
+We have developed an _R_ interface for [PGDspider](http://www.cmpg.unibe.ch/software/PGDSpider/). This function will enable R to interact with PGDspider to convert among file formats not included in **genepopedit** conversion functions. Currently this is best accomplished using the .spid files generated by PGDspider to define the conversion process. Once a .spid file is created, **genepopedit** can continue to convert files provided the conversion parameters in the .spid file match those required for the conversion. This program will require installation of PGDspider. [_See installation instructions here_](#pgdinstall)
 
 #### PGDspideR.R
 * call conversion tools of pgdSpider through R
@@ -613,8 +610,7 @@ This function will calculate linkage disequilibrium and global Weir and Cockerha
 
 # **Manipulation**
 
-
-##subset\_genepop <a name="subsetgenp"/>
+## subset\_genepop <a name="subsetgenp"/>
 Create a new Genepop file which only contains Loci *3, 15, 23, 49, 62, 81, 88, & 94*. This useful if, for example, you identify loci which are potentially under selection and want a parsed dataset. Here our loci are named in the Loci# (1:100). [_Function description_](#funcmanip)
 
 ```r
@@ -845,7 +841,7 @@ For example if you wanted to create a training and assignment dataset  in genepo
 
 
 ## genepop\_structure <a name="genepopstruc"/>
-If you are interested in investigating population structure you can convert your modified Genepop object or path to saved file directly into a STRUCTURE formatted text (.str) file <http://pritchardlab.stanford.edu/structure.html>. [_Function description_](#funcconvert)
+If you are interested in investigating population structure you can convert your modified Genepop object or path to saved file directly into a [STRUCTURE](http://web.stanford.edu/group/pritchardlab/structure.html) formatted text (.str) file <>. [_Function description_](#funcconvert)
 
 ```r
 #convert Genepop format to STRUCTURE to default groupings
@@ -862,7 +858,7 @@ If you are interested in investigating population structure you can convert your
 ## genepop\_fstat <a name="genepopfst"/>
 
 If you are interested in doing calculating gene diversities and-or F-statistics with the cleaned loci datasets, you can convert from Genepop to FSTAT format 
-This data can be used by the R package 'hierfstat' <https://cran.r-project.org/web/packages/hierfstat/index.html> or the program 'FSTAT' <http://www2.unil.ch/popgen/softwares/fstat.htm> [_Function description_](#funcconvert)
+This data can be used by the R package [hierfstat](https://cran.r-project.org/web/packages/hierfstat/index.html) or the program [FSTAT](http://www2.unil.ch/popgen/softwares/fstat.htm) [_Function description_](#funcconvert)
 
 ```r
 #convert Genepop format to FSTAT (.dat)
@@ -873,7 +869,7 @@ This data can be used by the R package 'hierfstat' <https://cran.r-project.org/w
 ```
 
 ## genepop\_newhybrids <a name="genepopnh"/>
-If you are interested in testing for hybridization you can convert from Genepop to the format necessary for the program New Hybrids <http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs>. [_Function description_](#funcconvert)
+If you are interested in testing for hybridization you can convert from Genepop to the format necessary for the program [New Hybrids](http://ib.berkeley.edu/labs/slatkin/eriq/software/software.htm#NewHybs) [_Function description_](#funcconvert)
 
 ```r
 #convert Genepop format to New Hybrids format (.txt)
@@ -881,7 +877,7 @@ If you are interested in testing for hybridization you can convert from Genepop 
 ```
 
 ## genepop\_assigner <a name="genepopagn"/>
-If you are interested conducting assignment analysis, you can convert to the format required for the R package "assigner" <https://github.com/thierrygosselin/assigner>. [_Function description_](#funcconvert)
+If you are interested conducting assignment analysis, you can convert to the format required for the R package [assigner](https://github.com/thierrygosselin/assigner) [_Function description_](#funcconvert)
 
 ```r
 #convert Genepop format to assigner format (.txt) using the populations each as their own assessment level
@@ -895,8 +891,8 @@ If you are interested conducting assignment analysis, you can convert to the for
 ```
 
 ## genepop\_colony <a name="genepopcolony"/>
-If you are interested in investigating sibship or parentage, you can convert to the format required for the software Colony. Returned are functions for translating the Colony output and those required by the maximum likelihood analysis. 'Individual' and 'Loci' conversion files can be used to match the loci and individual names formatted for input to Colony to those provided as input by the user.'MarkerTypeErrorRT' file defines the allele dropout rates as calculated using the 'missing' function in PLINK. Rates of other error types are assumed to be equal to the estimated allele dropout rates. 'GENOTYPES' are the geneotypes in two columns per loci format. Output from Colony is based on the input for of the 
- 'GENOTYPES' file. Original loci and individual names can be assigned using the conversion output files. All files are returned to path and are named according tot he input filename. <https://www.zsl.org/science/software/colony>. [_Function description_](#funcconvert)
+If you are interested in investigating sibship or parentage, you can convert to the format required for the software [Colony](https://www.zsl.org/science/software/colony). Returned are functions for translating the Colony output and those required by the maximum likelihood analysis. 'Individual' and 'Loci' conversion files can be used to match the loci and individual names formatted for input to Colony to those provided as input by the user.'MarkerTypeErrorRT' file defines the allele dropout rates as calculated using the 'missing' function in PLINK. Rates of other error types are assumed to be equal to the estimated allele dropout rates. 'GENOTYPES' are the geneotypes in two columns per loci format. Output from Colony is based on the input for of the 
+ 'GENOTYPES' file. Original loci and individual names can be assigned using the conversion output files. All files are returned to path and are named according tot he input filename. [_Function description_](#funcconvert)
 
 
 ```r
@@ -907,7 +903,7 @@ If you are interested in investigating sibship or parentage, you can convert to 
 
 
 ## genepop\_bgc <a name="genepopbgc"/>
-**genepopedit** is one of the few tools available to convert data to the format required for input into to the "Bayesian estimation of Genomic Clines" (BGC) format. BGC can evalute genomic clinal patterns and introgression among loci. To convert to BGC format you must specify which populations you consider to be ancestral or **parental** (P1, P2) and which you assume could be hybridized (**admixed**). <https://sites.google.com/site/bgcsoftware/>. [_Function description_](#funcconvert)
+**genepopedit** is one of the few tools available to convert data to the format required for input into to the [Bayesian estimation of Genomic Clines](https://sites.google.com/site/bgcsoftware/) (BGC) format. BGC can evalute genomic clinal patterns and introgression among loci. To convert to BGC format you must specify which populations you consider to be ancestral or **parental** (P1, P2) and which you assume could be hybridized (**admixed**). [_Function description_](#funcconvert)
 
 ```r
 #specify which populations are going to be included in the analysis and to which class they belong. Note Pops identified in P1 and-or P2 can also be specified as "Admixed" to test BGC output. 
@@ -919,7 +915,7 @@ If you are interested in investigating sibship or parentage, you can convert to 
 ```
 
 ## genepop\_treemix <a name="genepoptreemix"/>
-**genepopedit** is one of the few tools available to convert data to the format required for input into the Treemix format. It creates a gzipped file that clusters your individuals based on the population ID of the individual's code. Population IDs are extracted using the "_" to differentiate population from sample ID (e.g. BON_01 is population BON sample 01). If samples are not separated refer to [_genepop_ID_](#genepopidfix). Grouping levels for populations can also be changed using [_subset_genepop_rename_](#subsetrenm). Note that this is just the first of two steps in the process; the gzipped output from this function needs to be run through the Python script (Python 2.7+ must be installed first) that accompanies Treemix. This output from "plink2treemix.py" is then ready to run in Treemix. This Python script can be downloaded from <https://bitbucket.org/nygcresearch/treemix/downloads>.  Treemix is used to infer migration weight and directionality among your populations, as well as detecting population splits and mixtures <https://bitbucket.org/nygcresearch/treemix/wiki/Home>. [_Function description_](#funcconvert)
+**genepopedit** is one of the few tools available to convert data to the format required for input into the Treemix format. It creates a gzipped file that clusters your individuals based on the population ID of the individual's code. Population IDs are extracted using the "_" to differentiate population from sample ID (e.g. BON_01 is population BON sample 01). If samples are not separated refer to [_genepop_ID_](#genepopidfix). Grouping levels for populations can also be changed using [_subset_genepop_rename_](#subsetrenm). Note that this is just the first of two steps in the process; the gzipped output from this function needs to be run through the Python script (Python 2.7+ must be installed first) that accompanies Treemix. This output from "plink2treemix.py" is then ready to run in Treemix. This Python script can be downloaded from [link](https://bitbucket.org/nygcresearch/treemix/downloads).  [Treemix](https://bitbucket.org/nygcresearch/treemix/wiki/Home) is used to infer migration weight and directionality among your populations, as well as detecting population splits and mixtures. [_Function description_](#funcconvert)
 
 ```r
 
@@ -929,7 +925,7 @@ If you are interested in investigating sibship or parentage, you can convert to 
 ```
 
 ## genepop\_GSIsim <a name="genepopgsi"/>
-If you are interested in assessing the accuracy of a genetic stock identification analysis, given a genetic baseline, you can convert directly from GENEPOP to a GSI_sim formatted text file. **genepopedit** is among the few tools currenlty available to format data for GSI_sim.  <https://swfsc.noaa.gov/textblock.aspx?Division = FED&ParentMenuId = 54&id = 12964> [_Function description_](#funcconvert)
+If you are interested in assessing the accuracy of a genetic stock identification analysis, given a genetic baseline, you can convert directly from GENEPOP to a GSI_sim formatted text file. **genepopedit** is among the few tools currenlty available to format data for GSI_sim. [_Function description_](#funcconvert)
 
 ```r
 
@@ -941,7 +937,7 @@ If you are interested in assessing the accuracy of a genetic stock identificatio
 
 ## genepop\_hzar <a name="genepophzar"/>
 
-If you are interested in exploring clines in allele frequency over distance, you can convert from Genepop to HZAR format.This data can be used by the R package 'hzar' <https://cran.r-project.org/web/packages/hzar/index.html> [_Function description_](#funcconvert)
+If you are interested in exploring clines in allele frequency over distance, you can convert from Genepop to HZAR format.This data can be used by the R package [hzar](https://cran.r-project.org/web/packages/hzar/index.html) [_Function description_](#funcconvert)
 
 ```r
 #convert Genepop format to HZAR (.csz)
@@ -1012,6 +1008,4 @@ Individual geneotypes can be simulated using the _alleleotype_genepop()_ functio
     GeneFreq <- genepop_allelefreq("Genepop_IDsubset.txt",wide = TRUE)
     
     alleleotype_genepop(GeneFreq, numsim = 100, path = paste0(output_dir,"SimulatedGeneotypes_Genepop_IDsubset.txt"))
-  
-  
 ```
