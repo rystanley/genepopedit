@@ -513,8 +513,6 @@ If reading in data to your workspace use the following *read.table* code specifi
 
 However, reading in your GENEPOP data into the workspace is not required, as all functions can work with both workspace objects *and* **file paths**.
 
-```
-
 Set a directory where the output files will be saved.
 
 ```r
