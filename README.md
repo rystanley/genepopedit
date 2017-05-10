@@ -136,7 +136,7 @@ library(genepopedit) # load the library
 
 Support funding was inpart provided by the Canadian Healthy Oceans Nework (**CHONe**) <https://chone2.ca>
 
-![chone-logo](vignettes/CHONe+logo-Horzontial-RGB-300DPI.jpg)
+![chone-logo](vignettes/CHONeLogo.jpg)
 
 This package has been developed to be used by anyone who is looking for a more efficient and **repeatable** method to manipulate large multi-locus datasets. The package is open, and I encourage you to tinker and look for improvements. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package.
 
