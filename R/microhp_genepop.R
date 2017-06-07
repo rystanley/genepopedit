@@ -5,10 +5,11 @@
 #' @param path the filepath and filename of output.
 #' @importFrom data.table melt
 #' @importFrom stringr str_pad
-#' @importFrom tidyr spread
 #' @export
 
 micro_genepop <- function(microhp, path){
+
+  #if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 
   ## Read in the microhapplot data
   hap_dat <- read.csv(microhp, header = TRUE, stringsAsFactors = FALSE)
@@ -51,7 +52,9 @@ micro_genepop <- function(microhp, path){
   hap_dat_form <- hap_dat[, c(1, 2, 6)]
 
   ## go from long to wide format
-  hap_dat_FLAT <- tidyr::spread(data = hap_dat_form, key = locus, value = GENOTYPE)
+  hap_dat_FLAT=stats::reshape(hap_dat_form, idvar = "indiv.ID", timevar = "locus", direction = "wide")
+  names(hap_dat_FLAT) <- gsub(pattern = "GENOTYPE.",replacement = "",x = names(hap_dat_FLAT))
+    #hap_dat_FLAT <- tidyr::spread(data = hap_dat_form, key = locus, value = GENOTYPE)
 
   #Replace NA values with 000000
   hap_dat_FLAT[is.na(hap_dat_FLAT)]=000000
