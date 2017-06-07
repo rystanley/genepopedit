@@ -54,7 +54,7 @@ micro_genepop <- function(microhp, path){
   ## go from long to wide format
   hap_dat_FLAT=stats::reshape(hap_dat_form, idvar = "indiv.ID", timevar = "locus", direction = "wide")
   names(hap_dat_FLAT) <- gsub(pattern = "GENOTYPE.",replacement = "",x = names(hap_dat_FLAT))
-    #hap_dat_FLAT <- tidyr::spread(data = hap_dat_form, key = locus, value = GENOTYPE)
+  #hap_dat_FLAT <- tidyr::spread(data = hap_dat_form, key = locus, value = GENOTYPE)
 
   #Replace NA values with 000000
   hap_dat_FLAT[is.na(hap_dat_FLAT)]=000000
