@@ -183,7 +183,7 @@ R.utils::gzip(filename=paste0(where.plink,"TreemixInput.frq.strat"))
 #Clean files and return to path.
 
 #Keep the intermediate conversion files.
-    if(keep_inter=TRUE){
+    if(keep_inter){
       file.copy(from=paste0(where.pgdspider,"PGDtest.map"),to = paste0(path,"PGDtest.map"))
       file.copy(from=paste0(where.pgdspider,"PGDtest.ped"),to = paste0(path,"PGDtest.ped"))
       file.copy(from=paste0(where.plink,"ClusterFile.clust"),to=paste0(path,"ClusterFile.clust"))
