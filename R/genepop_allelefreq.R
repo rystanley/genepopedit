@@ -178,7 +178,7 @@ if(!fullpanel){
       Output$Loci=as.character(Output$Loci)
     }
 
-} #end if(!microsat)
+} #end if(!fullpanel)
 
 ### Full panel allele frequencies -------------------
 
