@@ -8,8 +8,8 @@
 AlleleFreq <- function(x)
 {
 
-  xtest <- x[1:10]
-  AlleleLength <- max(nchar(as.character(xtest)),na.rm=T)
+  xvec <- x[1:(floor(length(x)/2))] #how long are the characters. For speed this only completes the task using half the vector.
+  AlleleLength <- max(nchar(as.character(xvec)),na.rm=T)
 
   if(AlleleLength==2) # four character locus - 2 digit allele code
   {
@@ -30,12 +30,13 @@ AlleleFreq <- function(x)
   }
 
   x3 <- c(x1,x2) #combine together in one string
-  if(length(unique(x3))>2){x4 <- x3[-which(x3==0)]} # delete the zeros (missing values)
+  if(length(unique(x3))>2){x4 <- x3[!x3==0]} # delete the zeros (missing values)
   if(length(unique(x3))<3){x4 <- x3}
-  # warning if data is coded wrong (too many alleles or 0 isn't the reference to )
-  if(length(unique(x4))>2){print(paste("More than two alleles present. ",
-                                       length(unique(x4))," unique alleles in vector:",
-                                       paste(unique(x4),collapse=","),sep=""))}
+
+ #  warning if data is coded wrong (too many alleles or 0 isn't the reference to )
+   if(length(unique(x4))>2){print(paste("More than two alleles present. ",
+                                        length(unique(x4))," unique alleles in vector:",
+                                        paste(unique(x4),collapse=","),sep=""))}
 
   x5 <- as.data.frame(table(x4)/sum(length(x4))) # calculate frequency of each
   colnames(x5)=c("allele","Freq")

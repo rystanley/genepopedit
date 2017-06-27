@@ -1,6 +1,6 @@
 # GenePop allelefreq
 #' @title Explore population specific allele frequencies.
-#' @description Function returns population derived allele frequencies.
+#' @description Function returns population derived Major allele frequency (default) or full panel allele frequencies.
 #' @param genepop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
 #' This will be the standard genepop format with the first n+1 rows corresponding to the n loci names,
@@ -8,15 +8,17 @@
 #' separated by "Pop". Each individual ID is linked to the locus data by " ,  " (space, space space) and is read in as
 #' as a single row (character).
 #' @param popgroup population grouping using the "Pop" deliminiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
+#' @param fullpanel (default: FALSE) a logical parameter specifying whether allele frequencies for all loci by population should be retured.
 #' @param wide logical specifying whether the allele frequencies should be returned as long (default:FALSE) or wide (TRUE) format. Note that the wide format can be used as the input for alleleotype_genepop to simulate geneotypes.
 #' @rdname genepop_allelefreq
 #' @import magrittr
 #' @importFrom data.table fread as.data.table melt dcast
-#' @importFrom dplyr filter summarise group_by ungroup summarise_each funs funs_
+#' @importFrom dplyr filter summarise group_by ungroup summarise_each funs funs_ do
+#' @importFrom tidyr unnest
 #' @export
 #'
 
-genepop_allelefreq <- function(genepop,popgroup=NULL,wide=FALSE){
+genepop_allelefreq <- function(genepop,popgroup=NULL,wide=FALSE,fullpanel=FALSE){
 
   #Check to see if genepop is a data.frame from the workspace
   if(is.data.frame(genepop)){genepop <- data.table::as.data.table(genepop)}
@@ -79,61 +81,64 @@ genepop_allelefreq <- function(genepop,popgroup=NULL,wide=FALSE){
   NamePops <- temp[,1] # Sample names of each
   NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
 
-    PopNum <- data.frame(table(NameExtract))
-    colnames(PopNum)[1] <- "Population"
+  PopNum <- data.frame(table(NameExtract))
+  colnames(PopNum)[1] <- "Population"
 
-    #allele coding length
-    alleleEx <- max(sapply(temp2[,1],FUN=function(x){nchar(as.character(x[!is.na(x)]))})) #presumed allele length
+  #allele coding length
+  alleleEx <- max(sapply(temp2[,1],FUN=function(x){nchar(as.character(x[!is.na(x)]))})) #presumed allele length
 
-    #check to make sure the allele length is a even number
-    if(!alleleEx %% 2 ==0){stop(paste("The length of each allele is assumed to be equal (e.g. loci - 001001 with 001 for each allele), but a max loci length of", alleleEx, "was detected. Please check data."))}
+  #check to make sure the allele length is a even number
+  if(!alleleEx %% 2 ==0){stop(paste("The length of each allele is assumed to be equal (e.g. loci - 001001 with 001 for each allele), but a max loci length of", alleleEx, "was detected. Please check data."))}
 
 
-    #get the allele values summary header
-    firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,alleleEx/2)))))
-    secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(alleleEx/2)+1,alleleEx)))))
+  #get the allele values summary header
+  firstAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,1,alleleEx/2)))))
+  secondAllele <-  as.data.frame(sapply(temp2,function(x)as.numeric(as.character(substring(x,(alleleEx/2)+1,alleleEx)))))
 
-    ## population grouping variables
-    pPops <- NULL
-    for (i in 2:length(tempPops)){
-      pPops <- c(pPops,tempPops[i]-(i-1))
-    }
+  ## population grouping variables
+  pPops <- NULL
+  for (i in 2:length(tempPops)){
+    pPops <- c(pPops,tempPops[i]-(i-1))
+  }
 
-    pPops <- c(1,pPops)
+  pPops <- c(1,pPops)
 
-    #count populatons
-    lPops=as.vector(table(NameExtract)[unique(NameExtract)])
-    PopGroupVec <- rep(1:length(lPops),times=lPops)
-    PopGroupVec <- PopGroupVec[order(PopGroupVec)]
+  #count populatons
+  lPops=as.vector(table(NameExtract)[unique(NameExtract)])
+  PopGroupVec <- rep(1:length(lPops),times=lPops)
+  PopGroupVec <- PopGroupVec[order(PopGroupVec)]
+
+
+if(!fullpanel){
 
     if(is.null(popgroup)){
-        temp2$Pops <- PopGroupVec
-        temp2[] <- lapply(temp2, as.character)
+      temp2$Pops <- PopGroupVec
+      temp2[] <- lapply(temp2, as.character)
 
-        ## Identify major alleles for each loci
-        mallele <- temp2[,-length(temp2)]%>%summarise_each(funs(AlleleFreq(.)))
-        majorfreqs <- as.vector(t(mallele[1,]))
-        majordf <- data.frame(variable=names(temp2[-length(temp2)]),major=majorfreqs)
+      ## Identify major alleles for each loci
+      mallele <- temp2[,-length(temp2)]%>%summarise_each(funs(AlleleFreq(.)))
+      majorfreqs <- as.vector(t(mallele[1,]))
+      majordf <- data.frame(variable=names(temp2[-length(temp2)]),major=majorfreqs)
 
-        tData <- data.table::melt(temp2,id.vars="Pops") #transposed dataframe
-        transposeData=merge(tData,majordf,by="variable") # add the major allele for a given locus
+      tData <- data.table::melt(temp2,id.vars="Pops") #transposed dataframe
+      transposeData=merge(tData,majordf,by="variable") # add the major allele for a given locus
 
-        Prec <- transposeData%>%
-          group_by(Pops,variable)%>%
-          summarise(prec=AlleleFreqLoci(value,unique(major)))%>%
-          ungroup()%>%data.frame()
+      Prec <- transposeData%>%
+        group_by(Pops,variable)%>%
+        summarise(prec=AlleleFreqLoci(value,unique(major)))%>%
+        ungroup()%>%data.frame()
 
-        PopLabels <- data.frame(Names=NameExtract,Pops=as.character(PopGroupVec))
-        PopLabels <- PopLabels%>%
-                        group_by(Pops)%>%
-                        summarise(Name=paste(unique(Names),collapse="_"))%>%
-          ungroup()%>%data.frame()
-        PopLabels [] <- lapply(PopLabels , as.character)
+      PopLabels <- data.frame(Names=NameExtract,Pops=as.character(PopGroupVec))
+      PopLabels <- PopLabels%>%
+        group_by(Pops)%>%
+        summarise(Name=paste(unique(Names),collapse="_"))%>%
+        ungroup()%>%data.frame()
+      PopLabels [] <- lapply(PopLabels , as.character)
 
-        Output <- merge(Prec,PopLabels,by="Pops")
-        Output <- Output[,c(4,2,3)]
-        colnames(Output) <- c("Population","Loci","MAF")
-        Output$Loci=as.character(Output$Loci)
+      Output <- merge(Prec,PopLabels,by="Pops")
+      Output <- Output[,c(4,2,3)]
+      colnames(Output) <- c("Population","Loci","MAF")
+      Output$Loci=as.character(Output$Loci)
 
     }
 
@@ -165,24 +170,73 @@ genepop_allelefreq <- function(genepop,popgroup=NULL,wide=FALSE){
       transposeData=merge(tData,majordf,by="variable") # add the major allele for a given locus
 
       Output <- transposeData%>%
-                 group_by(Name,variable)%>%
-                 summarise(prec=AlleleFreqLoci(value,unique(major)))%>%
-                 ungroup()%>%data.frame()
+        group_by(Name,variable)%>%
+        summarise(prec=AlleleFreqLoci(value,unique(major)))%>%
+        ungroup()%>%data.frame()
 
       colnames(Output)=c("Population","Loci","MAF")
       Output$Loci=as.character(Output$Loci)
     }
 
-    #If the output is to be in wide format or to be left (default) as long (transposed format). Note taht wide formate is accepted for genotype simulation by alleleotype_genepop().
-    if(wide){
-      Output[] <- lapply(Output,as.character)
-      Output <- Output %>% data.table::dcast(.,Population~Loci, value.var="MAF") %>% data.frame()
-      #data.table::dcast adds an "x" to the column names which must be removed for matching
-      names(Output)[2:length(names(Output))]=gsub("X","",names(Output)[2:length(names(Output))])
-      Output <- Output[,c("Population",names(temp2)[-length(temp2)])]
-      colnames(Output)[1]="Pop"
-    }
+} #end if(!microsat)
 
-return(Output)# return the allele frequency table
+### Full panel allele frequencies -------------------
+
+  if(fullpanel & is.null(popgroup)){
+    temp2$Pops <- PopGroupVec
+    temp2[] <- lapply(temp2, as.character)
+
+    temp3 <- reshape2::melt(temp2,id.vars="Pops")
+    colnames(temp3) <- c("Pops","Loci","Value")
+
+    temp3$Loci <- as.character(temp3$Loci)
+
+    Output <- tidyr::unnest(temp3%>%group_by(Pops,Loci)%>%do(split=frequencies(.))%>%
+                             ungroup()%>%data.frame(.,stringsAsFactors=F))
+  }
+
+
+  if(fullpanel & !is.null(popgroup)){
+    popgroup[] <- lapply(popgroup, as.character)
+    colnames(popgroup)=c("Name","Group")
+    temp3 <- temp2[which(NameExtract %in% popgroup[,1]),]
+    temp3$Name <- NameExtract[which(NameExtract %in% popgroup[,1])]
+    temp4 <- merge(temp3,popgroup,by="Name")
+
+    PopLabels <- data.frame(PopNames=temp4$Name,Group=temp4$Group)
+    PopLabels <- as.data.frame(PopLabels%>%
+                                 group_by(Group)%>%
+                                 summarise(Name=paste(unique(PopNames),collapse="_"))%>%ungroup())
+
+    #temp5 <- merge(temp4[,-grep("Pops",names(temp4))],PopLabels,by="Group")
+    temp5 <- merge(PopLabels,temp4[,-grep("Pops|Name",names(temp4))],by="Group")
+    #temp5 <- temp5[,c(names(temp2),names(temp5)[length(temp5)])] # select columns
+    #colnames(temp5)[length(temp5)]="Pops"
+    temp5 <- temp5[,c(setdiff(names(temp2),c("Pops","Group")),"Name")] # select columns
+    temp5[] <- lapply(temp5, as.character)
+
+    temp6 <- reshape2::melt(temp5,id.vars="Pops")
+    colnames(temp6) <- c("Pops","Loci","Value")
+
+    temp6$Loci <- as.character(temp6$Loci)
+
+    Output <- tidyr::unnest(temp6%>%group_by(Pops,Loci)%>%do(split=frequencies(.))%>%
+                             ungroup()%>%data.frame(.,stringsAsFactors=F))
+  }
+
+  #If the output is to be in wide format or to be left (default) as long (transposed format). Note taht wide formate is accepted for genotype simulation by alleleotype_genepop().
+  if(wide & fullpanel){print("The full allele frequency panel cannot be reported in wide format. Data will be returned in long format.")}
+
+
+  if(wide & !fullpanel){
+    Output[] <- lapply(Output,as.character)
+    Output <- Output %>% data.table::dcast(.,Population~Loci, value.var="MAF") %>% data.frame()
+    #data.table::dcast adds an "x" to the column names which must be removed for matching
+    names(Output)[2:length(names(Output))]=gsub("X","",names(Output)[2:length(names(Output))])
+    Output <- Output[,c("Population",names(temp2)[-length(temp2)])]
+    colnames(Output)[1]="Pop"
+  }
+
+  return(Output)# return the allele frequency table
 
 }
