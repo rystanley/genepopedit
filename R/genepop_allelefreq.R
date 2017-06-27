@@ -13,7 +13,7 @@
 #' @rdname genepop_allelefreq
 #' @import magrittr
 #' @importFrom data.table fread as.data.table melt dcast
-#' @importFrom dplyr filter summarise group_by ungroup summarise_each funs funs_ do
+#' @importFrom dplyr filter summarise group_by ungroup summarise_all funs funs_ do
 #' @importFrom tidyr unnest
 #' @export
 #'
@@ -116,7 +116,7 @@ if(!fullpanel){
       temp2[] <- lapply(temp2, as.character)
 
       ## Identify major alleles for each loci
-      mallele <- temp2[,-length(temp2)]%>%summarise_each(funs(AlleleFreq(.)))
+      mallele <- temp2[,-length(temp2)]%>%summarise_all(funs(AlleleFreq(.)))
       majorfreqs <- as.vector(t(mallele[1,]))
       majordf <- data.frame(variable=names(temp2[-length(temp2)]),major=majorfreqs)
 
@@ -162,7 +162,7 @@ if(!fullpanel){
       temp5[] <- lapply(temp5, as.character)
 
       ## Identify major alleles for each loci
-      mallele <- temp5[,-length(temp5)]%>%summarise_each(funs(AlleleFreq(.)))
+      mallele <- temp5[,-length(temp5)]%>%summarise_all(funs(AlleleFreq(.)))
       majorfreqs <- as.vector(t(mallele[1,]))
       majordf <- data.frame(variable=names(temp5[-length(temp5)]),major=majorfreqs)
 
