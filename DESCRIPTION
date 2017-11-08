@@ -8,8 +8,9 @@ Description: A simple and flexible tool for manipulating large multi-locus datas
 Authors@R: c(
   person("Ryan", "Stanley", email = "ryan.stanley@dfo-mpo.gc.ca", role = c("aut", "cre")),
   person("Ian", "Bradbury",email = "ian.bradbury@dfo-mpo.gc.ca", role = c("ctb","sad")),
-  person("Brendan", "Wringe",email = "bwringe@gmail.com", role = "ctb"),
-  person("Nick", "Jeffery",email = "nick.w.jeffery3@gmail.com", role = c("ctb","med")))
+  person("Brendan", "Wringe",email = "brendan.wringe@dfo-mpo.gc.ca", role = "ctb"),
+  person("Nick", "Jeffery",email = "nick.jeffery@dfo-mpo.gc.ca", role = c("ctb","med")),
+  person("Sarah", "Lehnert",email = "Sarah.Lehnert@dfo-mpo.gc.ca",role="ctb"))
 Maintainer: Ryan Stanley <ryan.stanley@dfo-mpo.gc.ca>
 Depends:
     R (>= 3.0.1)
