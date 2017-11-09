@@ -25,4 +25,3 @@ Four options \code{default = "Pops"}
 \description{
 Function returns Genepop file meta-data.
 }
-

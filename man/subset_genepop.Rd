@@ -36,4 +36,3 @@ naming of "Population_sample#" e.g. (Aqua01_05: population Aqua01 & sample #5).
 \description{
 Function to subset loci and populations
 }
-

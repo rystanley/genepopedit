@@ -13,7 +13,7 @@
 #' @param save.output Logical query (default: FALSE) to save the output to the same location as the file being analyzed. Each of the outputs of the function will be saved as a separate file with the file name of the orginal data appended with "_Linkages", "Loci_FST", and "Unlinked_Loci_FST" for the pairwise linked loci along with their r^2, all loci with their global Fst, and only the top unlinked loci with their Fst respectively.
 #' @rdname genepop_toploci
 #' @export
-#' @importFrom hierfstat read.fstat wc
+#' @importFrom diveRsity diffCalc
 #' @importFrom stringr str_split str_detect
 #' @importFrom plyr rbind.fill
 #' @importFrom utils write.table
@@ -43,7 +43,7 @@ genepop_toploci <- function(genepop, where.plink, where.pgdspider, r2.threshold 
 
   if(Sys.info()["sysname"] == "Windows" & allocate.pgd.ram>1024){
     allocate.pgd.ram=1024
-    writeLines("Note that currently PGDspider can only utilize ~1 GB of ram on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.
+    writeLines("Note that currently PGDspider can only utilize ~1 GB of RAM on windows based operating systems. Periodically check back to https://github.com/rystanley/genepopedit for any updates to this limitation.
                ")}
 
   #Variable checks
@@ -72,126 +72,27 @@ genepop_toploci <- function(genepop, where.plink, where.pgdspider, r2.threshold 
     stop("FST threshold must be a value between 0 and 1")
   }
 
-  #Console message
-  writeLines("Converting GENEPOP to FSTAT format.")
-  writeLines("
 
-             ")
-  writeLines("Warning messages are expected as part of conversion process using PGDspider.
-
-             ")
-
-  ### convert to FST format using PGDspider
 
   # modify the path to play nice with spaces
 
   path.start.PGD <- gsub(x = path.start, pattern = " ", replacement = "\\")
   where.pgdspider.PGD <- gsub(x = where.pgdspider, pattern = " ", replacement = "\\ ", fixed = TRUE)
 
-  GP_FSTAT_SPID <- "# spid-file generated: Fri Apr 08 10:53:23 ADT 2016
+  #Calculate FST
+  writeLines("Calculating locus-specific Fst\n\n")
 
-  # GENEPOP Parser questions
-  PARSER_FORMAT=GENEPOP
+  FST.dat <- diveRsity::diffCalc(infile = genepop,outfile = NULL,fst = T,bs_locus = F)
+  FST.dat <- FST.dat$std_stats[1:length(FST.dat$std_stats$loci)-1,]
+  FSTs <- FST.dat$Fst
 
-  # Enter the size of the repeated motif (same for all loci: one number; different: comma separated list (e.g.: 2,2,3,2):
-  GENEPOP_PARSER_REPEAT_SIZE_QUESTION=
-  # Select the type of the data:
-  GENEPOP_PARSER_DATA_TYPE_QUESTION=SNP
-  # How are Microsat alleles coded?
-  GENEPOP_PARSER_MICROSAT_CODING_QUESTION=REPEATS
-
-  # FSTAT Writer questions
-  WRITER_FORMAT=FSTAT
-
-  # Specify which data type should be included in the FSTAT file  (FSTAT can only analyze one data type per file):
-  FSTAT_WRITER_DATA_TYPE_QUESTION=SNP
-  # Save label file
-  FSTAT_WRITER_LABEL_FILE_QUESTION=
-  # Do you want to save an additional file with labels (population names)?
-  FSTAT_WRITER_INCLUDE_LABEL_QUESTION=false
-  # Specify the locus/locus combination you want to write to the FSTAT file:
-  FSTAT_WRITER_LOCUS_COMBINATION_QUESTION=
-  "
-  #write conversion parameter file (".spid")
-  write(x = GP_FSTAT_SPID, file = paste0(path.start, "/", "GP_FSTAT.spid"))
-
-  ### move spid file to the PGDspider folder
-  file.copy(from = paste0(path.start, "/GP_FSTAT.spid"), to = where.pgdspider, overwrite = TRUE)
-  remember.spidpath <- paste0(path.start, "/", "GP_FSTAT.spid")
-  ## move the input file as well to the same location as PGDspider - this makes this step so much easier
-  file.copy(from <- genepop, to = where.pgdspider, overwrite = TRUE)
-  GenePop.name <- stringr::str_split(string = genepop, pattern = "/")
-  GenePop.name <- unlist(GenePop.name)
-  GenePop.name <- GenePop.name[grep(x = GenePop.name, pattern = ".txt")]
-  file.rename(from = paste0(where.pgdspider, GenePop.name), to = paste0(where.pgdspider, "GPD_for_GET_TOP_LOC.txt"))
-  remember.TOPLOC.path <- paste0(where.pgdspider, "GPD_for_GET_TOP_LOC.txt")
-
-
-  #### OS X and LINUX CALL
-
-  if(Sys.info()["sysname"] != "Windows"){
-
-    ### create a string to call PGDspider
-    input.file.call <- "-inputfile GPD_for_GET_TOP_LOC.txt"
-    execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram, "m -Xms512m -jar PGDSpider2-cli.jar")
-    spid.call <- "-spid GP_FSTAT.spid"
-    input.format <- "-inputformat GENEPOP"
-    output.format <- "-outputformat FSTAT"
-    goto.spider <- paste0("cd ", where.pgdspider.PGD, "; ", execute.SPIDER)
-    output.file.path <- "-outputfile for_FST.txt"
-    ## string to run
-    run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
-    ### run PGDspider through system
-    system(run.PGDspider)
-
-  } # End MAC LINUX IF
-
-  #### Windows call
-
-  if(Sys.info()["sysname"] == "Windows"){
-
-    ### create a string to call PGDspider
-    input.file.call <- "-inputfile GPD_for_GET_TOP_LOC.txt"
-    execute.SPIDER <- paste0("java -Xmx", allocate.pgd.ram, "m -Xms512m -jar PGDSpider2-cli.jar")
-    spid.call <- "-spid GP_FSTAT.spid"
-    input.format <- "-inputformat GENEPOP"
-    output.format <- "-outputformat FSTAT"
-    goto.spider <- paste0("cd ", where.pgdspider.PGD, " && ", execute.SPIDER)
-    output.file.path <- "-outputfile for_FST.txt"
-    ## string to run
-    run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
-
-    ### run PGDspider through system
-    shell(run.PGDspider)
-
-  } # End WINDOWS IF
-
-  ### move the FSTAT format file back to the working directory
-  file.copy(from = paste0(where.pgdspider, "/for_FST.txt"), to = path.start, overwrite = TRUE)
-  ## remember the path of the file created by genepop_fstat
-  fst_data_path <- paste0(path.start, "/", "for_FST.txt")
-
-  #Console message
-  writeLines("
-
-             ")
-  writeLines("Calculating Fst.
-
-             ")
-
-  ### read in the FSTAT formatted file
-  for.fst <- hierfstat::read.fstat("for_FST.txt")
-  ## calculate Fst
-  FST.dat <- suppressWarnings(hierfstat::wc(for.fst))
-  ### get the Fst values
-  FSTs <- FST.dat$per.loc$FST
-  ### create a dataframe that is the names of the Loci, and their corresponding Fst
-  FST.df <- data.frame(colnames(for.fst)[-1], FSTs)
+  FST.df <- data.frame(genepopedit::genepop_detective(genepop,variable="Loci"), FSTs)
   names(FST.df)[1] <- "loci"
-  ## reorder the dataframe from highest to lowest Fst
-  FST.df <- FST.df[base::order(FST.df$FSTs, decreasing = TRUE),]
+  FST.df <- FST.df[base::order(FST.df$FSTs, decreasing = TRUE),
+                   ]
+  FST.Filter.Vec <- as.character(FST.df[which(FST.df$FSTs >=
+                                                fst.threshold), 1])
 
-  FST.Filter.Vec <- as.character(FST.df[which(FST.df$FSTs >= fst.threshold), 1])
 
   #Console message
   writeLines("Converting GENEPOP to MAP-PED format.")
@@ -436,16 +337,11 @@ genepop_toploci <- function(genepop, where.plink, where.pgdspider, r2.threshold 
   file.remove(ped.path)
   file.remove(map.path)
   file.remove(paste0(where.pgdspider, "/hyb.spid"))
-  file.remove(paste0(where.pgdspider, "/GP_FSTAT.spid"))
-  file.remove(fst_data_path)
   file.remove(plink_map_path)
   file.remove(plink_ped_path)
   file.remove(paste0(path.start, "/plink.txt"))
   file.remove(paste0(path.start, "/LDsReform.txt"))
-  file.remove(remember.TOPLOC.path)
   file.remove(paste0(where.pgdspider,"/subset_for_LD.txt"))
-  file.remove(paste0(where.pgdspider,"/for_FST.txt"))
-  file.remove(paste0(path.start,"/GP_FSTAT.spid"))
 
   #Console message
   writeLines("

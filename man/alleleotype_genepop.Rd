@@ -16,4 +16,3 @@ alleleotype_genepop(input, numsim = 100, path)
 \description{
 Simulate individuals using pooled DNA major allele frequencies. Return as GENEPOP formatted data.
 }
-

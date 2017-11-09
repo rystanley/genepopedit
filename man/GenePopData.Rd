@@ -25,4 +25,3 @@ This dataset contains genomic data coded as 3 digit alleles.
 }
 }
 \keyword{datasets}
-

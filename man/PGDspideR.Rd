@@ -22,4 +22,3 @@ PGDspideR(input, input_format, output, output_format, spid, where.pgdspider)
 \description{
 Function to between file types in R.
 }
-

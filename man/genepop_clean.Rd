@@ -26,4 +26,3 @@ genepop_clean(genepop, where.pgdspider, allocate.pgd.ram = 1,
 \description{
 Use PGDspider to impliment the proper delimiters in your genepop file.
 }
-

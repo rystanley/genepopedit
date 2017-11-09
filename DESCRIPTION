@@ -25,6 +25,7 @@ Imports:
     R.utils,
     plyr,
     tibble,
+    diveRsity,
     tidyr
 Suggests:
     adegenet,
@@ -35,6 +36,6 @@ License: GPL (>=2)
 LazyLoad: yes
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 URL: https://github.com/rystanley/genepopedit
 BugReports: https://github.com/rystanley/genepopedit/issues

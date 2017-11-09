@@ -37,4 +37,3 @@ In this case AAA/BBB & DDD/FFF would be clustered together between population fl
 \description{
 Function to cluster populations together and remove specific loci
 }
-

@@ -24,4 +24,3 @@ as a single row (character).}
 \description{
 Function returns population derived Major allele frequency (default) or full panel allele frequencies.
 }
-

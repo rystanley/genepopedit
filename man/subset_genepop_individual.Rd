@@ -25,4 +25,3 @@ indiv <- \code{c("Pop01_01","Pop03_15","Pop16_02")} would individuals with these
 \description{
 Function for the manipulation of genopop format SNP datasets
 }
-

@@ -12,4 +12,3 @@ filename_check(X)
 \description{
 Gets the file name that is specified by GenePop variable. This function is used by various functions of genepopedit and is applied to the Genepop variable.
 }
-

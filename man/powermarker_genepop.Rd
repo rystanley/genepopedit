@@ -19,4 +19,3 @@ The second column should be 'Sample_ID' which designates the individual sample I
 \description{
 Function converts Powermarker to standard Genepop format
 }
-

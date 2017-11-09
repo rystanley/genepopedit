@@ -23,4 +23,3 @@ where the first column is the population and the second is the number to be samp
 \description{
 Stratified random sample of individuals from a Genepop file.
 }
-

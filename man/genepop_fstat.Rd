@@ -23,4 +23,3 @@ if returned to the workspace the object will be called "Output_fstat".}
 \description{
 Function to convert Genepop to FSTAT
 }
-

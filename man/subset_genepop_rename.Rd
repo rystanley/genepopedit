@@ -35,4 +35,3 @@ prevent two samples from having the same name.}
 \description{
 Function for the manipulation of genopop format SNP datasets and renaming of populations
 }
-

@@ -12,4 +12,3 @@ path_ending(path)
 \description{
 Checks that the paths end in "/" as required
 }
-

@@ -19,4 +19,3 @@ as a single row (character).}
 \description{
 Function to add separation ("_") between population name and sample number
 }
-

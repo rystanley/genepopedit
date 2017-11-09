@@ -14,4 +14,3 @@ AlleleFreqLoci(x, major)
 \description{
 sub-function used by genepop_allelefreq
 }
-
