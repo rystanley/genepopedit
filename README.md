@@ -595,7 +595,7 @@ This function will calculate allele frequencies based on the major allele among 
   AlleleFreq_specified <- genepop_allelefreq(GenePopData, popgroup=popgrouping)
 ```
 
-## genepop\_filter\_maf <a name="genepopmap"/>
+## genepop\_filter\_maf <a name="genepopmaf"/>
 This function will calculate global minor allele frequencies and filter based on a user defined threshold. [_Function description_](#funcdiag)
 
 ```r
