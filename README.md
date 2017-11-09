@@ -129,10 +129,11 @@ library(genepopedit) # load the library
 ## Contributions:
 *genepopedit* was written in collaboration:
   
-  * Ryan Stanley <https://github.com/rystanley> - Corresponding developer.
+  * Ryan Stanley <https://github.com/rystanley> - Corresponding developer and maintainer
   * Ian Bradbury <https://bradburygeneticslab.com/>
   * Nick Jeffery <https://github.com/NickJeff13>
   * Brendan Wringe <https://github.com/bwringe>
+  * Sarah Lehnert <https://github.com/SarahLehnert>
 
 Support funding was inpart provided by the Canadian Healthy Oceans Nework [CHONe](https://chone2.ca)
 
@@ -196,6 +197,19 @@ Calculate allele frequencies (major) for a given set of loci aggregated by popul
 **genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
 **popgroup** | population grouping using the "Pop" delimiter (Default: NULL) or a dataframe or path to a csv. The grouping dataframe should have two columns, the first corresponding to the population name and the second to an aggregation vector of common groups. Each population can only be assigned to one group.
 **wide** | logical (default: FALSE) defining whether the output should be cast in 'wide' format. Note that 'wide' format is accepted as the input for alleleotype_genepop().
+
+#### genepop_filter_maf.R
+Filter loci by global minor allele frequency.
+
+[_example use_](#genepopmaf)
+
+**Variable name** | **Input**  
+--------------|-----------------------------------
+**genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.  
+**where.plink** | A file path to the PLINK installation folder.
+**where.pgdspider** | A file path to the PGDspider installation folder.
+**maf** | Minor allele frequency cutoff (default = 0.05)
+**path** | the filepath & filename of output.
 
 #### genepop_toploci.R
 This function will return the the panel with the highest Fst for unlinked loci ordered by Fst. Returned loci have the highest Fst from the _original panel_ and are not linked to any other loci in the _returned panel_. Note this function requires the installation and access to both PGDspider for format conversion & PLINK for linkage calculations. [_See installation instructions here_](#extrainstall)
@@ -581,6 +595,13 @@ This function will calculate allele frequencies based on the major allele among 
   AlleleFreq_specified <- genepop_allelefreq(GenePopData, popgroup=popgrouping)
 ```
 
+## genepop\_filter\_maf <a name="genepopmap"/>
+This function will calculate global minor allele frequencies and filter based on a user defined threshold. [_Function description_](#funcdiag)
+
+```r
+#Filter loci with minor allele frequencies less than 0.07.
+ genepop_filter_maf(genepop="genepopedit_examplefile.txt",where.plink="c:/Users/YOURNAME/Documents/Programs/plink/",where.pgdspider="c:/Users/YOURNAME/Documents/Programs/PGDSpider_2.0.9.0/",maf=0.07,path=paste0(output_dir,"Genepop_maf_0-07.txt")) 
+```
 
 ## genepop\_toploci <a name="genepoptoploc"/>
 This function will calculate linkage disequilibrium and global Weir and Cockerham's Fst for loci among populations. The function seeks a loci panel which maximizes global Fst for unlinked loci. The returned object is a list containing Linked loci ($Linked), global FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by PLINK. This threshold (0-1) can be adjusted, though values <0.2 may be limited by computational resources. Note that the available RAM for conversions using PGDspider is limited to 1 GB on Windows based operating systems. [_Function description_](#funcdiag)
