@@ -48,8 +48,7 @@ genepop_filter_maf <- function(genepop, where.plink, where.PGDspider, maf=0.05, 
 
              ")
 
-  where.PLINK<- where.plink
-  where.PGDspider<- where.PGDspider
+
 
   ###write spid file genepop conversion
   write(x = spid.file, file = paste0(where.PGDspider, "/", "hyb.spid"))
@@ -107,13 +106,13 @@ genepop_filter_maf <- function(genepop, where.plink, where.PGDspider, maf=0.05, 
   ###move to plink folder
   ped.path <- paste0(where.PGDspider, "/", "PGDtest.ped")
   map.path <- paste0(where.PGDspider, "/", "PGDtest.map")
-  file.copy(from = ped.path, to = where.PLINK, overwrite = TRUE)
+  file.copy(from = ped.path, to = where.plink, overwrite = TRUE)
 
-  file.copy(from = map.path, to = where.PLINK, overwrite = TRUE)
+  file.copy(from = map.path, to = where.plink, overwrite = TRUE)
 
 
-  plink_ped_path <- paste0(where.PLINK, "/", "PGDtest.ped")
-  plink_map_path <- paste0(where.PLINK, "/", "PGDtest.map")
+  plink_ped_path <- paste0(where.plink, "/", "PGDtest.ped")
+  plink_map_path <- paste0(where.plink, "/", "PGDtest.map")
 
   ##Run plink for LD
   ####Plink creates file in plink.ld with LD values. Rename this file and move it to folder to have results later (will continue to over write plink.ld for each time plink is run)
@@ -122,8 +121,8 @@ genepop_filter_maf <- function(genepop, where.plink, where.PGDspider, maf=0.05, 
   writeLines("
              ")
 
-  where.PLINK.go <- gsub(x = where.PLINK, pattern = " ", replacement = "\\ ", fixed = TRUE)
-  go.to.PLINK <- paste0("cd ", where.PLINK.go)
+  where.plink.go <- gsub(x = where.plink, pattern = " ", replacement = "\\ ", fixed = TRUE)
+  go.to.PLINK <- paste0("cd ", where.plink.go)
 
 
 
