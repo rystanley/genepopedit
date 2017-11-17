@@ -212,10 +212,10 @@ if(!fullpanel){
     temp5 <- merge(PopLabels,temp4[,-grep("Pops|Name",names(temp4))],by="Group")
     #temp5 <- temp5[,c(names(temp2),names(temp5)[length(temp5)])] # select columns
     #colnames(temp5)[length(temp5)]="Pops"
-    temp5 <- temp5[,c(setdiff(names(temp2),c("Pops","Group")),"Name")] # select columns
+    #temp5 <- temp5[,c(setdiff(names(temp2),c("Pops","Group")),"Name")] # select columns
     temp5[] <- lapply(temp5, as.character)
-
-    temp6 <- reshape2::melt(temp5,id.vars="Pops")
+    temp5 <- temp5[,-grep("Group", names(temp5))]
+    temp6 <- reshape2::melt(temp5,id.vars="Name")
     colnames(temp6) <- c("Pops","Loci","Value")
 
     temp6$Loci <- as.character(temp6$Loci)
