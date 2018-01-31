@@ -32,4 +32,3 @@ genepop_toploci(genepop, where.plink, where.pgdspider, r2.threshold = 0.2,
 \description{
 Extract the genotypes of individuals at the top n (by Fst) unlinked loci. The default threshold of r2>0.2 is employed for assigning 'linked' loci (default for plink).
 }
-

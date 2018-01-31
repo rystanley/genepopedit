@@ -24,4 +24,3 @@ has the group. These values must be numeric. If groupings are the same as popula
 \description{
 Function to convert Genepop to assigner
 }
-

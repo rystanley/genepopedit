@@ -24,4 +24,3 @@ has the group. If groupings are the same as populations then leave as NULL (Defa
 \description{
 Function to convert Genepop to STRUCTURE
 }
-

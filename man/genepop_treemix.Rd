@@ -28,4 +28,3 @@ as a single row (character).}
 \description{
 Convert Genepop to within-clusters binary PED file for TREEMIX.
 }
-

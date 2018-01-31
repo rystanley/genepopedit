@@ -15,4 +15,3 @@ df must be an object in the workspace.}
 \description{
 Function returns Genepop file meta-data.
 }
-

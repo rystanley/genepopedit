@@ -10,7 +10,7 @@
 #' @export
 
 
-genepop_filter_maf <- function(genepop, where.plink, where.PGDspider, maf=0.05, path) {
+genepop_filter_maf <- function(genepop, where.plink, where.pgdspider, maf=0.05, path) {
 
 
   #Using the new genepop files generated - run through plink
@@ -48,16 +48,15 @@ genepop_filter_maf <- function(genepop, where.plink, where.PGDspider, maf=0.05, 
 
              ")
 
-  where.PLINK<- where.plink
-  where.PGDspider<- where.PGDspider
+
 
   ###write spid file genepop conversion
-  write(x = spid.file, file = paste0(where.PGDspider, "/", "hyb.spid"))
+  write(x = spid.file, file = paste0(where.pgdspider, "/", "hyb.spid"))
 
-  file.copy(from = genepop, to = paste0(where.PGDspider, "/", "genepop_test.txt"), overwrite = T)
+  file.copy(from = genepop, to = paste0(where.pgdspider, "/", "genepop_test.txt"), overwrite = T)
 
   ###convert Genepop to PED using PGD spider
-  where.PGDspider.PGD <- gsub(x = where.PGDspider, pattern = " ", replacement = "\\ ", fixed = TRUE)
+  where.pgdspider.PGD <- gsub(x = where.pgdspider, pattern = " ", replacement = "\\ ", fixed = TRUE)
 
 
   #### OS X and LINUX CALL
@@ -71,7 +70,7 @@ genepop_filter_maf <- function(genepop, where.plink, where.PGDspider, maf=0.05, 
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat PED"
 
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, "; ", execute.SPIDER)
+    goto.spider <- paste0("cd ", where.pgdspider.PGD, "; ", execute.SPIDER)
     output.file.path <- "-outputfile PGDtest.ped"
     ## string to run
     run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
@@ -90,7 +89,7 @@ genepop_filter_maf <- function(genepop, where.plink, where.PGDspider, maf=0.05, 
     spid.call <- "-spid hyb.spid"
     input.format <- "-inputformat GENEPOP"
     output.format <- "-outputformat PED"
-    goto.spider <- paste0("cd ", where.PGDspider.PGD, " && ", execute.SPIDER)
+    goto.spider <- paste0("cd ", where.pgdspider.PGD, " && ", execute.SPIDER)
     output.file.path <- "-outputfile PGDtest.ped"
     ## string to run
     run.PGDspider <- paste0(goto.spider, " ", input.file.call, " ", input.format, " ", output.file.path, " ", output.format, " ", spid.call)
@@ -100,20 +99,20 @@ genepop_filter_maf <- function(genepop, where.plink, where.PGDspider, maf=0.05, 
   } # End WINDOWS IF
 
 
-  remember.PEDpath.PGD <- paste0(where.PGDspider, "PGDtest.ped")
-  remember.MAPpath.PGD <- paste0(where.PGDspider, "PGDtest.map")
+  remember.PEDpath.PGD <- paste0(where.pgdspider, "PGDtest.ped")
+  remember.MAPpath.PGD <- paste0(where.pgdspider, "PGDtest.map")
 
 
   ###move to plink folder
-  ped.path <- paste0(where.PGDspider, "/", "PGDtest.ped")
-  map.path <- paste0(where.PGDspider, "/", "PGDtest.map")
-  file.copy(from = ped.path, to = where.PLINK, overwrite = TRUE)
+  ped.path <- paste0(where.pgdspider, "/", "PGDtest.ped")
+  map.path <- paste0(where.pgdspider, "/", "PGDtest.map")
+  file.copy(from = ped.path, to = where.plink, overwrite = TRUE)
 
-  file.copy(from = map.path, to = where.PLINK, overwrite = TRUE)
+  file.copy(from = map.path, to = where.plink, overwrite = TRUE)
 
 
-  plink_ped_path <- paste0(where.PLINK, "/", "PGDtest.ped")
-  plink_map_path <- paste0(where.PLINK, "/", "PGDtest.map")
+  plink_ped_path <- paste0(where.plink, "/", "PGDtest.ped")
+  plink_map_path <- paste0(where.plink, "/", "PGDtest.map")
 
   ##Run plink for LD
   ####Plink creates file in plink.ld with LD values. Rename this file and move it to folder to have results later (will continue to over write plink.ld for each time plink is run)
@@ -122,8 +121,8 @@ genepop_filter_maf <- function(genepop, where.plink, where.PGDspider, maf=0.05, 
   writeLines("
              ")
 
-  where.PLINK.go <- gsub(x = where.PLINK, pattern = " ", replacement = "\\ ", fixed = TRUE)
-  go.to.PLINK <- paste0("cd ", where.PLINK.go)
+  where.plink.go <- gsub(x = where.plink, pattern = " ", replacement = "\\ ", fixed = TRUE)
+  go.to.PLINK <- paste0("cd ", where.plink.go)
 
 
 

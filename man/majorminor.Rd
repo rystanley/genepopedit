@@ -14,4 +14,3 @@ majorminor(Vec, allele_length = 6)
 \description{
 sub-function used by genepop_bgc
 }
-

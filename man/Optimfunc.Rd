@@ -12,4 +12,3 @@ Optimfunc(x)
 \description{
 Decision matrix for selecting unlinked loci while maximizing Fst. Function is used by genepop_toploci.
 }
-

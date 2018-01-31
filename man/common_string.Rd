@@ -12,4 +12,3 @@ common_string(Vec)
 \description{
 A function which returns the largest common sequence among a vector of strings.
 }
-

@@ -22,4 +22,3 @@ Populations and Distances.There should be the same number of populations as in t
 \description{
 Function to convert Genepop to the R package HZAR.
 }
-

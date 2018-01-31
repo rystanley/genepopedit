@@ -12,4 +12,3 @@ AlleleFreq(x)
 \description{
 sub-function used by genepop_allelefreq
 }
-

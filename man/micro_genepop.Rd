@@ -14,4 +14,3 @@ micro_genepop(microhp, path)
 \description{
 Function makes a genepop file.
 }
-

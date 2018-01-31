@@ -31,4 +31,3 @@ e.g. "Lobster_analysis" would result in
 \description{
 Function to convert Genepop to BGC format.
 }
-

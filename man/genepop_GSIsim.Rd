@@ -19,4 +19,3 @@ as a single row (character).}
 \description{
 Covert from GENEPOP to format required by gsi_sim. Note that output has SampleIDs formated as Population_Population_ID instead of conventioanl Population_ID to fit commong sampleID naming approach of genepopedit into the convention of gsi_sim.
 }
-

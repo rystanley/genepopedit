@@ -27,4 +27,3 @@ as a single row (character).}
 \description{
 Function to convert Genepop to Colony format.
 }
-

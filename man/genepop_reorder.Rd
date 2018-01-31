@@ -22,4 +22,3 @@ determined using genepop_detective().}
 \description{
 Function to subset loci and populations
 }
-

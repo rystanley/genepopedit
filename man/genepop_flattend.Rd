@@ -17,4 +17,3 @@ as a single row (character).}
 \description{
 Convert and return Genepop as flattend dataframe.
 }
-
