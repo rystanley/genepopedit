@@ -47,7 +47,7 @@ __Fig 1.__ **genepopedit** *workflow including data preparation, diagnostics, ma
 
 ***
 **Requirement:**
-genepopedit functions through the manipulation of multi-locus SNP files structured in the *Genepop* file format [link](http://genepop.curtin.edu.au/). Specifically, we use the _three number_ format (e.g. 110110) where the six digits correspond to the alleles of a given locus for an individual. Locus names can be listed in the first row separated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
+genepopedit functions through the manipulation of multi-locus diploid SNP files structured in the *Genepop* file format [link](http://genepop.curtin.edu.au/). Specifically, we use the _three number_ format (e.g. 110110) where the six digits correspond to the alleles of a given locus for an individual. Locus names can be listed in the first row separated by columns or each on their own row so that the total number of rows in the _Genepop_ file equals: 
 
     nrows = nLOCI + nINDIVIDUALS + nPOPULATIONS - 1
     
