@@ -1,5 +1,5 @@
 # Update the sample IDs of a genepop file
-#' @title Add separation ("_") between population name and sample number
+#' @title Add separation ("_") between population name (generated or existing) and sample number
 #' @description Function to add separation ("_") between population name and sample number
 #' @param genepop the genepop data to be manipulated. This can be either a file path
 #' or a dataframe read in with tab separation, header=FALSE , quote="", and stringsAsFactors=FALSE.
@@ -15,6 +15,9 @@
 
 
 genepop_ID <- function(genepop,path){
+
+  #Print warning message about function usage
+ writeLines("This function will seperate population names from IDs (e.g., NWH1 to NWH_1).\n\nIf no common string (population label), can be identified a population label will be assigned based on the order of populations in input file (e.g., 1234 to Pop1_1234).\n\n")
 
   #Check to see if genepop is a data.frame from the workspace and convert to data.table
   if(is.data.frame(genepop)){genepop <- as.data.table(genepop)}
@@ -59,12 +62,17 @@ genepop_ID <- function(genepop,path){
 
   #Use the 'Pop' original separators to separate the unique population names
   PopLengths=NULL
-  for (i in 1:(length(tempPops)-1)){
-    pl=length((tempPops[i]+1):(tempPops[i+1]-1))
-    PopLengths=c(PopLengths,pl)}
-  #add the length of the last pop which is the only one not bound by a "pop" label
-  PopLengths=c(PopLengths,length((tempPops[length(tempPops)]+1):nrow(snpData)))
-  popvector=rep(1:length(PopLengths),times=PopLengths) #vector to differentiate the pops based on the locaton of the "Pop" labels.
+
+  if(length(tempPops)!=1){
+      for (i in 1:(length(tempPops)-1)){
+        pl=length((tempPops[i]+1):(tempPops[i+1]-1))
+        PopLengths=c(PopLengths,pl)}
+      #add the length of the last pop which is the only one not bound by a "pop" label
+      PopLengths=c(PopLengths,length((tempPops[length(tempPops)]+1):nrow(snpData)))
+      popvector=rep(1:length(PopLengths),times=PopLengths) #vector to differentiate the pops based on the locaton of the "Pop" labels.
+  }
+
+  if(length(tempPops)==1){popvector <- rep(1,nrow(snpData)-1)}
 
   snpData <- snpData[-tempPops,] #remove the pop labels.
 
@@ -92,13 +100,37 @@ genepop_ID <- function(genepop,path){
 
   #add the "_" to differentiate the populations from the sample number in each sample ID.
   #This asssumes there is a common string among the sample IDs between each "Pop" label in the Genepopfile.
-  for(i in unique(popvector)){
-    commonname <- common_string(SampleID[which(popvector==i)])
-    NamePops[which(popvector==i)] <- paste0(commonname,"_")
-    SampleID[which(popvector==i)] <- gsub(commonname,paste0(commonname,"_"),SampleID[which(popvector==i)])
+  #If not population label is avaialble one will be assigned (Pop#) in the order populations were provided in input genepop
+
+  nchartest <- nchar(common_string(SampleID[which(popvector==i)]))==0 # used to see if population names need to be generated (TRUE)
+
+  if(nchartest){
+    SampleID2 <- paste("Pop",popvector,sep="")
+
+    for(i in unique(popvector)){
+      commonname <- unique(SampleID2)[i]
+      NamePops[which(popvector==i)] <- paste0(commonname,"_")
+      SampleID[which(popvector==i)] <- paste0(NamePops[which(popvector==i)],SampleID[which(popvector==i)])
+      }
+
   }
 
+  if(!nchartest){
+    for(i in unique(popvector)){
+        commonname <- common_string(SampleID[which(popvector==i)])
+        NamePops[which(popvector==i)] <- paste0(commonname,"_")
+        SampleID[which(popvector==i)] <- gsub(commonname,paste0(commonname,"_"),SampleID[which(popvector==i)])
+    }
+  }
+
+
   NameExtract <- substr(NamePops,1,regexpr("_",NamePops)-1)
+
+  writeLines("Population names assigned:\n\n")
+  print(unique(NameExtract))
+
+  ##Make sure no duplicate '_' are present (e.g., if one population had the proper seperation)
+  SampleID <- gsub("__","_",SampleID)
 
     #the number of individuals for all popualtions but the last (Pop tagged to the end)
     PopLengths <- table(factor(NamePops, levels=unique(NamePops)))[-length(table(NamePops))]

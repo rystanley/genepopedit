@@ -2,7 +2,7 @@
 % Please edit documentation in R/genepop_ID.R
 \name{genepop_ID}
 \alias{genepop_ID}
-\title{Add separation ("_") between population name and sample number}
+\title{Add separation ("_") between population name (generated or existing) and sample number}
 \usage{
 genepop_ID(genepop, path)
 }
