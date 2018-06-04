@@ -4,7 +4,8 @@
 \alias{genepop_structure}
 \title{Convert Genepop to STRUCTURE format.}
 \usage{
-genepop_structure(genepop, popgroup = NULL, path = NULL)
+genepop_structure(genepop, popgroup = NULL, locusnames = FALSE,
+  path = NULL)
 }
 \arguments{
 \item{genepop}{the genepop data to be manipulated. This can be either a file path
@@ -18,6 +19,8 @@ as a single row (character).}
 This dataframe contains two columns. Column 1 corresponds to the population names. These names
 should match the individual IDs (e.g. BON_01 ,  110110 would be 'BON'). The next column
 has the group. If groupings are the same as populations then leave as NULL (Default).If the input genepop file does not have population and sample ID seperation using ("_") then refer to genepop_ID().}
+
+\item{locusnames}{specify TRUE if you want the locus names from your Genepop file to be the first row in your Structure files. Defaults to FALSE, so no locus names are included.}
 
 \item{path}{the filepath and filename of output.}
 }
