@@ -11,6 +11,7 @@
 #' This dataframe contains two columns. Column 1 corresponds to the population names. These names
 #' should match the individual IDs (e.g. BON_01 ,  110110 would be 'BON'). The next column
 #' has the group. If groupings are the same as populations then leave as NULL (Default).If the input genepop file does not have population and sample ID seperation using ("_") then refer to genepop_ID().
+#' @param locusnames specify TRUE if you want the locus names from your Genepop file to be the first row in your Structure files. Defaults to FALSE, so no locus names are included.
 #' @param path the filepath and filename of output.
 #' @rdname genepop_structure
 #' @importFrom data.table fread
@@ -19,7 +20,7 @@
 #' @export
 
 
-genepop_structure <- function(genepop,popgroup=NULL,path=NULL){
+genepop_structure <- function(genepop,popgroup=NULL,locusnames=FALSE,path=NULL){
 
   #Check to see if genepop is a data.frame from the workspace and convert to data.table
   if(is.data.frame(genepop)){genepop <- as.data.table(genepop)}
@@ -142,7 +143,13 @@ genepop_structure <- function(genepop,popgroup=NULL,path=NULL){
   holdframe=cbind(rep(NamePops,each=2),rep(groupvec,each=2),holdframe)
   Loci <- do.call(paste,c(holdframe[,], sep=" "))
   headinfo <- paste0("  ",do.call(paste,c(as.list(colnames(temp2)))))
-  Output <- c(headinfo,Loci)
+  Output <- data.frame(c(headinfo,Loci))
+
+  if(locusnames==TRUE){
+    Output=Output
+  } else {
+    Output<-Output[-1,]
+  }
 
   #Save Output
   utils::write.table(Output,path,col.names=FALSE,row.names=FALSE,quote=FALSE)
