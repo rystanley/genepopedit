@@ -148,7 +148,18 @@ subset_genepop_rename <- function(genepop,nameframe,renumber=FALSE,meta="Pop",pa
       }
     }
 
-    PopVec <- paste0(NameExtract2,"_",popvec2," ,  ")
+    length_pops_ids=length(NameExtract2)
+    length_seperate_ids=length(popvec2)
+
+    if(length_pops_ids!=length_seperate_ids){
+      stop("Problem with ID names, make sure there are not multiple underscores within a single sample name (i.e., POP1_10_001 will be a problem).
+           Use genepop_ID function to correct ID names.")
+    }
+
+    if(length_pops_ids==length_seperate_ids){
+      PopVec <- paste0(NameExtract2,"_",popvec2," ,  ")
+    }
+
 
     #Paste these to the Loci
     Loci <- paste(PopVec,Loci,sep="")
