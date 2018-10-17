@@ -120,6 +120,8 @@ library(genepopedit) # load the library
 
   * PGDspider [link](http://www.cmpg.unibe.ch/software/PGDSpider/)
   * plink [link](http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml)
+
+For the time being, this function only works with **Plink 1.9**. Use of Plink 2.0 will create function issues.
   
   
 ** Note that appveyor build 'failure' is linked to an error in the build check and not *genepopedit* itself. This package has been tested on Windows, Linux (Unbuntu & Mint), and IOS operating systems. **
@@ -199,7 +201,7 @@ Calculate allele frequencies (major) for a given set of loci aggregated by popul
 **wide** | logical (default: FALSE) defining whether the output should be cast in 'wide' format. Note that 'wide' format is accepted as the input for alleleotype_genepop().
 
 #### genepop_filter_maf.R
-Filter loci by global minor allele frequency.
+Filter loci by global minor allele frequency. For the time being, this function only works with **Plink 1.9**. Use of Plink 2.0 will create function issues.
 
 [_example use_](#genepopmaf)
 
@@ -212,7 +214,7 @@ Filter loci by global minor allele frequency.
 **path** | the filepath & filename of output.
 
 #### genepop_toploci.R
-This function will return the the panel with the highest Fst for unlinked loci ordered by Fst. Returned loci have the highest Fst from the _original panel_ and are not linked to any other loci in the _returned panel_. Note this function requires the installation and access to both PGDspider for format conversion & PLINK for linkage calculations. [_See installation instructions here_](#extrainstall)
+This function will return the the panel with the highest Fst for unlinked loci ordered by Fst. Returned loci have the highest Fst from the _original panel_ and are not linked to any other loci in the _returned panel_. Note this function requires the installation and access to both PGDspider for format conversion & PLINK for linkage calculations. For the time being, this function only works with **Plink 1.9**. Use of Plink 2.0 will create function issues. [_See installation instructions here_](#extrainstall)
 
 [_example use_](#genepoptoploc)
 
@@ -391,7 +393,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 
 #### genepop_colony.R 
 * Convert Genepop from GENEPOP file to the input files (2) required by [Colony](https://www.zsl.org/science/software/colony)
-
+For the time being, this function only works with **Plink 1.9**. Use of Plink 2.0 will create function issues.
 
 [_example use_](#genepopcolony)
   
@@ -417,7 +419,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 **path** | the path to directory where the BGC files will be saved.
 
 #### genepop_treemix.R 
-* Convert Genepop to format required for first step in [TREEMIX](https://bitbucket.org/nygcresearch/treemix/wiki/Home) conversion.
+* Convert Genepop to format required for first step in [TREEMIX](https://bitbucket.org/nygcresearch/treemix/wiki/Home) conversion. For the time being, this function only works with **Plink 1.9**. Use of Plink 2.0 will create function issues.
 
 
 [_example use_](#genepoptreemix)
@@ -604,7 +606,7 @@ This function will calculate global minor allele frequencies and filter based on
 ```
 
 ## genepop\_toploci <a name="genepoptoploc"/>
-This function will calculate linkage disequilibrium and global Weir and Cockerham's Fst for loci among populations. The function seeks a loci panel which maximizes global Fst for unlinked loci. The returned object is a list containing Linked loci ($Linked), global FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by PLINK. This threshold (0-1) can be adjusted, though values <0.2 may be limited by computational resources. Note that the available RAM for conversions using PGDspider is limited to 1 GB on Windows based operating systems. [_Function description_](#funcdiag)
+This function will calculate linkage disequilibrium and global Weir and Cockerham's Fst for loci among populations. The function seeks a loci panel which maximizes global Fst for unlinked loci. The returned object is a list containing Linked loci ($Linked), global FST ($FST) and the top unlinked loci by FST ($FST_Unlinked). Note 'linked' loci are calcuated based on the threshold R<sup>2</sup> of 0.2 used by PLINK. This threshold (0-1) can be adjusted, though values <0.2 may be limited by computational resources. Note that the available RAM for conversions using PGDspider is limited to 1 GB on Windows based operating systems. For the time being, this function only works with **Plink 1.9**. Use of Plink 2.0 will create function issues. [_Function description_](#funcdiag)
 
 **Warning messages & diagnostics will be returned to the console by PGDspider & PLINK. These warnings are expected.** 
 

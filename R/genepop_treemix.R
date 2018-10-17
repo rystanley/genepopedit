@@ -22,6 +22,8 @@ genepop_treemix<-function(genepop,where.pgdspider,where.plink,allocate.pgd.ram=1
 
   path.start<-path
 
+  writeLines("Note that genepop_treemix works with Plink 1.9 for now. If you have Plink 2.0 the function will not perform properly.")
+
   ## File path checks
   if(substring(path,first = nchar(path),last=nchar(path))!="/"){
     path <- paste0(path,"/")
