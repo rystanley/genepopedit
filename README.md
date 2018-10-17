@@ -356,6 +356,7 @@ This function will return the the panel with the highest Fst for unlinked loci o
 --------------|---------------------------------
 **genepop** | a path to a Genepop file _or_ a dataframe read into the workspace of a Genepop file.
 **popgroup** | popgroup is a dataframe or path to a csv. column one specifies the population and column two has the numeric grouping. If NULL (default) then population levels will be assigned an individual group.
+**locusnames** | logical (default=FALSE). Specify TRUE if you want the locus names from your Genepop file to be the first row in your Structure files. 
 **path** | the filepath & filename of output.
 
 #### genepop_fstat.R 
