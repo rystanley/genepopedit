@@ -22,6 +22,8 @@
 ##
 genepop_colony <- function(genepop, where.plink, where.pgdspider, denote.missing = "000", allocate.pgd.ram = 1,path){
 
+  writeLines("Note that this function works with Plink 1.9 for now. If you have Plink 2.0, the function may not perform as intended.")
+
    path.start <- getwd()  ### where to write the files created by genepopedit to
 
    ## Warning messages

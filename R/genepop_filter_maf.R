@@ -12,6 +12,7 @@
 
 genepop_filter_maf <- function(genepop, where.plink, where.pgdspider, maf=0.05, path) {
 
+  writeLines("Note that this function works with Plink 1.9 for now. If you have Plink 2.0, the function may not perform as intended.")
 
   #Using the new genepop files generated - run through plink
   #Create spid file

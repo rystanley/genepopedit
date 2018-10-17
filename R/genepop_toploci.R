@@ -23,6 +23,8 @@
 
 genepop_toploci <- function(genepop, where.plink, where.pgdspider, r2.threshold = 0.2, fst.threshold = 0.05,  ld.window = NULL, ldpop = "All", allocate.pgd.ram = 1, return.workspace = TRUE, save.output = FALSE){
 
+  writeLines("Note that this function works with Plink 1.9 for now. If you have Plink 2.0, the function may not perform as intended.")
+
   path.start <- getwd()  ### where to write the files created by genepopedit to
 
   ## check for retrun options
