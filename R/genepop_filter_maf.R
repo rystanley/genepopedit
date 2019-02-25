@@ -4,7 +4,8 @@
 #' @param genepop A file path to the genepop format file you wish to filter.
 #' @param where.plink A file path to the PLINK installation folder.
 #' @param where.pgdspider A file path to the PGDspider installation folder.
-#' @param maf Minor allele frequency cutoff (default = 0.05)
+#' @param maf Minor allele frequency cutoff (default = 0.05).
+#' @param path file path to directory where the output will be saved.
 #' @rdname genepop_filter_maf
 #' @importFrom data.table fread
 #' @export

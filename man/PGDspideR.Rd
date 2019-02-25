@@ -4,7 +4,8 @@
 \alias{PGDspideR}
 \title{Execute PGDspider data format conversions in R}
 \usage{
-PGDspideR(input, input_format, output, output_format, spid, where.pgdspider)
+PGDspideR(input, input_format, output, output_format, spid,
+  where.pgdspider)
 }
 \arguments{
 \item{input}{the full path to the input file.}

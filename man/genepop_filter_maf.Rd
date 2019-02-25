@@ -4,7 +4,8 @@
 \alias{genepop_filter_maf}
 \title{Filters genepop file for MAF}
 \usage{
-genepop_filter_maf(genepop, where.plink, where.pgdspider, maf = 0.05, path)
+genepop_filter_maf(genepop, where.plink, where.pgdspider, maf = 0.05,
+  path)
 }
 \arguments{
 \item{genepop}{A file path to the genepop format file you wish to filter.}
@@ -13,7 +14,9 @@ genepop_filter_maf(genepop, where.plink, where.pgdspider, maf = 0.05, path)
 
 \item{where.pgdspider}{A file path to the PGDspider installation folder.}
 
-\item{maf}{Minor allele frequency cutoff (default = 0.05)}
+\item{maf}{Minor allele frequency cutoff (default = 0.05).}
+
+\item{path}{file path to directory where the output will be saved.}
 }
 \description{
 Converts genepop file to PED and filters for MAF using plink and returns genepop file with only SNPs that pass filter

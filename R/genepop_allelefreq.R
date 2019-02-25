@@ -20,6 +20,9 @@
 
 genepop_allelefreq <- function(genepop,popgroup=NULL,wide=FALSE,fullpanel=FALSE){
 
+  ## to get around global variable binding issue with R-CMD check. Loci is assigned a null value. The issue lies with the syntax for dplyr and data.table.
+  Loci <- NULL
+
   #Check to see if genepop is a data.frame from the workspace
   if(is.data.frame(genepop)){genepop <- data.table::as.data.table(genepop)}
 

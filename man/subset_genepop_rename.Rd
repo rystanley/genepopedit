@@ -4,8 +4,8 @@
 \alias{subset_genepop_rename}
 \title{Genepop subset and rename populations}
 \usage{
-subset_genepop_rename(genepop, nameframe, renumber = FALSE, meta = "Pop",
-  path)
+subset_genepop_rename(genepop, nameframe, renumber = FALSE,
+  meta = "Pop", path)
 }
 \arguments{
 \item{genepop}{the genepop data to be manipulated. This can be either a file path

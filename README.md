@@ -41,7 +41,7 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 
 ***
 
-![workflow-diagram](vignettes/vignette_small.png)
+![workflow-diagram](inst/doc/vignette_small.png)
 
 __Fig 1.__ **genepopedit** *workflow including data preparation, diagnostics, manipulation and transformation. Files, functions, and function operations are denoted by black, grey and blue text, respectively. Function inputs and outputs are denoted by dashed and solid lines, respectively.*
 
@@ -139,7 +139,7 @@ For the time being, this function only works with **Plink 1.9**. Use of Plink 2.
 
 Support funding was inpart provided by the Canadian Healthy Oceans Nework [CHONe](https://chone2.ca)
 
-![](vignettes/CHONeLogo.jpg)
+![](inst/doc/CHONeLogo.jpg)
 
 This package has been developed to be used by anyone who is looking for a more efficient and **repeatable** method to manipulate large multi-locus datasets. The package is open, and I encourage you to tinker and look for improvements. I will do my best to respond to any inquiries, add additional functions _and-or_ functionality, and improve the efficiency of the package.
 

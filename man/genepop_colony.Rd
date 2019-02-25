@@ -4,8 +4,8 @@
 \alias{genepop_colony}
 \title{Convert Genepop to Colony format.}
 \usage{
-genepop_colony(genepop, where.plink, where.pgdspider, denote.missing = "000",
-  allocate.pgd.ram = 1, path)
+genepop_colony(genepop, where.plink, where.pgdspider,
+  denote.missing = "000", allocate.pgd.ram = 1, path)
 }
 \arguments{
 \item{genepop}{the genepop data to be manipulated. This is read in as a complete file path.

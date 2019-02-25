@@ -4,8 +4,8 @@
 \alias{genepop_treemix}
 \title{Convert a Genepop to input required for phython processing to TREEMIX.}
 \usage{
-genepop_treemix(genepop, where.pgdspider, where.plink, allocate.pgd.ram = 1,
-  keep_inter = FALSE, path)
+genepop_treemix(genepop, where.pgdspider, where.plink,
+  allocate.pgd.ram = 1, keep_inter = FALSE, path)
 }
 \arguments{
 \item{genepop}{the genepop data to be manipulated. This can be either a file path
