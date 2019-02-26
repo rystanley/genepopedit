@@ -46,6 +46,7 @@ genepop_rubias<-function(genepop,sampletype,repunits,path){
   firstAllele <- as.data.frame(sapply(rubiasformat1[, -c(1:4)], function(x) as.character(substring(x, 1, alleleEx/2))))
   secondAllele <- as.data.frame(sapply(rubiasformat1[, -c(1:4)], function(x) as.character(substring(x, (alleleEx/2) + 1, alleleEx))))
 
+  #Add _1 to the second allele name for each locus
   colnames(secondAllele) <- paste0(colnames(secondAllele), "_1")
   splitloci <- cbind(firstAllele, secondAllele)
   indx <- rbind(names(firstAllele), names(secondAllele))
