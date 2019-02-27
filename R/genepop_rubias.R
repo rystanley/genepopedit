@@ -57,7 +57,7 @@ genepop_rubias<-function(genepop,sampletype,repunits,path){
   #Make missing data NA
   rubiasinput1[rubiasinput1 == "000"] <- NA
 
-  #write the file
+  #write the file - may update this to allow specifying the file name too
   write.table(rubiasinput1,file=paste0(path,"RubiasInput.txt"),quote=F, row.names = F)
 
 }
