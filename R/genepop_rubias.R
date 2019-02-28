@@ -15,6 +15,7 @@
 #' @importFrom utils read.table
 #' @export
 
+##
 genepop_rubias<-function(genepop,sampletype,repunits,path){
 
   if(!((sampletype == "reference") || (sampletype == "mixture")))
