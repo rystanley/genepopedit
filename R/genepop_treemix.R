@@ -1,4 +1,4 @@
-# Genepop_Treemix
+# Genepop -> Treemix
 #' @title Convert a Genepop to input required for phython processing to TREEMIX.
 #' @description Convert Genepop to within-clusters binary PED file for TREEMIX.
 #' @param genepop the genepop data to be manipulated. This can be either a file path
@@ -137,10 +137,7 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   anal.name=stringr::str_split(string = "PGDtest", pattern = "/")
   anal.name=unlist(anal.name)
   anal.name=anal.name[length(anal.name)]
-  map.name=paste0(anal.name,".map")
-  ped.name=paste0(anal.name,".ped")
-  remember.ped.plink<-paste0(where.plink,ped.name)
-  remember.map.plink<-paste0(where.plink,map.name)
+
   writeLines("\nConverted ped file to binary ped.\n\n            ")
 
 
@@ -215,6 +212,5 @@ R.utils::gzip(filename=paste0(where.plink,"TreemixInput.frq.strat"))
     file.remove(paste0(where.plink,"TreemixInput.frq.strat.gz"))
     #should have .frq.gz as the extension after this
     writeLines("\nRun your new gzipped file through the Python script that comes with Treemix now. Then you are ready to put it into Treemix!")
-return()
 }
 
