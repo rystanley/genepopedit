@@ -33,8 +33,9 @@ genepop_rubias<-function(genepop,sampletype,repunits,path){
   #Add the columns and col names rubias wants
   colnames(rubiasformat)[1]<-"indiv"
   colnames(rubiasformat)[2]<-"collection"
-  locusnames<-colnames(rubiasformat[,-c(1:3)])
-   rubiasformat$sample_type<-rep(sampletype,length(rubiasformat$indiv))
+  locusnames <- colnames(rubiasformat[, -c(1:3,length(rubiasformat))])
+
+  rubiasformat$sample_type<-rep(sampletype,length(rubiasformat$indiv))
 
    #Reorganize the columns to preferred rubias order
   rubiasformat1<-rubiasformat[c("sample_type","repunit","collection","indiv",locusnames)]
@@ -52,7 +53,7 @@ genepop_rubias<-function(genepop,sampletype,repunits,path){
   splitloci <- cbind(firstAllele, secondAllele)
   indx <- rbind(names(firstAllele), names(secondAllele))
   splitloci <- splitloci[, indx]
-  rubiasinput <- as.data.frame(sapply(splitloci[, -c(1:4)], function(x) as.character(as.factor(x))), stringsAsFactors = FALSE)
+  rubiasinput <- as.data.frame(sapply(splitloci, function(x) as.character(as.factor(x))), stringsAsFactors = FALSE)
   rubiasinput1<-cbind(rubiasformat1[,1:4],rubiasinput)
 
   #Make missing data NA
