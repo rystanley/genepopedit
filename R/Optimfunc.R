@@ -31,7 +31,7 @@ Optimfunc <- function(x)
     if(sum(as.numeric(subdat),na.rm=T)>0){
 
       if(length(as.data.frame(subdat))>1){
-          if(class(subdat)!="integer" & sum(!is.na(subdat[1,]))<=1){subdat <- subdat[-1,]}
+          if(all(class(subdat)!="integer" & sum(!is.na(subdat[1,]))<=1)){subdat <- subdat[-1,]}
       }
 
       if(is.null(nrow(subdat))){returned <- c(returned,subdat[1])
