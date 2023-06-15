@@ -1,4 +1,4 @@
-# Genepop_Treemix
+# Genepop -> Treemix
 #' @title Convert a Genepop to input required for phython processing to TREEMIX.
 #' @description Convert Genepop to within-clusters binary PED file for TREEMIX.
 #' @param genepop the genepop data to be manipulated. This can be either a file path
@@ -137,10 +137,7 @@ GP_PED_SPID_Bottom<-"# Replacement character for allele encoded as 0 (0 encodes 
   anal.name=stringr::str_split(string = "PGDtest", pattern = "/")
   anal.name=unlist(anal.name)
   anal.name=anal.name[length(anal.name)]
-  map.name=paste0(anal.name,".map")
-  ped.name=paste0(anal.name,".ped")
-  remember.ped.plink<-paste0(where.plink,ped.name)
-  remember.map.plink<-paste0(where.plink,map.name)
+
   writeLines("\nConverted ped file to binary ped.\n\n            ")
 
 
@@ -199,24 +196,21 @@ R.utils::gzip(filename=paste0(where.plink,"TreemixInput.frq.strat"))
 
   writeLines("\nCopying gzipped input file to path and removing unnecessary files\n")
     file.copy(from = paste0(where.plink,"TreemixInput.frq.strat.gz"), to = paste0(path,"TreemixInput.frq.strat.gz"))
-    setwd(where.pgdspider)
-    file.remove("GP_PED.spid")
-    file.remove("spider.conf.xml")
-    file.remove("PGDSpider-cli.log")
-    file.remove("GPD_for_PED_to_BED.txt")
-    setwd(where.plink)
-    file.remove("PGDtest.ped")
-    file.remove("PGDtest.map")
-    file.remove("BinaryPED.nosex")
-    file.remove("BinaryPED.log")
-    file.remove("BinaryPED.bed")
-    file.remove("BinaryPED.bim")
-    file.remove("BinaryPED.fam")
-    file.remove("TreemixInput.nosex")
-    file.remove("TreemixInput.log")
-    file.remove("TreemixInput.frq.strat.gz")
+    file.remove(paste0(where.pgdspider,"GP_PED.spid"))
+    file.remove(paste0(where.pgdspider,"spider.conf.xml"))
+    file.remove(paste0(where.pgdspider,"PGDSpider-cli.log"))
+    file.remove(paste0(where.pgdspider,"GPD_for_PED_to_BED.txt"))
+    file.remove(paste0(where.plink,"PGDtest.ped"))
+    file.remove(paste0(where.plink,"PGDtest.map"))
+    file.remove(paste0(where.plink,"BinaryPED.nosex"))
+    file.remove(paste0(where.plink,"BinaryPED.log"))
+    file.remove(paste0(where.plink,"BinaryPED.bed"))
+    file.remove(paste0(where.plink,"BinaryPED.bim"))
+    file.remove(paste0(where.plink,"BinaryPED.fam"))
+    file.remove(paste0(where.plink,"TreemixInput.nosex"))
+    file.remove(paste0(where.plink,"TreemixInput.log"))
+    file.remove(paste0(where.plink,"TreemixInput.frq.strat.gz"))
     #should have .frq.gz as the extension after this
     writeLines("\nRun your new gzipped file through the Python script that comes with Treemix now. Then you are ready to put it into Treemix!")
-return()
 }
 
