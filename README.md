@@ -108,7 +108,9 @@ if (!require("devtools")) install.packages("devtools") # to install
 
 **Step 2** Install *genepopedit*:
 ```r
+#install the diveRsity dependency from Github ** this package may no longer be supported by CRAN, depending on your R Version **
 #install the package from *Github*
+devtools::install_github("kkeenan02/diveRsity")
 devtools::install_github("rystanley/genepopedit") 
 library(genepopedit) # load the library
 ```
