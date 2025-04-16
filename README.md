@@ -8,6 +8,8 @@ The goal of **genepopedit** is to provide a simple and flexible tool for manipul
 
 ** **Note input parameters for genepopedit versions > 1.0.0.5 are now all completely lowercase.** ** 
 
+** funciton genepop_toploci() is currently deprecated due to the package diveRsity being no longer maintained.**
+
 **Use genepopedit to subset a SNP dataset by:**
 
 * removing specified loci. 
