@@ -13,7 +13,6 @@
 #' @param save.output Logical query (default: FALSE) to save the output to the same location as the file being analyzed. Each of the outputs of the function will be saved as a separate file with the file name of the orginal data appended with "_Linkages", "Loci_FST", and "Unlinked_Loci_FST" for the pairwise linked loci along with their r^2, all loci with their global Fst, and only the top unlinked loci with their Fst respectively.
 #' @rdname genepop_toploci
 #' @export
-#' @importFrom diveRsity diffCalc
 #' @importFrom stringr str_split str_detect
 #' @importFrom plyr rbind.fill
 #' @importFrom utils write.table
@@ -22,6 +21,7 @@
 
 
 genepop_toploci <- function(genepop, where.plink, where.pgdspider, r2.threshold = 0.2, fst.threshold = 0.05,  ld.window = NULL, ldpop = "All", allocate.pgd.ram = 1, return.workspace = TRUE, save.output = FALSE){
+  stop("This function is depcrecated because the diveRsity package is no longer maintained")
 
   writeLines("Note that this function works with Plink 1.9 for now. If you have Plink 2.0, the function may not perform as intended.")
 
@@ -84,7 +84,7 @@ genepop_toploci <- function(genepop, where.plink, where.pgdspider, r2.threshold 
   #Calculate FST
   writeLines("Calculating locus-specific Fst\n\n")
 
-  FST.dat <- diveRsity::diffCalc(infile = genepop,outfile = NULL,fst = T,bs_locus = F)
+  # FST.dat <- diveRsity::diffCalc(infile = genepop,outfile = NULL,fst = T,bs_locus = F)
   FST.dat <- FST.dat$std_stats[1:length(FST.dat$std_stats$loci)-1,]
   FSTs <- FST.dat$Fst
 
